@@ -24,6 +24,7 @@
 - [프로토타입](https://www.figma.com/file/SnJ8Zfu03fhibppBid6mew/%EC%9A%B0%EB%A6%AC%EB%81%BC%EB%A6%AC?node-id=0%3A1)
 - [백로그](https://docs.google.com/spreadsheets/d/1O0KVQS-9T7NtzKAaoRMLuIRXmJQ5TcNF2bS59sPKqkc/edit#gid=0)
 - [ERD](https://github.com/boostcampwm-2021/WEB25-JustUs/wiki/ERD)
+- [Wiki](https://github.com/boostcampwm-2021/WEB25-JustUs/wiki)
 
 ![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
 
