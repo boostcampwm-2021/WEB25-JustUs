@@ -1,8 +1,8 @@
-import { Controller, Get } from '@nestjs/common';
-import { UserService } from '../service/user.service';
-import { User } from '../user.entity';
+import { Controller, Get } from "@nestjs/common";
+import { UserService } from "../service/user.service";
+import { User } from "../user.entity";
 
-@Controller('api/user')
+@Controller("api/user")
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
