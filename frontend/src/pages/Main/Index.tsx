@@ -1,7 +1,14 @@
-import React from "react";
+import { useState } from "react";
+import Sidebar from "../../components/Sidebar";
 
-function Main() {
-  return;
-}
+const Main = () => {
+  const [isToggle, setIsToggle] = useState<boolean>(true);
+
+  return (
+    <>
+      <Sidebar isToggle={isToggle} setIsToggle={setIsToggle} />
+    </>
+  );
+};
 
 export default Main;
