@@ -21,11 +21,22 @@ interface ModalProps {
 }
 
 const Modal = ({ children, open = false, closeFn }: ModalProps) => {
+  const closeModal = (ev: MouseEvent) => {
+    closeFn(ev);
+  };
+  useEffect(() => {
+    modalRootEl?.addEventListener("click", closeModal);
+    return () => {
+      modalRootEl?.removeEventListener("click", closeModal);
+    };
+  });
 
   if (!modalRootEl) return null;
   if (!open) {
+    modalRootEl.style.display = "none";
     return null;
   }
+  modalRootEl.style.display = "flex";
 
   return ReactDOM.createPortal(children, modalRootEl);
 };
