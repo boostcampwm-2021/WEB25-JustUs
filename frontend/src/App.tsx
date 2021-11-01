@@ -1,7 +1,12 @@
-import React from "react";
+import React from 'react';
+import Router from './Router';
 
-function App() {
-  return <div>우리끼리</div>;
-}
+const App = () => {
+  return (
+    <>
+      <Router />
+    </>
+  );
+};
 
 export default App;
