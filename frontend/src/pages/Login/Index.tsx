@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-const BackgroundImg = styled.div<any>`
+const BackgroundImg = styled.div<{ imgUrl: string }>`
   background-image: url(${props => props.imgUrl});
   background-size: cover;
   height: 100vh;
