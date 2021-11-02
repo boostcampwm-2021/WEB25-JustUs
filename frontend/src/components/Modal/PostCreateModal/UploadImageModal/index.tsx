@@ -17,7 +17,7 @@ const UploadImageModal = ({ closeFn }: UploadImageModalProps) => {
   const MAX_IMAGE = 5;
 
   const clickInputTag = () => {
-    if (!inputImagaRef.current || files.length == 5) return;
+    if (!inputImagaRef.current || files.length === MAX_IMAGE) return;
     inputImagaRef.current.value = "";
     inputImagaRef.current.click();
   };
@@ -33,7 +33,7 @@ const UploadImageModal = ({ closeFn }: UploadImageModalProps) => {
   };
 
   const deleteImage = (key: string) => {
-    setFiles(files.filter(file => file.Key !== key));
+    setFiles(files.filter(file => file.Key !=== key));
   };
 
   return (
@@ -44,7 +44,7 @@ const UploadImageModal = ({ closeFn }: UploadImageModalProps) => {
     >
       <ModalHeader>
         <ModalTitle>새 게시물 만들기</ModalTitle>
-        {files.length == 0 ? (
+        {files.length === 0 ? (
           <ModalClose onClick={closeFn}>
             <img src="/icons/x.svg" alt="close" height="60%"></img>
           </ModalClose>
