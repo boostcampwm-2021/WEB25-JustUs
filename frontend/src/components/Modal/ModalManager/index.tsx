@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 
 import PostCreateModal from "../PostCreateModal";
 import CreateGroupModal from "@components/Sidebar/FirstDepth/AddGroupButton/Modal/InnerModal/CreateGroupModal";
+import JoinGroupModal from "@components/Sidebar/FirstDepth/AddGroupButton/Modal/InnerModal/JoinGroupModal";
 import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
 
@@ -20,6 +21,7 @@ const ModalManager = ({ closeFn, modal = "" }: Props) => {
     <>
       <PostCreateModal closeFn={closeFn} open={modal === "PostCreateModal"} />
       {createGroupModalOpened && <CreateGroupModal closeFn={closeFn} open={true} />}
+      {joinGroupModalOpened && <JoinGroupModal closeFn={closeFn} open={true} />}
     </>
   );
 };
