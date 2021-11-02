@@ -48,3 +48,21 @@ jobs:
           context: ./frontend
           push: true
           tags: ${{ env.DOCKER_IMAGE_NAME }}/react:latest
+
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: ssh connect & production
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.NCLOUD_DEV_HOST_IP }}
+          username: ${{ secrets.NCLOUD_DEV_USERNAME }}
+          password: ${{ secrets.NCLOUD_DEV_PASSWORD }}
+          prot: ${{ secrets.NCLOUD_DEV_PORT }}
+      - name: Docker compose
+        run: |
+          docker pull soosungp33/node:latest
+          docker pull soosungp33/react:latest
+          docker-compose restart
+          docker rmi $(docker images -f "dangling=true" -q)
