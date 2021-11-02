@@ -1,3 +1,4 @@
+import React, { useRef } from "react";
 import styled from "styled-components";
 
 interface UploadImageModalProps {
@@ -5,6 +6,13 @@ interface UploadImageModalProps {
 }
 
 const UploadImageModal = ({ closeFn }: UploadImageModalProps) => {
+  const inputImagaRef = useRef<HTMLInputElement>(null);
+
+  const clickInputTag = () => {
+    if (!inputImagaRef.current) return;
+    inputImagaRef.current.click();
+  };
+
   return (
     <ModalContainer
       onClick={event => {
@@ -18,6 +26,11 @@ const UploadImageModal = ({ closeFn }: UploadImageModalProps) => {
         </ModalClose>
       </ModalHeader>
       <ModalContent>
+        <UploadButton onClick={clickInputTag}>
+          <img src="/icons/add-photo.svg" alt="close" height="50%"></img>
+          <ImageInput ref={inputImagaRef} accept="img/*" type="file"></ImageInput>
+          <p>0/5</p>
+        </UploadButton>
       </ModalContent>
     </ModalContainer>
   );
@@ -25,12 +38,23 @@ const UploadImageModal = ({ closeFn }: UploadImageModalProps) => {
 
 export default UploadImageModal;
 
+const ImageInput = styled.input`
+  position: absolute;
+  width: 0;
+  height: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+`;
+
 const ModalContainer = styled.div`
   display: flex;
   flex-direction: column;
   background-color: #ffffff;
   height: 30vw;
   width: 45vw;
+  min-width: 500px;
+  min-height: 400px;
   border-radius: 10px;
   box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
 `;
@@ -42,7 +66,7 @@ const ModalHeader = styled.div`
   height: 10vh;
   box-sizing: border-box;
   border-bottom: 1px solid black;
-  font-size: 1.2vw;
+  font-size: max(1.2vw, 20px);
 `;
 
 const ModalContent = styled.div`
@@ -53,6 +77,18 @@ const ModalContent = styled.div`
   box-sizing: border-box;
 `;
 
+const UploadButton = styled.div`
+  background-color: #dadada;
+  border: 1px solid #d7d7d7;
+  box-sizing: border-box;
+  border-radius: 8px;
+  margin: 1vw;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-direction: column;
+  cursor: pointer;
+`;
 
 const ModalTitle = styled.div`
   grid-column-start: 2;
