@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Sidebar from "../../components/Sidebar";
+import Sidebar from "@components/Sidebar";
 
 const Main = () => {
   const [isToggle, setIsToggle] = useState<boolean>(true);
