@@ -26,10 +26,17 @@ services:
       - /usr/src/app/node_modules
       - ./backend:/usr/src/app
     environment:
-      MYSQL_HOST: mysql
-      MYSQL_USER: root
-      MYSQL_PASSWORD: root
-      MYSQL_DATABASE: justus
+      MYSQL_HOST: ${MYSQL_HOST}
+      MYSQL_PORT: ${MYSQL_PORT}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      ENTITIY_PATH: ${ENTITIY_PATH}
+      # MYSQL_HOST: mysql
+      # MYSQL_PORT: 3306
+      # MYSQL_USER: root
+      # MYSQL_PASSWORD: root
+      # MYSQL_DATABASE: justus
 
   mysql:
     build: ./mysql
@@ -41,5 +48,7 @@ services:
       - ./mysql/mysql_data:/var/lib/mysql
       - ./mysql/sqls/:/docker-entrypoint-initdb.d/
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: justus
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      # MYSQL_ROOT_PASSWORD: root
+      # MYSQL_DATABASE: justus
