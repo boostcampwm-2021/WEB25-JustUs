@@ -33,7 +33,7 @@ const UploadImageModal = ({ closeFn }: UploadImageModalProps) => {
   };
 
   const deleteImage = (key: string) => {
-    setFiles(files.filter(file => file.Key !=== key));
+    setFiles(files.filter(file => file.Key !== key));
   };
 
   return (
