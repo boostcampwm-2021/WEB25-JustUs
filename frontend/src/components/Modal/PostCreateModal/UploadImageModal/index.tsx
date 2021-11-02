@@ -24,5 +24,8 @@ export default UploadImageModal;
 const ModalContainer = styled.div`
   background-color: #ffffff;
   height: 30vw;
-  width: 50vw;
+  width: 45vw;
+  padding: 2vw;
+  border-radius: 10px;
+  box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
 `;
