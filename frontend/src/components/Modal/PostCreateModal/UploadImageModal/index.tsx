@@ -9,6 +9,7 @@ interface UploadImageModalProps {
 const UploadImageModal = ({ closeFn }: UploadImageModalProps) => {
   const [images, setImages] = useState<File[]>([]);
   const inputImagaRef = useRef<HTMLInputElement>(null);
+  const MAX_IMAGE = 5;
 
   const clickInputTag = () => {
     if (!inputImagaRef.current || images.length == 5) return;
@@ -21,6 +22,10 @@ const UploadImageModal = ({ closeFn }: UploadImageModalProps) => {
     setImages([...images, event.target.files[0]]);
   };
 
+  const nextModal = () => {
+    console.log("클릭");
+  };
+
   return (
     <ModalContainer
       onClick={event => {
@@ -29,15 +34,23 @@ const UploadImageModal = ({ closeFn }: UploadImageModalProps) => {
     >
       <ModalHeader>
         <ModalTitle>새 게시물 만들기</ModalTitle>
-        <ModalClose type="button" onClick={closeFn}>
-          <img src="/icons/x.svg" alt="close" height="60%"></img>
-        </ModalClose>
+        {images.length == 0 ? (
+          <ModalClose onClick={closeFn}>
+            <img src="/icons/x.svg" alt="close" height="60%"></img>
+          </ModalClose>
+        ) : (
+          <ModalNext onClick={nextModal}>
+            <img src="/icons/next.svg" alt="next" height="60%"></img>
+          </ModalNext>
+        )}
       </ModalHeader>
       <ModalContent>
         <UploadButton onClick={clickInputTag}>
           <img src="/icons/add-photo.svg" alt="close" height="50%"></img>
           <ImageInput ref={inputImagaRef} accept="image/*" type="file" onChange={changeImage}></ImageInput>
-          <p>{images.length}/5</p>
+          <p>
+            {images.length}/{MAX_IMAGE}
+          </p>
         </UploadButton>
         {images.map(
           image => (
@@ -54,6 +67,32 @@ const UploadImageModal = ({ closeFn }: UploadImageModalProps) => {
 
 export default UploadImageModal;
 
+const ModalNext = styled.button`
+  grid-column-start: 3;
+  grid-column-end: 4;
+  grid-row-start: 1;
+  grid-row-end: 2;
+  right: 0px;
+  top: 0;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+`;
+
+const ModalClose = styled.button`
+  grid-column-start: 3;
+  grid-column-end: 4;
+  grid-row-start: 1;
+  grid-row-end: 2;
+  right: 0px;
+  top: 0;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+`;
+
 const ImagePreview = styled.div`
   border: 1px solid #d7d7d7;
   box-sizing: border-box;
@@ -64,7 +103,6 @@ const ImagePreview = styled.div`
   justify-content: space-around;
   flex-direction: column;
   cursor: pointer;
-
   & img {
     max-width: 100%;
     max-height: 100%;
@@ -132,17 +170,4 @@ const ModalTitle = styled.div`
   flex-direction: row;
   justify-content: center;
   align-items: center;
-`;
-
-const ModalClose = styled.button`
-  grid-column-start: 3;
-  grid-column-end: 4;
-  grid-row-start: 1;
-  grid-row-end: 2;
-  right: 0px;
-  top: 0;
-  padding: 0;
-  border: none;
-  background: none;
-  cursor: pointer;
 `;
