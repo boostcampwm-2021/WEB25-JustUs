@@ -1,6 +1,45 @@
 import React from "react";
 import styled from "styled-components";
 
+const Login = () => {
+  return (
+    <>
+      <BackgroundImg imgUrl="/img/sand.jpg">
+        <BackgroundWrap>
+          <Content>
+            <LeftSide>
+              <div>
+                <Logo>
+                  <img src="/img/podo.png" alt="justus logo" height="50px" />
+                  <LogoText>우리끼리</LogoText>
+                </Logo>
+                <LogoInfoText>흩어진 추억을 한 곳에 기록해보세요</LogoInfoText>
+              </div>
+              <img src="/img/btnG_완성형.png" alt="naver social login" width="350px" />
+            </LeftSide>
+            <div id="right-side">
+              <Polaroid id="polaroid">
+                <img src="/img/glass.jpg" width="300px" height="300px" alt="glass image" />
+                <img src="/img/life_is_travel.png" height="40px" alt="life is travel" />
+              </Polaroid>
+            </div>
+          </Content>
+          <Footer>
+            <FooterContent>
+              <p>Copyright ⓒ Team UNDEFINED. 모든 권리 보유.</p>
+              <div>
+                <span>우리끼리</span>
+                <img src="/img/github_icon.png" height="18px" alt="github icon" />
+                <span className="names">공필상 | 김무성 | 김영한 | 조명희</span>
+              </div>
+            </FooterContent>
+          </Footer>
+        </BackgroundWrap>
+      </BackgroundImg>
+    </>
+  );
+};
+
 const BackgroundImg = styled.div<{ imgUrl: string }>`
   background-image: url(${props => props.imgUrl});
   background-size: cover;
@@ -89,44 +128,5 @@ const FooterContent = styled.div`
     }
   }
 `;
-
-const Login = () => {
-  return (
-    <>
-      <BackgroundImg imgUrl="/img/sand.jpg">
-        <BackgroundWrap>
-          <Content>
-            <LeftSide>
-              <div>
-                <Logo>
-                  <img src="/img/podo.png" alt="justus logo" height="50px" />
-                  <LogoText>우리끼리</LogoText>
-                </Logo>
-                <LogoInfoText>흩어진 추억을 한 곳에 기록해보세요</LogoInfoText>
-              </div>
-              <img src="/img/btnG_완성형.png" alt="" width="350px" />
-            </LeftSide>
-            <div id="right-side">
-              <Polaroid id="polaroid">
-                <img src="/img/glass.jpg" width="300px" height="300px" alt="" />
-                <img src="/img/life_is_travel.png" height="40px" alt="" />
-              </Polaroid>
-            </div>
-          </Content>
-          <Footer>
-            <FooterContent>
-              <p>Copyright ⓒ Team UNDEFINED. 모든 권리 보유.</p>
-              <div>
-                <span>우리끼리</span>
-                <img src="/img/github_icon.png" height="18px" alt="github icon" />
-                <span className="names">공필상 | 김무성 | 김영한 | 조명희</span>
-              </div>
-            </FooterContent>
-          </Footer>
-        </BackgroundWrap>
-      </BackgroundImg>
-    </>
-  );
-};
 
 export default Login;
