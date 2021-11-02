@@ -59,7 +59,7 @@ jobs:
           host: ${{ secrets.NCLOUD_DEV_HOST_IP }}
           username: ${{ secrets.NCLOUD_DEV_USERNAME }}
           password: ${{ secrets.NCLOUD_DEV_PASSWORD }}
-          prot: ${{ secrets.NCLOUD_DEV_PORT }}
+          port: ${{ secrets.NCLOUD_DEV_PORT }}
       - name: Docker compose
         run: |
           docker pull soosungp33/node:latest
