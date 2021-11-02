@@ -57,5 +57,5 @@ jobs:
             cd ~
             docker pull soosungp33/node:latest
             docker pull soosungp33/react:latest
-            docker-compose restart
+            docker-compose up -d
             docker rmi $(docker images -f "dangling=true" -q)
