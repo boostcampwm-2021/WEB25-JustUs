@@ -53,10 +53,9 @@ jobs:
           username: ${{ secrets.NCLOUD_DEV_USERNAME }}
           password: ${{ secrets.NCLOUD_DEV_PASSWORD }}
           port: ${{ secrets.NCLOUD_DEV_PORT }}
-      - name: Docker compose
-        script: |
-          cd ~
-          docker pull soosungp33/node:latest
-          docker pull soosungp33/react:latest
-          docker-compose restart
-          docker rmi $(docker images -f "dangling=true" -q)
+          script: |
+            cd ~
+            docker pull soosungp33/node:latest
+            docker pull soosungp33/react:latest
+            docker-compose restart
+            docker rmi $(docker images -f "dangling=true" -q)
