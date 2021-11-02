@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import Color from "@src/styles/Color";
 
 const Login = () => {
   return (
@@ -19,7 +20,7 @@ const Login = () => {
             </LeftSide>
             <div id="right-side">
               <Polaroid id="polaroid">
-                <img src="/img/glass.jpg" width="300px" height="300px" alt="glass image" />
+                <img src="/img/glass.jpg" width="300px" height="300px" alt="glass" />
                 <img src="/img/life_is_travel.png" height="40px" alt="life is travel" />
               </Polaroid>
             </div>
@@ -51,7 +52,7 @@ const BackgroundWrap = styled.div`
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-color: #ffffff90;
+  background-color: ${Color.wrap};
 `;
 
 const Content = styled.div`
@@ -123,7 +124,7 @@ const FooterContent = styled.div`
     justify-content: center;
     align-items: center;
     & .names {
-      color: #0202029b;
+      color: ${Color.darkgray};
       padding-left: 10px;
     }
   }
