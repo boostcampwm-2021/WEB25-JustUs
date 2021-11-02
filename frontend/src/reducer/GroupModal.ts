@@ -1,6 +1,8 @@
 const initState = {
   clickedTarget: { element: document.body },
   addJoinMOdalOpened: false,
+  createGroupModalOpened: false,
+  joinGroupModalOpened: false,
 };
 
 const groupModalReducer = (state = initState, action: any) => {
@@ -10,16 +12,27 @@ const groupModalReducer = (state = initState, action: any) => {
         ...state,
         clickedTarget: { element: action.payload },
       };
-    case "ADD_JOIN_MODAL_OPEN":
+    case "OPEN_CREATE_GROUP_MODAL":
       return {
         ...state,
-        addJoinMOdalOpened: true,
+        createGroupModalOpened: true,
       };
-    case "ADD_JOIN_MODAL_CLOSE":
+    case "CLOSE_CREATE_GROUP_MODAL":
       return {
         ...state,
-        addJoinMOdalOpened: false,
+        createGroupModalOpened: false,
       };
+    case "OPEN_JOIN_GROUP_MODAL":
+      return {
+        ...state,
+        joinGroupModalOpened: true,
+      };
+    case "CLOSE_JOIN_GROUP_MODAL":
+      return {
+        ...state,
+        joinGroupModalOpened: false,
+      };
+
     default:
       return state;
   }

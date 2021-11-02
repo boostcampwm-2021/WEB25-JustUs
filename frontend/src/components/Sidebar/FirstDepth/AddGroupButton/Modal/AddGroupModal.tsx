@@ -1,12 +1,23 @@
 import styled from "styled-components";
 import Color from "@styles/Color";
+import { useDispatch } from "react-redux";
 
 const AddGroupModal = () => {
+  const dispatch = useDispatch();
+
+  const onClickCreateGroupBtn = () => {
+    dispatch({ type: "OPEN_CREATE_GROUP_MODAL" });
+  };
+
+  const onClickJoinGroupBtn = () => {
+    dispatch({ type: "OPEN_JOIN_GROUP_MODAL" });
+  };
+
   return (
     <ModalWrapper>
-      <ModalItem>그룹 생성</ModalItem>
+      <ModalItem onClick={onClickCreateGroupBtn}>그룹 생성</ModalItem>
       <Divider />
-      <ModalItem>그룹 참가</ModalItem>
+      <ModalItem onClick={onClickJoinGroupBtn}>그룹 참가</ModalItem>
     </ModalWrapper>
   );
 };
@@ -33,4 +44,5 @@ const Divider = styled.div`
   height: 1px;
   background-color: ${Color.black};
 `;
+
 export default AddGroupModal;

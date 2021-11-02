@@ -2,6 +2,7 @@ const color = {
   black: "#222",
   white: "#FFF",
   gray: "#D3D3D3",
+  blue: "#4D73D7",
   blur: "rgba(223, 223, 223, 0.2)",
   "theme1-primary": "#52734D",
   "theme1-secondary": "rgba(145, 199, 136, 0.8)",
