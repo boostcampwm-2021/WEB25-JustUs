@@ -1,16 +1,24 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import styled from "styled-components";
+import shortid from "shortid";
 
 interface UploadImageModalProps {
   closeFn: () => void;
 }
 
 const UploadImageModal = ({ closeFn }: UploadImageModalProps) => {
+  const [images, setImages] = useState<File[]>([]);
   const inputImagaRef = useRef<HTMLInputElement>(null);
 
   const clickInputTag = () => {
-    if (!inputImagaRef.current) return;
+    if (!inputImagaRef.current || images.length == 5) return;
+    inputImagaRef.current.value = "";
     inputImagaRef.current.click();
+  };
+
+  const changeImage: React.ChangeEventHandler<HTMLInputElement> = event => {
+    if (!event.target.files) return;
+    setImages([...images, event.target.files[0]]);
   };
 
   return (
@@ -28,15 +36,40 @@ const UploadImageModal = ({ closeFn }: UploadImageModalProps) => {
       <ModalContent>
         <UploadButton onClick={clickInputTag}>
           <img src="/icons/add-photo.svg" alt="close" height="50%"></img>
-          <ImageInput ref={inputImagaRef} accept="img/*" type="file"></ImageInput>
-          <p>0/5</p>
+          <ImageInput ref={inputImagaRef} accept="image/*" type="file" onChange={changeImage}></ImageInput>
+          <p>{images.length}/5</p>
         </UploadButton>
+        {images.map(
+          image => (
+            <ImagePreview key={shortid.generate()}>
+              <img src={URL.createObjectURL(image)} alt="close"></img>
+            </ImagePreview>
+          ),
+          "",
+        )}
       </ModalContent>
     </ModalContainer>
   );
 };
 
 export default UploadImageModal;
+
+const ImagePreview = styled.div`
+  border: 1px solid #d7d7d7;
+  box-sizing: border-box;
+  border-radius: 8px;
+  margin: 1vw;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-direction: column;
+  cursor: pointer;
+
+  & img {
+    max-width: 100%;
+    max-height: 100%;
+  }
+`;
 
 const ImageInput = styled.input`
   position: absolute;
@@ -72,7 +105,7 @@ const ModalHeader = styled.div`
 const ModalContent = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
+  grid-template-rows: 50% 50%;
   height: 100%;
   box-sizing: border-box;
 `;
