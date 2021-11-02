@@ -19,7 +19,7 @@ const Login = () => {
             </LeftSide>
             <div id="right-side">
               <Polaroid id="polaroid">
-                <img src="/img/glass.jpg" width="300px" height="300px" alt="glass image" />
+                <img src="/img/glass.jpg" width="300px" height="300px" alt="glass" />
                 <img src="/img/life_is_travel.png" height="40px" alt="life is travel" />
               </Polaroid>
             </div>
