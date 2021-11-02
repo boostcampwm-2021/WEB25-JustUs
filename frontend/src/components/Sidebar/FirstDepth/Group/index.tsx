@@ -1,9 +1,9 @@
 import styled from "styled-components";
 import Color from "@components/Styles/Color";
 
-type GroupProps = {
+interface GroupProps {
   groupName: string;
-};
+}
 
 const Group = ({ groupName }: GroupProps) => {
   return <ButtonWrapper>{groupName}</ButtonWrapper>;
