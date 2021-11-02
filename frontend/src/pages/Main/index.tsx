@@ -25,7 +25,7 @@ const Main = () => {
 
   return (
     <>
-      <Header />
+      <Header isToggle={isToggle} setIsToggle={setIsToggle} />
       <Sidebar isToggle={isToggle} setIsToggle={setIsToggle} />
       <button onClick={openModal} data-modal="PostCreateModal">
         +
