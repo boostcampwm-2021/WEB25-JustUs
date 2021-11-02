@@ -1,7 +1,7 @@
-import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { getConnectionOptions } from 'typeorm';
-import { UserModule } from './user/user.module';
+import { Module } from "@nestjs/common";
+import { TypeOrmModule } from "@nestjs/typeorm";
+import { getConnectionOptions } from "typeorm";
+import { UserModule } from "./user/user.module";
 
 TypeOrmModule.forRootAsync({
   useFactory: async () =>
