@@ -17,6 +17,8 @@ const UploadImageModal = ({ closeFn }: UploadImageModalProps) => {
           <img src="/icons/x.svg" alt="close" height="60%"></img>
         </ModalClose>
       </ModalHeader>
+      <ModalContent>
+      </ModalContent>
     </ModalContainer>
   );
 };
@@ -24,6 +26,8 @@ const UploadImageModal = ({ closeFn }: UploadImageModalProps) => {
 export default UploadImageModal;
 
 const ModalContainer = styled.div`
+  display: flex;
+  flex-direction: column;
   background-color: #ffffff;
   height: 30vw;
   width: 45vw;
@@ -35,10 +39,20 @@ const ModalHeader = styled.div`
   display: grid;
   grid-template-columns: 10% 80% 10%;
   padding: 1vw;
-  height: 2.5vw;
+  height: 10vh;
+  box-sizing: border-box;
   border-bottom: 1px solid black;
   font-size: 1.2vw;
 `;
+
+const ModalContent = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  height: 100%;
+  box-sizing: border-box;
+`;
+
 
 const ModalTitle = styled.div`
   grid-column-start: 2;
