@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import Color from "@components/Styles/Color";
+import Color from "@styles/Color";
 
 const AddAlbum = () => {
   return (
