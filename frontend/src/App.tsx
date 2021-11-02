@@ -15,18 +15,15 @@ function App() {
     if (modal) setModal(modal);
   };
 
-  const closeModal = (event: React.SyntheticEvent<EventTarget>) => {
-    event.stopPropagation();
+  const closeModal = () => {
     setModal("");
-    return null;
   };
 
   return (
     <>
       <button onClick={openModal} data-modal="PostCreateModal">
-        버튼
+        +
       </button>
-      <div>우리끼리</div>
       <ModalManager closeFn={closeModal} modal={modalOpen} />
     </>
   );

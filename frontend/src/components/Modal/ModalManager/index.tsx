@@ -3,7 +3,7 @@ import React from "react";
 import PostCreateModal from "../PostCreateModal";
 
 interface Props {
-  closeFn: (event: React.SyntheticEvent<EventTarget>) => null;
+  closeFn: () => void;
   modal: string;
 }
 

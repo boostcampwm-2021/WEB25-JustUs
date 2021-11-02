@@ -1,24 +1,23 @@
-import React, { useRef } from "react";
+import React from "react";
 import styled from "styled-components";
 import Modal from "../";
 
-const ModalContainer = styled.div`
-  background-color: #ffffff;
-  height: 300px;
-  width: 500px;
-`;
+interface PostCreateModalProps {
+  closeFn: () => void;
+  open: boolean;
+}
 
-const PostCreateModal = ({ closeFn = (event: React.SyntheticEvent<EventTarget>) => null, open = false }) => {
-  const ModalContainerRef = useRef(null);
-  const stopPropagation = (event: React.SyntheticEvent<EventTarget>) => {
-    event.nativeEvent.stopImmediatePropagation();
-  };
+const PostCreateModal = ({ closeFn, open = false }: PostCreateModalProps) => {
   return (
     <Modal open={open} closeFn={closeFn}>
-      <ModalContainer ref={ModalContainerRef} onClick={stopPropagation}>
+      <ModalContainer
+        onClick={event => {
+          event.nativeEvent.stopImmediatePropagation();
+        }}
+      >
         <div>모달창</div>
         <button type="button" onClick={closeFn}>
-          Close
+          x
         </button>
       </ModalContainer>
     </Modal>
@@ -26,3 +25,9 @@ const PostCreateModal = ({ closeFn = (event: React.SyntheticEvent<EventTarget>) 
 };
 
 export default PostCreateModal;
+
+const ModalContainer = styled.div`
+  background-color: #ffffff;
+  height: 30vw;
+  width: 50vw;
+`;
