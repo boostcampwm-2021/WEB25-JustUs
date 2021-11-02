@@ -6,7 +6,7 @@ const SettingGroup = () => {
     <SettingGroupWrapper>
       <div>그룹 A</div>
       <div>
-        <img src="/icons/settings.svg" alt="settings.svg" />
+        <img src="/icons/settings.svg" alt="settings icon.svg" />
       </div>
     </SettingGroupWrapper>
   );

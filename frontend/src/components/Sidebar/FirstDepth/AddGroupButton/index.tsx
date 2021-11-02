@@ -5,7 +5,7 @@ const AddGroupButton = () => {
   return (
     <>
       <ButtonWrapper>
-        <img src="/icons/add-group.svg" alt="add-group.svg" />
+        <img src="/icons/add-group.svg" alt="add-group icon.svg" />
       </ButtonWrapper>
     </>
   );

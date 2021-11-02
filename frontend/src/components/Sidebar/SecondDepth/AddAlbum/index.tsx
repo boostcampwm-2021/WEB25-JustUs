@@ -5,7 +5,7 @@ const AddAlbum = () => {
   return (
     <AddAlbumWrapper>
       <AddAblumBtnWrapper>
-        <img src="/icons/add-album.svg" alt="add-album.svg" />
+        <img src="/icons/add-album.svg" alt="add-album icon.svg" />
         <GuideWrapper>Add Album</GuideWrapper>
       </AddAblumBtnWrapper>
     </AddAlbumWrapper>

@@ -8,7 +8,7 @@ interface HeaderProps {
 const Header = ({ albumName }: HeaderProps) => {
   return (
     <HeaderWrapper>
-      <img src="/icons/arrow-down.svg" alt="arrow-down.svg" />
+      <img src="/icons/arrow-down.svg" alt="arrow-down icon.svg" />
       {albumName}
     </HeaderWrapper>
   );
