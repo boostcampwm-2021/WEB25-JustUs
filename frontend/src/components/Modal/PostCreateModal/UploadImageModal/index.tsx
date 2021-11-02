@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { MouseEvent, useRef, useState } from "react";
 import styled from "styled-components";
 import shortid from "shortid";
 
@@ -6,24 +6,34 @@ interface UploadImageModalProps {
   closeFn: () => void;
 }
 
+interface FileObject {
+  File: File;
+  Key: string;
+}
+
 const UploadImageModal = ({ closeFn }: UploadImageModalProps) => {
-  const [images, setImages] = useState<File[]>([]);
+  const [files, setFiles] = useState<FileObject[]>([]);
   const inputImagaRef = useRef<HTMLInputElement>(null);
   const MAX_IMAGE = 5;
 
   const clickInputTag = () => {
-    if (!inputImagaRef.current || images.length == 5) return;
+    if (!inputImagaRef.current || files.length == 5) return;
     inputImagaRef.current.value = "";
     inputImagaRef.current.click();
   };
 
   const changeImage: React.ChangeEventHandler<HTMLInputElement> = event => {
     if (!event.target.files) return;
-    setImages([...images, event.target.files[0]]);
+    const file = event.target.files[0];
+    setFiles([...files, { File: file, Key: shortid.generate() }]);
   };
 
   const nextModal = () => {
     console.log("클릭");
+  };
+
+  const deleteImage = (key: string) => {
+    setFiles(files.filter(file => file.Key !== key));
   };
 
   return (
@@ -34,7 +44,7 @@ const UploadImageModal = ({ closeFn }: UploadImageModalProps) => {
     >
       <ModalHeader>
         <ModalTitle>새 게시물 만들기</ModalTitle>
-        {images.length == 0 ? (
+        {files.length == 0 ? (
           <ModalClose onClick={closeFn}>
             <img src="/icons/x.svg" alt="close" height="60%"></img>
           </ModalClose>
@@ -46,16 +56,19 @@ const UploadImageModal = ({ closeFn }: UploadImageModalProps) => {
       </ModalHeader>
       <ModalContent>
         <UploadButton onClick={clickInputTag}>
-          <img src="/icons/add-photo.svg" alt="close" height="50%"></img>
+          <img src="/icons/add-photo.svg" alt="close"></img>
           <ImageInput ref={inputImagaRef} accept="image/*" type="file" onChange={changeImage}></ImageInput>
           <p>
-            {images.length}/{MAX_IMAGE}
+            {files.length}/{MAX_IMAGE}
           </p>
         </UploadButton>
-        {images.map(
-          image => (
+        {files.map(
+          fileObject => (
             <ImagePreview key={shortid.generate()}>
-              <img src={URL.createObjectURL(image)} alt="close"></img>
+              <DeleteImageBtn onClick={() => deleteImage(fileObject.Key)}>
+                <img src="/icons/delete.svg" alt="delete"></img>
+              </DeleteImageBtn>
+              <img src={URL.createObjectURL(fileObject.File)} alt="close"></img>
             </ImagePreview>
           ),
           "",
@@ -66,6 +79,18 @@ const UploadImageModal = ({ closeFn }: UploadImageModalProps) => {
 };
 
 export default UploadImageModal;
+
+const DeleteImageBtn = styled.button`
+  position: absolute;
+  z-index: 1;
+  right: -1vw;
+  top: -1vw;
+  height: 40px;
+  width: 40px;
+  border: none;
+  background: none;
+  cursor: pointer;
+`;
 
 const ModalNext = styled.button`
   grid-column-start: 3;
@@ -98,14 +123,21 @@ const ImagePreview = styled.div`
   box-sizing: border-box;
   border-radius: 8px;
   margin: 1vw;
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  flex-direction: column;
-  cursor: pointer;
+  vertical-align: middle;
+  text-align: center;
+  position: relative;
+  min-height: 150px;
   & img {
+    position: absolute;
     max-width: 100%;
     max-height: 100%;
+    width: auto;
+    height: auto;
+    margin: auto;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
   }
 `;
 
@@ -134,7 +166,7 @@ const ModalHeader = styled.div`
   display: grid;
   grid-template-columns: 10% 80% 10%;
   padding: 1vw;
-  height: 10vh;
+  height: 4vw;
   box-sizing: border-box;
   border-bottom: 1px solid black;
   font-size: max(1.2vw, 20px);
@@ -142,9 +174,9 @@ const ModalHeader = styled.div`
 
 const ModalContent = styled.div`
   display: grid;
+  height: 26vw;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 50% 50%;
-  height: 100%;
   box-sizing: border-box;
 `;
 
@@ -155,6 +187,7 @@ const UploadButton = styled.div`
   border-radius: 8px;
   margin: 1vw;
   display: flex;
+  min-height: 150px;
   align-items: center;
   justify-content: space-around;
   flex-direction: column;
