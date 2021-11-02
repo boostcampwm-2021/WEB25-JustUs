@@ -3,6 +3,7 @@ const initState = {
   addJoinMOdalOpened: false,
   createGroupModalOpened: false,
   joinGroupModalOpened: false,
+  settingGroupModalOpened: false,
 };
 
 const groupModalReducer = (state = initState, action: any) => {
@@ -31,6 +32,16 @@ const groupModalReducer = (state = initState, action: any) => {
       return {
         ...state,
         joinGroupModalOpened: false,
+      };
+    case "OPEN_SETTING_GROUP_MODAL":
+      return {
+        ...state,
+        settingGroupModalOpened: true,
+      };
+    case "CLOSE_SETTING_GROUP_MODAL":
+      return {
+        ...state,
+        settingGroupModalOpened: false,
       };
 
     default:
