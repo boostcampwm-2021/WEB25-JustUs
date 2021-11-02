@@ -6,13 +6,12 @@ import SecondDepth from "./SecondDepth";
 interface SidebarProps {
   isToggle: boolean;
   setIsToggle: Dispatch<SetStateAction<boolean>>;
-  clickedTarget: { element: HTMLElement };
 }
 
-const Sidebar = ({ isToggle, setIsToggle, clickedTarget }: SidebarProps) => {
+const Sidebar = ({ isToggle, setIsToggle }: SidebarProps) => {
   return (
     <SidebarWrapper>
-      <FirstDepth isToggle={isToggle} setIsToggle={setIsToggle} clickedTarget={clickedTarget} />
+      <FirstDepth isToggle={isToggle} setIsToggle={setIsToggle} />
       {isToggle && <SecondDepth />}
     </SidebarWrapper>
   );

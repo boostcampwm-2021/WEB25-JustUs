@@ -7,7 +7,6 @@ import Color from "@styles/Color";
 interface SidebarProps {
   isToggle: boolean;
   setIsToggle: Dispatch<SetStateAction<boolean>>;
-  clickedTarget: { element: HTMLElement };
 }
 
 const groupDummy = [
@@ -25,7 +24,7 @@ const groupDummy = [
   },
 ];
 
-const FirstDepth = ({ isToggle, setIsToggle, clickedTarget }: SidebarProps) => {
+const FirstDepth = ({ isToggle, setIsToggle }: SidebarProps) => {
   const onClickMenu = () => {
     setIsToggle(prev => !prev);
   };
@@ -36,7 +35,7 @@ const FirstDepth = ({ isToggle, setIsToggle, clickedTarget }: SidebarProps) => {
         {groupDummy.map(group => (
           <Group groupName={group.groupName} />
         ))}
-        <AddGroupButton clickedTarget={clickedTarget} />
+        <AddGroupButton />
         <div>
           <img src="/icons/menu.svg" onClick={onClickMenu} alt="menu icon.svg" />
         </div>
