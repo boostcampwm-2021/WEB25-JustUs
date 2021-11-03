@@ -31,6 +31,7 @@ const FirstDepth = ({ isToggle, setIsToggle, addGroupBtnRef }: SidebarProps) => 
             groupName={group.groupName}
             groupImg={group.groupImg}
             albumList={group.albumList}
+            setIsToggle={setIsToggle}
           />
         ))}
         <AddGroupButton addGroupBtnRef={addGroupBtnRef} />

@@ -1,14 +1,16 @@
-import { useState } from "react";
+import { useState, Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
 import { flexCenterAlign, yesNoButtonWrapper } from "@src/styles/StyledComponents";
 import Modal from "@components/Modal";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Color from "@styles/Color";
-import { GroupModalAction } from "@src/action";
+import { GroupModalAction, GroupAction } from "@src/action";
+import { RootState } from "@src/reducer";
 
 interface SettingGroupModalProps {
   closeFn: () => void;
   open: boolean;
+  setIsToggle: Dispatch<SetStateAction<boolean>>;
 }
 
 const groupMemberList = [
@@ -42,14 +44,25 @@ const groupMemberList = [
   },
 ];
 
-const SettingGroupModal = ({ closeFn, open = false }: SettingGroupModalProps) => {
+const SettingGroupModal = ({ closeFn, open = false, setIsToggle }: SettingGroupModalProps) => {
   const [clickedDropBtn, setClickedDropclickedDropBtn] = useState(false);
+  const { selectedGroup, groups }: any = useSelector((state: RootState) => state.groups);
   const dispatch = useDispatch();
+
   const closeSettingGroupModal = () => {
     dispatch({ type: GroupModalAction.CLOSE_SETTING_GROUP_MODAL });
   };
   const onClickDropBtn = () => {
     setClickedDropclickedDropBtn(true);
+  };
+  const onClickConfirmBtn = () => {
+    dispatch({ type: GroupAction.DELETE_GROUP, payload: selectedGroup });
+    closeSettingGroupModal();
+    setIsToggle(false);
+  };
+
+  const onClickCancelBtn = () => {
+    setClickedDropclickedDropBtn(false);
   };
 
   return (
@@ -93,8 +106,8 @@ const SettingGroupModal = ({ closeFn, open = false }: SettingGroupModalProps) =>
               {!clickedDropBtn && <DropGroupButtonWrapper onClick={onClickDropBtn}>탈퇴하기</DropGroupButtonWrapper>}
               {clickedDropBtn && (
                 <>
-                  <YesButtonWrapper onClick={onClickDropBtn}>예</YesButtonWrapper>
-                  <NoButtonWrapper onClick={onClickDropBtn}>아니오</NoButtonWrapper>
+                  <YesButtonWrapper onClick={onClickConfirmBtn}>예</YesButtonWrapper>
+                  <NoButtonWrapper onClick={onClickCancelBtn}>아니오</NoButtonWrapper>
                 </>
               )}
             </GroupDropWrapper>

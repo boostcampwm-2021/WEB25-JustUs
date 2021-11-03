@@ -1,3 +1,4 @@
+import { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
 import Color from "@styles/Color";
 import { useDispatch } from "react-redux";

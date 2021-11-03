@@ -62,6 +62,16 @@ const groupReducer = (state = initState, action: any) => {
           albumList: action.payload.albumList,
         },
       };
+    case GroupAction.DELETE_GROUP:
+      return {
+        ...state,
+        groups: state.groups.filter(group => group.groupID !== action.payload.groupID),
+      };
+    case GroupAction.SET_ALL_GROUPS:
+      return {
+        ...state,
+        groups: action.payload,
+      };
 
     default:
       return state;

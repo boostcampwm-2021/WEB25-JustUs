@@ -53,7 +53,7 @@ const Main = () => {
       <button onClick={openModal} data-modal="PostCreateModal">
         +
       </button>
-      <ModalManager closeFn={closeModal} modal={modalOpen} />
+      <ModalManager setIsToggle={setIsToggle} closeFn={closeModal} modal={modalOpen} />
     </>
   );
 };
