@@ -28,7 +28,7 @@ const UploadInfoModal = ({ closeFn, changeMode, files }: UploadInfoModalProps) =
 
   useEffect(() => {
     if (!carouselRef.current) return;
-    carouselRef.current.style.transform = `translate3d(-${200 * imageIndex}px, 0, 0)`;
+    carouselRef.current.style.transform = `translate3d(-${carouselRef.current.offsetWidth * imageIndex}px, 0, 0)`;
   });
 
   return (
@@ -49,7 +49,7 @@ const UploadInfoModal = ({ closeFn, changeMode, files }: UploadInfoModalProps) =
       <ModalContent>
         <ModalLeft>
           <ChangeImageButton onClick={showPrevImage} type="button">
-            prev
+            <img src="/icons/prev.svg" alt="prev image" height="30%"></img>
           </ChangeImageButton>
           <CarouselWindow>
             <Carousel ref={carouselRef}>
@@ -64,7 +64,7 @@ const UploadInfoModal = ({ closeFn, changeMode, files }: UploadInfoModalProps) =
             </DotContainer>
           </CarouselWindow>
           <ChangeImageButton onClick={showNextImage} type="button">
-            next
+            <img src="/icons/next.svg" alt="next image" height="30%"></img>
           </ChangeImageButton>
         </ModalLeft>
         <div></div>
@@ -89,6 +89,7 @@ const Dot = styled.div`
 `;
 
 const CarouselWindow = styled.div`
+  margin-top: 10px;
   display: grid;
   grid-template-rows: 1fr 30px;
   overflow: hidden;
@@ -97,6 +98,9 @@ const CarouselWindow = styled.div`
 const ChangeImageButton = styled.button`
   z-index: 2;
   height: 20%;
+  border: none;
+  background: none;
+  cursor: pointer;
 `;
 
 const ModalLeft = styled.div`
@@ -109,7 +113,7 @@ const ModalLeft = styled.div`
 const Carousel = styled.div`
   display: flex;
   transform: translate3d(0, 0, 0);
-  transition: transform 0.2s;
+  transition: transform 0.5s;
   & img {
     max-width: 100%;
     object-fit: contain;
@@ -127,10 +131,8 @@ const ModalContainer = styled.div`
   display: flex;
   flex-direction: column;
   background-color: ${Color.white};
-  height: 30vw;
-  width: 45vw;
-  min-width: 600px;
-  min-height: 400px;
+  width: 850px;
+  height: 530px;
   border-radius: 10px;
   box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
 `;
@@ -159,7 +161,7 @@ const ModalHeader = styled.div`
   display: grid;
   grid-template-columns: 10% 80% 10%;
   padding: 1vw;
-  min-height: 22px;
+  height: 60px;
   box-sizing: border-box;
   border-bottom: 1px solid ${Color.black};
   font-size: max(1.2vw, 20px);
