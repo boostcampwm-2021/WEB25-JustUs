@@ -1,6 +1,7 @@
 import React, { MouseEvent, useRef, useState } from "react";
 import styled from "styled-components";
 import shortid from "shortid";
+import Color from "@styles/Color";
 
 interface UploadImageModalProps {
   closeFn: () => void;
@@ -45,18 +46,18 @@ const UploadImageModal = ({ closeFn }: UploadImageModalProps) => {
       <ModalHeader>
         <ModalTitle>새 게시물 만들기</ModalTitle>
         {files.length === 0 ? (
-          <ModalClose onClick={closeFn}>
+          <ModalHeaderRigthBtn onClick={closeFn}>
             <img src="/icons/x.svg" alt="close" height="60%"></img>
-          </ModalClose>
+          </ModalHeaderRigthBtn>
         ) : (
-          <ModalNext onClick={nextModal}>
+          <ModalHeaderRigthBtn onClick={nextModal}>
             <img src="/icons/next.svg" alt="next" height="60%"></img>
-          </ModalNext>
+          </ModalHeaderRigthBtn>
         )}
       </ModalHeader>
       <ModalContent>
         <UploadButton onClick={clickInputTag}>
-          <img src="/icons/add-photo.svg" alt="close"></img>
+          <img src="/icons/add-photo.svg" alt="add Photo"></img>
           <ImageInput ref={inputImagaRef} accept="image/*" type="file" onChange={changeImage}></ImageInput>
           <p>
             {files.length}/{MAX_IMAGE}
@@ -92,20 +93,7 @@ const DeleteImageBtn = styled.button`
   cursor: pointer;
 `;
 
-const ModalNext = styled.button`
-  grid-column-start: 3;
-  grid-column-end: 4;
-  grid-row-start: 1;
-  grid-row-end: 2;
-  right: 0px;
-  top: 0;
-  padding: 0;
-  border: none;
-  background: none;
-  cursor: pointer;
-`;
-
-const ModalClose = styled.button`
+const ModalHeaderRigthBtn = styled.button`
   grid-column-start: 3;
   grid-column-end: 4;
   grid-row-start: 1;
@@ -119,7 +107,7 @@ const ModalClose = styled.button`
 `;
 
 const ImagePreview = styled.div`
-  border: 1px solid #d7d7d7;
+  border: 1px solid ${Color.gray};
   box-sizing: border-box;
   border-radius: 8px;
   margin: 1vw;
@@ -153,7 +141,7 @@ const ImageInput = styled.input`
 const ModalContainer = styled.div`
   display: flex;
   flex-direction: column;
-  background-color: #ffffff;
+  background-color: ${Color.white};
   height: 30vw;
   width: 45vw;
   min-width: 500px;
@@ -168,7 +156,7 @@ const ModalHeader = styled.div`
   padding: 1vw;
   height: 4vw;
   box-sizing: border-box;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid ${Color.black};
   font-size: max(1.2vw, 20px);
 `;
 
@@ -181,8 +169,8 @@ const ModalContent = styled.div`
 `;
 
 const UploadButton = styled.div`
-  background-color: #dadada;
-  border: 1px solid #d7d7d7;
+  background-color: ${Color.gray};
+  border: 1px solid ${Color.gray};
   box-sizing: border-box;
   border-radius: 8px;
   margin: 1vw;

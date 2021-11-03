@@ -1,9 +1,9 @@
 import React, { ReactNode, useEffect } from "react";
 import ReactDOM from "react-dom";
-
+import Color from "@styles/Color";
 const modalRootEl = document.getElementById("modal");
 if (modalRootEl) {
-  modalRootEl.style.display = "flex";
+  modalRootEl.style.display = "none";
   modalRootEl.style.justifyContent = "center";
   modalRootEl.style.alignItems = "center";
   modalRootEl.style.position = "absolute";
@@ -11,7 +11,7 @@ if (modalRootEl) {
   modalRootEl.style.left = "0";
   modalRootEl.style.width = "100%";
   modalRootEl.style.height = "100%";
-  modalRootEl.style.backgroundColor = "rgba(0, 0, 0, 0)";
+  modalRootEl.style.backgroundColor = Color.modal_background;
 }
 
 interface ModalProps {
@@ -37,7 +37,6 @@ const Modal = ({ children, open = false, closeFn }: ModalProps) => {
     return null;
   }
   modalRootEl.style.display = "flex";
-  modalRootEl.style.backgroundColor = "rgba(0, 0, 0, 0.4)";
 
   return ReactDOM.createPortal(children, modalRootEl);
 };
