@@ -2,9 +2,12 @@ import styled from "styled-components";
 import Color from "@styles/Color";
 import { useDispatch } from "react-redux";
 import { GroupModalAction } from "@src/action";
+import { useSelector } from "react-redux";
+import { RootState } from "@src/reducer";
 
 const SettingGroup = () => {
   const dispatch = useDispatch();
+  const { selectedGroup }: any = useSelector((state: RootState) => state.groups);
 
   const onClickSettingGroup = () => {
     dispatch({ type: GroupModalAction.OPEN_SETTING_GROUP_MODAL });
@@ -12,7 +15,7 @@ const SettingGroup = () => {
 
   return (
     <SettingGroupWrapper>
-      <div>그룹 A</div>
+      <div>{selectedGroup.groupName}</div>
       <div onClick={onClickSettingGroup}>
         <img src="/icons/settings.svg" alt="settings icon.svg" />
       </div>

@@ -15,6 +15,7 @@ const Sidebar = ({ isToggle, setIsToggle }: SidebarProps) => {
   const [isModalOpened, setIsModalOpened] = useState<boolean>(false);
   const clickedTarget = useSelector((state: RootState) => state.groupModal.clickedTarget);
   const addGroupBtnRef = useRef<HTMLDivElement>(null);
+  const { selectedGroup } = useSelector((state: RootState) => state.groups);
 
   useEffect(() => {
     const clickHandler = () => {
@@ -36,7 +37,7 @@ const Sidebar = ({ isToggle, setIsToggle }: SidebarProps) => {
     <SidebarWrapper>
       <FirstDepth isToggle={isToggle} setIsToggle={setIsToggle} addGroupBtnRef={addGroupBtnRef} />
       {isModalOpened && <AddGroupModal clientX={clickedTarget.clientX} clientY={clickedTarget.clientY} />}
-      {isToggle && <SecondDepth />}
+      {isToggle && selectedGroup && <SecondDepth />}
     </SidebarWrapper>
   );
 };

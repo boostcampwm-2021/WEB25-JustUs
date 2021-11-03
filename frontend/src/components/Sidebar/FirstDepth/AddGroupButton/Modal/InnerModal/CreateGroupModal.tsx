@@ -12,13 +12,18 @@ interface CreateGroupModalProps {
   closeFn: () => void;
   open: boolean;
 }
+interface Group {
+  groupID: number;
+  groupName: string;
+  img: string;
+}
 
 const CreateGroupModal = ({ closeFn, open = false }: CreateGroupModalProps) => {
   const uploadBtnRef = useRef<HTMLInputElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
   const groupNameRef = useRef<HTMLInputElement>(null);
   const [groupImg, setGroupImg] = useState("/icons/person.svg");
-  const { groups } = useSelector((state: RootState) => state.groups);
+  const { groups }: any = useSelector((state: RootState) => state.groups);
   const dispatch = useDispatch();
 
   const closeCreateGroupModal = () => {
@@ -63,7 +68,7 @@ const CreateGroupModal = ({ closeFn, open = false }: CreateGroupModalProps) => {
   const createGroup = () => {
     if (!groupNameRef.current) return;
 
-    const groupID = groups[groups.length - 1].groupID + 1;
+    const groupID = groups.length ? groups[groups.length - 1].groupID + 1 : 0;
     const groupName = groupNameRef.current.value;
     const newGroup = {
       groupID,

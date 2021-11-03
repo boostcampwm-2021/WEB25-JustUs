@@ -12,26 +12,8 @@ interface SidebarProps {
   addGroupBtnRef: React.RefObject<HTMLDivElement>;
 }
 
-const groupDummy = [
-  {
-    groupID: 0,
-    groupName: "그룹 A",
-    img: "",
-  },
-  {
-    groupID: 1,
-    groupName: "그룹 B",
-    img: "",
-  },
-  {
-    groupID: 2,
-    groupName: "그룹 C",
-    img: "",
-  },
-];
-
 const FirstDepth = ({ isToggle, setIsToggle, addGroupBtnRef }: SidebarProps) => {
-  const { groups } = useSelector((state: RootState) => state.groups);
+  const { groups }: any = useSelector((state: RootState) => state.groups);
 
   const onClickMenu = () => {
     setIsToggle(prev => !prev);
@@ -42,8 +24,14 @@ const FirstDepth = ({ isToggle, setIsToggle, addGroupBtnRef }: SidebarProps) => 
   return (
     <>
       <FirstDepthWrapper>
-        {groups.map(group => (
-          <Group key={group.groupID} groupName={group.groupName} />
+        {groups.map((group: any) => (
+          <Group
+            key={group.groupID}
+            groupID={group.groupID}
+            groupName={group.groupName}
+            groupImg={group.groupImg}
+            albumList={group.albumList}
+          />
         ))}
         <AddGroupButton addGroupBtnRef={addGroupBtnRef} />
       </FirstDepthWrapper>

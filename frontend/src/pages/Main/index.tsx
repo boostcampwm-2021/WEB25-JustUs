@@ -6,11 +6,14 @@ import Sidebar from "@components/Sidebar";
 import ModalManager from "@components/Modal/ModalManager";
 import Map from "@components/Map";
 import { GroupModalAction } from "@src/action";
+import { useSelector } from "react-redux";
+import { RootState } from "@src/reducer";
 
 const Main = () => {
   const [modalOpen, setModal] = useState("");
   const [isToggle, setIsToggle] = useState<boolean>(true);
   const dispatch = useDispatch();
+  const { groups }: any = useSelector((state: RootState) => state.groups);
 
   const openModal = (event: React.SyntheticEvent<EventTarget>) => {
     if (!(event.target instanceof HTMLButtonElement)) return;
@@ -44,7 +47,8 @@ const Main = () => {
       <Header isToggle={isToggle} setIsToggle={setIsToggle} />
       <Content>
         <Sidebar isToggle={isToggle} setIsToggle={setIsToggle} />
-        <Map />
+        {groups.length && <Map />}
+        {!groups.length && <CryingGrapeWrapper />}
       </Content>
       <button onClick={openModal} data-modal="PostCreateModal">
         +
@@ -56,6 +60,12 @@ const Main = () => {
 
 const Content = styled.div`
   display: flex;
+`;
+
+const CryingGrapeWrapper = styled.div`
+  background-color: blue;
+  width: 100%;
+  height: 95vh;
 `;
 
 export default Main;
