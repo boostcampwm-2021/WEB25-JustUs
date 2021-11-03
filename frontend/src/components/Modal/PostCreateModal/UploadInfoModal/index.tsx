@@ -91,7 +91,7 @@ const Dot = styled.div`
 const CarouselWindow = styled.div`
   margin-top: 10px;
   display: grid;
-  grid-template-rows: 1fr 30px;
+  grid-template-rows: 1fr 60px;
   overflow: hidden;
   height: 100%;
 `;
