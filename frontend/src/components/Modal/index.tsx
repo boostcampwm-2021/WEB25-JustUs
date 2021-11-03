@@ -39,6 +39,7 @@ const Modal = ({ children, open = false, closeFn }: ModalProps) => {
   }
   modalRootEl.style.display = "flex";
   modalRootEl.style.backgroundColor = color.modalBackground;
+  modalRootEl.style.zIndex = "6";
 
   return ReactDOM.createPortal(children, modalRootEl);
 };

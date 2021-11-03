@@ -18,7 +18,7 @@ const AddAlbumWrapper = styled.div`
   align-items: center;
   width: 15vw;
   height: 100px;
-  position: fixed;
+  position: absolute;
   bottom: 0;
 `;
 

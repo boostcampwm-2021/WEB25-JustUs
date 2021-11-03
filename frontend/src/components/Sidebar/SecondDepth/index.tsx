@@ -16,12 +16,15 @@ const SecondDepth = () => {
 
 const SecondDepthWrapper = styled.div`
   width: 15vw;
-  height: 100vh;
+  height: 95vh;
   background-color: ${color.theme1.primary};
   display: flex;
   flex-direction: column;
   align-items: center;
   border-left: 1px ${color.white} solid;
+  position: absolute;
+  left: 5vw;
+  z-index: 4;
 `;
 
 export default SecondDepth;

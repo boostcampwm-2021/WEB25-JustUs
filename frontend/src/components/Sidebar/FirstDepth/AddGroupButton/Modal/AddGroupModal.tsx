@@ -26,10 +26,11 @@ const ModalWrapper = styled.div`
   width: 150px;
   height: 100px;
   background-color: ${Color.gray};
-  position: relative;
-  top: -70px;
+  position: absolute;
+  top: 70px;
   left: 110px;
   border-radius: 10px;
+  z-index: 5;
 `;
 
 const ModalItem = styled.div`

@@ -46,7 +46,7 @@ const FirstDepth = ({ isToggle, setIsToggle }: SidebarProps) => {
 
 const FirstDepthWrapper = styled.div`
   width: 5vw;
-  height: 100vh;
+  height: 95vh;
   background-color: ${color.theme1.primary};
   display: flex;
   flex-direction: column;

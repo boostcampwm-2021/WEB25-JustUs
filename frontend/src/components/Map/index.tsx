@@ -49,13 +49,15 @@ const Map = () => {
 };
 
 const Maps = styled.div`
-  width: 90%;
+  position: absolute;
+  width: 100%;
   height: 95vh;
 `;
 
 const FloatActionBtn = styled.div`
   background-color: ${color.theme1.secondary};
   position: absolute;
+  z-index: 2;
   border-radius: 50%;
   height: 8vh;
   width: 8vh;
