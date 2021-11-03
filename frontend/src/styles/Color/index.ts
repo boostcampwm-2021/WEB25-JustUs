@@ -2,6 +2,7 @@ const color = {
   black: "#222",
   white: "#FFF",
   gray: "#D3D3D3",
+  darkgray: "#0202029B",
   blue: "#4D73D7",
   red: "#D32F2F",
   blur: "rgba(223, 223, 223, 0.2)",

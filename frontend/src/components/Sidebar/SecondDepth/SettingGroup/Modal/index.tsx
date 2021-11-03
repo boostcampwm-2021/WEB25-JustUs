@@ -150,6 +150,7 @@ const CloseBtn = styled.div`
   & > button {
     background-color: ${Color.white};
     border: none;
+    cursor: pointer;
   }
 `;
 
@@ -219,6 +220,7 @@ const DropGroupButtonWrapper = styled.div`
   border-radius: 10px;
   border: 2px solid ${Color.red};
   margin-left: 30px;
+  cursor: pointer;
 `;
 
 const YesButtonWrapper = styled.div`

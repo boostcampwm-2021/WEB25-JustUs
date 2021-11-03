@@ -42,6 +42,11 @@ const ModalWrapper = styled.div<{ clientX: number; clientY: number }>`
 const ModalItem = styled.div`
   ${flexCenterAlign}
   height: 50%;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.5;
+  }
 `;
 
 const Divider = styled.div`

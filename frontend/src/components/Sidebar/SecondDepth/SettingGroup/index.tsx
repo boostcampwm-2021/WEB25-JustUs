@@ -16,9 +16,11 @@ const SettingGroup = () => {
 
   return (
     <SettingGroupWrapper>
-      <div>{selectedGroup.groupName}</div>
+      <GroupName>{selectedGroup.groupName}</GroupName>
       <div onClick={onClickSettingGroup}>
-        <img src="/icons/settings.svg" alt="settings icon.svg" />
+        <SettingIconWrapper>
+          <img src="/icons/settings.svg" alt="settings icon.svg" />
+        </SettingIconWrapper>
       </div>
     </SettingGroupWrapper>
   );
@@ -33,6 +35,14 @@ const SettingGroupWrapper = styled.div`
   align-items: center;
   border-bottom: 1px ${Color.white} solid;
   color: ${Color.white};
+`;
+
+const SettingIconWrapper = styled.div`
+  cursor: pointer;
+`;
+
+const GroupName = styled.div`
+  cursor: default;
 `;
 
 export default SettingGroup;

@@ -44,6 +44,7 @@ const ButtonWrapper = styled.div<{ selectedGroupID: number; groupID: number; gro
     props.selectedGroupID === props.groupID ? `5px solid ${Color["theme1-secondary"]}` : `5px solid ${Color.white}`};
   background-image: url("${props => props.groupImg}");
   background-size: 100%;
+  cursor: pointer;
 `;
 
 export default Group;
