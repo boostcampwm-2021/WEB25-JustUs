@@ -1,4 +1,6 @@
 import { useState } from "react";
+
+import Header from "@components/Header";
 import Sidebar from "@components/Sidebar";
 import ModalManager from "@components/Modal/ModalManager";
 
@@ -23,6 +25,7 @@ const Main = () => {
 
   return (
     <>
+      <Header isToggle={isToggle} setIsToggle={setIsToggle} />
       <Sidebar isToggle={isToggle} setIsToggle={setIsToggle} />
       <button onClick={openModal} data-modal="PostCreateModal">
         +
