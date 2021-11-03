@@ -1,6 +1,7 @@
 import { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
 import color from "@styles/Color";
+import Profile from "@components/Header/Profile";
 
 interface SidebarProps {
   isToggle: boolean;
@@ -11,18 +12,15 @@ const Header = ({ isToggle, setIsToggle }: SidebarProps) => {
   const onClickMenu = () => {
     setIsToggle(prev => !prev);
   };
-
   return (
     <>
       <HeaderContainer>
-        <img src="/icons/menu.svg" onClick={onClickMenu} alt="menu" />
+        <img className="pointer" src="/icons/menu.svg" onClick={onClickMenu} alt="menu" />
         <SearchContainer>
           <img src="/icons/search.svg" height="90%" alt="search" />
           <Search type="text" placeholder="해시태그를 입력하세요." />
         </SearchContainer>
-        <ProfileContainer>
-          <img src="/icons/profile.svg" height="90%" alt="profile" />
-        </ProfileContainer>
+        <Profile />
       </HeaderContainer>
     </>
   );
@@ -36,7 +34,7 @@ const HeaderContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  & img {
+  & img.pointer {
     &:hover {
       cursor: pointer;
     }
@@ -63,16 +61,6 @@ const Search = styled.input`
   &:focus-visible {
     outline: none;
   }
-`;
-
-const ProfileContainer = styled.div`
-  height: 4vh;
-  width: 4vh;
-  background-color: ${color.white};
-  border-radius: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 `;
 
 export default Header;
