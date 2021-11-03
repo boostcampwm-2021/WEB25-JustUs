@@ -50,6 +50,7 @@
     ]
   },
   "devDependencies": {
+    "@types/navermaps": "^3.0.10",
     "@typescript-eslint/eslint-plugin": "^5.2.0",
     "@typescript-eslint/parser": "^5.2.0",
     "eslint-config-airbnb": "^18.2.1",

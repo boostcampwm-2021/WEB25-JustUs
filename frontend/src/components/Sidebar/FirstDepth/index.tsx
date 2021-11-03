@@ -39,9 +39,6 @@ const FirstDepth = ({ isToggle, setIsToggle }: SidebarProps) => {
           <Group key={group.groupID} groupName={group.groupName} />
         ))}
         <AddGroupButton />
-        <div>
-          <img src="/icons/menu.svg" onClick={onClickMenu} alt="menu icon.svg" />
-        </div>
       </FirstDepthWrapper>
     </>
   );
