@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { flexCenterAlign } from "@src/styles/StyledComponents";
+import Color from "@styles/Color";
 
 const Login = () => {
   return (
@@ -92,7 +93,7 @@ const Polaroid = styled.div`
   width: 340px;
   height: 500px;
   border-radius: 15px;
-  background-color: white;
+  background-color: ${Color.white};
   box-shadow: 15px 15px 15px rgba(0, 0, 0, 0.25);
   & > img {
     padding-top: 35px;

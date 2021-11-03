@@ -47,7 +47,7 @@ const JoinGroupModal = ({ closeFn, open = false }: JoinGroupModalProps) => {
 };
 
 const ModalContainer = styled.div`
-  background-color: #ffffff;
+  background-color: ${Color.white};
   min-height: 20vw;
   min-width: 60vw;
   border-radius: 50px;
@@ -74,7 +74,7 @@ const CloseBtn = styled.div`
   margin-right: 30px;
 
   & > button {
-    background-color: white;
+    background-color: ${Color.white};
     border: none;
   }
 `;

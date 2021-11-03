@@ -106,7 +106,7 @@ const SettingGroupModal = ({ closeFn, open = false }: SettingGroupModalProps) =>
 };
 
 const ModalContainer = styled.div`
-  background-color: #ffffff;
+  background-color: ${Color.white};
   min-height: 30vw;
   min-width: 40vw;
   border-radius: 50px;
@@ -134,7 +134,7 @@ const CloseBtn = styled.div`
   margin-right: 30px;
 
   & > button {
-    background-color: white;
+    background-color: ${Color.white};
     border: none;
   }
 `;
@@ -208,7 +208,7 @@ const DropGroupButtonWrapper = styled.div`
 `;
 
 const YesButtonWrapper = styled.div`
-${flexCenterAlign}
+  ${flexCenterAlign}
   width: 120px;
   height: 40px;
   border-radius: 10px;
@@ -217,7 +217,7 @@ ${flexCenterAlign}
 `;
 
 const NoButtonWrapper = styled.div`
-${flexCenterAlign}
+  ${flexCenterAlign}
   width: 120px;
   height: 40px;
   border-radius: 10px;

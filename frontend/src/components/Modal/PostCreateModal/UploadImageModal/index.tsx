@@ -1,6 +1,7 @@
 import React, { MouseEvent, useRef, useState } from "react";
 import styled from "styled-components";
 import { flexCenterAlign } from "@styles/StyledComponents";
+import Color from "@styles/Color";
 import shortid from "shortid";
 
 interface UploadImageModalProps {
@@ -152,7 +153,7 @@ const ImageInput = styled.input`
 const ModalContainer = styled.div`
   display: flex;
   flex-direction: column;
-  background-color: #ffffff;
+  background-color: ${Color.white};
   height: 30vw;
   width: 45vw;
   min-width: 500px;
@@ -180,8 +181,8 @@ const ModalContent = styled.div`
 `;
 
 const UploadButton = styled.div`
-  background-color: #dadada;
-  border: 1px solid #d7d7d7;
+  background-color: ${Color.gray};
+  border: 1px solid ${Color.gray};
   box-sizing: border-box;
   border-radius: 8px;
   margin: 1vw;

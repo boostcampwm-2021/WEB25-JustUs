@@ -94,7 +94,7 @@ const CreateGroupModal = ({ closeFn, open = false }: CreateGroupModalProps) => {
 };
 
 const ModalContainer = styled.div`
-  background-color: #ffffff;
+  background-color: ${Color.white};
   min-height: 30vw;
   min-width: 40vw;
   border-radius: 50px;
@@ -122,7 +122,7 @@ const CloseBtn = styled.div`
   margin-right: 30px;
 
   & > button {
-    background-color: white;
+    background-color: ${Color.white};
     border: none;
   }
 `;
@@ -134,7 +134,7 @@ const Content = styled.div`
 `;
 
 const ImageBackground = styled.div<{ groupImg: string }>`
-${flexCenterAlign}
+  ${flexCenterAlign}
   margin-top: 30px;
   width: 90px;
   height: 90px;
@@ -144,7 +144,7 @@ ${flexCenterAlign}
 `;
 
 const UploadImgBtnWrapper = styled.div`
-${flexCenterAlign}
+  ${flexCenterAlign}
   cursor: pointer;
   margin-top: 20px;
   border-radius: 10px;
@@ -178,7 +178,7 @@ const GroupNameInputWrapper = styled.input`
 `;
 
 const CreateBtnWrapper = styled.div`
-${flexCenterAlign}
+  ${flexCenterAlign}
   cursor: pointer;
   width: 160px;
   height: 39px;
