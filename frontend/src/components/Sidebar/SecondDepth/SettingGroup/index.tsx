@@ -1,11 +1,19 @@
 import styled from "styled-components";
 import Color from "@styles/Color";
+import { useDispatch } from "react-redux";
 
 const SettingGroup = () => {
+  const dispatch = useDispatch();
+
+  const onClickSettingGroup = () => {
+    console.log("Setting group icon clicked.");
+    dispatch({ type: "OPEN_SETTING_GROUP_MODAL" });
+  };
+
   return (
     <SettingGroupWrapper>
       <div>그룹 A</div>
-      <div>
+      <div onClick={onClickSettingGroup}>
         <img src="/icons/settings.svg" alt="settings icon.svg" />
       </div>
     </SettingGroupWrapper>
