@@ -1,6 +1,5 @@
-import React, { MouseEvent, useRef, useState } from "react";
+import React, { MouseEvent, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import shortid from "shortid";
 import Color from "@styles/Color";
 
 interface FileObject {
@@ -15,21 +14,22 @@ interface UploadInfoModalProps {
 
 const UploadInfoModal = ({ closeFn, changeMode, files }: UploadInfoModalProps) => {
   const carouselRef = useRef<HTMLDivElement>(null);
-  let imageIndex = 0;
+  const [imageIndex, setImageIndex] = useState(0);
 
   const showNextImage = () => {
     if (imageIndex == files.length - 1 || !carouselRef.current) return;
-    console.log(">");
-    imageIndex++;
-    carouselRef.current.style.transform = `translate3d(-${200 * imageIndex}px, 0, 0)`;
+    setImageIndex(imageIndex + 1);
   };
 
   const showPrevImage = () => {
     if (imageIndex == 0 || !carouselRef.current) return;
-    console.log("<");
-    imageIndex--;
-    carouselRef.current.style.transform = `translate3d(-${200 * imageIndex}px, 0, 0)`;
+    setImageIndex(imageIndex - 1);
   };
+
+  useEffect(() => {
+    if (!carouselRef.current) return;
+    carouselRef.current.style.transform = `translate3d(-${200 * imageIndex}px, 0, 0)`;
+  });
 
   return (
     <ModalContainer
@@ -57,6 +57,11 @@ const UploadInfoModal = ({ closeFn, changeMode, files }: UploadInfoModalProps) =
                 <img src={URL.createObjectURL(fileObject.FILE)}></img>
               ))}
             </Carousel>
+            <DotContainer>
+              {files.map((fileObject, idx) => (
+                <Dot color={imageIndex == idx ? Color.black : Color.gray}></Dot>
+              ))}
+            </DotContainer>
           </CarouselWindow>
           <ChangeImageButton onClick={showNextImage} type="button">
             next
@@ -69,8 +74,25 @@ const UploadInfoModal = ({ closeFn, changeMode, files }: UploadInfoModalProps) =
 };
 
 export default UploadInfoModal;
+const DotContainer = styled.div`
+  display: flex;
+  height: 30px;
+  justify-content: center;
+  align-items: center;
+`;
+const Dot = styled.div`
+  width: 5px;
+  height: 5px;
+  margin: 5px;
+  border-radius: 50px;
+  background-color: ${props => props.color}; ;
+`;
+
 const CarouselWindow = styled.div`
+  display: grid;
+  grid-template-rows: 1fr 30px;
   overflow: hidden;
+  height: 100%;
 `;
 const ChangeImageButton = styled.button`
   z-index: 2;
