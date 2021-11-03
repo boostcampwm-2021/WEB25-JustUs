@@ -11,14 +11,17 @@ interface SidebarProps {
 
 const groupDummy = [
   {
+    groupID: 0,
     groupName: "그룹 A",
     img: "",
   },
   {
+    groupID: 1,
     groupName: "그룹 B",
     img: "",
   },
   {
+    groupID: 2,
     groupName: "그룹 C",
     img: "",
   },
@@ -33,12 +36,9 @@ const FirstDepth = ({ isToggle, setIsToggle }: SidebarProps) => {
     <>
       <FirstDepthWrapper>
         {groupDummy.map(group => (
-          <Group groupName={group.groupName} />
+          <Group key={group.groupID} groupName={group.groupName} />
         ))}
         <AddGroupButton />
-        <div>
-          <img src="/icons/menu.svg" onClick={onClickMenu} alt="menu icon.svg" />
-        </div>
       </FirstDepthWrapper>
     </>
   );
