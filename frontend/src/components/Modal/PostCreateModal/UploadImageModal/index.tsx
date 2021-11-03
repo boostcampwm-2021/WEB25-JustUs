@@ -140,10 +140,8 @@ const ModalContainer = styled.div`
   display: flex;
   flex-direction: column;
   background-color: ${Color.white};
-  height: 30vw;
-  width: 45vw;
-  min-width: 500px;
-  min-height: 400px;
+  width: 850px;
+  height: 530px;
   border-radius: 10px;
   box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
 `;
@@ -152,7 +150,7 @@ const ModalHeader = styled.div`
   display: grid;
   grid-template-columns: 10% 80% 10%;
   padding: 1vw;
-  min-height: 22px;
+  height: 60px;
   box-sizing: border-box;
   border-bottom: 1px solid ${Color.black};
   font-size: max(1.2vw, 20px);
