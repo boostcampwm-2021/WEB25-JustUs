@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
-
 import Header from "@components/Header";
 import Sidebar from "@components/Sidebar";
 import ModalManager from "@components/Modal/ModalManager";
@@ -9,6 +9,7 @@ import Map from "@components/Map";
 const Main = () => {
   const [modalOpen, setModal] = useState("");
   const [isToggle, setIsToggle] = useState<boolean>(true);
+  const dispatch = useDispatch();
 
   const openModal = (event: React.SyntheticEvent<EventTarget>) => {
     if (!(event.target instanceof HTMLButtonElement)) return;
@@ -24,6 +25,14 @@ const Main = () => {
   const closeModal = () => {
     setModal("");
   };
+
+  useEffect(() => {
+    document.addEventListener("click", ({ target }) => {
+      if (!(target instanceof HTMLElement)) return;
+
+      dispatch({ type: "SET_CLICKED_TARGET", payload: target });
+    });
+  }, []);
 
   return (
     <>
