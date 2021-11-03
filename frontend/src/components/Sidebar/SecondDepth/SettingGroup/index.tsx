@@ -6,7 +6,6 @@ const SettingGroup = () => {
   const dispatch = useDispatch();
 
   const onClickSettingGroup = () => {
-    console.log("Setting group icon clicked.");
     dispatch({ type: "OPEN_SETTING_GROUP_MODAL" });
   };
 

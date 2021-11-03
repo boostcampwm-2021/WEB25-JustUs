@@ -28,9 +28,7 @@ const UploadImageModal = ({ closeFn }: UploadImageModalProps) => {
     setFiles([...files, { File: file, Key: shortid.generate() }]);
   };
 
-  const nextModal = () => {
-    console.log("클릭");
-  };
+  const nextModal = () => {};
 
   const deleteImage = (key: string) => {
     setFiles(files.filter(file => file.Key !== key));
