@@ -1,19 +1,20 @@
-import React, { MouseEvent, useRef, useState } from "react";
+import React, { useRef } from "react";
 import styled from "styled-components";
 import shortid from "shortid";
 import Color from "@styles/Color";
-
-interface UploadImageModalProps {
-  closeFn: () => void;
-}
 
 interface FileObject {
   File: File;
   Key: string;
 }
+interface UploadImageModalProps {
+  closeFn: () => void;
+  changeMode: () => void;
+  files: FileObject[];
+  setFiles: React.Dispatch<React.SetStateAction<FileObject[]>>;
+}
 
-const UploadImageModal = ({ closeFn }: UploadImageModalProps) => {
-  const [files, setFiles] = useState<FileObject[]>([]);
+const UploadImageModal = ({ closeFn, changeMode, files, setFiles }: UploadImageModalProps) => {
   const inputImagaRef = useRef<HTMLInputElement>(null);
   const MAX_IMAGE = 5;
 
@@ -30,7 +31,7 @@ const UploadImageModal = ({ closeFn }: UploadImageModalProps) => {
   };
 
   const nextModal = () => {
-    console.log("클릭");
+    changeMode();
   };
 
   const deleteImage = (key: string) => {
@@ -47,11 +48,11 @@ const UploadImageModal = ({ closeFn }: UploadImageModalProps) => {
         <ModalTitle>새 게시물 만들기</ModalTitle>
         {files.length === 0 ? (
           <ModalHeaderRigthBtn onClick={closeFn}>
-            <img src="/icons/x.svg" alt="close" height="60%"></img>
+            <img src="/icons/x.svg" alt="close" height="90%"></img>
           </ModalHeaderRigthBtn>
         ) : (
           <ModalHeaderRigthBtn onClick={nextModal}>
-            <img src="/icons/next.svg" alt="next" height="60%"></img>
+            <img src="/icons/next.svg" alt="next" height="90%"></img>
           </ModalHeaderRigthBtn>
         )}
       </ModalHeader>
@@ -98,9 +99,6 @@ const ModalHeaderRigthBtn = styled.button`
   grid-column-end: 4;
   grid-row-start: 1;
   grid-row-end: 2;
-  right: 0px;
-  top: 0;
-  padding: 0;
   border: none;
   background: none;
   cursor: pointer;
