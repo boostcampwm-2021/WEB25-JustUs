@@ -5,6 +5,7 @@ import CreateGroupModal from "@components/Sidebar/FirstDepth/AddGroupButton/Moda
 import JoinGroupModal from "@components/Sidebar/FirstDepth/AddGroupButton/Modal/InnerModal/JoinGroupModal";
 import SettingGroupModal from "@components/Sidebar/SecondDepth/SettingGroup/Modal";
 import ProfileModal from "@components/Header/Profile/Modal/InnerModal/UserInfoModal";
+import ThemeModal from "@components/Header/Profile/Modal/InnerModal/ThemeModal";
 import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
 
@@ -18,8 +19,15 @@ const ModalManager = ({ closeFn, modal = "" }: Props) => {
   const joinGroupModalOpened = useSelector((state: RootState) => state.groupModal.joinGroupModalOpened);
   const settingGroupModalOpened = useSelector((state: RootState) => state.groupModal.settingGroupModalOpened);
   const profileModalOpened = useSelector((state: RootState) => state.profileModal.userInfoModalOpened);
+  const themeModalOpened = useSelector((state: RootState) => state.profileModal.themeSettingModalOpened);
 
-  useEffect(() => {}, [createGroupModalOpened, joinGroupModalOpened, settingGroupModalOpened, profileModalOpened]);
+  useEffect(() => {}, [
+    createGroupModalOpened,
+    joinGroupModalOpened,
+    settingGroupModalOpened,
+    profileModalOpened,
+    themeModalOpened,
+  ]);
 
   return (
     <>
@@ -28,6 +36,7 @@ const ModalManager = ({ closeFn, modal = "" }: Props) => {
       {joinGroupModalOpened && <JoinGroupModal closeFn={closeFn} open={true} />}
       {settingGroupModalOpened && <SettingGroupModal closeFn={closeFn} open={true} />}
       {profileModalOpened && <ProfileModal closeFn={closeFn} open={profileModalOpened} />}
+      {themeModalOpened && <ThemeModal closeFn={closeFn} open={themeModalOpened} />}
     </>
   );
 };
