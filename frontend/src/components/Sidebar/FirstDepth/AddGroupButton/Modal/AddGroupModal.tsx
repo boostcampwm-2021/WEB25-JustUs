@@ -1,16 +1,17 @@
 import styled from "styled-components";
 import Color from "@styles/Color";
 import { useDispatch } from "react-redux";
+import { GroupModalAction } from "@src/action";
 
 const AddGroupModal = () => {
   const dispatch = useDispatch();
 
   const onClickCreateGroupBtn = () => {
-    dispatch({ type: "OPEN_CREATE_GROUP_MODAL" });
+    dispatch({ type: GroupModalAction.OPEN_CREATE_GROUP_MODAL });
   };
 
   const onClickJoinGroupBtn = () => {
-    dispatch({ type: "OPEN_JOIN_GROUP_MODAL" });
+    dispatch({ type: GroupModalAction.OPEN_JOIN_GROUP_MODAL });
   };
 
   return (

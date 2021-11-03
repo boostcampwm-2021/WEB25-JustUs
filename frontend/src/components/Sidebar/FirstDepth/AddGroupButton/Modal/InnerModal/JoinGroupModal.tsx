@@ -2,6 +2,7 @@ import styled from "styled-components";
 import Modal from "@components/Modal";
 import { useDispatch } from "react-redux";
 import Color from "@styles/Color";
+import { GroupModalAction } from "@src/action";
 
 interface JoinGroupModalProps {
   closeFn: () => void;
@@ -11,7 +12,7 @@ interface JoinGroupModalProps {
 const JoinGroupModal = ({ closeFn, open = false }: JoinGroupModalProps) => {
   const dispatch = useDispatch();
   const closeJoinGroupModal = () => {
-    dispatch({ type: "CLOSE_JOIN_GROUP_MODAL" });
+    dispatch({ type: GroupModalAction.CLOSE_JOIN_GROUP_MODAL });
   };
 
   return (

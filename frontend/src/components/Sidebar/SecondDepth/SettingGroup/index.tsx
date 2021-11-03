@@ -1,12 +1,13 @@
 import styled from "styled-components";
 import Color from "@styles/Color";
 import { useDispatch } from "react-redux";
+import { GroupModalAction } from "@src/action";
 
 const SettingGroup = () => {
   const dispatch = useDispatch();
 
   const onClickSettingGroup = () => {
-    dispatch({ type: "OPEN_SETTING_GROUP_MODAL" });
+    dispatch({ type: GroupModalAction.OPEN_SETTING_GROUP_MODAL });
   };
 
   return (

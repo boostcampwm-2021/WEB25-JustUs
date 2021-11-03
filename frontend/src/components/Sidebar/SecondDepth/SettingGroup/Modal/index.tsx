@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Modal from "@components/Modal";
 import { useDispatch } from "react-redux";
 import Color from "@styles/Color";
+import { GroupModalAction } from "@src/action";
 
 interface SettingGroupModalProps {
   closeFn: () => void;
@@ -44,7 +45,7 @@ const SettingGroupModal = ({ closeFn, open = false }: SettingGroupModalProps) =>
   const [clickedDropBtn, setClickedDropclickedDropBtn] = useState(false);
   const dispatch = useDispatch();
   const closeSettingGroupModal = () => {
-    dispatch({ type: "CLOSE_SETTING_GROUP_MODAL" });
+    dispatch({ type: GroupModalAction.CLOSE_SETTING_GROUP_MODAL });
   };
   const onClickDropBtn = () => {
     setClickedDropclickedDropBtn(true);

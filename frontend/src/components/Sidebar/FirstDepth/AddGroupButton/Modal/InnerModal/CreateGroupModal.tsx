@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Modal from "@components/Modal";
 import { useDispatch } from "react-redux";
 import Color from "@styles/Color";
+import { GroupModalAction } from "@src/action";
 
 interface CreateGroupModalProps {
   closeFn: () => void;
@@ -17,7 +18,7 @@ const CreateGroupModal = ({ closeFn, open = false }: CreateGroupModalProps) => {
 
   const dispatch = useDispatch();
   const closeCreateGroupModal = () => {
-    dispatch({ type: "CLOSE_CREATE_GROUP_MODAL" });
+    dispatch({ type: GroupModalAction.CLOSE_CREATE_GROUP_MODAL });
   };
   const onClickUploadBtn = () => {
     if (uploadBtnRef.current === null) return;

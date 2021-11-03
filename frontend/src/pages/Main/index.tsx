@@ -5,6 +5,7 @@ import Header from "@components/Header";
 import Sidebar from "@components/Sidebar";
 import ModalManager from "@components/Modal/ModalManager";
 import Map from "@components/Map";
+import { GroupModalAction } from "@src/action";
 
 const Main = () => {
   const [modalOpen, setModal] = useState("");
@@ -30,7 +31,7 @@ const Main = () => {
     document.addEventListener("click", ({ target }) => {
       if (!(target instanceof HTMLElement)) return;
 
-      dispatch({ type: "SET_CLICKED_TARGET", payload: target });
+      dispatch({ type: GroupModalAction.SET_CLICKED_TARGET, payload: target });
     });
   }, []);
 
