@@ -27,14 +27,13 @@ const Group = ({ setIsToggle, groupID, groupName, groupImg, albumList }: GroupPr
     <ButtonWrapper
       selectedGroupID={selectedGroup ? selectedGroup.groupID : -1}
       groupID={groupID}
+      groupImg={groupImg}
       onClick={onClickGroup}
-    >
-      {groupName}
-    </ButtonWrapper>
+    ></ButtonWrapper>
   );
 };
 
-const ButtonWrapper = styled.div<{ selectedGroupID: number; groupID: number }>`
+const ButtonWrapper = styled.div<{ selectedGroupID: number; groupID: number; groupImg: string }>`
   ${flexCenterAlign}
   min-width: 60px;
   min-height: 60px;
@@ -43,6 +42,8 @@ const ButtonWrapper = styled.div<{ selectedGroupID: number; groupID: number }>`
   border-radius: 20px;
   border: ${props =>
     props.selectedGroupID === props.groupID ? `5px solid ${Color["theme1-secondary"]}` : `5px solid ${Color.white}`};
+  background-image: url("${props => props.groupImg}");
+  background-size: 100%;
 `;
 
 export default Group;

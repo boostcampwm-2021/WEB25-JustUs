@@ -6,7 +6,7 @@ const initState = {
     {
       groupID: 0,
       groupName: "그룹 A",
-      img: "",
+      groupImg: "/img/dummy-group1.png",
       albumList: [
         {
           albumID: 0,
@@ -35,12 +35,35 @@ const initState = {
     {
       groupID: 1,
       groupName: "그룹 B",
-      img: "",
+      groupImg: "/img/dummy-group2.png",
+      albumList: [
+        {
+          albumID: 3,
+          albumName: "가족 여행",
+          posts: [
+            { postID: 6, postTitle: "대전" },
+            { postID: 7, postTitle: "부산" },
+            { postID: 8, postTitle: "서울" },
+          ],
+        },
+        {
+          albumID: 4,
+          albumName: "기본 앨범",
+          posts: [],
+        },
+      ],
     },
     {
       groupID: 2,
       groupName: "그룹 C",
-      img: "",
+      groupImg: "/img/dummy-group3.png",
+      albumList: [
+        {
+          albumID: 5,
+          albumName: "기본 앨범",
+          posts: [],
+        },
+      ],
     },
   ],
 };

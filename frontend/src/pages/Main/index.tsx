@@ -15,11 +15,6 @@ const Main = () => {
   const [isToggle, setIsToggle] = useState<boolean>(true);
   const dispatch = useDispatch();
   const { groups }: any = useSelector((state: RootState) => state.groups);
-  console.log("main called.");
-  console.log("groups.length : ", groups.length);
-  console.log("!groups.length : ", !groups.length);
-  console.log("!!groups.length : ", !!groups.length);
-  console.log("!!!groups.length : ", !!!groups.length);
 
   const openModal = (event: React.SyntheticEvent<EventTarget>) => {
     if (!(event.target instanceof HTMLButtonElement)) return;
@@ -37,13 +32,11 @@ const Main = () => {
   };
 
   useEffect(() => {
-    // document.addEventListener("click", ({ target }) => {
     document.addEventListener("click", event => {
       const { target, clientX, clientY } = event;
 
       if (!(event.target instanceof HTMLElement)) return;
 
-      // dispatch({ type: GroupModalAction.SET_CLICKED_TARGET, payload: target });
       dispatch({ type: GroupModalAction.SET_CLICKED_TARGET, payload: { target, clientX, clientY } });
     });
   }, []);
