@@ -1,5 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
+import { flexCenterAlign } from "@src/styles/StyledComponents";
 import Modal from "@components/Modal";
 import { useDispatch } from "react-redux";
 import Color from "@styles/Color";
@@ -198,36 +199,30 @@ const DropGuideWrapper = styled.div`
 `;
 
 const DropGroupButtonWrapper = styled.div`
+  ${flexCenterAlign}
   width: 120px;
   height: 40px;
   border-radius: 10px;
   border: 2px solid ${Color.red};
   margin-left: 30px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 `;
 
 const YesButtonWrapper = styled.div`
+${flexCenterAlign}
   width: 120px;
   height: 40px;
   border-radius: 10px;
   border: 2px solid ${Color.red};
   margin-left: 30px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 `;
 
 const NoButtonWrapper = styled.div`
+${flexCenterAlign}
   width: 120px;
   height: 40px;
   border-radius: 10px;
   border: 2px solid ${Color.blue};
   margin-left: 30px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 `;
 
 export default SettingGroupModal;

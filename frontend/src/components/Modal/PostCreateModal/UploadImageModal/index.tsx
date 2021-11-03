@@ -1,5 +1,6 @@
 import React, { MouseEvent, useRef, useState } from "react";
 import styled from "styled-components";
+import { flexCenterAlign } from "@styles/StyledComponents";
 import shortid from "shortid";
 
 interface UploadImageModalProps {
@@ -193,12 +194,10 @@ const UploadButton = styled.div`
 `;
 
 const ModalTitle = styled.div`
+  ${flexCenterAlign}
+  flex-direction: row;
   grid-column-start: 2;
   grid-column-end: 3;
   grid-row-start: 1;
   grid-row-end: 2;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
 `;

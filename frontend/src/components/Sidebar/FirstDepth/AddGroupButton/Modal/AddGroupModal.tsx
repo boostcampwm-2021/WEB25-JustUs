@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { flexCenterAlign } from "@styles/StyledComponents";
 import Color from "@styles/Color";
 import { useDispatch } from "react-redux";
 import { GroupModalAction } from "@src/action";
@@ -34,10 +35,8 @@ const ModalWrapper = styled.div`
 `;
 
 const ModalItem = styled.div`
+  ${flexCenterAlign}
   height: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 `;
 
 const Divider = styled.div`

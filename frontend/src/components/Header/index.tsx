@@ -1,5 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
+import { flexCenterAlign } from "@styles/StyledComponents";
 import Color from "@styles/Color";
 
 interface SidebarProps {
@@ -44,14 +45,12 @@ const HeaderContainer = styled.div`
 `;
 
 const SearchContainer = styled.div`
+  ${flexCenterAlign}
   height: 3vh;
   width: 25vw;
   background-color: ${Color.white};
   border-radius: 5px;
-  display: flex;
   padding: 0.5vh 0;
-  justify-content: start;
-  align-items: center;
   & > img {
     padding: 0 0.5vw;
   }
@@ -66,13 +65,11 @@ const Search = styled.input`
 `;
 
 const ProfileContainer = styled.div`
+  ${flexCenterAlign}
   height: 4vh;
   width: 4vh;
   background-color: ${Color.white};
   border-radius: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 `;
 
 export default Header;

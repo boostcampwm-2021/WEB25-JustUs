@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { flexCenterAlign } from "@styles/StyledComponents";
 import Color from "@styles/Color";
 
 interface GroupProps {
@@ -10,14 +11,12 @@ const Group = ({ groupName }: GroupProps) => {
 };
 
 const ButtonWrapper = styled.div`
+  ${flexCenterAlign}
   width: 80px;
   height: 80px;
   background-color: ${Color.white};
   margin: 20px;
   border-radius: 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 `;
 
 export default Group;

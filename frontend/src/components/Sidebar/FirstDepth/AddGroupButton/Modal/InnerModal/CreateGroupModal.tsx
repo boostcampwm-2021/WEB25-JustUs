@@ -1,5 +1,6 @@
 import React, { ChangeEventHandler, useRef, useState } from "react";
 import styled from "styled-components";
+import { flexCenterAlign } from "@styles/StyledComponents";
 import Modal from "@components/Modal";
 import { useDispatch } from "react-redux";
 import Color from "@styles/Color";
@@ -133,18 +134,17 @@ const Content = styled.div`
 `;
 
 const ImageBackground = styled.div<{ groupImg: string }>`
+${flexCenterAlign}
   margin-top: 30px;
   width: 90px;
   height: 90px;
   background-color: ${Color["theme1-secondary"]};
   opacity: ${props => (props.groupImg === "/icons/person.svg" ? "0.4" : "")};
   border-radius: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 `;
 
 const UploadImgBtnWrapper = styled.div`
+${flexCenterAlign}
   cursor: pointer;
   margin-top: 20px;
   border-radius: 10px;
@@ -154,9 +154,6 @@ const UploadImgBtnWrapper = styled.div`
   line-height: 16px;
   width: 150px;
   height: 33px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 `;
 
 const DeleteImgBtnWrapper = styled.div`
@@ -181,15 +178,13 @@ const GroupNameInputWrapper = styled.input`
 `;
 
 const CreateBtnWrapper = styled.div`
+${flexCenterAlign}
   cursor: pointer;
   width: 160px;
   height: 39px;
   border-radius: 10px;
   color: ${Color.white};
   background-color: ${Color["theme1-primary"]};
-  display: flex;
-  justify-content: center;
-  align-items: center;
   margin-top: 50px;
 `;
 

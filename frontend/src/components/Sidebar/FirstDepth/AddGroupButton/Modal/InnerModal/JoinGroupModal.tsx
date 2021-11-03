@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { flexCenterAlign } from "@styles/StyledComponents";
 import Modal from "@components/Modal";
 import { useDispatch } from "react-redux";
 import Color from "@styles/Color";
@@ -103,14 +104,12 @@ const InviteCodeInputWrapper = styled.input`
 `;
 
 const JoinBtnWrapper = styled.div`
+  ${flexCenterAlign}
   width: 160px;
   height: 39px;
   border-radius: 10px;
   color: ${Color.white};
   background-color: ${Color["theme1-primary"]};
-  display: flex;
-  justify-content: center;
-  align-items: center;
   margin-top: 50px;
   font-size: 30px;
 `;

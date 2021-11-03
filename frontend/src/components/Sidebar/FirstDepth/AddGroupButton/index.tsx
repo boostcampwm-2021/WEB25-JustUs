@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
+import { flexCenterAlign } from "@styles/StyledComponents";
 import Color from "@styles/Color";
 import AddGroupModal from "@components/Sidebar/FirstDepth/AddGroupButton/Modal/AddGroupModal";
 import { useSelector } from "react-redux";
@@ -37,14 +38,12 @@ const AddGroupButton = () => {
 };
 
 const ButtonWrapper = styled.div`
+  ${flexCenterAlign}
   width: 80px;
   height: 80px;
   background: ${Color["theme1-primary"]};
   margin: 20px;
   border-radius: 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   border: 1px solid ${Color["theme1-secondary"]};
   cursor: pointer;
 `;
