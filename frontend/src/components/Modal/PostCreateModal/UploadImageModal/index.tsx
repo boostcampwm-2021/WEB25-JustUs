@@ -152,7 +152,7 @@ const ModalHeader = styled.div`
   display: grid;
   grid-template-columns: 10% 80% 10%;
   padding: 1vw;
-  height: 4vw;
+  min-height: 22px;
   box-sizing: border-box;
   border-bottom: 1px solid ${Color.black};
   font-size: max(1.2vw, 20px);

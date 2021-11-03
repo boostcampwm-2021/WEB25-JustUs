@@ -14,6 +14,18 @@ interface UploadInfoModalProps {
 }
 
 const UploadInfoModal = ({ closeFn, changeMode, files }: UploadInfoModalProps) => {
+  const [imageIndex, setImageIndex] = useState<number>(0);
+
+  const showNextImage = () => {
+    if (imageIndex == files.length - 1) return;
+    setImageIndex(imageIndex + 1);
+  };
+
+  const showPrevImage = () => {
+    if (imageIndex == 0) return;
+    setImageIndex(imageIndex - 1);
+  };
+
   return (
     <ModalContainer
       onClick={event => {
@@ -26,26 +38,50 @@ const UploadInfoModal = ({ closeFn, changeMode, files }: UploadInfoModalProps) =
           <img src="/icons/x.svg" alt="close" height="90%"></img>
         </ModalHeaderRigthBtn>
         <ModalHeaderLeftBtn onClick={changeMode}>
-          <img src="/icons/prev.svg" alt="close" height="90%"></img>
+          <img src="/icons/prev.svg" alt="prev modal" height="90%"></img>
         </ModalHeaderLeftBtn>
       </ModalHeader>
       <ModalContent>
+        <CarouselContainer>
+          <Carousel>
+            <img onClick={showPrevImage} src="/icons/prev.svg" alt="prev image" height="10%"></img>
+            <ImagePreview key={shortid.generate()}>
+              <img src={URL.createObjectURL(files[imageIndex].FILE)}></img>
+            </ImagePreview>
+            <img onClick={showNextImage} src="/icons/next.svg" alt="next image" height="10%"></img>
+          </Carousel>
+          <div>...</div>
+        </CarouselContainer>
       </ModalContent>
     </ModalContainer>
   );
 };
 
 export default UploadInfoModal;
+const Carousel = styled.div`
+  display: grid;
+  grid-template-columns: 10% 80% 10%;
+  align-items: center;
+  justify-items: center;
+  width: 100%;
+`;
+
+const CarouselContainer = styled.div`
+  grid-column-start: 1;
+  grid-column-end: 2;
+  grid-row-start: 1;
+  grid-row-end: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
 
 const ImagePreview = styled.div`
-  border: 1px solid ${Color.gray};
-  box-sizing: border-box;
-  border-radius: 8px;
-  margin: 1vw;
-  vertical-align: middle;
-  text-align: center;
   position: relative;
-  min-height: 150px;
+  min-height: 180px;
+  width: 100%;
+  height: 50%;
   & img {
     position: absolute;
     max-width: 100%;
@@ -96,7 +132,7 @@ const ModalHeader = styled.div`
   display: grid;
   grid-template-columns: 10% 80% 10%;
   padding: 1vw;
-  height: 4vw;
+  min-height: 22px;
   box-sizing: border-box;
   border-bottom: 1px solid ${Color.black};
   font-size: max(1.2vw, 20px);
@@ -104,9 +140,8 @@ const ModalHeader = styled.div`
 
 const ModalContent = styled.div`
   display: grid;
-  height: 26vw;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 50% 50%;
+  height: 100%;
+  grid-template-columns: 1fr 1fr;
   box-sizing: border-box;
 `;
 
