@@ -39,11 +39,8 @@ const Main = () => {
       <Header isToggle={isToggle} setIsToggle={setIsToggle} />
       <Content>
         <Sidebar isToggle={isToggle} setIsToggle={setIsToggle} />
-        <Map />
+        <Map openModal={openModal} />
       </Content>
-      <button onClick={openModal} data-modal="PostCreateModal">
-        +
-      </button>
       <ModalManager closeFn={closeModal} modal={modalOpen} />
     </>
   );

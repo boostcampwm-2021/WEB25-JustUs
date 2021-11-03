@@ -18,8 +18,10 @@ const load = (url: string, cb: Function, err: Function) => {
   element[attr] = url;
   document[parent].appendChild(element);
 };
-
-const Map = () => {
+interface MapProps {
+  openModal: (event: React.SyntheticEvent<EventTarget>) => void;
+}
+const Map = ({ openModal }: MapProps) => {
   useEffect(() => {
     const initMap = () => {
       const clientId: string = process.env.REACT_APP_NCP_CLOUD_ID as string;
@@ -43,7 +45,9 @@ const Map = () => {
   return (
     <React.Fragment>
       <Maps id="map" />
-      <FloatActionBtn>+</FloatActionBtn>
+      <FloatActionBtn onClick={openModal} data-modal="PostCreateModal">
+        +
+      </FloatActionBtn>
     </React.Fragment>
   );
 };
@@ -53,7 +57,8 @@ const Maps = styled.div`
   height: 95vh;
 `;
 
-const FloatActionBtn = styled.div`
+const FloatActionBtn = styled.button`
+  border: none;
   background-color: ${Color["theme1-secondary"]};
   position: absolute;
   border-radius: 50%;
