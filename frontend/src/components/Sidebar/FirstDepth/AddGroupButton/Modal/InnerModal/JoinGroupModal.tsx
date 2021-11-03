@@ -106,7 +106,7 @@ const JoinBtnWrapper = styled.div`
   height: 39px;
   border-radius: 10px;
   color: ${Color.white};
-  background-color: ${Color["theme1-primary"]};
+  background-color: ${Color.theme1.primary};
   display: flex;
   justify-content: center;
   align-items: center;

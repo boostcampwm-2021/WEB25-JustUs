@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
-import Color from "@styles/Color";
+import color from "@styles/Color";
 
 interface SidebarProps {
   isToggle: boolean;
@@ -30,8 +30,8 @@ const Header = ({ isToggle, setIsToggle }: SidebarProps) => {
 
 const HeaderContainer = styled.div`
   height: 5vh;
-  background-color: ${Color["theme1-primary"]};
-  border-bottom: 1px solid ${Color.white};
+  background-color: ${color.theme1.primary};
+  border-bottom: 1px solid ${color.white};
   padding: 0 1vw;
   display: flex;
   justify-content: space-between;
@@ -46,7 +46,7 @@ const HeaderContainer = styled.div`
 const SearchContainer = styled.div`
   height: 3vh;
   width: 25vw;
-  background-color: ${Color.white};
+  background-color: ${color.white};
   border-radius: 5px;
   display: flex;
   padding: 0.5vh 0;
@@ -68,7 +68,7 @@ const Search = styled.input`
 const ProfileContainer = styled.div`
   height: 4vh;
   width: 4vh;
-  background-color: ${Color.white};
+  background-color: ${color.white};
   border-radius: 10px;
   display: flex;
   justify-content: center;

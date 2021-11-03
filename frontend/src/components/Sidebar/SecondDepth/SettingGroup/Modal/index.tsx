@@ -2,7 +2,7 @@ import { useState } from "react";
 import styled from "styled-components";
 import Modal from "@components/Modal";
 import { useDispatch } from "react-redux";
-import Color from "@styles/Color";
+import color from "@styles/Color";
 
 interface SettingGroupModalProps {
   closeFn: () => void;
@@ -200,7 +200,7 @@ const DropGroupButtonWrapper = styled.div`
   width: 120px;
   height: 40px;
   border-radius: 10px;
-  border: 2px solid ${Color.red};
+  border: 2px solid ${color.red};
   margin-left: 30px;
   display: flex;
   justify-content: center;
@@ -211,7 +211,7 @@ const YesButtonWrapper = styled.div`
   width: 120px;
   height: 40px;
   border-radius: 10px;
-  border: 2px solid ${Color.red};
+  border: 2px solid ${color.red};
   margin-left: 30px;
   display: flex;
   justify-content: center;
@@ -222,7 +222,7 @@ const NoButtonWrapper = styled.div`
   width: 120px;
   height: 40px;
   border-radius: 10px;
-  border: 2px solid ${Color.blue};
+  border: 2px solid ${color.blue};
   margin-left: 30px;
   display: flex;
   justify-content: center;

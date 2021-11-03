@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import Color from "@styles/Color";
+import color from "@styles/Color";
 import AddGroupModal from "@components/Sidebar/FirstDepth/AddGroupButton/Modal/AddGroupModal";
 import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
@@ -39,13 +39,13 @@ const AddGroupButton = () => {
 const ButtonWrapper = styled.div`
   width: 80px;
   height: 80px;
-  background: ${Color["theme1-primary"]};
+  background: ${color.theme1.primary};
   margin: 20px;
   border-radius: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid ${Color["theme1-secondary"]};
+  border: 1px solid ${color.theme1.secondary};
   cursor: pointer;
 `;
 

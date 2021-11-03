@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import Color from "@styles/Color";
+import color from "@styles/Color";
 import { useDispatch } from "react-redux";
 
 const SettingGroup = () => {
@@ -23,12 +23,12 @@ const SettingGroup = () => {
 const SettingGroupWrapper = styled.div`
   width: 15vw;
   height: 6vh;
-  background-color: ${Color["theme1-primary"]};
+  background-color: ${color.theme1.primary};
   display: flex;
   justify-content: space-around;
   align-items: center;
-  border-bottom: 1px ${Color.white} solid;
-  color: ${Color.white};
+  border-bottom: 1px ${color.white} solid;
+  color: ${color.white};
 `;
 
 export default SettingGroup;

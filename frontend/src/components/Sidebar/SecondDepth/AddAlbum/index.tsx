@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import Color from "@styles/Color";
+import color from "@styles/Color";
 
 const AddAlbum = () => {
   return (
@@ -28,9 +28,9 @@ const AddAblumBtnWrapper = styled.div`
   align-items: center;
   justify-content: center;
   border-radius: 10px;
-  border: 1px solid ${Color.white};
+  border: 1px solid ${color.white};
   width: 85%;
-  background: ${Color.blur};
+  background: ${color.blur};
   color: white;
 `;
 

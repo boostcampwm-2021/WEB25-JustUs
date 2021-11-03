@@ -1,6 +1,7 @@
 import React, { MouseEvent, useRef, useState } from "react";
 import styled from "styled-components";
 import shortid from "shortid";
+import color from "@styles/Color";
 
 interface UploadImageModalProps {
   closeFn: () => void;
@@ -119,7 +120,7 @@ const ModalClose = styled.button`
 `;
 
 const ImagePreview = styled.div`
-  border: 1px solid #d7d7d7;
+  border: 1px solid ${color.lightgray1};
   box-sizing: border-box;
   border-radius: 8px;
   margin: 1vw;
@@ -153,13 +154,13 @@ const ImageInput = styled.input`
 const ModalContainer = styled.div`
   display: flex;
   flex-direction: column;
-  background-color: #ffffff;
+  background-color: ${color.white};
   height: 30vw;
   width: 45vw;
   min-width: 500px;
   min-height: 400px;
   border-radius: 10px;
-  box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
+  box-shadow: 0 2px 3px 0 ${color.shadowBlack};
 `;
 
 const ModalHeader = styled.div`
@@ -168,7 +169,7 @@ const ModalHeader = styled.div`
   padding: 1vw;
   height: 4vw;
   box-sizing: border-box;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid ${color.black};
   font-size: max(1.2vw, 20px);
 `;
 
@@ -181,8 +182,8 @@ const ModalContent = styled.div`
 `;
 
 const UploadButton = styled.div`
-  background-color: #dadada;
-  border: 1px solid #d7d7d7;
+  background-color: ${color.lightgray2};
+  border: 1px solid ${color.lightgray1};
   box-sizing: border-box;
   border-radius: 8px;
   margin: 1vw;

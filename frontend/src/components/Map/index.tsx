@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import Color from "@styles/Color";
+import color from "@styles/Color";
 import { flexRowCenterAlign } from "@styles/StyledComponents";
 
 const load = (url: string, cb: Function, err: Function) => {
@@ -54,7 +54,7 @@ const Maps = styled.div`
 `;
 
 const FloatActionBtn = styled.div`
-  background-color: ${Color["theme1-secondary"]};
+  background-color: ${color.theme1.secondary};
   position: absolute;
   border-radius: 50%;
   height: 8vh;
@@ -62,12 +62,12 @@ const FloatActionBtn = styled.div`
   bottom: 8vh;
   right: 8vh;
   ${flexRowCenterAlign}
-  color: ${Color.white};
+  color: ${color.white};
   font-size: 7vh;
-  box-shadow: 0.2vh 0.2vh 1vh 0.2vh ${Color["theme1-primary"]};
+  box-shadow: 0.2vh 0.2vh 1vh 0.2vh ${color.theme1.primary};
   &:hover {
     cursor: pointer;
-    background-color: ${Color["theme1-primary"]};
+    background-color: ${color.theme1.primary};
   }
 `;
 

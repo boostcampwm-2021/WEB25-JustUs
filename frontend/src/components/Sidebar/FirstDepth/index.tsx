@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
 import Group from "./Group";
 import AddGroupButton from "./AddGroupButton";
-import Color from "@styles/Color";
+import color from "@styles/Color";
 
 interface SidebarProps {
   isToggle: boolean;
@@ -47,7 +47,7 @@ const FirstDepth = ({ isToggle, setIsToggle }: SidebarProps) => {
 const FirstDepthWrapper = styled.div`
   width: 5vw;
   height: 100vh;
-  background-color: ${Color["theme1-primary"]};
+  background-color: ${color.theme1.primary};
   display: flex;
   flex-direction: column;
   align-items: center;

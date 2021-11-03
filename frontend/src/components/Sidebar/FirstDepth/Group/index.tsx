@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import Color from "@styles/Color";
+import color from "@styles/Color";
 
 interface GroupProps {
   groupName: string;
@@ -12,7 +12,7 @@ const Group = ({ groupName }: GroupProps) => {
 const ButtonWrapper = styled.div`
   width: 80px;
   height: 80px;
-  background-color: ${Color.white};
+  background-color: ${color.white};
   margin: 20px;
   border-radius: 20px;
   display: flex;

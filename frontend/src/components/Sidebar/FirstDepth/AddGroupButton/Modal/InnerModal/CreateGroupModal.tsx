@@ -2,7 +2,7 @@ import React, { ChangeEventHandler, useRef, useState } from "react";
 import styled from "styled-components";
 import Modal from "@components/Modal";
 import { useDispatch } from "react-redux";
-import Color from "@styles/Color";
+import color from "@styles/Color";
 
 interface CreateGroupModalProps {
   closeFn: () => void;
@@ -135,7 +135,7 @@ const ImageBackground = styled.div<{ groupImg: string }>`
   margin-top: 30px;
   width: 90px;
   height: 90px;
-  background-color: ${Color["theme1-secondary"]};
+  background-color: ${color.theme1.secondary};
   opacity: ${props => (props.groupImg === "/icons/person.svg" ? "0.4" : "")};
   border-radius: 100%;
   display: flex;
@@ -147,7 +147,7 @@ const UploadImgBtnWrapper = styled.div`
   cursor: pointer;
   margin-top: 20px;
   border-radius: 10px;
-  border: 2px solid ${Color["theme1-primary"]};
+  border: 2px solid ${color.theme1.primary};
   font-weight: bold;
   font-size: 15px;
   line-height: 16px;
@@ -161,7 +161,7 @@ const UploadImgBtnWrapper = styled.div`
 const DeleteImgBtnWrapper = styled.div`
   cursor: pointer;
   margin-top: 20px;
-  color: ${Color.blue};
+  color: ${color.blue};
   font-weight: bold;
 `;
 
@@ -170,7 +170,7 @@ const GroupNameInputWrapper = styled.input`
   border: none;
   width: 200px;
   font-size: 15px;
-  border-bottom: 1px solid ${Color["theme1-primary"]};
+  border-bottom: 1px solid ${color.theme1.primary};
 
   &::-webkit-input-placeholder {
     text-align: center;
@@ -184,8 +184,8 @@ const CreateBtnWrapper = styled.div`
   width: 160px;
   height: 39px;
   border-radius: 10px;
-  color: ${Color.white};
-  background-color: ${Color["theme1-primary"]};
+  color: ${color.white};
+  background-color: ${color.theme1.primary};
   display: flex;
   justify-content: center;
   align-items: center;
