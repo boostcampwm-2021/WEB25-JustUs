@@ -14,7 +14,7 @@ services:
     restart: always
     build:
       dockerfile: Dockerfile
-      context: ./nginx
+      context: ./nginx_proxy
     ports:
       - "3000:80"
 
@@ -32,11 +32,6 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       ENTITIY_PATH: ${ENTITIY_PATH}
-      # MYSQL_HOST: mysql
-      # MYSQL_PORT: 3306
-      # MYSQL_USER: root
-      # MYSQL_PASSWORD: root
-      # MYSQL_DATABASE: justus
 
   mysql:
     build: ./mysql
@@ -50,5 +45,3 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
-      # MYSQL_ROOT_PASSWORD: root
-      # MYSQL_DATABASE: justus

@@ -27,7 +27,7 @@ const Main = () => {
 
   return (
     <>
-      <Header />
+      <Header isToggle={isToggle} setIsToggle={setIsToggle} />
       <Content>
         <Sidebar isToggle={isToggle} setIsToggle={setIsToggle} />
         <Map />

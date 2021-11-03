@@ -1,11 +1,21 @@
+import { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
 import Color from "@styles/Color";
 
-const Header = () => {
+interface SidebarProps {
+  isToggle: boolean;
+  setIsToggle: Dispatch<SetStateAction<boolean>>;
+}
+
+const Header = ({ isToggle, setIsToggle }: SidebarProps) => {
+  const onClickMenu = () => {
+    setIsToggle(prev => !prev);
+  };
+
   return (
     <>
       <HeaderContainer>
-        <img src="/icons/menu.svg" alt="menu" />
+        <img src="/icons/menu.svg" onClick={onClickMenu} alt="menu" />
         <SearchContainer>
           <img src="/icons/search.svg" height="90%" alt="search" />
           <Search type="text" placeholder="해시태그를 입력하세요." />
@@ -26,6 +36,11 @@ const HeaderContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  & img {
+    &:hover {
+      cursor: pointer;
+    }
+  }
 `;
 
 const SearchContainer = styled.div`
