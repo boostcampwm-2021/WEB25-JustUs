@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import Color from "@styles/Color";
-import { flexCenterAlign } from "@styles/StyledComponents";
+import { flexRowCenterAlign } from "@styles/StyledComponents";
 
 const load = (url: string, cb: Function, err: Function) => {
   const element = document.createElement("script");
@@ -61,7 +61,7 @@ const FloatActionBtn = styled.div`
   width: 8vh;
   bottom: 8vh;
   right: 8vh;
-  ${flexCenterAlign}
+  ${flexRowCenterAlign}
   color: ${Color.white};
   font-size: 7vh;
   box-shadow: 0.2vh 0.2vh 1vh 0.2vh ${Color["theme1-primary"]};

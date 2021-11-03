@@ -1,5 +1,7 @@
 import React from "react";
 import styled from "styled-components";
+import Color from "@src/styles/Color";
+import { flexColumnCenterAlign, flexRowCenterAlign } from "@src/styles/StyledComponents";
 
 const Login = () => {
   return (
@@ -19,7 +21,7 @@ const Login = () => {
             </LeftSide>
             <div id="right-side">
               <Polaroid id="polaroid">
-                <img src="/img/glass.jpg" width="300px" height="300px" alt="glass image" />
+                <img src="/img/glass.jpg" width="300px" height="300px" alt="glass" />
                 <img src="/img/life_is_travel.png" height="40px" alt="life is travel" />
               </Polaroid>
             </div>
@@ -51,7 +53,7 @@ const BackgroundWrap = styled.div`
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-color: #ffffff90;
+  background-color: ${Color.wrap};
 `;
 
 const Content = styled.div`
@@ -88,15 +90,12 @@ const LogoInfoText = styled.p`
 `;
 
 const Polaroid = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  ${flexColumnCenterAlign}
   width: 340px;
   height: 500px;
   border-radius: 15px;
   background-color: white;
-  box-shadow: 15px 15px 15px rgba(0, 0, 0, 0.25);
+  box-shadow: 15px 15px 15px ${Color.shadowBlack};
   & > img {
     padding-top: 35px;
   }
@@ -113,17 +112,15 @@ const FooterContent = styled.div`
   margin: 0 auto;
   padding: 20px;
   width: 80vw;
-  border-top: 2px solid black;
+  border-top: 2px solid ${Color.black};
   & > p {
     font-weight: bold;
     margin-bottom: 5px;
   }
   & > div {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    ${flexRowCenterAlign}
     & .names {
-      color: #0202029b;
+      color: ${Color.darkgray};
       padding-left: 10px;
     }
   }
