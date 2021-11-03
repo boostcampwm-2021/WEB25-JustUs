@@ -57,6 +57,7 @@ const SettingGroupModal = ({ closeFn, open = false, setIsToggle }: SettingGroupM
   };
   const onClickConfirmBtn = () => {
     dispatch({ type: GroupAction.DELETE_GROUP, payload: selectedGroup });
+    dispatch({ type: GroupAction.SET_SELECTED_GROUP, payload: null });
     closeSettingGroupModal();
     setIsToggle(false);
   };

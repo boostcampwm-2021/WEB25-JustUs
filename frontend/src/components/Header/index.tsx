@@ -2,6 +2,8 @@ import { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
 import { flexCenterAlign } from "@styles/StyledComponents";
 import Color from "@styles/Color";
+import { useSelector } from "react-redux";
+import { RootState } from "@src/reducer";
 
 interface SidebarProps {
   isToggle: boolean;
@@ -9,13 +11,16 @@ interface SidebarProps {
 }
 
 const Header = ({ isToggle, setIsToggle }: SidebarProps) => {
+  const { groups }: any = useSelector((state: RootState) => state.groups);
+
   const onClickMenu = () => {
+    if (!groups.length) return;
     setIsToggle(prev => !prev);
   };
 
   return (
     <>
-      <HeaderContainer>
+      <HeaderContainer groups={groups}>
         <img src="/icons/menu.svg" onClick={onClickMenu} alt="menu" />
         <SearchContainer>
           <img src="/icons/search.svg" height="90%" alt="search" />
@@ -29,7 +34,7 @@ const Header = ({ isToggle, setIsToggle }: SidebarProps) => {
   );
 };
 
-const HeaderContainer = styled.div`
+const HeaderContainer = styled.div<{ groups: any }>`
   height: 5vh;
   background-color: ${Color["theme1-primary"]};
   border-bottom: 1px solid ${Color.white};
@@ -39,7 +44,7 @@ const HeaderContainer = styled.div`
   align-items: center;
   & img {
     &:hover {
-      cursor: pointer;
+      cursor: ${({ groups }) => (groups.length ? "pointer" : "not-allowed")};
     }
   }
 `;
