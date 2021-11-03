@@ -1,6 +1,8 @@
 import React, { ReactNode, useEffect } from "react";
 import ReactDOM from "react-dom";
 import Color from "@styles/Color";
+import { useDispatch } from "react-redux";
+
 const modalRootEl = document.getElementById("modal");
 if (modalRootEl) {
   modalRootEl.style.display = "none";
@@ -16,13 +18,14 @@ if (modalRootEl) {
 
 interface ModalProps {
   children: ReactNode;
-  open: Boolean;
-  closeFn: Function;
+  open?: Boolean;
 }
 
-const Modal = ({ children, open = false, closeFn }: ModalProps) => {
-  const closeModal = (ev: MouseEvent) => {
-    closeFn(ev);
+const Modal = ({ children, open = true }: ModalProps) => {
+  const dispatch = useDispatch();
+
+  const closeModal = () => {
+    dispatch({ type: "CLOSE_MODAL" });
   };
   useEffect(() => {
     modalRootEl?.addEventListener("click", closeModal);

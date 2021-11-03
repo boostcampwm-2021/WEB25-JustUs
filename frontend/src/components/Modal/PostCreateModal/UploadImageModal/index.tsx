@@ -2,21 +2,25 @@ import React, { useRef } from "react";
 import styled from "styled-components";
 import shortid from "shortid";
 import Color from "@styles/Color";
+import { useDispatch } from "react-redux";
 
 interface FileObject {
   FILE: File;
   KEY: string;
 }
 interface UploadImageModalProps {
-  closeFn: () => void;
   changeMode: () => void;
   files: FileObject[];
   setFiles: React.Dispatch<React.SetStateAction<FileObject[]>>;
 }
 
-const UploadImageModal = ({ closeFn, changeMode, files, setFiles }: UploadImageModalProps) => {
+const UploadImageModal = ({ changeMode, files, setFiles }: UploadImageModalProps) => {
   const inputImagaRef = useRef<HTMLInputElement>(null);
   const MAX_IMAGE = 5;
+  const dispatch = useDispatch();
+  const closeModal = () => {
+    dispatch({ type: "CLOSE_MODAL" });
+  };
 
   const clickInputTag = () => {
     if (!inputImagaRef.current || files.length === MAX_IMAGE) return;
@@ -47,7 +51,7 @@ const UploadImageModal = ({ closeFn, changeMode, files, setFiles }: UploadImageM
       <ModalHeader>
         <ModalTitle>새 게시물 만들기</ModalTitle>
         {files.length === 0 ? (
-          <ModalHeaderRigthBtn onClick={closeFn}>
+          <ModalHeaderRigthBtn onClick={closeModal}>
             <img src="/icons/x.svg" alt="close" height="90%"></img>
           </ModalHeaderRigthBtn>
         ) : (

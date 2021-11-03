@@ -1,20 +1,24 @@
 import React, { MouseEvent, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import Color from "@styles/Color";
+import { useDispatch } from "react-redux";
 
 interface FileObject {
   FILE: File;
   KEY: string;
 }
 interface UploadInfoModalProps {
-  closeFn: () => void;
   changeMode: () => void;
   files: FileObject[];
 }
 
-const UploadInfoModal = ({ closeFn, changeMode, files }: UploadInfoModalProps) => {
+const UploadInfoModal = ({ changeMode, files }: UploadInfoModalProps) => {
   const carouselRef = useRef<HTMLDivElement>(null);
   const [imageIndex, setImageIndex] = useState(0);
+  const dispatch = useDispatch();
+  const closeModal = () => {
+    dispatch({ type: "CLOSE_MODAL" });
+  };
 
   const showNextImage = () => {
     if (imageIndex == files.length - 1 || !carouselRef.current) return;
@@ -39,7 +43,7 @@ const UploadInfoModal = ({ closeFn, changeMode, files }: UploadInfoModalProps) =
     >
       <ModalHeader>
         <ModalTitle>새 게시물 만들기</ModalTitle>
-        <ModalHeaderRigthBtn onClick={closeFn}>
+        <ModalHeaderRigthBtn onClick={closeModal}>
           <img src="/icons/x.svg" alt="close" height="90%"></img>
         </ModalHeaderRigthBtn>
         <ModalHeaderLeftBtn onClick={changeMode}>

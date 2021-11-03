@@ -6,11 +6,11 @@ const AddGroupModal = () => {
   const dispatch = useDispatch();
 
   const onClickCreateGroupBtn = () => {
-    dispatch({ type: "OPEN_CREATE_GROUP_MODAL" });
+    dispatch({ type: "OPEN_MODAL", payload: "CreateGroupModal" });
   };
 
   const onClickJoinGroupBtn = () => {
-    dispatch({ type: "OPEN_JOIN_GROUP_MODAL" });
+    dispatch({ type: "OPEN_MODAL", payload: "JoinGroupModal" });
   };
 
   return (

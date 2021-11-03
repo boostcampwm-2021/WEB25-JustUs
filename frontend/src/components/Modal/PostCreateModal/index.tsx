@@ -3,16 +3,12 @@ import Modal from "../";
 import UploadImageModal from "./UploadImageModal";
 import UploadInfoModal from "./UploadInfoModal";
 
-interface PostCreateModalProps {
-  closeFn: () => void;
-  open: boolean;
-}
 interface FileObject {
   FILE: File;
   KEY: string;
 }
 
-const PostCreateModal = ({ closeFn, open = false }: PostCreateModalProps) => {
+const PostCreateModal = () => {
   const [mode, setMode] = useState<string>("image");
   const [files, setFiles] = useState<FileObject[]>([]);
   const changeMode = () => {
@@ -21,11 +17,11 @@ const PostCreateModal = ({ closeFn, open = false }: PostCreateModalProps) => {
   };
 
   return (
-    <Modal open={open} closeFn={closeFn}>
+    <Modal>
       {mode === "image" ? (
-        <UploadImageModal files={files} setFiles={setFiles} changeMode={changeMode} closeFn={closeFn} />
+        <UploadImageModal files={files} setFiles={setFiles} changeMode={changeMode} />
       ) : (
-        <UploadInfoModal files={files} changeMode={changeMode} closeFn={closeFn} />
+        <UploadInfoModal files={files} changeMode={changeMode} />
       )}
     </Modal>
   );
