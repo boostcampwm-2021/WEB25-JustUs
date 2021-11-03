@@ -1,4 +1,4 @@
-const GroupModalAction = {
+const groupModalAction = {
   SET_CLICKED_TARGET: "SET_CLICKED_TARGET",
   OPEN_CREATE_GROUP_MODAL: "OPEN_CREATE_GROUP_MODAL",
   CLOSE_CREATE_GROUP_MODAL: "CLOSE_CREATE_GROUP_MODAL",
@@ -8,4 +8,4 @@ const GroupModalAction = {
   CLOSE_SETTING_GROUP_MODAL: "CLOSE_SETTING_GROUP_MODAL",
 };
 
-export default GroupModalAction;
+export default groupModalAction;

@@ -4,7 +4,9 @@ import { flexCenterAlign } from "@styles/StyledComponents";
 import Modal from "@components/Modal";
 import { useDispatch } from "react-redux";
 import Color from "@styles/Color";
-import { GroupModalAction } from "@src/action";
+import { GroupModalAction, GroupAction } from "@src/action";
+import { useSelector } from "react-redux";
+import { RootState } from "@src/reducer";
 
 interface CreateGroupModalProps {
   closeFn: () => void;
@@ -16,8 +18,9 @@ const CreateGroupModal = ({ closeFn, open = false }: CreateGroupModalProps) => {
   const imageRef = useRef<HTMLImageElement>(null);
   const groupNameRef = useRef<HTMLInputElement>(null);
   const [groupImg, setGroupImg] = useState("/icons/person.svg");
-
+  const { groups } = useSelector((state: RootState) => state.groups);
   const dispatch = useDispatch();
+
   const closeCreateGroupModal = () => {
     dispatch({ type: GroupModalAction.CLOSE_CREATE_GROUP_MODAL });
   };
@@ -53,6 +56,23 @@ const CreateGroupModal = ({ closeFn, open = false }: CreateGroupModalProps) => {
       alert("그룹 이름은 반드시 입력해야 합니다.");
       return;
     }
+
+    createGroup();
+  };
+
+  const createGroup = () => {
+    if (!groupNameRef.current) return;
+
+    const groupID = groups[groups.length - 1].groupID + 1;
+    const groupName = groupNameRef.current.value;
+    const newGroup = {
+      groupID,
+      groupName,
+      groupImg,
+    };
+
+    dispatch({ type: GroupAction.ADD_GROUP, payload: newGroup });
+    closeCreateGroupModal();
   };
 
   return (

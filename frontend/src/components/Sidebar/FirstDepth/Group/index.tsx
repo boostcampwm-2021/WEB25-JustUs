@@ -12,10 +12,10 @@ const Group = ({ groupName }: GroupProps) => {
 
 const ButtonWrapper = styled.div`
   ${flexCenterAlign}
-  width: 80px;
-  height: 80px;
+  min-width: 60px;
+  min-height: 60px;
   background-color: ${Color.white};
-  margin: 20px;
+  margin: 10px;
   border-radius: 20px;
 `;
 

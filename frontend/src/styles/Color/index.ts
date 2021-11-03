@@ -5,6 +5,7 @@ const color = {
   blue: "#4D73D7",
   red: "#D32F2F",
   blur: "rgba(223, 223, 223, 0.2)",
+  scroll: "#ffffff70",
   "theme1-primary": "#52734D",
   "theme1-secondary": "rgba(145, 199, 136, 0.8)",
   "theme2-primary": "#E4CE8E",

@@ -1,7 +1,7 @@
 import { GroupModalAction } from "@src/action";
 
 const initState = {
-  clickedTarget: { element: document.body },
+  clickedTarget: { target: document.body, clientX: 0, clientY: 0 },
   addJoinMOdalOpened: false,
   createGroupModalOpened: false,
   joinGroupModalOpened: false,
@@ -13,7 +13,11 @@ const groupModalReducer = (state = initState, action: any) => {
     case GroupModalAction.SET_CLICKED_TARGET:
       return {
         ...state,
-        clickedTarget: { element: action.payload },
+        clickedTarget: {
+          target: action.payload.target,
+          clientX: action.payload.clientX,
+          clientY: action.payload.clientY,
+        },
       };
     case GroupModalAction.OPEN_CREATE_GROUP_MODAL:
       return {

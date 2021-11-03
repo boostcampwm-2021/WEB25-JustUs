@@ -28,10 +28,14 @@ const Main = () => {
   };
 
   useEffect(() => {
-    document.addEventListener("click", ({ target }) => {
-      if (!(target instanceof HTMLElement)) return;
+    // document.addEventListener("click", ({ target }) => {
+    document.addEventListener("click", event => {
+      const { target, clientX, clientY } = event;
 
-      dispatch({ type: GroupModalAction.SET_CLICKED_TARGET, payload: target });
+      if (!(event.target instanceof HTMLElement)) return;
+
+      // dispatch({ type: GroupModalAction.SET_CLICKED_TARGET, payload: target });
+      dispatch({ type: GroupModalAction.SET_CLICKED_TARGET, payload: { target, clientX, clientY } });
     });
   }, []);
 
