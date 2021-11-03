@@ -4,8 +4,8 @@ import shortid from "shortid";
 import Color from "@styles/Color";
 
 interface FileObject {
-  File: File;
-  Key: string;
+  FILE: File;
+  KEY: string;
 }
 interface UploadImageModalProps {
   closeFn: () => void;
@@ -27,7 +27,7 @@ const UploadImageModal = ({ closeFn, changeMode, files, setFiles }: UploadImageM
   const changeImage: React.ChangeEventHandler<HTMLInputElement> = event => {
     if (!event.target.files) return;
     const file = event.target.files[0];
-    setFiles([...files, { File: file, Key: shortid.generate() }]);
+    setFiles([...files, { FILE: file, KEY: shortid.generate() }]);
   };
 
   const nextModal = () => {
@@ -35,7 +35,7 @@ const UploadImageModal = ({ closeFn, changeMode, files, setFiles }: UploadImageM
   };
 
   const deleteImage = (key: string) => {
-    setFiles(files.filter(file => file.Key !== key));
+    setFiles(files.filter(file => file.KEY !== key));
   };
 
   return (
@@ -67,10 +67,10 @@ const UploadImageModal = ({ closeFn, changeMode, files, setFiles }: UploadImageM
         {files.map(
           fileObject => (
             <ImagePreview key={shortid.generate()}>
-              <DeleteImageBtn onClick={() => deleteImage(fileObject.Key)}>
+              <DeleteImageBtn onClick={() => deleteImage(fileObject.KEY)}>
                 <img src="/icons/delete.svg" alt="delete"></img>
               </DeleteImageBtn>
-              <img src={URL.createObjectURL(fileObject.File)} alt="close"></img>
+              <img src={URL.createObjectURL(fileObject.FILE)}></img>
             </ImagePreview>
           ),
           "",

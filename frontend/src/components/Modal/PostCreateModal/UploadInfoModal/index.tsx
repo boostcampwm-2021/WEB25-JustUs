@@ -4,8 +4,8 @@ import shortid from "shortid";
 import Color from "@styles/Color";
 
 interface FileObject {
-  File: File;
-  Key: string;
+  FILE: File;
+  KEY: string;
 }
 interface UploadInfoModalProps {
   closeFn: () => void;

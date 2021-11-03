@@ -8,8 +8,8 @@ interface PostCreateModalProps {
   open: boolean;
 }
 interface FileObject {
-  File: File;
-  Key: string;
+  FILE: File;
+  KEY: string;
 }
 
 const PostCreateModal = ({ closeFn, open = false }: PostCreateModalProps) => {
