@@ -60,6 +60,7 @@ const Maps = styled.div`
 `;
 
 const FloatActionBtn = styled.button`
+  ${flexCenterAlign}
   border: none;
   background-color: ${Color["theme1-secondary"]};
   position: absolute;
@@ -68,7 +69,6 @@ const FloatActionBtn = styled.button`
   width: 8vh;
   bottom: 8vh;
   right: 8vh;
-  ${flexCenterAlign}
   color: ${Color.white};
   font-size: 7vh;
   box-shadow: 0.2vh 0.2vh 1vh 0.2vh ${Color["theme1-primary"]};
