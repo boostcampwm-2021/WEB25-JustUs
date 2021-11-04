@@ -32,7 +32,7 @@ const SecondDepth = ({
 };
 
 const SecondDepthWrapper = styled.div`
-  width: 13vw;
+  width: 20vw;
   height: 95vh;
   background-color: ${COLOR.THEME1.PRIMARY};
   display: flex;
