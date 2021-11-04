@@ -39,7 +39,7 @@ const InputModal = ({ addAlbumModalRef, setIsAddAlbumModalOpened }: InputModalPr
 
   return (
     <AddAlbumModalWrapper ref={addAlbumModalRef} className="add-album-modal">
-      <AlbumCreateInputWrapper placeholder="새 앨범 이름을 입력하세요" ref={inputRef} />
+      <AlbumCreateInputWrapper placeholder="새 앨범" ref={inputRef} />
       <AlbumCreateBtnWrapper onClick={onClickAddAlbum}>생성</AlbumCreateBtnWrapper>
     </AddAlbumModalWrapper>
   );
@@ -59,13 +59,13 @@ const AddAlbumModalWrapper = styled.div`
 const AlbumCreateInputWrapper = styled.input`
   border: none;
   border-bottom: 1px solid ${COLOR.THEME1.PRIMARY};
-  width: 70%;
+  width: 60%;
   text-align: center;
   font-size: 1rem;
 
   &::-webkit-input-placeholder {
     text-align: center;
-    font-size: 1rem;
+    font-size: 1.2rem;
   }
 
   &:focus-visible {
