@@ -13,8 +13,11 @@ interface SidebarProps {
 
 const Sidebar = ({ isToggle, setIsToggle }: SidebarProps) => {
   const [isModalOpened, setIsModalOpened] = useState<boolean>(false);
-  const clickedTarget = useSelector((state: RootState) => state.groupModal.clickedTarget);
+  const [isAddAlbumModalOpened, setIsAddAlbumModalOpened] = useState<boolean>(false);
   const addGroupBtnRef = useRef<HTMLDivElement>(null);
+  const addAlbumBtnRef = useRef<HTMLDivElement>(null);
+  const addAlbumModalRef = useRef<HTMLDivElement>(null);
+  const clickedTarget = useSelector((state: RootState) => state.groupModal.clickedTarget);
   const { selectedGroup } = useSelector((state: RootState) => state.groups);
 
   useEffect(() => {
@@ -22,12 +25,23 @@ const Sidebar = ({ isToggle, setIsToggle }: SidebarProps) => {
       if (!clickedTarget.target) return;
 
       const addgroupButtonEl = clickedTarget.target.closest(".add-group-btn");
-      if (addgroupButtonEl !== addGroupBtnRef.current) {
+      const addAlbumButtonEl = clickedTarget.target.closest(".add-album-btn");
+      const addAlbumModalEl = clickedTarget.target.closest(".add-album-modal");
+
+      if (addgroupButtonEl !== addGroupBtnRef.current && addgroupButtonEl !== addGroupBtnRef.current) {
         setIsModalOpened(false);
-        return;
       }
 
-      setIsModalOpened(true);
+      if (
+        addAlbumButtonEl !== addGroupBtnRef.current &&
+        addAlbumButtonEl !== addAlbumBtnRef.current &&
+        addAlbumModalEl !== addAlbumModalRef.current
+      ) {
+        setIsAddAlbumModalOpened(false);
+      }
+
+      if (addgroupButtonEl) setIsModalOpened(true);
+      if (addAlbumButtonEl) setIsAddAlbumModalOpened(true);
     };
 
     clickHandler();
@@ -36,8 +50,15 @@ const Sidebar = ({ isToggle, setIsToggle }: SidebarProps) => {
   return (
     <SidebarWrapper>
       <FirstDepth isToggle={isToggle} setIsToggle={setIsToggle} addGroupBtnRef={addGroupBtnRef} />
+      {isToggle && selectedGroup && (
+        <SecondDepth
+          addAlbumBtnRef={addAlbumBtnRef}
+          isAddAlbumModalOpened={isAddAlbumModalOpened}
+          setIsAddAlbumModalOpened={setIsAddAlbumModalOpened}
+          addAlbumModalRef={addAlbumModalRef}
+        />
+      )}
       {isModalOpened && <AddGroupModal clientX={clickedTarget.clientX} clientY={clickedTarget.clientY} />}
-      {isToggle && selectedGroup && <SecondDepth />}
     </SidebarWrapper>
   );
 };
