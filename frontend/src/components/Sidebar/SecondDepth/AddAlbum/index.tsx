@@ -2,10 +2,16 @@ import styled from "styled-components";
 import { flexRowCenterAlign } from "@src/styles/StyledComponents";
 import COLOR from "@styles/Color";
 
-const AddAlbum = () => {
+interface AddAlbumProps {
+  addAlbumBtnRef: React.RefObject<HTMLDivElement>;
+}
+
+const AddAlbum = ({ addAlbumBtnRef }: AddAlbumProps) => {
+  const onClickAddAlbum = () => {};
+
   return (
     <AddAlbumWrapper>
-      <AddAblumBtnWrapper>
+      <AddAblumBtnWrapper onClick={onClickAddAlbum} className="add-album-btn" ref={addAlbumBtnRef}>
         <img src="/icons/add-album.svg" alt="add-album icon.svg" />
         <GuideWrapper>Add Album</GuideWrapper>
       </AddAblumBtnWrapper>
@@ -15,7 +21,7 @@ const AddAlbum = () => {
 
 const AddAlbumWrapper = styled.div`
   ${flexRowCenterAlign}
-  width: 15vw;
+  width: 90%;
   height: 100px;
   position: absolute;
   bottom: 0;
@@ -26,9 +32,10 @@ const AddAblumBtnWrapper = styled.div`
   height: 5vh;
   border-radius: 10px;
   border: 1px solid ${COLOR.WHITE};
-  width: 85%;
+  width: 100%;
   background: ${COLOR.BLUR};
   color: ${COLOR.WHITE};
+  cursor: pointer;
 `;
 
 const GuideWrapper = styled.div`
