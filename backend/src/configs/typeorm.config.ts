@@ -11,4 +11,3 @@ export const typeORMConfig: TypeOrmModuleOptions = {
   entities: [__dirname + process.env.JUSTUS_ENTITIY_PATH], //[process.env.ENTITIY_PATH],
   synchronize: true, // false로 해두는 게 안전하다.
 };
-console.log(typeORMConfig);
