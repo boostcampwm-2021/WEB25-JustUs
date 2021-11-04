@@ -1,19 +1,29 @@
-const color = {
-  black: "#222",
-  white: "#FFF",
-  gray: "#D3D3D3",
-  darkgray: "#0202029B",
-  blue: "#4D73D7",
-  red: "#D32F2F",
-  blur: "rgba(223, 223, 223, 0.2)",
-  scroll: "#ffffff70",
-  "theme1-primary": "#52734D",
-  "theme1-secondary": "rgba(145, 199, 136, 0.8)",
-  "theme2-primary": "#E4CE8E",
-  "theme2-secondary": "#D77948",
-  "theme3-primary": "#87AAAA",
-  "theme3-secondary": "#C8E3D4",
-  modal_background: "rgba(0, 0, 0, 0.4)",
+const COLOR = {
+  BLACK: "#222",
+  WHITE: "#FFF",
+  GRAY: "#D3D3D3",
+  DARKGRAY: "#0202029B",
+  LIGHTGRAY1: "#D7D7D7",
+  LIGHTGRAY2: "#DADADA",
+  BLUE: "#4D73D7",
+  RED: "#D32F2F",
+  WRAP: "#FFFFFF90",
+  SHADOW_BLACK: "#00000040",
+  BLUR: "#DFDFDF33",
+  THEME1: {
+    PRIMARY: "#52734D",
+    SECONDARY: "#91C788CC",
+  },
+  THEME2: {
+    PRIMARY: "#E4CE8E",
+    SECONDARY: "#D77948",
+  },
+  THEME3: {
+    PRIMARY: "#87AAAA",
+    SECONDARY: "#C8E3D4",
+  },
+  MODAL_BACKGROUND: "#00000066",
+  SCROLL: "#ffffff70",
 };
 
-export default color;
+export default COLOR;

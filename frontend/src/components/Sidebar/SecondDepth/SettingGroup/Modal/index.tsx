@@ -1,9 +1,9 @@
 import { useState, Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
-import { flexCenterAlign, yesNoButtonWrapper } from "@src/styles/StyledComponents";
+import { flexRowCenterAlign, yesNoButtonWrapper } from "@src/styles/StyledComponents";
 import Modal from "@components/Modal";
 import { useDispatch, useSelector } from "react-redux";
-import Color from "@styles/Color";
+import COLOR from "@styles/Color";
 import { GroupAction } from "@src/action";
 import { RootState } from "@src/reducer";
 
@@ -113,7 +113,7 @@ const SettingGroupModal = ({ setIsToggle }: SettingGroupModalProps) => {
 };
 
 const ModalContainer = styled.div`
-  background-color: ${Color.white};
+  background-color: ${COLOR.WHITE};
   min-height: 30vw;
   min-width: 40vw;
   border-radius: 50px;
@@ -141,7 +141,7 @@ const CloseBtn = styled.div`
   margin-right: 30px;
 
   & > button {
-    background-color: ${Color.white};
+    background-color: ${COLOR.WHITE};
     border: none;
     cursor: pointer;
   }
@@ -207,25 +207,25 @@ const DropGuideWrapper = styled.div`
 `;
 
 const DropGroupButtonWrapper = styled.div`
-  ${flexCenterAlign}
+  ${flexRowCenterAlign}
   width: 120px;
   height: 40px;
   border-radius: 10px;
-  border: 2px solid ${Color.red};
+  border: 2px solid ${COLOR.RED};
   margin-left: 30px;
   cursor: pointer;
 `;
 
 const YesButtonWrapper = styled.div`
-  ${flexCenterAlign}
+  ${flexRowCenterAlign}
   ${yesNoButtonWrapper}
-  border: 2px solid ${Color.red};
+  border: 2px solid ${COLOR.RED};
 `;
 
 const NoButtonWrapper = styled.div`
-  ${flexCenterAlign}
+  ${flexRowCenterAlign}
   ${yesNoButtonWrapper}
-  border: 2px solid ${Color.blue};
+  border: 2px solid ${COLOR.BLUE};
 `;
 
 export default SettingGroupModal;

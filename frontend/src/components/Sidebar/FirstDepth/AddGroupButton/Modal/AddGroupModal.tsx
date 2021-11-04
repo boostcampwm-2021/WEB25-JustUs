@@ -1,8 +1,7 @@
 import styled from "styled-components";
-import { flexCenterAlign } from "@styles/StyledComponents";
-import Color from "@styles/Color";
+import { flexRowCenterAlign } from "@styles/StyledComponents";
+import COLOR from "@styles/Color";
 import { useDispatch } from "react-redux";
-import { GroupModalAction } from "@src/action";
 
 interface AddGroupModal {
   clientX: number;
@@ -31,7 +30,7 @@ const AddGroupModal = ({ clientX, clientY }: AddGroupModal) => {
 const ModalWrapper = styled.div<{ clientX: number; clientY: number }>`
   width: 150px;
   height: 100px;
-  background-color: ${Color.gray};
+  background-color: ${COLOR.GRAY};
   position: absolute;
   left: ${({ clientX }) => `${clientX + 30}px`};
   top: ${({ clientY }) => (clientY + 100 > window.innerHeight ? `${clientY - 100}px` : `${clientY - 10}px`)};
@@ -40,7 +39,7 @@ const ModalWrapper = styled.div<{ clientX: number; clientY: number }>`
 `;
 
 const ModalItem = styled.div`
-  ${flexCenterAlign}
+  ${flexRowCenterAlign}
   height: 50%;
   cursor: pointer;
 
@@ -52,7 +51,7 @@ const ModalItem = styled.div`
 const Divider = styled.div`
   width: 100%;
   height: 1px;
-  background-color: ${Color.black};
+  background-color: ${COLOR.BLACK};
 `;
 
 export default AddGroupModal;

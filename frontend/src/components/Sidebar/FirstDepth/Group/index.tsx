@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
-import { flexCenterAlign } from "@styles/StyledComponents";
-import Color from "@styles/Color";
+import { flexRowCenterAlign } from "@styles/StyledComponents";
+import COLOR from "@styles/Color";
 import { GroupAction } from "@src/action/index";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
@@ -34,17 +34,18 @@ const Group = ({ setIsToggle, groupID, groupName, groupImg, albumList }: GroupPr
 };
 
 const ButtonWrapper = styled.div<{ selectedGroupID: number; groupID: number; groupImg: string }>`
-  ${flexCenterAlign}
-  min-width: 60px;
-  min-height: 60px;
-  background-color: ${Color.white};
-  margin: 10px;
-  border-radius: 20px;
+  ${flexRowCenterAlign}
+  min-width: 3vw;
+  min-height: 3vw;
+  background-color: ${COLOR.WHITE};
+  margin: 10%;
+  border-radius: 1vw;
   border: ${props =>
-    props.selectedGroupID === props.groupID ? `5px solid ${Color["theme1-secondary"]}` : `5px solid ${Color.white}`};
+    props.selectedGroupID === props.groupID ? `5px solid ${COLOR.THEME1.SECONDARY}` : `5px solid ${COLOR.WHITE}`};
   background-image: url("${props => props.groupImg}");
   background-size: 100%;
   cursor: pointer;
+  background-repeat: no-repeat;
 `;
 
 export default Group;
