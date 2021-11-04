@@ -1,4 +1,4 @@
-import React, { ChangeEventHandler, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import Modal from "@components/Modal";
 import { useDispatch } from "react-redux";
@@ -26,7 +26,7 @@ const UserInfoModal = () => {
     const file = files[0];
     const reader = new FileReader();
 
-    reader.onload = e => {
+    reader.onload = (e) => {
       if (!e.target) return;
       if (!imageRef.current) return;
       if (!e.target.result) return;
@@ -52,7 +52,7 @@ const UserInfoModal = () => {
   return (
     <Modal>
       <ModalContainer
-        onClick={event => {
+        onClick={(event) => {
           event.nativeEvent.stopImmediatePropagation();
         }}
       >
@@ -138,7 +138,7 @@ const ImageBackground = styled.div<{ userImg: string }>`
   width: 90px;
   height: 90px;
   background-color: ${COLOR.THEME1.SECONDARY};
-  opacity: ${props => (props.userImg === "/icons/person.svg" ? "0.4" : "")};
+  opacity: ${(props) => (props.userImg === "/icons/person.svg" ? "0.4" : "")};
   border-radius: 100%;
   ${flexRowCenterAlign}
 `;
