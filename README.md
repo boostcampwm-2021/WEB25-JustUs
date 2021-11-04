@@ -34,10 +34,10 @@
 <img src="https://img.shields.io/badge/React-v17.0.2-61DAFB?logo=React"> <img src="https://img.shields.io/badge/Redux-v4.1.2-764ABC?logo=Redux"> <img src="https://img.shields.io/badge/Styled_components-v5.0.0-DB7093?logo=Styled-components">
 
 ### BackEnd
-<img src="https://img.shields.io/badge/Node.js-v16.13.0-339933?logo=Node.js"> <img src="https://img.shields.io/badge/Nestjs-v8.1.4-E0234E?logo=Nestjs"> <img src="https://img.shields.io/badge/Mysql-v8.0.23-4479A1?logo=Mysql"> 
+<img src="https://img.shields.io/badge/Node.js-v16.13.0-339933?logo=Node.js"> <img src="https://img.shields.io/badge/Express-v4.16.1-ffffff?logo=Express"> <img src="https://img.shields.io/badge/Mysql-v8.0.23-4479A1?logo=Mysql"> 
 
 ### Devops
-<img src="https://img.shields.io/badge/GitHub%20Actions--2088FF?logo=GitHubActions"> <img src="https://img.shields.io/badge/Docker-v20.10.10-2496ED?logo=Docker"> <img src="https://img.shields.io/badge/Ncloud--03C75A?logo=Naver">
+<img src="https://img.shields.io/badge/Jenkins-v2.303.2-D24939?logo=Jenkins"> <img src="https://img.shields.io/badge/Docker-v20.10.6-2496ED?logo=Docker"> <img src="https://img.shields.io/badge/Ncloud-03C75A?logo=Naver">
 
 ### Common
 <img src="https://img.shields.io/badge/JavaScript-ES6%2B-F7DF1E?logo=JavaScript"> <img src="https://img.shields.io/badge/TypeScript-v4.4-3178C6?logo=TypeScript"> <img src="https://img.shields.io/badge/ESlint-v8.1.0-4B32C3?logo=ESlint"> <img src="https://img.shields.io/badge/Prettier-v9.0.0-F7B93E?logo=Prettier"> <img src="https://img.shields.io/badge/Jest-v27.2-C21325?logo=Jest">
