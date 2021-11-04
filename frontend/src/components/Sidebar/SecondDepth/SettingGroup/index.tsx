@@ -25,7 +25,7 @@ const SettingGroup = () => {
 };
 
 const SettingGroupWrapper = styled.div`
-  width: 15vw;
+  width: 100%;
   height: 6vh;
   background-color: ${COLOR.THEME1.PRIMARY};
   display: flex;
