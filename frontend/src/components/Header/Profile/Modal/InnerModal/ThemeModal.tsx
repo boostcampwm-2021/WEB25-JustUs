@@ -18,7 +18,7 @@ const UserInfoModal = () => {
   return (
     <Modal>
       <ModalContainer
-        onClick={event => {
+        onClick={(event) => {
           event.nativeEvent.stopImmediatePropagation();
         }}
       >
