@@ -2,7 +2,7 @@ import styled from "styled-components";
 import Modal from "@components/Modal";
 import { useDispatch } from "react-redux";
 import COLOR from "@styles/Color";
-import { flexColumnCenterAlign, flexRowCenterAlign } from "@src/styles/StyledComponents";
+import { flexColumnCenterAlign } from "@src/styles/StyledComponents";
 
 const UserInfoModal = () => {
   const dispatch = useDispatch();
@@ -18,7 +18,7 @@ const UserInfoModal = () => {
   return (
     <Modal>
       <ModalContainer
-        onClick={event => {
+        onClick={(event) => {
           event.nativeEvent.stopImmediatePropagation();
         }}
       >
@@ -40,7 +40,7 @@ const UserInfoModal = () => {
                 {themes.map(({ id, themeColor, name, src }) => {
                   return (
                     <li key={id}>
-                      <img src={src} alt={themeColor} />
+                      <img src={src} alt={themeColor} height="100vh" />
                       <input type="radio" name="theme" value={themeColor} />
                       <label htmlFor={themeColor}>{name}</label>
                     </li>
