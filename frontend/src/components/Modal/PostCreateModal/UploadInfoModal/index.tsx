@@ -15,6 +15,9 @@ interface UploadInfoModalProps {
 const UploadInfoModal = ({ changeMode, files }: UploadInfoModalProps) => {
   const carouselRef = useRef<HTMLDivElement>(null);
   const [imageIndex, setImageIndex] = useState(0);
+  const [title, setTitle] = useState<string>("");
+  const [text, setText] = useState<string>("");
+  const [activate, setActivate] = useState<boolean>(false);
   const dispatch = useDispatch();
   const closeModal = () => {
     dispatch({ type: "CLOSE_MODAL" });
@@ -34,6 +37,21 @@ const UploadInfoModal = ({ changeMode, files }: UploadInfoModalProps) => {
     if (!carouselRef.current) return;
     carouselRef.current.style.transform = `translate3d(-${carouselRef.current.offsetWidth * imageIndex}px, 0, 0)`;
   }, [imageIndex]);
+
+  const handelTitleInput = (event: React.FormEvent<HTMLInputElement>) => {
+    const { value } = event.target as HTMLTextAreaElement;
+    setTitle(value);
+  };
+
+  const handelTextInput = (event: React.FormEvent<HTMLTextAreaElement>) => {
+    const { value } = event.target as HTMLTextAreaElement;
+    setText(value);
+  };
+
+  useEffect(() => {
+    if (title.length == 0) setActivate(false);
+    else setActivate(true);
+  }, [title]);
 
   return (
     <ModalContainer
@@ -71,13 +89,106 @@ const UploadInfoModal = ({ changeMode, files }: UploadInfoModalProps) => {
             <img src="/icons/next.svg" alt="next image" height="30%"></img>
           </ChangeImageButton>
         </ModalLeft>
-        <div></div>
+        <ModalRight>
+          <InputTitle type="text" placeholder="제목" value={title} onChange={handelTitleInput} />
+          <InputText placeholder="내용" value={text} onChange={handelTextInput} />
+          <InputBottom>
+            <InputDate type="date" />
+            <InputPlace>
+              <InputPlaceName>장소이름</InputPlaceName>
+              <LocationButton>
+                <img src="/icons/location.svg" width="100%" />
+              </LocationButton>
+            </InputPlace>
+          </InputBottom>
+          <UploadButton activate={activate}>게시하기</UploadButton>
+        </ModalRight>
       </ModalContent>
     </ModalContainer>
   );
 };
 
 export default UploadInfoModal;
+const UploadButton = styled.button<{ activate: boolean }>`
+  background-color: ${props => {
+    if (props.activate) return COLOR.THEME1.PRIMARY;
+    else return COLOR.THEME1.SECONDARY;
+  }};
+  border: 1px solid ${COLOR.THEME1.PRIMARY};
+  border-radius: 10px;
+  flex-basis: 3rem;
+  margin-top: 1rem;
+  color: ${COLOR.WHITE};
+  font-size: 1rem;
+  cursor: ${props => {
+    if (props.activate) return "pointer";
+    else return "not-allowed";
+  }};
+`;
+const LocationButton = styled.button`
+  border: none;
+  background: none;
+  cursor: pointer;
+`;
+const InputPlaceName = styled.div`
+  border: 1px solid black;
+  height: 4vh;
+  line-height: 4vh;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  border: none;
+  margin-right: 30px;
+  flex-basis: 90%;
+  text-align: right;
+`;
+const InputBottom = styled.div`
+  display: flex;
+  flex-direction: column;
+  max-height: 5rem;
+  justify-content: space-between;
+  align-items: flex-end;
+  border-top: 1px solid ${COLOR.LIGHTGRAY1};
+  padding-right: 2rem;
+`;
+const InputPlace = styled.div`
+  display: flex;
+  width: 100%;
+`;
+const InputDate = styled.input`
+  flex-basis: 20vh;
+  border: none;
+  font-size: 1rem;
+  padding-right: 5px;
+`;
+const InputTitle = styled.input`
+  flex-basis: 5vh;
+  margin-bottom: 2vh;
+  border: none;
+  border-bottom: 1px solid ${COLOR.LIGHTGRAY1};
+  font-size: 1.2rem;
+  &:focus {
+    outline: none;
+  }
+`;
+const InputText = styled.textarea`
+  flex-basis: 60%;
+  font-size: 1.2rem;
+  border: none;
+  resize: none;
+  margin-bottom: 2vh;
+  &:focus {
+    outline: none;
+  }
+`;
+const ModalRight = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 1vh;
+  padding-top: 2vh;
+  padding-bottom: 5vh;
+`;
+
 const DotContainer = styled.div`
   display: flex;
   height: 30px;
