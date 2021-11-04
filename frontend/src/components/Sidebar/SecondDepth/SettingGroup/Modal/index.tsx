@@ -1,8 +1,15 @@
-import { useState } from "react";
+import { useState, Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
+import { flexCenterAlign, yesNoButtonWrapper } from "@src/styles/StyledComponents";
 import Modal from "@components/Modal";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Color from "@styles/Color";
+import { GroupAction } from "@src/action";
+import { RootState } from "@src/reducer";
+
+interface SettingGroupModalProps {
+  setIsToggle: Dispatch<SetStateAction<boolean>>;
+}
 
 const groupMemberList = [
   {
@@ -35,8 +42,9 @@ const groupMemberList = [
   },
 ];
 
-const SettingGroupModal = () => {
+const SettingGroupModal = ({ setIsToggle }: SettingGroupModalProps) => {
   const [clickedDropBtn, setClickedDropclickedDropBtn] = useState(false);
+  const { selectedGroup, groups }: any = useSelector((state: RootState) => state.groups);
   const dispatch = useDispatch();
 
   const closeModal = () => {
@@ -45,6 +53,16 @@ const SettingGroupModal = () => {
 
   const onClickDropBtn = () => {
     setClickedDropclickedDropBtn(true);
+  };
+  const onClickConfirmBtn = () => {
+    dispatch({ type: GroupAction.DELETE_GROUP, payload: selectedGroup });
+    dispatch({ type: GroupAction.SET_SELECTED_GROUP, payload: null });
+    closeModal();
+    setIsToggle(false);
+  };
+
+  const onClickCancelBtn = () => {
+    setClickedDropclickedDropBtn(false);
   };
 
   return (
@@ -82,8 +100,8 @@ const SettingGroupModal = () => {
               {!clickedDropBtn && <DropGroupButtonWrapper onClick={onClickDropBtn}>탈퇴하기</DropGroupButtonWrapper>}
               {clickedDropBtn && (
                 <>
-                  <YesButtonWrapper onClick={onClickDropBtn}>예</YesButtonWrapper>
-                  <NoButtonWrapper onClick={onClickDropBtn}>아니오</NoButtonWrapper>
+                  <YesButtonWrapper onClick={onClickConfirmBtn}>예</YesButtonWrapper>
+                  <NoButtonWrapper onClick={onClickCancelBtn}>아니오</NoButtonWrapper>
                 </>
               )}
             </GroupDropWrapper>
@@ -95,7 +113,7 @@ const SettingGroupModal = () => {
 };
 
 const ModalContainer = styled.div`
-  background-color: #ffffff;
+  background-color: ${Color.white};
   min-height: 30vw;
   min-width: 40vw;
   border-radius: 50px;
@@ -123,8 +141,9 @@ const CloseBtn = styled.div`
   margin-right: 30px;
 
   & > button {
-    background-color: white;
+    background-color: ${Color.white};
     border: none;
+    cursor: pointer;
   }
 `;
 
@@ -188,36 +207,25 @@ const DropGuideWrapper = styled.div`
 `;
 
 const DropGroupButtonWrapper = styled.div`
+  ${flexCenterAlign}
   width: 120px;
   height: 40px;
   border-radius: 10px;
   border: 2px solid ${Color.red};
   margin-left: 30px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  cursor: pointer;
 `;
 
 const YesButtonWrapper = styled.div`
-  width: 120px;
-  height: 40px;
-  border-radius: 10px;
+  ${flexCenterAlign}
+  ${yesNoButtonWrapper}
   border: 2px solid ${Color.red};
-  margin-left: 30px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 `;
 
 const NoButtonWrapper = styled.div`
-  width: 120px;
-  height: 40px;
-  border-radius: 10px;
+  ${flexCenterAlign}
+  ${yesNoButtonWrapper}
   border: 2px solid ${Color.blue};
-  margin-left: 30px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 `;
 
 export default SettingGroupModal;

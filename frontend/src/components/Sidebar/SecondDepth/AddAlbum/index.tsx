@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { flexCenterAlign } from "@styles/StyledComponents";
 import Color from "@styles/Color";
 
 const AddAlbum = () => {
@@ -13,9 +14,7 @@ const AddAlbum = () => {
 };
 
 const AddAlbumWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  ${flexCenterAlign}
   width: 15vw;
   height: 100px;
   position: fixed;
@@ -23,10 +22,8 @@ const AddAlbumWrapper = styled.div`
 `;
 
 const AddAblumBtnWrapper = styled.div`
+  ${flexCenterAlign}
   height: 5vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   border-radius: 10px;
   border: 1px solid ${Color.white};
   width: 85%;
