@@ -71,13 +71,99 @@ const UploadInfoModal = ({ changeMode, files }: UploadInfoModalProps) => {
             <img src="/icons/next.svg" alt="next image" height="30%"></img>
           </ChangeImageButton>
         </ModalLeft>
-        <div></div>
+        <ModalRight>
+          <InputTitle type="text" placeholder="제목" />
+          <InputText placeholder="내용" />
+          <InputBottom>
+            <InputDate type="date" />
+            <InputPlace>
+              <InputPlaceName>장소이름</InputPlaceName>
+              <LocationButton>
+                <img src="/icons/location.svg" width="100%" />
+              </LocationButton>
+            </InputPlace>
+          </InputBottom>
+          <UploadButton>게시하기</UploadButton>
+        </ModalRight>
       </ModalContent>
     </ModalContainer>
   );
 };
 
 export default UploadInfoModal;
+const UploadButton = styled.button`
+  background-color: ${COLOR.THEME1.PRIMARY};
+  border: 1px solid ${COLOR.THEME1.PRIMARY};
+  border-radius: 10px;
+  flex-basis: 3rem;
+  margin-top: 1rem;
+  color: ${COLOR.WHITE};
+  font-size: 1rem;
+`;
+const LocationButton = styled.button`
+  border: none;
+  background: none;
+  cursor: pointer;
+`;
+const InputPlaceName = styled.div`
+  border: 1px solid black;
+  height: 4vh;
+  line-height: 4vh;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  border: none;
+  margin-right: 30px;
+  flex-basis: 90%;
+  text-align: right;
+`;
+const InputBottom = styled.div`
+  display: flex;
+  flex-direction: column;
+  max-height: 5rem;
+  justify-content: space-between;
+  align-items: flex-end;
+  border-top: 1px solid ${COLOR.LIGHTGRAY1};
+  padding-right: 2rem;
+`;
+const InputPlace = styled.div`
+  display: flex;
+  width: 100%;
+`;
+const InputDate = styled.input`
+  flex-basis: 20vh;
+  border: none;
+  font-size: 1rem;
+  padding-right: 5px;
+`;
+const InputTitle = styled.input`
+  flex-basis: 5vh;
+  margin-bottom: 2vh;
+  border: none;
+  border-bottom: 1px solid ${COLOR.LIGHTGRAY1};
+  font-size: 1.2rem;
+  &:focus {
+    outline: none;
+  }
+`;
+const InputText = styled.textarea`
+  flex-basis: 60%;
+  font-size: 1.2rem;
+  border: none;
+  resize: none;
+  margin-bottom: 2vh;
+  &:focus {
+    outline: none;
+  }
+`;
+const ModalRight = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 1vh;
+  padding-top: 2vh;
+  padding-bottom: 5vh;
+`;
+
 const DotContainer = styled.div`
   display: flex;
   height: 30px;
