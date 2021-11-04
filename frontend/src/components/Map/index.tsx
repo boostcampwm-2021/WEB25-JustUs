@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import Color from "@styles/Color";
-import { flexCenterAlign } from "@styles/StyledComponents";
+import COLOR from "@styles/Color";
+import { flexRowCenterAlign } from "@styles/StyledComponents";
 import { useDispatch } from "react-redux";
 
 const load = (url: string, cb: Function, err: Function) => {
@@ -55,26 +55,28 @@ const Map = () => {
 };
 
 const Maps = styled.div`
-  width: 90%;
+  position: absolute;
+  width: 100%;
   height: 95vh;
 `;
 
 const FloatActionBtn = styled.button`
-  ${flexCenterAlign}
-  border: none;
-  background-color: ${Color["theme1-secondary"]};
+  background-color: ${COLOR.THEME1.SECONDARY};
   position: absolute;
+  z-index: 2;
   border-radius: 50%;
+  border: none;
   height: 8vh;
   width: 8vh;
   bottom: 8vh;
   right: 8vh;
-  color: ${Color.white};
+  ${flexRowCenterAlign}
+  color: ${COLOR.WHITE};
   font-size: 7vh;
-  box-shadow: 0.2vh 0.2vh 1vh 0.2vh ${Color["theme1-primary"]};
+  box-shadow: 0.2vh 0.2vh 1vh 0.2vh ${COLOR.THEME1.PRIMARY};
   &:hover {
     cursor: pointer;
-    background-color: ${Color["theme1-primary"]};
+    background-color: ${COLOR.THEME1.PRIMARY};
   }
 `;
 
