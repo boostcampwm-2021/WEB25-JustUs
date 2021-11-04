@@ -15,6 +15,9 @@ interface UploadInfoModalProps {
 const UploadInfoModal = ({ changeMode, files }: UploadInfoModalProps) => {
   const carouselRef = useRef<HTMLDivElement>(null);
   const [imageIndex, setImageIndex] = useState(0);
+  const [title, setTitle] = useState<string>("");
+  const [text, setText] = useState<string>("");
+  const [activate, setActivate] = useState<boolean>(false);
   const dispatch = useDispatch();
   const closeModal = () => {
     dispatch({ type: "CLOSE_MODAL" });
@@ -34,6 +37,21 @@ const UploadInfoModal = ({ changeMode, files }: UploadInfoModalProps) => {
     if (!carouselRef.current) return;
     carouselRef.current.style.transform = `translate3d(-${carouselRef.current.offsetWidth * imageIndex}px, 0, 0)`;
   }, [imageIndex]);
+
+  const handelTitleInput = (event: React.FormEvent<HTMLInputElement>) => {
+    const { value } = event.target as HTMLTextAreaElement;
+    setTitle(value);
+  };
+
+  const handelTextInput = (event: React.FormEvent<HTMLTextAreaElement>) => {
+    const { value } = event.target as HTMLTextAreaElement;
+    setText(value);
+  };
+
+  useEffect(() => {
+    if (title.length == 0) setActivate(false);
+    else setActivate(true);
+  }, [title]);
 
   return (
     <ModalContainer
@@ -72,8 +90,8 @@ const UploadInfoModal = ({ changeMode, files }: UploadInfoModalProps) => {
           </ChangeImageButton>
         </ModalLeft>
         <ModalRight>
-          <InputTitle type="text" placeholder="제목" />
-          <InputText placeholder="내용" />
+          <InputTitle type="text" placeholder="제목" value={title} onChange={handelTitleInput} />
+          <InputText placeholder="내용" value={text} onChange={handelTextInput} />
           <InputBottom>
             <InputDate type="date" />
             <InputPlace>
@@ -83,7 +101,7 @@ const UploadInfoModal = ({ changeMode, files }: UploadInfoModalProps) => {
               </LocationButton>
             </InputPlace>
           </InputBottom>
-          <UploadButton>게시하기</UploadButton>
+          <UploadButton activate={activate}>게시하기</UploadButton>
         </ModalRight>
       </ModalContent>
     </ModalContainer>
@@ -91,14 +109,21 @@ const UploadInfoModal = ({ changeMode, files }: UploadInfoModalProps) => {
 };
 
 export default UploadInfoModal;
-const UploadButton = styled.button`
-  background-color: ${COLOR.THEME1.PRIMARY};
+const UploadButton = styled.button<any>`
+  background-color: ${props => {
+    if (props.activate) return COLOR.THEME1.PRIMARY;
+    else return COLOR.THEME1.SECONDARY;
+  }};
   border: 1px solid ${COLOR.THEME1.PRIMARY};
   border-radius: 10px;
   flex-basis: 3rem;
   margin-top: 1rem;
   color: ${COLOR.WHITE};
   font-size: 1rem;
+  cursor: ${props => {
+    if (props.activate) return "pointer";
+    else return "not-allowed";
+  }};
 `;
 const LocationButton = styled.button`
   border: none;
