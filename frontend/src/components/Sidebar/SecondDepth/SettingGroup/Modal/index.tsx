@@ -4,11 +4,6 @@ import Modal from "@components/Modal";
 import { useDispatch } from "react-redux";
 import Color from "@styles/Color";
 
-interface SettingGroupModalProps {
-  closeFn: () => void;
-  open: boolean;
-}
-
 const groupMemberList = [
   {
     userID: 0,
@@ -40,18 +35,20 @@ const groupMemberList = [
   },
 ];
 
-const SettingGroupModal = ({ closeFn, open = false }: SettingGroupModalProps) => {
+const SettingGroupModal = () => {
   const [clickedDropBtn, setClickedDropclickedDropBtn] = useState(false);
   const dispatch = useDispatch();
-  const closeSettingGroupModal = () => {
-    dispatch({ type: "CLOSE_SETTING_GROUP_MODAL" });
+
+  const closeModal = () => {
+    dispatch({ type: "CLOSE_MODAL" });
   };
+
   const onClickDropBtn = () => {
     setClickedDropclickedDropBtn(true);
   };
 
   return (
-    <Modal open={open} closeFn={closeFn}>
+    <Modal>
       <ModalContainer
         onClick={event => {
           event.nativeEvent.stopImmediatePropagation();
@@ -59,13 +56,7 @@ const SettingGroupModal = ({ closeFn, open = false }: SettingGroupModalProps) =>
       >
         <Header>
           <CloseBtn>
-            <button
-              type="button"
-              onClick={() => {
-                closeFn();
-                closeSettingGroupModal();
-              }}
-            >
+            <button type="button" onClick={closeModal}>
               <img src="/icons/clear.svg" alt="clear icon" />
             </button>
           </CloseBtn>

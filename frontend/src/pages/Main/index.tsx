@@ -7,24 +7,8 @@ import ModalManager from "@components/Modal/ModalManager";
 import Map from "@components/Map";
 
 const Main = () => {
-  const [modalOpen, setModal] = useState("");
   const [isToggle, setIsToggle] = useState<boolean>(true);
   const dispatch = useDispatch();
-
-  const openModal = (event: React.SyntheticEvent<EventTarget>) => {
-    if (!(event.target instanceof HTMLButtonElement)) return;
-    event.preventDefault();
-    const {
-      target: {
-        dataset: { modal },
-      },
-    } = event;
-    if (modal) setModal(modal);
-  };
-
-  const closeModal = () => {
-    setModal("");
-  };
 
   useEffect(() => {
     document.addEventListener("click", ({ target }) => {
@@ -41,10 +25,7 @@ const Main = () => {
         <Sidebar isToggle={isToggle} setIsToggle={setIsToggle} />
         <Map />
       </Content>
-      <button onClick={openModal} data-modal="PostCreateModal">
-        +
-      </button>
-      <ModalManager closeFn={closeModal} modal={modalOpen} />
+      <ModalManager />
     </>
   );
 };
