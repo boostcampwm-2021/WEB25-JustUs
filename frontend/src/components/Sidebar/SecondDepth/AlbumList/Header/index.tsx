@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import Color from "@styles/Color";
+import COLOR from "@styles/Color";
 
 interface HeaderProps {
   albumName: string;
@@ -25,7 +25,7 @@ const Header = ({ albumName, postToggle, setPostToggle }: HeaderProps) => {
 
 const HeaderWrapper = styled.div`
   width: 100%;
-  color: ${Color.white};
+  color: ${COLOR.WHITE};
   display: flex;
   cursor: default;
 `;

@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import { flexCenterAlign } from "@styles/StyledComponents";
-import Color from "@styles/Color";
+import { flexRowCenterAlign } from "@src/styles/StyledComponents";
+import COLOR from "@styles/Color";
 
 const AddAlbum = () => {
   return (
@@ -14,21 +14,21 @@ const AddAlbum = () => {
 };
 
 const AddAlbumWrapper = styled.div`
-  ${flexCenterAlign}
+  ${flexRowCenterAlign}
   width: 15vw;
   height: 100px;
-  position: fixed;
+  position: absolute;
   bottom: 0;
 `;
 
 const AddAblumBtnWrapper = styled.div`
-  ${flexCenterAlign}
+  ${flexRowCenterAlign}
   height: 5vh;
   border-radius: 10px;
-  border: 1px solid ${Color.white};
+  border: 1px solid ${COLOR.WHITE};
   width: 85%;
-  background: ${Color.blur};
-  color: white;
+  background: ${COLOR.BLUR};
+  color: ${COLOR.WHITE};
 `;
 
 const GuideWrapper = styled.div`

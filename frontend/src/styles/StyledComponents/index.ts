@@ -1,15 +1,24 @@
 import { css } from "styled-components";
 
-export const flexCenterAlign = css`
+const flexRowCenterAlign = css`
   display: flex;
   align-items: center;
   justify-content: center;
 `;
 
-export const yesNoButtonWrapper = css`
+const flexColumnCenterAlign = css`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+const yesNoButtonWrapper = css`
   width: 120px;
   height: 40px;
   border-radius: 10px;
   margin-left: 30px;
   cursor: pointer;
 `;
+
+export { flexRowCenterAlign, flexColumnCenterAlign, yesNoButtonWrapper };
