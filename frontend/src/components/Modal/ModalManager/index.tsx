@@ -1,4 +1,4 @@
-import React from "react";
+import { Dispatch, SetStateAction } from "react";
 import PostCreateModal from "../PostCreateModal";
 import CreateGroupModal from "@components/Sidebar/FirstDepth/AddGroupButton/Modal/InnerModal/CreateGroupModal";
 import JoinGroupModal from "@components/Sidebar/FirstDepth/AddGroupButton/Modal/InnerModal/JoinGroupModal";
@@ -7,7 +7,11 @@ import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
 import CloseModal from "../CloseModal";
 
-const ModalManager = () => {
+interface ModalManagerProps {
+  setIsToggle: Dispatch<SetStateAction<boolean>>;
+}
+
+const ModalManager = ({ setIsToggle }: ModalManagerProps) => {
   const { nowModal } = useSelector((state: RootState) => state.uploadModal);
 
   return (
@@ -16,7 +20,7 @@ const ModalManager = () => {
       {nowModal === "PostCreateModal" && <PostCreateModal />}
       {nowModal === "CreateGroupModal" && <CreateGroupModal />}
       {nowModal === "JoinGroupModal" && <JoinGroupModal />}
-      {nowModal === "SettingGroupModal" && <SettingGroupModal />}
+      {nowModal === "SettingGroupModal" && <SettingGroupModal setIsToggle={setIsToggle} />}
     </>
   );
 };

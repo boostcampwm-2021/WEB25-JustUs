@@ -1,7 +1,8 @@
 import React, { useRef } from "react";
 import styled from "styled-components";
-import shortid from "shortid";
+import { flexCenterAlign } from "@styles/StyledComponents";
 import Color from "@styles/Color";
+import shortid from "shortid";
 import { useDispatch } from "react-redux";
 
 interface FileObject {
@@ -144,8 +145,10 @@ const ModalContainer = styled.div`
   display: flex;
   flex-direction: column;
   background-color: ${Color.white};
-  width: 850px;
-  height: 530px;
+  height: 30vw;
+  width: 45vw;
+  min-width: 500px;
+  min-height: 400px;
   border-radius: 10px;
   box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
 `;
@@ -183,12 +186,10 @@ const UploadButton = styled.div`
 `;
 
 const ModalTitle = styled.div`
+  ${flexCenterAlign}
+  flex-direction: row;
   grid-column-start: 2;
   grid-column-end: 3;
   grid-row-start: 1;
   grid-row-end: 2;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
 `;
