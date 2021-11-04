@@ -7,6 +7,8 @@ services:
     volumes:
       - /usr/src/app/node_modules
       - ./frontend:/usr/src/app
+    environment:
+      REACT_APP_NCP_CLOUD_ID: ${REACT_APP_NCP_CLOUD_ID}
     stdin_open: true
     tty: true
 
@@ -16,7 +18,7 @@ services:
       dockerfile: Dockerfile
       context: ./nginx_proxy
     ports:
-      - "3000:80"
+      - "80:80"
 
   back:
     build:
