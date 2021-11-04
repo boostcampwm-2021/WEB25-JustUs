@@ -66,11 +66,14 @@ const CreateGroupModal = () => {
     if (!groupNameRef.current) return;
 
     const groupID = groups.length ? groups[groups.length - 1].groupID + 1 : 0;
+    const albumList = groups[groups.length - 1].albumList;
+    const albumID = albumList[albumList.length - 1].albumID + 1;
     const groupName = groupNameRef.current.value;
     const newGroup = {
       groupID,
       groupName,
       groupImg,
+      albumList: [{ albumID, albumName: "기본 앨범", posts: [] }],
     };
 
     dispatch({ type: GroupAction.ADD_GROUP, payload: newGroup });
