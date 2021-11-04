@@ -11,7 +11,7 @@ const SettingGroup = () => {
   const { selectedGroup }: any = useSelector((state: RootState) => state.groups);
 
   const onClickSettingGroup = () => {
-    dispatch({ type: GroupModalAction.OPEN_SETTING_GROUP_MODAL });
+    dispatch({ type: "OPEN_MODAL", payload: "SettingGroupModal" });
   };
 
   return (

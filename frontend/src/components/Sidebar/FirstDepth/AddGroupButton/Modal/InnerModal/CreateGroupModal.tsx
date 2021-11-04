@@ -8,17 +8,13 @@ import { GroupModalAction, GroupAction } from "@src/action";
 import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
 
-interface CreateGroupModalProps {
-  closeFn: () => void;
-  open: boolean;
-}
 interface Group {
   groupID: number;
   groupName: string;
   img: string;
 }
 
-const CreateGroupModal = ({ closeFn, open = false }: CreateGroupModalProps) => {
+const CreateGroupModal = () => {
   const uploadBtnRef = useRef<HTMLInputElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
   const groupNameRef = useRef<HTMLInputElement>(null);
@@ -26,9 +22,10 @@ const CreateGroupModal = ({ closeFn, open = false }: CreateGroupModalProps) => {
   const { groups }: any = useSelector((state: RootState) => state.groups);
   const dispatch = useDispatch();
 
-  const closeCreateGroupModal = () => {
-    dispatch({ type: GroupModalAction.CLOSE_CREATE_GROUP_MODAL });
+  const closeModal = () => {
+    dispatch({ type: "CLOSE_MODAL" });
   };
+
   const onClickUploadBtn = () => {
     if (uploadBtnRef.current === null) return;
     uploadBtnRef.current.click();
@@ -77,11 +74,11 @@ const CreateGroupModal = ({ closeFn, open = false }: CreateGroupModalProps) => {
     };
 
     dispatch({ type: GroupAction.ADD_GROUP, payload: newGroup });
-    closeCreateGroupModal();
+    closeModal();
   };
 
   return (
-    <Modal open={open} closeFn={closeFn}>
+    <Modal>
       <ModalContainer
         onClick={event => {
           event.nativeEvent.stopImmediatePropagation();
@@ -89,13 +86,7 @@ const CreateGroupModal = ({ closeFn, open = false }: CreateGroupModalProps) => {
       >
         <Header>
           <CloseBtn>
-            <button
-              type="button"
-              onClick={() => {
-                closeFn();
-                closeCreateGroupModal();
-              }}
-            >
+            <button type="button" onClick={closeModal}>
               <img src="/icons/clear.svg" alt="clear icon" />
             </button>
           </CloseBtn>

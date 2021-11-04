@@ -13,6 +13,7 @@ const color = {
   "theme2-secondary": "#D77948",
   "theme3-primary": "#87AAAA",
   "theme3-secondary": "#C8E3D4",
+  modal_background: "rgba(0, 0, 0, 0.4)",
 };
 
 export default color;

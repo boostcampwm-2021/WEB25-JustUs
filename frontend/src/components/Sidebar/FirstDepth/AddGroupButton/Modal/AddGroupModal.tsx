@@ -12,11 +12,11 @@ interface AddGroupModal {
 const AddGroupModal = ({ clientX, clientY }: AddGroupModal) => {
   const dispatch = useDispatch();
   const onClickCreateGroupBtn = () => {
-    dispatch({ type: GroupModalAction.OPEN_CREATE_GROUP_MODAL });
+    dispatch({ type: "OPEN_MODAL", payload: "CreateGroupModal" });
   };
 
   const onClickJoinGroupBtn = () => {
-    dispatch({ type: GroupModalAction.OPEN_JOIN_GROUP_MODAL });
+    dispatch({ type: "OPEN_MODAL", payload: "JoinGroupModal" });
   };
 
   return (

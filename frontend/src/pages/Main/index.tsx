@@ -11,25 +11,9 @@ import { RootState } from "@src/reducer";
 import { flexCenterAlign } from "@src/styles/StyledComponents";
 
 const Main = () => {
-  const [modalOpen, setModal] = useState("");
   const [isToggle, setIsToggle] = useState<boolean>(true);
   const dispatch = useDispatch();
   const { groups }: any = useSelector((state: RootState) => state.groups);
-
-  const openModal = (event: React.SyntheticEvent<EventTarget>) => {
-    if (!(event.target instanceof HTMLButtonElement)) return;
-    event.preventDefault();
-    const {
-      target: {
-        dataset: { modal },
-      },
-    } = event;
-    if (modal) setModal(modal);
-  };
-
-  const closeModal = () => {
-    setModal("");
-  };
 
   useEffect(() => {
     document.addEventListener("click", event => {
@@ -53,10 +37,7 @@ const Main = () => {
           </CryingGrapeWrapper>
         )}
       </Content>
-      <button onClick={openModal} data-modal="PostCreateModal">
-        +
-      </button>
-      <ModalManager setIsToggle={setIsToggle} closeFn={closeModal} modal={modalOpen} />
+      <ModalManager setIsToggle={setIsToggle} />
     </>
   );
 };

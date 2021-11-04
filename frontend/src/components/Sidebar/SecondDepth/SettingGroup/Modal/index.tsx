@@ -4,12 +4,10 @@ import { flexCenterAlign, yesNoButtonWrapper } from "@src/styles/StyledComponent
 import Modal from "@components/Modal";
 import { useDispatch, useSelector } from "react-redux";
 import Color from "@styles/Color";
-import { GroupModalAction, GroupAction } from "@src/action";
+import { GroupAction } from "@src/action";
 import { RootState } from "@src/reducer";
 
 interface SettingGroupModalProps {
-  closeFn: () => void;
-  open: boolean;
   setIsToggle: Dispatch<SetStateAction<boolean>>;
 }
 
@@ -44,21 +42,22 @@ const groupMemberList = [
   },
 ];
 
-const SettingGroupModal = ({ closeFn, open = false, setIsToggle }: SettingGroupModalProps) => {
+const SettingGroupModal = ({ setIsToggle }: SettingGroupModalProps) => {
   const [clickedDropBtn, setClickedDropclickedDropBtn] = useState(false);
   const { selectedGroup, groups }: any = useSelector((state: RootState) => state.groups);
   const dispatch = useDispatch();
 
-  const closeSettingGroupModal = () => {
-    dispatch({ type: GroupModalAction.CLOSE_SETTING_GROUP_MODAL });
+  const closeModal = () => {
+    dispatch({ type: "CLOSE_MODAL" });
   };
+
   const onClickDropBtn = () => {
     setClickedDropclickedDropBtn(true);
   };
   const onClickConfirmBtn = () => {
     dispatch({ type: GroupAction.DELETE_GROUP, payload: selectedGroup });
     dispatch({ type: GroupAction.SET_SELECTED_GROUP, payload: null });
-    closeSettingGroupModal();
+    closeModal();
     setIsToggle(false);
   };
 
@@ -67,7 +66,7 @@ const SettingGroupModal = ({ closeFn, open = false, setIsToggle }: SettingGroupM
   };
 
   return (
-    <Modal open={open} closeFn={closeFn}>
+    <Modal>
       <ModalContainer
         onClick={event => {
           event.nativeEvent.stopImmediatePropagation();
@@ -75,13 +74,7 @@ const SettingGroupModal = ({ closeFn, open = false, setIsToggle }: SettingGroupM
       >
         <Header>
           <CloseBtn>
-            <button
-              type="button"
-              onClick={() => {
-                closeFn();
-                closeSettingGroupModal();
-              }}
-            >
+            <button type="button" onClick={closeModal}>
               <img src="/icons/clear.svg" alt="clear icon" />
             </button>
           </CloseBtn>
