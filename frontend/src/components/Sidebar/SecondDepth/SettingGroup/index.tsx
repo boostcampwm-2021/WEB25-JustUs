@@ -7,7 +7,7 @@ const SettingGroup = () => {
 
   const onClickSettingGroup = () => {
     console.log("Setting group icon clicked.");
-    dispatch({ type: "OPEN_SETTING_GROUP_MODAL" });
+    dispatch({ type: "OPEN_MODAL", payload: "SettingGroupModal" });
   };
 
   return (
