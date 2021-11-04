@@ -12,7 +12,7 @@ const ModalManager = () => {
 
   return (
     <>
-      {nowModal === "" && <CloseModal></CloseModal>}
+      {nowModal === "" && <CloseModal />}
       {nowModal === "PostCreateModal" && <PostCreateModal />}
       {nowModal === "CreateGroupModal" && <CreateGroupModal />}
       {nowModal === "JoinGroupModal" && <JoinGroupModal />}

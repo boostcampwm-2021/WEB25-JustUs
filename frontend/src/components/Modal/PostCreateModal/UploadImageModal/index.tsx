@@ -5,8 +5,8 @@ import Color from "@styles/Color";
 import { useDispatch } from "react-redux";
 
 interface FileObject {
-  FILE: File;
-  KEY: string;
+  file: File;
+  key: string;
 }
 interface UploadImageModalProps {
   changeMode: () => void;
@@ -31,7 +31,7 @@ const UploadImageModal = ({ changeMode, files, setFiles }: UploadImageModalProps
   const changeImage: React.ChangeEventHandler<HTMLInputElement> = event => {
     if (!event.target.files) return;
     const file = event.target.files[0];
-    setFiles([...files, { FILE: file, KEY: shortid.generate() }]);
+    setFiles([...files, { file, key: shortid.generate() }]);
   };
 
   const nextModal = () => {
@@ -39,7 +39,7 @@ const UploadImageModal = ({ changeMode, files, setFiles }: UploadImageModalProps
   };
 
   const deleteImage = (key: string) => {
-    setFiles(files.filter(file => file.KEY !== key));
+    setFiles(files.filter(file => file.key !== key));
   };
 
   return (
@@ -71,10 +71,10 @@ const UploadImageModal = ({ changeMode, files, setFiles }: UploadImageModalProps
         {files.map(
           fileObject => (
             <ImagePreview key={shortid.generate()}>
-              <DeleteImageBtn onClick={() => deleteImage(fileObject.KEY)}>
+              <DeleteImageBtn onClick={() => deleteImage(fileObject.key)}>
                 <img src="/icons/delete.svg" alt="delete"></img>
               </DeleteImageBtn>
-              <img src={URL.createObjectURL(fileObject.FILE)}></img>
+              <img src={URL.createObjectURL(fileObject.file)}></img>
             </ImagePreview>
           ),
           "",

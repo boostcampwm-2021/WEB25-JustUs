@@ -4,8 +4,8 @@ import Color from "@styles/Color";
 import { useDispatch } from "react-redux";
 
 interface FileObject {
-  FILE: File;
-  KEY: string;
+  file: File;
+  key: string;
 }
 interface UploadInfoModalProps {
   changeMode: () => void;
@@ -33,7 +33,7 @@ const UploadInfoModal = ({ changeMode, files }: UploadInfoModalProps) => {
   useEffect(() => {
     if (!carouselRef.current) return;
     carouselRef.current.style.transform = `translate3d(-${carouselRef.current.offsetWidth * imageIndex}px, 0, 0)`;
-  });
+  }, [imageIndex]);
 
   return (
     <ModalContainer
@@ -58,7 +58,7 @@ const UploadInfoModal = ({ changeMode, files }: UploadInfoModalProps) => {
           <CarouselWindow>
             <Carousel ref={carouselRef}>
               {files.map(fileObject => (
-                <img src={URL.createObjectURL(fileObject.FILE)}></img>
+                <img src={URL.createObjectURL(fileObject.file)}></img>
               ))}
             </Carousel>
             <DotContainer>

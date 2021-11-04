@@ -4,8 +4,8 @@ import UploadImageModal from "./UploadImageModal";
 import UploadInfoModal from "./UploadInfoModal";
 
 interface FileObject {
-  FILE: File;
-  KEY: string;
+  file: File;
+  key: string;
 }
 
 const PostCreateModal = () => {
