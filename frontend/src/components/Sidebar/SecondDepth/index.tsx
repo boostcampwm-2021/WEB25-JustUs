@@ -2,7 +2,7 @@ import styled from "styled-components";
 import SettingGroup from "./SettingGroup";
 import AlbumList from "./AlbumList";
 import AddAlbum from "./AddAlbum";
-import color from "@styles/Color";
+import COLOR from "@styles/Color";
 
 const SecondDepth = () => {
   return (
@@ -17,11 +17,11 @@ const SecondDepth = () => {
 const SecondDepthWrapper = styled.div`
   width: 15vw;
   height: 95vh;
-  background-color: ${color.theme1.primary};
+  background-color: ${COLOR.THEME1.PRIMARY};
   display: flex;
   flex-direction: column;
   align-items: center;
-  border-left: 1px ${color.white} solid;
+  border-left: 1px ${COLOR.WHITE} solid;
   position: absolute;
   left: 5vw;
   z-index: 4;

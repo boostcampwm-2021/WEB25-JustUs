@@ -13,4 +13,12 @@ const flexColumnCenterAlign = css`
   align-items: center;
 `;
 
-export { flexRowCenterAlign, flexColumnCenterAlign };
+const yesNoButtonWrapper = css`
+  width: 120px;
+  height: 40px;
+  border-radius: 10px;
+  margin-left: 30px;
+  cursor: pointer;
+`;
+
+export { flexRowCenterAlign, flexColumnCenterAlign, yesNoButtonWrapper };

@@ -1,18 +1,13 @@
 import styled from "styled-components";
 import Modal from "@components/Modal";
 import { useDispatch } from "react-redux";
-import color from "@styles/Color";
+import COLOR from "@styles/Color";
 import { flexColumnCenterAlign, flexRowCenterAlign } from "@src/styles/StyledComponents";
 
-interface UserInfoModalProps {
-  closeFn: () => void;
-  open: boolean;
-}
-
-const UserInfoModal = ({ closeFn, open = false }: UserInfoModalProps) => {
+const UserInfoModal = () => {
   const dispatch = useDispatch();
   const closeUserInfoModal = () => {
-    dispatch({ type: "CLOSE_THEME_SETTING_MODAL" });
+    dispatch({ type: "CLOSE_MODAL" });
   };
   const themes = [
     { id: 0, themeColor: "green", name: "보성 녹차 테마", src: "/img/greenTheme.png", isChecked: true },
@@ -21,7 +16,7 @@ const UserInfoModal = ({ closeFn, open = false }: UserInfoModalProps) => {
   ];
 
   return (
-    <Modal open={open} closeFn={closeFn}>
+    <Modal>
       <ModalContainer
         onClick={event => {
           event.nativeEvent.stopImmediatePropagation();
@@ -32,7 +27,6 @@ const UserInfoModal = ({ closeFn, open = false }: UserInfoModalProps) => {
             <button
               type="button"
               onClick={() => {
-                closeFn();
                 closeUserInfoModal();
               }}
             >
@@ -62,7 +56,7 @@ const UserInfoModal = ({ closeFn, open = false }: UserInfoModalProps) => {
 };
 
 const ModalContainer = styled.div`
-  background-color: ${color.white};
+  background-color: ${COLOR.WHITE};
   min-height: 30vw;
   min-width: 40vw;
   border-radius: 50px;
@@ -94,7 +88,7 @@ const CloseBtn = styled.div`
   margin-right: 30px;
 
   & > button {
-    background-color: white;
+    background-color: ${COLOR.WHITE};
     border: none;
     &:hover {
       cursor: pointer;

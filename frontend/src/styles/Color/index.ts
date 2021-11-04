@@ -1,28 +1,29 @@
-const color = {
-  black: "#222",
-  white: "#FFF",
-  gray: "#D3D3D3",
-  darkgray: "#0202029B",
-  lightgray1: "#D7D7D7",
-  lightgray2: "#DADADA",
-  blue: "#4D73D7",
-  red: "#D32F2F",
-  wrap: "#FFFFFF90",
-  shadowBlack: "#00000040",
-  blur: "#DFDFDF33",
-  theme1: {
-    primary: "#52734D",
-    secondary: "#91C788CC",
+const COLOR = {
+  BLACK: "#222",
+  WHITE: "#FFF",
+  GRAY: "#D3D3D3",
+  DARKGRAY: "#0202029B",
+  LIGHTGRAY1: "#D7D7D7",
+  LIGHTGRAY2: "#DADADA",
+  BLUE: "#4D73D7",
+  RED: "#D32F2F",
+  WRAP: "#FFFFFF90",
+  SHADOW_BLACK: "#00000040",
+  BLUR: "#DFDFDF33",
+  THEME1: {
+    PRIMARY: "#52734D",
+    SECONDARY: "#91C788CC",
   },
-  theme2: {
-    primary: "#E4CE8E",
-    secondary: "#D77948",
+  THEME2: {
+    PRIMARY: "#E4CE8E",
+    SECONDARY: "#D77948",
   },
-  theme3: {
-    primary: "#87AAAA",
-    secondary: "#C8E3D4",
+  THEME3: {
+    PRIMARY: "#87AAAA",
+    SECONDARY: "#C8E3D4",
   },
-  modalBackground: "#00000066",
+  MODAL_BACKGROUND: "#00000066",
+  SCROLL: "#ffffff70",
 };
 
-export default color;
+export default COLOR;

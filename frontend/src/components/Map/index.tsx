@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import color from "@styles/Color";
+import COLOR from "@styles/Color";
 import { flexRowCenterAlign } from "@styles/StyledComponents";
+import { useDispatch } from "react-redux";
 
 const load = (url: string, cb: Function, err: Function) => {
   const element = document.createElement("script");
@@ -18,8 +19,9 @@ const load = (url: string, cb: Function, err: Function) => {
   element[attr] = url;
   document[parent].appendChild(element);
 };
-
 const Map = () => {
+  const dispatch = useDispatch();
+
   useEffect(() => {
     const initMap = () => {
       const clientId: string = process.env.REACT_APP_NCP_CLOUD_ID as string;
@@ -40,10 +42,14 @@ const Map = () => {
     initMap();
   }, []);
 
+  const modalOpen = () => {
+    dispatch({ type: "OPEN_MODAL", payload: "PostCreateModal" });
+  };
+
   return (
     <React.Fragment>
       <Maps id="map" />
-      <FloatActionBtn>+</FloatActionBtn>
+      <FloatActionBtn onClick={modalOpen}>+</FloatActionBtn>
     </React.Fragment>
   );
 };
@@ -54,22 +60,23 @@ const Maps = styled.div`
   height: 95vh;
 `;
 
-const FloatActionBtn = styled.div`
-  background-color: ${color.theme1.secondary};
+const FloatActionBtn = styled.button`
+  background-color: ${COLOR.THEME1.SECONDARY};
   position: absolute;
   z-index: 2;
   border-radius: 50%;
+  border: none;
   height: 8vh;
   width: 8vh;
   bottom: 8vh;
   right: 8vh;
   ${flexRowCenterAlign}
-  color: ${color.white};
+  color: ${COLOR.WHITE};
   font-size: 7vh;
-  box-shadow: 0.2vh 0.2vh 1vh 0.2vh ${color.theme1.primary};
+  box-shadow: 0.2vh 0.2vh 1vh 0.2vh ${COLOR.THEME1.PRIMARY};
   &:hover {
     cursor: pointer;
-    background-color: ${color.theme1.primary};
+    background-color: ${COLOR.THEME1.PRIMARY};
   }
 `;
 

@@ -1,7 +1,10 @@
 import { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
-import color from "@styles/Color";
 import Profile from "@components/Header/Profile";
+import { flexRowCenterAlign } from "@styles/StyledComponents";
+import COLOR from "@styles/Color";
+import { useSelector } from "react-redux";
+import { RootState } from "@src/reducer";
 
 interface SidebarProps {
   isToggle: boolean;
@@ -9,13 +12,16 @@ interface SidebarProps {
 }
 
 const Header = ({ isToggle, setIsToggle }: SidebarProps) => {
+  const { groups }: any = useSelector((state: RootState) => state.groups);
+
   const onClickMenu = () => {
+    if (!groups.length) return;
     setIsToggle(prev => !prev);
   };
   return (
     <>
-      <HeaderContainer>
-        <img className="pointer" src="/icons/menu.svg" onClick={onClickMenu} alt="menu" />
+      <HeaderContainer groups={groups}>
+        <img src="/icons/menu.svg" className="pointer" onClick={onClickMenu} alt="menu" />
         <SearchContainer>
           <img src="/icons/search.svg" height="90%" alt="search" />
           <Search type="text" placeholder="해시태그를 입력하세요." />
@@ -26,30 +32,29 @@ const Header = ({ isToggle, setIsToggle }: SidebarProps) => {
   );
 };
 
-const HeaderContainer = styled.div`
+const HeaderContainer = styled.div<{ groups: any }>`
   height: 5vh;
-  background-color: ${color.theme1.primary};
-  border-bottom: 1px solid ${color.white};
+  background-color: ${COLOR.THEME1.PRIMARY};
+  box-sizing: border-box;
+  border-bottom: 1px solid ${COLOR.WHITE};
   padding: 0 1vw;
   display: flex;
   justify-content: space-between;
   align-items: center;
   & img.pointer {
     &:hover {
-      cursor: pointer;
+      cursor: ${({ groups }) => (groups.length ? "pointer" : "not-allowed")};
     }
   }
 `;
 
 const SearchContainer = styled.div`
+  ${flexRowCenterAlign}
   height: 3vh;
   width: 25vw;
-  background-color: ${color.white};
+  background-color: ${COLOR.WHITE};
   border-radius: 5px;
-  display: flex;
   padding: 0.5vh 0;
-  justify-content: start;
-  align-items: center;
   & > img {
     padding: 0 0.5vw;
   }

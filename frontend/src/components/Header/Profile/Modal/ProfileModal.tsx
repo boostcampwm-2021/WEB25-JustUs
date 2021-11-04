@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
-import color from "@src/styles/Color";
+import COLOR from "@src/styles/Color";
 import { useDispatch } from "react-redux";
 
 interface ProfileModalProps {
@@ -46,7 +46,7 @@ const ProfileModal = ({ isModalOpened, setIsModalOpened }: ProfileModalProps) =>
 
 const ModalWrapper = styled.div`
   width: 15%;
-  background-color: ${color.white};
+  background-color: ${COLOR.WHITE};
   position: absolute;
   right: 1vw;
   top: 5vh;

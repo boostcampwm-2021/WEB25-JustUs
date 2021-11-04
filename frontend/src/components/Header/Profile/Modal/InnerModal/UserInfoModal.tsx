@@ -2,15 +2,10 @@ import React, { ChangeEventHandler, useRef, useState } from "react";
 import styled from "styled-components";
 import Modal from "@components/Modal";
 import { useDispatch } from "react-redux";
-import color from "@styles/Color";
+import COLOR from "@styles/Color";
 import { flexColumnCenterAlign, flexRowCenterAlign } from "@src/styles/StyledComponents";
 
-interface UserInfoModalProps {
-  closeFn: () => void;
-  open: boolean;
-}
-
-const UserInfoModal = ({ closeFn, open = false }: UserInfoModalProps) => {
+const UserInfoModal = () => {
   const uploadBtnRef = useRef<HTMLInputElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
   const userNameRef = useRef<HTMLInputElement>(null);
@@ -18,7 +13,7 @@ const UserInfoModal = ({ closeFn, open = false }: UserInfoModalProps) => {
 
   const dispatch = useDispatch();
   const closeUserInfoModal = () => {
-    dispatch({ type: "CLOSE_USER_INFO_MODAL" });
+    dispatch({ type: "CLOSE_MODAL" });
   };
   const onClickUploadBtn = () => {
     if (uploadBtnRef.current === null) return;
@@ -55,7 +50,7 @@ const UserInfoModal = ({ closeFn, open = false }: UserInfoModalProps) => {
   };
 
   return (
-    <Modal open={open} closeFn={closeFn}>
+    <Modal>
       <ModalContainer
         onClick={event => {
           event.nativeEvent.stopImmediatePropagation();
@@ -66,7 +61,6 @@ const UserInfoModal = ({ closeFn, open = false }: UserInfoModalProps) => {
             <button
               type="button"
               onClick={() => {
-                closeFn();
                 closeUserInfoModal();
               }}
             >
@@ -95,7 +89,7 @@ const UserInfoModal = ({ closeFn, open = false }: UserInfoModalProps) => {
 };
 
 const ModalContainer = styled.div`
-  background-color: ${color.white};
+  background-color: ${COLOR.WHITE};
   min-height: 30vw;
   min-width: 40vw;
   border-radius: 50px;
@@ -127,7 +121,7 @@ const CloseBtn = styled.div`
   margin-right: 30px;
 
   & > button {
-    background-color: white;
+    background-color: ${COLOR.WHITE};
     border: none;
     &:hover {
       cursor: pointer;
@@ -143,7 +137,7 @@ const ImageBackground = styled.div<{ userImg: string }>`
   margin-top: 30px;
   width: 90px;
   height: 90px;
-  background-color: ${color.theme1.secondary};
+  background-color: ${COLOR.THEME1.SECONDARY};
   opacity: ${props => (props.userImg === "/icons/person.svg" ? "0.4" : "")};
   border-radius: 100%;
   ${flexRowCenterAlign}
@@ -153,7 +147,7 @@ const UploadImgBtnWrapper = styled.div`
   cursor: pointer;
   margin-top: 20px;
   border-radius: 10px;
-  border: 2px solid ${color.theme1.primary};
+  border: 2px solid ${COLOR.THEME1.PRIMARY};
   font-weight: bold;
   font-size: 15px;
   line-height: 16px;
@@ -165,7 +159,7 @@ const UploadImgBtnWrapper = styled.div`
 const DeleteImgBtnWrapper = styled.div`
   cursor: pointer;
   margin-top: 20px;
-  color: ${color.blue};
+  color: ${COLOR.BLUE};
   font-weight: bold;
 `;
 
@@ -174,7 +168,7 @@ const UserNameInputWrapper = styled.input`
   border: none;
   width: 200px;
   font-size: 15px;
-  border-bottom: 1px solid ${color.theme1.primary};
+  border-bottom: 1px solid ${COLOR.THEME1.PRIMARY};
 
   &::-webkit-input-placeholder {
     text-align: center;
@@ -191,8 +185,8 @@ const SaveBtnWrapper = styled.div`
   width: 10rem;
   height: 2.5rem;
   border-radius: 1rem;
-  color: ${color.white};
-  background-color: ${color.theme1.primary};
+  color: ${COLOR.WHITE};
+  background-color: ${COLOR.THEME1.PRIMARY};
   ${flexRowCenterAlign}
   margin-top: 3rem;
 `;

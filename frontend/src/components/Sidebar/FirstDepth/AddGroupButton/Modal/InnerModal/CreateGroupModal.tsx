@@ -1,24 +1,31 @@
 import React, { ChangeEventHandler, useRef, useState } from "react";
 import styled from "styled-components";
+import { flexRowCenterAlign } from "@styles/StyledComponents";
 import Modal from "@components/Modal";
 import { useDispatch } from "react-redux";
-import color from "@styles/Color";
+import COLOR from "@styles/Color";
+import { GroupAction } from "@src/action";
+import { useSelector } from "react-redux";
+import { RootState } from "@src/reducer";
 
-interface CreateGroupModalProps {
-  closeFn: () => void;
-  open: boolean;
+interface Group {
+  groupID: number;
+  groupName: string;
+  img: string;
 }
 
-const CreateGroupModal = ({ closeFn, open = false }: CreateGroupModalProps) => {
+const CreateGroupModal = () => {
   const uploadBtnRef = useRef<HTMLInputElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
   const groupNameRef = useRef<HTMLInputElement>(null);
   const [groupImg, setGroupImg] = useState("/icons/person.svg");
-
+  const { groups }: any = useSelector((state: RootState) => state.groups);
   const dispatch = useDispatch();
-  const closeCreateGroupModal = () => {
-    dispatch({ type: "CLOSE_CREATE_GROUP_MODAL" });
+
+  const closeModal = () => {
+    dispatch({ type: "CLOSE_MODAL" });
   };
+
   const onClickUploadBtn = () => {
     if (uploadBtnRef.current === null) return;
     uploadBtnRef.current.click();
@@ -51,10 +58,27 @@ const CreateGroupModal = ({ closeFn, open = false }: CreateGroupModalProps) => {
       alert("그룹 이름은 반드시 입력해야 합니다.");
       return;
     }
+
+    createGroup();
+  };
+
+  const createGroup = () => {
+    if (!groupNameRef.current) return;
+
+    const groupID = groups.length ? groups[groups.length - 1].groupID + 1 : 0;
+    const groupName = groupNameRef.current.value;
+    const newGroup = {
+      groupID,
+      groupName,
+      groupImg,
+    };
+
+    dispatch({ type: GroupAction.ADD_GROUP, payload: newGroup });
+    closeModal();
   };
 
   return (
-    <Modal open={open} closeFn={closeFn}>
+    <Modal>
       <ModalContainer
         onClick={event => {
           event.nativeEvent.stopImmediatePropagation();
@@ -62,13 +86,7 @@ const CreateGroupModal = ({ closeFn, open = false }: CreateGroupModalProps) => {
       >
         <Header>
           <CloseBtn>
-            <button
-              type="button"
-              onClick={() => {
-                closeFn();
-                closeCreateGroupModal();
-              }}
-            >
+            <button type="button" onClick={closeModal}>
               <img src="/icons/clear.svg" alt="clear icon" />
             </button>
           </CloseBtn>
@@ -92,7 +110,7 @@ const CreateGroupModal = ({ closeFn, open = false }: CreateGroupModalProps) => {
 };
 
 const ModalContainer = styled.div`
-  background-color: #ffffff;
+  background-color: ${COLOR.WHITE};
   min-height: 30vw;
   min-width: 40vw;
   border-radius: 50px;
@@ -120,7 +138,7 @@ const CloseBtn = styled.div`
   margin-right: 30px;
 
   & > button {
-    background-color: white;
+    background-color: ${COLOR.WHITE};
     border: none;
   }
 `;
@@ -132,36 +150,32 @@ const Content = styled.div`
 `;
 
 const ImageBackground = styled.div<{ groupImg: string }>`
+  ${flexRowCenterAlign}
   margin-top: 30px;
   width: 90px;
   height: 90px;
-  background-color: ${color.theme1.secondary};
+  background-color: ${COLOR.THEME1.SECONDARY};
   opacity: ${props => (props.groupImg === "/icons/person.svg" ? "0.4" : "")};
   border-radius: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 `;
 
 const UploadImgBtnWrapper = styled.div`
+  ${flexRowCenterAlign}
   cursor: pointer;
   margin-top: 20px;
   border-radius: 10px;
-  border: 2px solid ${color.theme1.primary};
+  border: 2px solid ${COLOR.THEME1.PRIMARY};
   font-weight: bold;
   font-size: 15px;
   line-height: 16px;
   width: 150px;
   height: 33px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 `;
 
 const DeleteImgBtnWrapper = styled.div`
   cursor: pointer;
   margin-top: 20px;
-  color: ${color.blue};
+  color: ${COLOR.BLUE};
   font-weight: bold;
 `;
 
@@ -170,7 +184,7 @@ const GroupNameInputWrapper = styled.input`
   border: none;
   width: 200px;
   font-size: 15px;
-  border-bottom: 1px solid ${color.theme1.primary};
+  border-bottom: 1px solid ${COLOR.THEME1.PRIMARY};
 
   &::-webkit-input-placeholder {
     text-align: center;
@@ -180,15 +194,13 @@ const GroupNameInputWrapper = styled.input`
 `;
 
 const CreateBtnWrapper = styled.div`
+  ${flexRowCenterAlign}
   cursor: pointer;
   width: 160px;
   height: 39px;
   border-radius: 10px;
-  color: ${color.white};
-  background-color: ${color.theme1.primary};
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  color: ${COLOR.WHITE};
+  background-color: ${COLOR.THEME1.PRIMARY};
   margin-top: 50px;
 `;
 

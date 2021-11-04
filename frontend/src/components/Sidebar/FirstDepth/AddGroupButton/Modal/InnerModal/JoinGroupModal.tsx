@@ -1,21 +1,18 @@
 import styled from "styled-components";
+import { flexRowCenterAlign } from "@styles/StyledComponents";
 import Modal from "@components/Modal";
 import { useDispatch } from "react-redux";
-import Color from "@styles/Color";
+import COLOR from "@styles/Color";
 
-interface JoinGroupModalProps {
-  closeFn: () => void;
-  open: boolean;
-}
-
-const JoinGroupModal = ({ closeFn, open = false }: JoinGroupModalProps) => {
+const JoinGroupModal = () => {
   const dispatch = useDispatch();
-  const closeJoinGroupModal = () => {
-    dispatch({ type: "CLOSE_JOIN_GROUP_MODAL" });
+
+  const closeModal = () => {
+    dispatch({ type: "CLOSE_MODAL" });
   };
 
   return (
-    <Modal open={open} closeFn={closeFn}>
+    <Modal>
       <ModalContainer
         onClick={event => {
           event.nativeEvent.stopImmediatePropagation();
@@ -23,13 +20,7 @@ const JoinGroupModal = ({ closeFn, open = false }: JoinGroupModalProps) => {
       >
         <Header>
           <CloseBtn>
-            <button
-              type="button"
-              onClick={() => {
-                closeFn();
-                closeJoinGroupModal();
-              }}
-            >
+            <button type="button" onClick={closeModal}>
               <img src="/icons/clear.svg" alt="clear icon" />
             </button>
           </CloseBtn>
@@ -45,7 +36,7 @@ const JoinGroupModal = ({ closeFn, open = false }: JoinGroupModalProps) => {
 };
 
 const ModalContainer = styled.div`
-  background-color: #ffffff;
+  background-color: ${COLOR.WHITE};
   min-height: 20vw;
   min-width: 60vw;
   border-radius: 50px;
@@ -72,7 +63,7 @@ const CloseBtn = styled.div`
   margin-right: 30px;
 
   & > button {
-    background-color: white;
+    background-color: ${COLOR.WHITE};
     border: none;
   }
 `;
@@ -89,7 +80,7 @@ const InviteCodeInputWrapper = styled.input`
   height: 100px;
   font-size: 15px;
   border: none;
-  background: ${Color.gray};
+  background: ${COLOR.GRAY};
   border-radius: 10px;
   font-size: 50px;
   text-align: center;
@@ -102,14 +93,12 @@ const InviteCodeInputWrapper = styled.input`
 `;
 
 const JoinBtnWrapper = styled.div`
+  ${flexRowCenterAlign}
   width: 160px;
   height: 39px;
   border-radius: 10px;
-  color: ${Color.white};
-  background-color: ${Color.theme1.primary};
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  color: ${COLOR.WHITE};
+  background-color: ${COLOR.THEME1.PRIMARY};
   margin-top: 50px;
   font-size: 30px;
 `;

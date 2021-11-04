@@ -1,10 +1,11 @@
 import React, { ReactNode, useEffect } from "react";
 import ReactDOM from "react-dom";
-import color from "@src/styles/Color";
+import COLOR from "@styles/Color";
+import { useDispatch } from "react-redux";
 
 const modalRootEl = document.getElementById("modal");
 if (modalRootEl) {
-  modalRootEl.style.display = "flex";
+  modalRootEl.style.display = "none";
   modalRootEl.style.justifyContent = "center";
   modalRootEl.style.alignItems = "center";
   modalRootEl.style.position = "absolute";
@@ -12,18 +13,19 @@ if (modalRootEl) {
   modalRootEl.style.left = "0";
   modalRootEl.style.width = "100%";
   modalRootEl.style.height = "100%";
-  modalRootEl.style.backgroundColor = color.white;
+  modalRootEl.style.backgroundColor = COLOR.MODAL_BACKGROUND;
 }
 
 interface ModalProps {
   children: ReactNode;
-  open: Boolean;
-  closeFn: Function;
+  open?: Boolean;
 }
 
-const Modal = ({ children, open = false, closeFn }: ModalProps) => {
-  const closeModal = (ev: MouseEvent) => {
-    closeFn(ev);
+const Modal = ({ children, open = true }: ModalProps) => {
+  const dispatch = useDispatch();
+
+  const closeModal = () => {
+    dispatch({ type: "CLOSE_MODAL" });
   };
   useEffect(() => {
     modalRootEl?.addEventListener("click", closeModal);
@@ -38,7 +40,6 @@ const Modal = ({ children, open = false, closeFn }: ModalProps) => {
     return null;
   }
   modalRootEl.style.display = "flex";
-  modalRootEl.style.backgroundColor = color.modalBackground;
   modalRootEl.style.zIndex = "6";
 
   return ReactDOM.createPortal(children, modalRootEl);

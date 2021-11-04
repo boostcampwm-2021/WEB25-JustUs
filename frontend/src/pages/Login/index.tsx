@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import Color from "@src/styles/Color";
+import COLOR from "@src/styles/Color";
 import { flexColumnCenterAlign, flexRowCenterAlign } from "@src/styles/StyledComponents";
 
 const Login = () => {
@@ -49,11 +49,9 @@ const BackgroundImg = styled.div<{ imgUrl: string }>`
 `;
 
 const BackgroundWrap = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  ${flexRowCenterAlign}
   height: 100vh;
-  background-color: ${Color.wrap};
+  background-color: ${COLOR.WRAP};
 `;
 
 const Content = styled.div`
@@ -94,8 +92,8 @@ const Polaroid = styled.div`
   width: 340px;
   height: 500px;
   border-radius: 15px;
-  background-color: white;
-  box-shadow: 15px 15px 15px ${Color.shadowBlack};
+  background-color: ${COLOR.WHITE};
+  box-shadow: 15px 15px 15px ${COLOR.SHADOW_BLACK};
   & > img {
     padding-top: 35px;
   }
@@ -112,7 +110,7 @@ const FooterContent = styled.div`
   margin: 0 auto;
   padding: 20px;
   width: 80vw;
-  border-top: 2px solid ${Color.black};
+  border-top: 2px solid ${COLOR.BLACK};
   & > p {
     font-weight: bold;
     margin-bottom: 5px;
@@ -120,7 +118,7 @@ const FooterContent = styled.div`
   & > div {
     ${flexRowCenterAlign}
     & .names {
-      color: ${Color.darkgray};
+      color: ${COLOR.DARKGRAY};
       padding-left: 10px;
     }
   }

@@ -1,5 +1,4 @@
-import React, { useEffect } from "react";
-
+import { Dispatch, SetStateAction } from "react";
 import PostCreateModal from "../PostCreateModal";
 import CreateGroupModal from "@components/Sidebar/FirstDepth/AddGroupButton/Modal/InnerModal/CreateGroupModal";
 import JoinGroupModal from "@components/Sidebar/FirstDepth/AddGroupButton/Modal/InnerModal/JoinGroupModal";
@@ -8,35 +7,24 @@ import ProfileModal from "@components/Header/Profile/Modal/InnerModal/UserInfoMo
 import ThemeModal from "@components/Header/Profile/Modal/InnerModal/ThemeModal";
 import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
+import CloseModal from "../CloseModal";
 
-interface Props {
-  closeFn: () => void;
-  modal: string;
+interface ModalManagerProps {
+  setIsToggle: Dispatch<SetStateAction<boolean>>;
 }
 
-const ModalManager = ({ closeFn, modal = "" }: Props) => {
-  const createGroupModalOpened = useSelector((state: RootState) => state.groupModal.createGroupModalOpened);
-  const joinGroupModalOpened = useSelector((state: RootState) => state.groupModal.joinGroupModalOpened);
-  const settingGroupModalOpened = useSelector((state: RootState) => state.groupModal.settingGroupModalOpened);
-  const profileModalOpened = useSelector((state: RootState) => state.profileModal.userInfoModalOpened);
-  const themeModalOpened = useSelector((state: RootState) => state.profileModal.themeSettingModalOpened);
-
-  useEffect(() => {}, [
-    createGroupModalOpened,
-    joinGroupModalOpened,
-    settingGroupModalOpened,
-    profileModalOpened,
-    themeModalOpened,
-  ]);
+const ModalManager = ({ setIsToggle }: ModalManagerProps) => {
+  const { nowModal } = useSelector((state: RootState) => state.uploadModal);
 
   return (
     <>
-      <PostCreateModal closeFn={closeFn} open={modal === "PostCreateModal"} />
-      {createGroupModalOpened && <CreateGroupModal closeFn={closeFn} open={true} />}
-      {joinGroupModalOpened && <JoinGroupModal closeFn={closeFn} open={true} />}
-      {settingGroupModalOpened && <SettingGroupModal closeFn={closeFn} open={true} />}
-      {profileModalOpened && <ProfileModal closeFn={closeFn} open={profileModalOpened} />}
-      {themeModalOpened && <ThemeModal closeFn={closeFn} open={themeModalOpened} />}
+      {nowModal === "" && <CloseModal />}
+      {nowModal === "PostCreateModal" && <PostCreateModal />}
+      {nowModal === "CreateGroupModal" && <CreateGroupModal />}
+      {nowModal === "JoinGroupModal" && <JoinGroupModal />}
+      {nowModal === "SettingGroupModal" && <SettingGroupModal setIsToggle={setIsToggle} />}
+      {nowModal === "ProfileModal" && <ProfileModal />}
+      {nowModal === "ThemeModal" && <ThemeModal />}
     </>
   );
 };

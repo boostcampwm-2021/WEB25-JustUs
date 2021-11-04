@@ -1,44 +1,40 @@
-import { Dispatch, SetStateAction } from "react";
+import React, { Dispatch, SetStateAction, useEffect } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "@src/reducer";
 import styled from "styled-components";
 import Group from "./Group";
 import AddGroupButton from "./AddGroupButton";
-import color from "@styles/Color";
+import COLOR from "@styles/Color";
 
 interface SidebarProps {
   isToggle: boolean;
   setIsToggle: Dispatch<SetStateAction<boolean>>;
+  addGroupBtnRef: React.RefObject<HTMLDivElement>;
 }
 
-const groupDummy = [
-  {
-    groupID: 0,
-    groupName: "그룹 A",
-    img: "",
-  },
-  {
-    groupID: 1,
-    groupName: "그룹 B",
-    img: "",
-  },
-  {
-    groupID: 2,
-    groupName: "그룹 C",
-    img: "",
-  },
-];
+const FirstDepth = ({ isToggle, setIsToggle, addGroupBtnRef }: SidebarProps) => {
+  const { groups }: any = useSelector((state: RootState) => state.groups);
 
-const FirstDepth = ({ isToggle, setIsToggle }: SidebarProps) => {
   const onClickMenu = () => {
     setIsToggle(prev => !prev);
   };
 
+  useEffect(() => {}, [groups]);
+
   return (
     <>
       <FirstDepthWrapper>
-        {groupDummy.map(group => (
-          <Group key={group.groupID} groupName={group.groupName} />
+        {groups.map((group: any) => (
+          <Group
+            key={group.groupID}
+            groupID={group.groupID}
+            groupName={group.groupName}
+            groupImg={group.groupImg}
+            albumList={group.albumList}
+            setIsToggle={setIsToggle}
+          />
         ))}
-        <AddGroupButton />
+        <AddGroupButton addGroupBtnRef={addGroupBtnRef} />
       </FirstDepthWrapper>
     </>
   );
@@ -47,10 +43,23 @@ const FirstDepth = ({ isToggle, setIsToggle }: SidebarProps) => {
 const FirstDepthWrapper = styled.div`
   width: 5vw;
   height: 95vh;
-  background-color: ${color.theme1.primary};
+  background-color: ${COLOR.THEME1.PRIMARY};
   display: flex;
   flex-direction: column;
   align-items: center;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 0.5vw 0;
+
+  &::-webkit-scrollbar {
+    background: transparent;
+    width: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: ${COLOR.SCROLL};
+    border-radius: 10px;
+  }
 `;
 
 export default FirstDepth;
