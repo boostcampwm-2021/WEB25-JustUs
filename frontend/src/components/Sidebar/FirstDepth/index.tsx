@@ -16,7 +16,7 @@ const FirstDepth = ({ isToggle, setIsToggle, addGroupBtnRef }: FirstDepthProps) 
   const { groups }: any = useSelector((state: RootState) => state.groups);
 
   const onClickMenu = () => {
-    setIsToggle(prev => !prev);
+    setIsToggle((prev) => !prev);
   };
 
   useEffect(() => {}, [groups]);
@@ -50,6 +50,7 @@ const FirstDepthWrapper = styled.div`
   overflow-x: hidden;
   overflow-y: auto;
   padding: 0.5vw 0;
+  box-sizing: border-box;
 
   &::-webkit-scrollbar {
     background: transparent;
