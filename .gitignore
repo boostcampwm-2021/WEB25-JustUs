@@ -1,4 +1,4 @@
 .env
 mysql
 nginx_proxy
-*.DS_Store
+.DS_Store
