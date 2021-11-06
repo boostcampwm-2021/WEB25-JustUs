@@ -5,7 +5,7 @@ import { RegisterUserDto } from "src/dto/register-user.dto";
 import { AuthService } from "../service/auth.service";
 
 @Injectable()
-export class NaverStrategy extends PassportStrategy(Strategy) {
+export class NaverStrategy extends PassportStrategy(Strategy, "naver") {
   constructor(private authService: AuthService) {
     super({
       clientID: process.env.NAVER_CLIENT_ID,
