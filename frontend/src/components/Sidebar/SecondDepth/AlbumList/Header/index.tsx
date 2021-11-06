@@ -30,7 +30,7 @@ const Header = ({ albumID, albumName, postToggle, setPostToggle, modalOpenedIdx,
       <MoreIcon className="modifying-album-btn" onClick={onClickMoreBtn}>
         {albumName !== "기본 앨범" && <img src="/icons/more-vert.svg" alt="more-vert icon.svg" />}
         {modalOpenedIdx === albumID && (
-          <AlbumSettingModal albumName={albumName} setModalOpenedIdx={setModalOpenedIdx} />
+          <AlbumSettingModal albumID={albumID} albumName={albumName} setModalOpenedIdx={setModalOpenedIdx} />
         )}
       </MoreIcon>
     </HeaderWrapper>

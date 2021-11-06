@@ -4,16 +4,17 @@ import COLOR from "@styles/Color";
 import { useDispatch } from "react-redux";
 
 interface AlbumSettingModalProps {
+  albumID: number;
   albumName: string;
   setModalOpenedIdx: React.Dispatch<React.SetStateAction<number>>;
 }
 
-const AlbumSettingModal = ({ albumName, setModalOpenedIdx }: AlbumSettingModalProps) => {
+const AlbumSettingModal = ({ albumID, albumName, setModalOpenedIdx }: AlbumSettingModalProps) => {
   const dispatch = useDispatch();
 
   const onClickUpdateAlbum = () => {
     dispatch({ type: "OPEN_MODAL", payload: "UpdateAlbumModal" });
-    dispatch({ type: "SET_ALBUM_NAME", payload: albumName });
+    dispatch({ type: "SET_SELECTED_ALBUM", payload: { albumID, albumName } });
   };
 
   const onClickDeleteAlbum = () => {

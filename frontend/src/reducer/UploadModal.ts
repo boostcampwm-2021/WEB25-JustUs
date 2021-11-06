@@ -1,6 +1,9 @@
-const initState: { nowModal: string; selectedAlbumName: string } = {
+const initState: { nowModal: string; selectedAlbum: { albumID: number; albumName: string } } = {
   nowModal: "",
-  selectedAlbumName: "",
+  selectedAlbum: {
+    albumID: -1,
+    albumName: "",
+  },
 };
 
 const UploadModalReducer = (state = initState, action: any) => {
@@ -15,10 +18,13 @@ const UploadModalReducer = (state = initState, action: any) => {
         ...state,
         nowModal: "",
       };
-    case "SET_ALBUM_NAME":
+    case "SET_SELECTED_ALBUM":
       return {
         ...state,
-        selectedAlbumName: action.payload,
+        selectedAlbum: {
+          albumID: action.payload.albumID,
+          albumName: action.payload.albumName,
+        },
       };
 
     default:
