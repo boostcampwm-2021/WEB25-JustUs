@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { PassportStrategy } from "@nestjs/passport";
 import { Strategy } from "passport-naver-v2";
 import { RegisterUserDto } from "src/dto/register-user.dto";
@@ -22,6 +22,8 @@ export class NaverStrategy extends PassportStrategy(Strategy, "naver") {
     registerUserDto.profileImage = profileImage;
 
     const user = await this.authService.validateUser(registerUserDto);
+
+    if (!user) throw new UnauthorizedException("유저가 존재하지 않습니다.");
 
     return user;
   }
