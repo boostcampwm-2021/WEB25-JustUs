@@ -5,8 +5,8 @@ export class User extends BaseEntity {
   @PrimaryGeneratedColumn()
   userId: number;
 
-  @Column()
-  userImage: string;
+  @Column({ nullable: true })
+  profileImage: string;
 
   @Column()
   userNickname: string;
