@@ -6,14 +6,23 @@ interface AlbumProps {
   album: any;
   postSelected: number;
   setPostSelected: React.Dispatch<React.SetStateAction<number>>;
+  modalOpenedIdx: number;
+  setModalOpenedIdx: React.Dispatch<React.SetStateAction<number>>;
 }
 
-const Album = ({ album, postSelected, setPostSelected }: AlbumProps) => {
+const Album = ({ album, postSelected, setPostSelected, modalOpenedIdx, setModalOpenedIdx }: AlbumProps) => {
   const [postToggle, setPostToggle] = useState(true);
 
   return (
     <>
-      <Header albumName={album.albumName} postToggle={postToggle} setPostToggle={setPostToggle}></Header>
+      <Header
+        albumID={album.albumID}
+        albumName={album.albumName}
+        postToggle={postToggle}
+        setPostToggle={setPostToggle}
+        modalOpenedIdx={modalOpenedIdx}
+        setModalOpenedIdx={setModalOpenedIdx}
+      ></Header>
       {postToggle &&
         album.posts.map((post: any) => (
           <Post
