@@ -6,14 +6,18 @@ import Album from "./Album";
 
 const AlbumList = () => {
   const [postSelected, setPostSelected] = useState<number>(0);
+  const [modalOpenedIdx, setModalOpenedIdx] = useState<number>(-1);
   const { selectedGroup }: any = useSelector((state: RootState) => state.groups);
-  const [modalOpenedIdx, setModalOpenedIdx] = useState(-1);
   const clickedTarget = useSelector((state: RootState) => state.groupModal.clickedTarget);
 
   useEffect(() => {
     const clickHandler = () => {
       if (!clickedTarget.target) return;
       if (!clickedTarget.target.closest(".modifying-album-btn")) {
+        setModalOpenedIdx(-1);
+      }
+
+      if (clickedTarget.target.closest(".update-album-btn") || clickedTarget.target.closest(".delete-album-btn")) {
         setModalOpenedIdx(-1);
       }
     };

@@ -16,8 +16,7 @@ const Header = ({ albumID, albumName, postToggle, setPostToggle, modalOpenedIdx,
     setPostToggle((prev) => !prev);
   };
 
-  const onClickMoreBtn = (event: React.MouseEvent<HTMLElement>) => {
-    event.preventDefault();
+  const onClickMoreBtn = () => {
     setModalOpenedIdx(albumID);
   };
 
@@ -30,7 +29,9 @@ const Header = ({ albumID, albumName, postToggle, setPostToggle, modalOpenedIdx,
       {albumName}
       <MoreIcon className="modifying-album-btn" onClick={onClickMoreBtn}>
         {albumName !== "기본 앨범" && <img src="/icons/more-vert.svg" alt="more-vert icon.svg" />}
-        {modalOpenedIdx === albumID && <AlbumSettingModal />}
+        {modalOpenedIdx === albumID && (
+          <AlbumSettingModal albumName={albumName} setModalOpenedIdx={setModalOpenedIdx} />
+        )}
       </MoreIcon>
     </HeaderWrapper>
   );

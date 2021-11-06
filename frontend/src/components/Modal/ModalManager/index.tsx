@@ -5,6 +5,8 @@ import JoinGroupModal from "@components/Sidebar/FirstDepth/AddGroupButton/Modal/
 import SettingGroupModal from "@components/Sidebar/SecondDepth/SettingGroup/Modal";
 import ProfileModal from "@components/Header/Profile/Modal/InnerModal/UserInfoModal";
 import ThemeModal from "@components/Header/Profile/Modal/InnerModal/ThemeModal";
+import UpdateAlbumModal from "@components/Sidebar/SecondDepth/AlbumList/Header/Modal/InnerModal/UpdateAlbumModal";
+import DeleteAlbumModal from "@components/Sidebar/SecondDepth/AlbumList/Header/Modal/InnerModal/DeleteAlbumModal";
 import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
 import CloseModal from "../CloseModal";
@@ -25,6 +27,8 @@ const ModalManager = ({ setIsToggle }: ModalManagerProps) => {
       {nowModal === "SettingGroupModal" && <SettingGroupModal setIsToggle={setIsToggle} />}
       {nowModal === "ProfileModal" && <ProfileModal />}
       {nowModal === "ThemeModal" && <ThemeModal />}
+      {nowModal === "UpdateAlbumModal" && <UpdateAlbumModal />}
+      {nowModal === "DeleteAlbumModal" && <DeleteAlbumModal />}
     </>
   );
 };

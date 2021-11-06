@@ -1,18 +1,32 @@
 import styled from "styled-components";
 import { flexRowCenterAlign } from "@styles/StyledComponents";
 import COLOR from "@styles/Color";
+import { useDispatch } from "react-redux";
 
-const AlbumSettingModal = () => {
-  const onClickUpdateAlbum = () => {};
-  const onClickDeleteAlbum = () => {};
+interface AlbumSettingModalProps {
+  albumName: string;
+  setModalOpenedIdx: React.Dispatch<React.SetStateAction<number>>;
+}
+
+const AlbumSettingModal = ({ albumName, setModalOpenedIdx }: AlbumSettingModalProps) => {
+  const dispatch = useDispatch();
+
+  const onClickUpdateAlbum = () => {
+    dispatch({ type: "OPEN_MODAL", payload: "UpdateAlbumModal" });
+    dispatch({ type: "SET_ALBUM_NAME", payload: albumName });
+  };
+
+  const onClickDeleteAlbum = () => {
+    dispatch({ type: "OPEN_MODAL", payload: "DeleteAlbumModal" });
+  };
 
   return (
     <ModalWrapper>
-      <ModalItem delete={false} onClick={onClickUpdateAlbum}>
+      <ModalItem delete={false} onClick={onClickUpdateAlbum} className="update-album-btn">
         앨범 이름 변경
       </ModalItem>
       <Divider />
-      <ModalItem delete={true} onClick={onClickDeleteAlbum}>
+      <ModalItem delete={true} onClick={onClickDeleteAlbum} className="delete-album-btn">
         앨범 삭제
       </ModalItem>
     </ModalWrapper>
