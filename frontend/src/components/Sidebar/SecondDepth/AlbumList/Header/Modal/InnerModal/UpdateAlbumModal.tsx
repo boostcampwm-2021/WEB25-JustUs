@@ -17,6 +17,7 @@ const UpdateAlbumModal = () => {
   const closeModal = () => {
     dispatch({ type: "CLOSE_MODAL" });
   };
+
   const onClickSave = () => {
     if (!inputRef.current) return;
 
@@ -29,7 +30,7 @@ const UpdateAlbumModal = () => {
     selectedAlbumList[targetIdx].albumName = albumName;
 
     dispatch({ type: GroupAction.SET_ALL_GROUPS, payload: groups });
-    dispatch({ type: "CLOSE_MODAL" });
+    closeModal();
   };
 
   return (

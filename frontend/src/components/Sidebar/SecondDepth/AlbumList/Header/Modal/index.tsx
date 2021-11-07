@@ -13,11 +13,12 @@ const AlbumSettingModal = ({ albumID, albumName, setModalOpenedIdx }: AlbumSetti
   const dispatch = useDispatch();
 
   const onClickUpdateAlbum = () => {
-    dispatch({ type: "OPEN_MODAL", payload: "UpdateAlbumModal" });
     dispatch({ type: "SET_SELECTED_ALBUM", payload: { albumID, albumName } });
+    dispatch({ type: "OPEN_MODAL", payload: "UpdateAlbumModal" });
   };
 
   const onClickDeleteAlbum = () => {
+    dispatch({ type: "SET_SELECTED_ALBUM", payload: { albumID, albumName } });
     dispatch({ type: "OPEN_MODAL", payload: "DeleteAlbumModal" });
   };
 
