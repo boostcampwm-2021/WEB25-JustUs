@@ -1,7 +1,8 @@
-import React, { MouseEvent, useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import COLOR from "@styles/Color";
 import { useDispatch } from "react-redux";
+import Carousel from "@components/Modal/PostCreateModal/UploadInfoModal/Carousel";
 
 interface FileObject {
   file: File;
@@ -13,8 +14,6 @@ interface UploadInfoModalProps {
 }
 
 const UploadInfoModal = ({ changeMode, files }: UploadInfoModalProps) => {
-  const carouselRef = useRef<HTMLDivElement>(null);
-  const [imageIndex, setImageIndex] = useState(0);
   const [title, setTitle] = useState<string>("");
   const [text, setText] = useState<string>("");
   const [activate, setActivate] = useState<boolean>(false);
@@ -22,21 +21,6 @@ const UploadInfoModal = ({ changeMode, files }: UploadInfoModalProps) => {
   const closeModal = () => {
     dispatch({ type: "CLOSE_MODAL" });
   };
-
-  const showNextImage = () => {
-    if (imageIndex == files.length - 1 || !carouselRef.current) return;
-    setImageIndex(imageIndex + 1);
-  };
-
-  const showPrevImage = () => {
-    if (imageIndex == 0 || !carouselRef.current) return;
-    setImageIndex(imageIndex - 1);
-  };
-
-  useEffect(() => {
-    if (!carouselRef.current) return;
-    carouselRef.current.style.transform = `translate3d(-${carouselRef.current.offsetWidth * imageIndex}px, 0, 0)`;
-  }, [imageIndex]);
 
   const handelTitleInput = (event: React.FormEvent<HTMLInputElement>) => {
     const { value } = event.target as HTMLTextAreaElement;
@@ -55,7 +39,7 @@ const UploadInfoModal = ({ changeMode, files }: UploadInfoModalProps) => {
 
   return (
     <ModalContainer
-      onClick={event => {
+      onClick={(event) => {
         event.nativeEvent.stopImmediatePropagation();
       }}
     >
@@ -70,24 +54,7 @@ const UploadInfoModal = ({ changeMode, files }: UploadInfoModalProps) => {
       </ModalHeader>
       <ModalContent>
         <ModalLeft>
-          <ChangeImageButton onClick={showPrevImage} type="button">
-            <img src="/icons/prev.svg" alt="prev image" height="30%"></img>
-          </ChangeImageButton>
-          <CarouselWindow>
-            <Carousel ref={carouselRef}>
-              {files.map(fileObject => (
-                <img src={URL.createObjectURL(fileObject.file)}></img>
-              ))}
-            </Carousel>
-            <DotContainer>
-              {files.map((fileObject, idx) => (
-                <Dot color={imageIndex == idx ? COLOR.BLACK : COLOR.GRAY}></Dot>
-              ))}
-            </DotContainer>
-          </CarouselWindow>
-          <ChangeImageButton onClick={showNextImage} type="button">
-            <img src="/icons/next.svg" alt="next image" height="30%"></img>
-          </ChangeImageButton>
+          <Carousel files={files} carouselWidth={250} />
         </ModalLeft>
         <ModalRight>
           <InputTitle type="text" placeholder="제목" value={title} onChange={handelTitleInput} />
@@ -110,7 +77,7 @@ const UploadInfoModal = ({ changeMode, files }: UploadInfoModalProps) => {
 
 export default UploadInfoModal;
 const UploadButton = styled.button<{ activate: boolean }>`
-  background-color: ${props => {
+  background-color: ${(props) => {
     if (props.activate) return COLOR.THEME1.PRIMARY;
     else return COLOR.THEME1.SECONDARY;
   }};
@@ -120,7 +87,7 @@ const UploadButton = styled.button<{ activate: boolean }>`
   margin-top: 1rem;
   color: ${COLOR.WHITE};
   font-size: 1rem;
-  cursor: ${props => {
+  cursor: ${(props) => {
     if (props.activate) return "pointer";
     else return "not-allowed";
   }};
@@ -189,50 +156,9 @@ const ModalRight = styled.div`
   padding-bottom: 5vh;
 `;
 
-const DotContainer = styled.div`
-  display: flex;
-  height: 30px;
-  justify-content: center;
-  align-items: center;
-`;
-const Dot = styled.div`
-  width: 5px;
-  height: 5px;
-  margin: 5px;
-  border-radius: 50px;
-  background-color: ${props => props.color}; ;
-`;
-
-const CarouselWindow = styled.div`
-  margin-top: 10px;
-  display: grid;
-  grid-template-rows: 1fr 60px;
-  overflow: hidden;
-  height: 100%;
-`;
-const ChangeImageButton = styled.button`
-  z-index: 2;
-  height: 20%;
-  border: none;
-  background: none;
-  cursor: pointer;
-`;
-
 const ModalLeft = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 200px 1fr;
-  overflow: hidden;
-  align-items: center;
-  justify-content: center;
-`;
-const Carousel = styled.div`
-  display: flex;
-  transform: translate3d(0, 0, 0);
-  transition: transform 0.5s;
-  & img {
-    max-width: 100%;
-    object-fit: contain;
-  }
+  width: 100%;
+  height: 100%;
 `;
 
 const ModalContent = styled.div`
