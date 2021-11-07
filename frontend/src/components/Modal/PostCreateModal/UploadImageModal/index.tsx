@@ -29,7 +29,7 @@ const UploadImageModal = ({ changeMode, files, setFiles }: UploadImageModalProps
     inputImagaRef.current.click();
   };
 
-  const changeImage: React.ChangeEventHandler<HTMLInputElement> = event => {
+  const changeImage: React.ChangeEventHandler<HTMLInputElement> = (event) => {
     if (!event.target.files) return;
     const file = event.target.files[0];
     setFiles([...files, { file, key: shortid.generate() }]);
@@ -40,12 +40,12 @@ const UploadImageModal = ({ changeMode, files, setFiles }: UploadImageModalProps
   };
 
   const deleteImage = (key: string) => {
-    setFiles(files.filter(file => file.key !== key));
+    setFiles(files.filter((file) => file.key !== key));
   };
 
   return (
     <ModalContainer
-      onClick={event => {
+      onClick={(event) => {
         event.nativeEvent.stopImmediatePropagation();
       }}
     >
@@ -70,7 +70,7 @@ const UploadImageModal = ({ changeMode, files, setFiles }: UploadImageModalProps
           </p>
         </UploadButton>
         {files.map(
-          fileObject => (
+          (fileObject) => (
             <ImagePreview key={shortid.generate()}>
               <DeleteImageBtn onClick={() => deleteImage(fileObject.key)}>
                 <img src="/icons/delete.svg" alt="delete"></img>
@@ -145,10 +145,8 @@ const ModalContainer = styled.div`
   display: flex;
   flex-direction: column;
   background-color: ${COLOR.WHITE};
-  height: 30vw;
-  width: 45vw;
-  min-width: 500px;
-  min-height: 400px;
+  width: 850px;
+  height: 530px;
   border-radius: 10px;
   box-shadow: 0 2px 3px 0 ${COLOR.SHADOW_BLACK};
 `;
@@ -165,7 +163,7 @@ const ModalHeader = styled.div`
 
 const ModalContent = styled.div`
   display: grid;
-  height: 26vw;
+  height: 100%;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 50% 50%;
   box-sizing: border-box;
