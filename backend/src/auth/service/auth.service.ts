@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { RegisterUserDto } from "src/dto/register-user.dto";
+import { RegisterUserDto } from "src/dto/user/register-user.dto";
 import { JwtService } from "@nestjs/jwt";
 import { UserService } from "src/user/service/user.service";
 import { User } from "../../user/user.entity";
