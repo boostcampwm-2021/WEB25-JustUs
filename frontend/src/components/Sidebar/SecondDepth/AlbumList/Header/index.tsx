@@ -1,6 +1,10 @@
 import styled from "styled-components";
-import COLOR from "@styles/Color";
 import AlbumSettingModal from "./Modal";
+import { ReactComponent as ArrowDownSVG } from "@styles/icons/arrow-down.svg";
+import { ReactComponent as ArrowRightSVG } from "@styles/icons/arrow-right.svg";
+import { ReactComponent as MoreVertSVG } from "@styles/icons/more-vert.svg";
+import { useSelector } from "react-redux";
+import { RootState } from "@src/reducer";
 
 interface HeaderProps {
   albumID: number;
@@ -12,6 +16,8 @@ interface HeaderProps {
 }
 
 const Header = ({ albumID, albumName, postToggle, setPostToggle, modalOpenedIdx, setModalOpenedIdx }: HeaderProps) => {
+  const { nowTheme }: any = useSelector((state: RootState) => state.theme);
+
   const onClickArrowDown = () => {
     setPostToggle((prev) => !prev);
   };
@@ -23,12 +29,12 @@ const Header = ({ albumID, albumName, postToggle, setPostToggle, modalOpenedIdx,
   return (
     <HeaderWrapper>
       <ArrowIcon onClick={onClickArrowDown}>
-        {postToggle && <img src="/icons/arrow-down.svg" alt="arrow-down icon.svg" />}
-        {!postToggle && <img src="/icons/arrow-right.svg" alt="arrow-right icon.svg" />}
+        {postToggle && <ArrowDownSVG fill={nowTheme.MENUTEXT} />}
+        {!postToggle && <ArrowRightSVG fill={nowTheme.MENUTEXT} />}
       </ArrowIcon>
       {albumName}
       <MoreIcon className="modifying-album-btn" onClick={onClickMoreBtn}>
-        {albumName !== "기본 앨범" && <img src="/icons/more-vert.svg" alt="more-vert icon.svg" />}
+        {albumName !== "기본 앨범" && <MoreVertSVG fill={nowTheme.MENUTEXT} />}
         {modalOpenedIdx === albumID && (
           <AlbumSettingModal albumID={albumID} albumName={albumName} setModalOpenedIdx={setModalOpenedIdx} />
         )}
@@ -39,7 +45,8 @@ const Header = ({ albumID, albumName, postToggle, setPostToggle, modalOpenedIdx,
 
 const HeaderWrapper = styled.div`
   width: 100%;
-  color: ${COLOR.WHITE};
+  color: ${(props) => props.theme.MENUTEXT};
+  font-weight: bold;
   display: grid;
   grid-template-columns: 10% 80% 10%;
   cursor: default;

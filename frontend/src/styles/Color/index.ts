@@ -18,7 +18,7 @@ const COLOR = {
   THEME2: {
     PRIMARY: "#E4CE8E",
     SECONDARY: "#D77948",
-    MENUTEXT: "#B08A23",
+    MENUTEXT: "#4f4626",
   },
   THEME3: {
     PRIMARY: "#87AAAA",

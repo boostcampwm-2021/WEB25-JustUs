@@ -3,10 +3,12 @@ import COLOR from "@styles/Color";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
+import { ReactComponent as SettingsSVG } from "@styles/icons/settings.svg";
 
 const SettingGroup = () => {
   const dispatch = useDispatch();
   const { selectedGroup }: any = useSelector((state: RootState) => state.groups);
+  const { nowTheme }: any = useSelector((state: RootState) => state.theme);
 
   const onClickSettingGroup = () => {
     dispatch({ type: "OPEN_MODAL", payload: "SettingGroupModal" });
@@ -17,7 +19,7 @@ const SettingGroup = () => {
       <GroupName>{selectedGroup.groupName}</GroupName>
       <div onClick={onClickSettingGroup}>
         <SettingIconWrapper>
-          <img src="/icons/settings.svg" alt="settings icon.svg" />
+          <SettingsSVG fill={nowTheme.MENUTEXT} />
         </SettingIconWrapper>
       </div>
     </SettingGroupWrapper>
@@ -32,7 +34,8 @@ const SettingGroupWrapper = styled.div`
   justify-content: space-around;
   align-items: center;
   border-bottom: 1px ${COLOR.WHITE} solid;
-  color: ${COLOR.WHITE};
+  color: ${(props) => props.theme.MENUTEXT};
+  font-weight: bold;
 `;
 
 const SettingIconWrapper = styled.div`
