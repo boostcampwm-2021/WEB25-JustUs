@@ -16,7 +16,7 @@ interface ModalManagerProps {
 }
 
 const ModalManager = ({ setIsToggle }: ModalManagerProps) => {
-  const { nowModal } = useSelector((state: RootState) => state.uploadModal);
+  const { nowModal } = useSelector((state: RootState) => state.modal);
 
   return (
     <>
