@@ -16,7 +16,6 @@ const initState = {
             { postID: 5, postTitle: "롯데백화점" },
           ],
         },
-
         {
           albumID: 1,
           albumName: "일상 데이트",
@@ -91,7 +90,7 @@ const groupReducer = (state = initState, action: any) => {
     case GroupAction.DELETE_GROUP:
       return {
         ...state,
-        groups: state.groups.filter(group => group.groupID !== action.payload.groupID),
+        groups: state.groups.filter((group) => group.groupID !== action.payload.groupID),
       };
     case GroupAction.SET_ALL_GROUPS:
       return {

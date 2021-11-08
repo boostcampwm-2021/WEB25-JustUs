@@ -15,7 +15,7 @@ const Main = () => {
   const { groups }: any = useSelector((state: RootState) => state.groups);
 
   useEffect(() => {
-    document.addEventListener("click", event => {
+    document.addEventListener("click", (event) => {
       const { target, clientX, clientY } = event;
 
       if (!(event.target instanceof HTMLElement)) return;
