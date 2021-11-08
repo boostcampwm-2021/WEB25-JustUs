@@ -30,8 +30,16 @@ const setMap = (INIT_X: number, INIT_Y: number, ZOOM_SIZE: number) => {
     center: pos,
     zoom: ZOOM_SIZE,
   });
+  const markerItems = [
+    { id: 0, name: "삼겹살", position: [37.3595704, 127.105399] },
+    { id: 1, name: "맥도날드", position: [37.3618025, 127.1153248] },
+    { id: 2, name: "미삼집", position: [37.3561936, 127.0983706] },
+  ];
 
-  const marker = new naver.maps.Marker(Marker(map, pos));
+  markerItems.forEach((marker) => {
+    const pos1 = new naver.maps.LatLng(marker.position[0], marker.position[1]);
+    new naver.maps.Marker(Marker(map, pos1, marker.id));
+  });
 };
 
 const setError = () => {
