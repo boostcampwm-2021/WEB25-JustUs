@@ -14,7 +14,7 @@ export class NaverStrategy extends PassportStrategy(Strategy, "naver") {
     });
   }
 
-  async validate(accessToken: string, refreshToken: string, profile: any): Promise<any> {
+  async validate(naverAccessToken: string, naverRefreshToken: string, profile: any): Promise<{ accessToken: string }> {
     const { email, nickname, profileImage } = profile;
     const registerUserDto: RegisterUserDto = new RegisterUserDto();
     registerUserDto.userEmail = email;
@@ -25,6 +25,8 @@ export class NaverStrategy extends PassportStrategy(Strategy, "naver") {
 
     if (!user) throw new UnauthorizedException("유저가 존재하지 않습니다.");
 
-    return user;
+    const accessToken = this.authService.createToken(user);
+
+    return { accessToken };
   }
 }
