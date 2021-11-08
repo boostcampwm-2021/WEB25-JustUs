@@ -40,9 +40,9 @@ const ButtonWrapper = styled.div<{ selectedGroupID: number; groupID: number; gro
   background-color: ${COLOR.WHITE};
   margin: 10%;
   border-radius: 1vw;
-  border: ${props =>
-    props.selectedGroupID === props.groupID ? `5px solid ${COLOR.THEME1.SECONDARY}` : `5px solid ${COLOR.WHITE}`};
-  background-image: url("${props => props.groupImg}");
+  border: ${(props) =>
+    props.selectedGroupID === props.groupID ? `5px solid ${props.theme.SECONDARY};` : `5px solid ${COLOR.WHITE}`};
+  background-image: url("${(props) => props.groupImg}");
   background-size: 100%;
   cursor: pointer;
   background-repeat: no-repeat;

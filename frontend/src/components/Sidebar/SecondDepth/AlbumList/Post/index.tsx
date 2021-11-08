@@ -21,10 +21,10 @@ const Post = ({ idx, postTitle, postSelected, setPostSelected }: PostProps) => {
   );
 };
 
-const PostWrapper = styled.div<{ idx: number; postSelected: number }>`
+const PostWrapper = styled.div<{ idx: number; postSelected: number; theme: any }>`
   padding-left: 30px;
   color: ${({ postSelected, idx }) => (postSelected === idx ? COLOR.WHITE : COLOR.GRAY)};
-  background: ${({ postSelected, idx }) => (postSelected === idx ? COLOR.THEME1.SECONDARY : "")};
+  background: ${({ theme, postSelected, idx }) => (postSelected === idx ? theme.SECONDARY : "")};
 
   &:hover {
     cursor: pointer;

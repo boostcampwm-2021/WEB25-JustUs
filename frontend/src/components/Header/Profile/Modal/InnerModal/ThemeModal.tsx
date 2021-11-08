@@ -1,19 +1,39 @@
 import styled from "styled-components";
 import Modal from "@components/Modal";
 import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { RootState } from "@src/reducer";
 import COLOR from "@styles/Color";
 import { flexColumnCenterAlign } from "@src/styles/StyledComponents";
 
 const UserInfoModal = () => {
+  const { selectedTheme } = useSelector((state: RootState) => state.theme);
+
   const dispatch = useDispatch();
   const closeUserInfoModal = () => {
     dispatch({ type: "CLOSE_MODAL" });
   };
   const themes = [
-    { id: 0, themeColor: "green", name: "보성 녹차 테마", src: "/img/greenTheme.png", isChecked: true },
-    { id: 1, themeColor: "yellow", name: "고개 숙인 벼 테마", src: "/img/yellowTheme.png", isChecked: false },
-    { id: 2, themeColor: "mint", name: "민트 초코 테마", src: "/img/mintTheme.png", isChecked: false },
+    { id: 1, themeColor: "green", name: "보성 녹차 테마", src: "/img/greenTheme.png", isChecked: true },
+    { id: 2, themeColor: "yellow", name: "고개 숙인 벼 테마", src: "/img/yellowTheme.png", isChecked: false },
+    { id: 3, themeColor: "mint", name: "민트 초코 테마", src: "/img/mintTheme.png", isChecked: false },
   ];
+
+  const radioHandler = (id: number) => {
+    switch (id) {
+      case 1:
+        dispatch({ type: "CHANGE_THEME1" });
+        break;
+      case 2:
+        dispatch({ type: "CHANGE_THEME2" });
+        break;
+      case 3:
+        dispatch({ type: "CHANGE_THEME3" });
+        break;
+      default:
+        break;
+    }
+  };
 
   return (
     <Modal>
@@ -41,7 +61,13 @@ const UserInfoModal = () => {
                   return (
                     <li key={id}>
                       <img src={src} alt={themeColor} height="100vh" />
-                      <input type="radio" name="theme" value={themeColor} />
+                      <input
+                        type="radio"
+                        name="theme"
+                        value={themeColor}
+                        onClick={() => radioHandler(id)}
+                        checked={selectedTheme == id ? true : false}
+                      />
                       <label htmlFor={themeColor}>{name}</label>
                     </li>
                   );

@@ -43,7 +43,7 @@ const FirstDepth = ({ isToggle, setIsToggle, addGroupBtnRef }: FirstDepthProps) 
 const FirstDepthWrapper = styled.div`
   width: 5vw;
   height: 95vh;
-  background-color: ${COLOR.THEME1.PRIMARY};
+  background-color: ${(props) => props.theme.PRIMARY};
   display: flex;
   flex-direction: column;
   align-items: center;

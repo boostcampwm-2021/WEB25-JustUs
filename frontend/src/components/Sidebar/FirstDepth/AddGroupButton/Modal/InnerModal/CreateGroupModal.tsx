@@ -37,7 +37,7 @@ const CreateGroupModal = () => {
     const file = files[0];
     const reader = new FileReader();
 
-    reader.onload = e => {
+    reader.onload = (e) => {
       if (!e.target) return;
       if (!imageRef.current) return;
       if (!e.target.result) return;
@@ -83,7 +83,7 @@ const CreateGroupModal = () => {
   return (
     <Modal>
       <ModalContainer
-        onClick={event => {
+        onClick={(event) => {
           event.nativeEvent.stopImmediatePropagation();
         }}
       >
@@ -157,8 +157,8 @@ const ImageBackground = styled.div<{ groupImg: string }>`
   margin-top: 30px;
   width: 90px;
   height: 90px;
-  background-color: ${COLOR.THEME1.SECONDARY};
-  opacity: ${props => (props.groupImg === "/icons/person.svg" ? "0.4" : "")};
+  background-color: ${(props) => props.theme.SECONDARY};
+  opacity: ${(props) => (props.groupImg === "/icons/person.svg" ? "0.4" : "")};
   border-radius: 100%;
 `;
 
@@ -167,7 +167,7 @@ const UploadImgBtnWrapper = styled.div`
   cursor: pointer;
   margin-top: 20px;
   border-radius: 10px;
-  border: 2px solid ${COLOR.THEME1.PRIMARY};
+  border: 2px solid ${(props) => props.theme.PRIMARY};
   font-weight: bold;
   font-size: 15px;
   line-height: 16px;
@@ -187,8 +187,7 @@ const GroupNameInputWrapper = styled.input`
   border: none;
   width: 200px;
   font-size: 15px;
-  border-bottom: 1px solid ${COLOR.THEME1.PRIMARY};
-
+  border-bottom: 1px solid ${(props) => props.theme.PRIMARY};
   &::-webkit-input-placeholder {
     text-align: center;
     font-weight: 800;
@@ -203,7 +202,7 @@ const CreateBtnWrapper = styled.div`
   height: 39px;
   border-radius: 10px;
   color: ${COLOR.WHITE};
-  background-color: ${COLOR.THEME1.PRIMARY};
+  background-color: ${(props) => props.theme.PRIMARY};
   margin-top: 50px;
 `;
 

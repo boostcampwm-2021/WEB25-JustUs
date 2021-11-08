@@ -78,10 +78,10 @@ const UploadInfoModal = ({ changeMode, files }: UploadInfoModalProps) => {
 export default UploadInfoModal;
 const UploadButton = styled.button<{ activate: boolean }>`
   background-color: ${(props) => {
-    if (props.activate) return COLOR.THEME1.PRIMARY;
-    else return COLOR.THEME1.SECONDARY;
+    if (props.activate) return props.theme.PRIMARY;
+    else return props.theme.SECONDARY;
   }};
-  border: 1px solid ${COLOR.THEME1.PRIMARY};
+  border: 1px solid ${(props) => props.theme.PRIMARY};
   border-radius: 10px;
   flex-basis: 3rem;
   margin-top: 1rem;
