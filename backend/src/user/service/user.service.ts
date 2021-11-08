@@ -1,8 +1,9 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { RegisterUserDto } from "src/dto/register-user.dto";
+import { RegisterUserDto } from "src/dto/user/register-user.dto";
 import { User } from "../user.entity";
 import { UserRepository } from "../user.repository";
+import { FindUserResponseDto } from "src/dto/user/userInfoResponse.dto";
 
 @Injectable()
 export class UserService {
@@ -20,12 +21,13 @@ export class UserService {
     return user;
   }
 
-  async findAll(): Promise<User[]> {
-    const user = await this.userRepository.find();
+  async findUserInfo(userId: number): Promise<FindUserResponseDto> {
+    const user = await this.userRepository.findOne({ userId });
+
     if (!user) {
       throw new NotFoundException("Can not find User");
     }
-
-    return user;
+    const { profileImage, userNickname } = user;
+    return { profileImage, userNickname };
   }
 }
