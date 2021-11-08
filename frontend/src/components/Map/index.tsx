@@ -12,13 +12,30 @@ const load = (url: string, cb: Function, err: Function) => {
 
   element.async = true;
   element.onload = () => {
-    cb();
+    const INIT_X = 37.511337;
+    const INIT_Y = 127.012084;
+    const ZOOM_SIZE = 13;
+    cb(INIT_X, INIT_Y, ZOOM_SIZE);
   };
   element.onerror = () => {
     err();
   };
   element[attr] = url;
   document[parent].appendChild(element);
+};
+
+const setMap = (INIT_X: number, INIT_Y: number, ZOOM_SIZE: number) => {
+  const pos = new naver.maps.LatLng(INIT_X, INIT_Y);
+  const map = new naver.maps.Map("map", {
+    center: pos,
+    zoom: ZOOM_SIZE,
+  });
+
+  const marker = new naver.maps.Marker(Marker(map, pos));
+};
+
+const setError = () => {
+  console.error("잘못되었습니다.");
 };
 
 const Map = () => {
@@ -28,20 +45,7 @@ const Map = () => {
     const initMap = () => {
       const clientId: string = process.env.REACT_APP_NCP_CLOUD_ID as string;
       const url = `https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${clientId}`;
-      load(
-        url,
-        () => {
-          const pos = new naver.maps.LatLng(37.511337, 127.012084);
-          const map = new naver.maps.Map("map", {
-            center: pos,
-            zoom: 13,
-          });
-          const marker = new naver.maps.Marker(Marker(map, pos));
-        },
-        () => {
-          console.error("잘못되었습니다.");
-        },
-      );
+      load(url, setMap, setError);
     };
     initMap();
   }, []);
