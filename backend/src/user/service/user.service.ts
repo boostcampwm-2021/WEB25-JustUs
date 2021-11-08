@@ -4,6 +4,7 @@ import { RegisterUserDto } from "src/dto/user/register-user.dto";
 import { User } from "../user.entity";
 import { UserRepository } from "../user.repository";
 import { UserInfoResponseDto } from "src/dto/user/userInfoResponse.dto";
+import { UpdateUserInfoRequestDto } from "src/dto/user/updateUserInfoRequest.dto";
 
 @Injectable()
 export class UserService {
@@ -24,10 +25,22 @@ export class UserService {
   async findUserInfo(userId: number): Promise<UserInfoResponseDto> {
     const user = await this.userRepository.findOne({ userId });
 
-    if (!user) {
-      throw new NotFoundException("Can not find User");
-    }
+    if (!user) throw new NotFoundException("Can not find User");
+
     const { profileImage, userNickname } = user;
     return { profileImage, userNickname };
+  }
+
+  async updateUserInfo(updateUserInfoRequestDto: UpdateUserInfoRequestDto): Promise<string> {
+    const { userId, profileImage, userNickname } = updateUserInfoRequestDto;
+    const user = await this.userRepository.findOne({ userId });
+
+    if (!user) throw new NotFoundException("Can not find User");
+
+    user.profileImage = profileImage;
+    user.userNickname = userNickname;
+    await this.userRepository.save(user);
+
+    return "UserInfo update success!!";
   }
 }
