@@ -36,8 +36,8 @@ const Carousel = ({ files, carouselWidth }: CarouselProps) => {
       </ChangeImageButton>
       <CarouselWindow>
         <CarouselImage ref={carouselRef} carouselWidth={carouselWidth}>
-          {files.map((fileObject) => (
-            <div>
+          {files.map((fileObject, idx) => (
+            <div key={idx}>
               <img src={URL.createObjectURL(fileObject.file)}></img>
             </div>
           ))}
@@ -48,7 +48,7 @@ const Carousel = ({ files, carouselWidth }: CarouselProps) => {
       </ChangeImageButton>
       <DotContainer>
         {files.map((fileObject, idx) => (
-          <Dot color={imageIndex == idx ? COLOR.BLACK : COLOR.GRAY}></Dot>
+          <Dot key={idx} color={imageIndex == idx ? COLOR.BLACK : COLOR.GRAY}></Dot>
         ))}
       </DotContainer>
     </CarouselContainer>
