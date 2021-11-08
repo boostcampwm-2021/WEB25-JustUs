@@ -23,7 +23,7 @@ const Post = ({ idx, postTitle, postSelected, setPostSelected }: PostProps) => {
 
 const PostWrapper = styled.div<{ idx: number; postSelected: number; theme: any }>`
   padding-left: 30px;
-  color: ${({ postSelected, idx }) => (postSelected === idx ? COLOR.WHITE : COLOR.GRAY)};
+  color: ${({ theme, postSelected, idx }) => (postSelected === idx ? COLOR.WHITE : theme.MENUTEXT)};
   background: ${({ theme, postSelected, idx }) => (postSelected === idx ? theme.SECONDARY : "")};
 
   &:hover {

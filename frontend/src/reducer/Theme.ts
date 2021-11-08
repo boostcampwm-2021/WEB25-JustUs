@@ -9,6 +9,7 @@ const initState: { selectedTheme: number; nowTheme: ThemeType } = {
   nowTheme: {
     PRIMARY: COLOR.THEME1.PRIMARY,
     SECONDARY: COLOR.THEME1.SECONDARY,
+    MENUTEXT: COLOR.THEME1.MENUTEXT,
   },
 };
 
