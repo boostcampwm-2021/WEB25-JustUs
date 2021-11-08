@@ -1,4 +1,4 @@
-import { RegisterUserDto } from "src/dto/register-user.dto";
+import { RegisterUserDto } from "src/dto/user/register-user.dto";
 import { EntityRepository, Repository } from "typeorm";
 import { User } from "./user.entity";
 
