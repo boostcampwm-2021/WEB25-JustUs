@@ -3,6 +3,7 @@ import styled from "styled-components";
 import COLOR from "@styles/Color";
 import { flexRowCenterAlign } from "@styles/StyledComponents";
 import { useDispatch } from "react-redux";
+import Marker from "@components/Map/Markers";
 
 const load = (url: string, cb: Function, err: Function) => {
   const element = document.createElement("script");
@@ -19,6 +20,7 @@ const load = (url: string, cb: Function, err: Function) => {
   element[attr] = url;
   document[parent].appendChild(element);
 };
+
 const Map = () => {
   const dispatch = useDispatch();
 
@@ -29,10 +31,12 @@ const Map = () => {
       load(
         url,
         () => {
+          const pos = new naver.maps.LatLng(37.511337, 127.012084);
           const map = new naver.maps.Map("map", {
-            center: new naver.maps.LatLng(37.511337, 127.012084),
+            center: pos,
             zoom: 13,
           });
+          const marker = new naver.maps.Marker(Marker(map, pos));
         },
         () => {
           console.error("잘못되었습니다.");
