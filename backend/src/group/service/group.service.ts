@@ -1,10 +1,11 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { GroupRepository } from "../group.repository";
-import { CreateGroupRequestDto } from "src/dto/group/createGroupRequest.dto";
 import { UserRepository } from "src/user/user.repository";
 import { Group } from "../group.entity";
+import { CreateGroupRequestDto } from "src/dto/group/createGroupRequest.dto";
 import { AttendGroupRequestDto } from "src/dto/group/attendGroupRequest.dto";
+import { GetGroupInfoResponseDto } from "src/dto/group/getGroupInfoResponse.dto";
 
 @Injectable()
 export class GroupService {
@@ -53,5 +54,19 @@ export class GroupService {
     await this.userRepository.save(user);
 
     return group.groupId;
+  }
+
+  async getGroupInfo(groupId: number): Promise<GetGroupInfoResponseDto> {
+    const group = await this.groupRepository
+      .createQueryBuilder("group")
+      .leftJoin("group.users", "user")
+      .select(["group.groupCode", "user.profileImage", "user.userNickname", "user.userEmail"])
+      .where("group.groupId = :id", { id: groupId })
+      .getOne();
+
+    if (!group) throw new NotFoundException("Not found group with the id " + groupId);
+
+    const { groupCode, users } = group;
+    return { groupCode, users };
   }
 }
