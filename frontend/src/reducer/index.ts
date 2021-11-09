@@ -1,12 +1,14 @@
 import { combineReducers } from "redux";
 import GroupModalReducer from "./GroupModalReducer";
 import groupReducer from "./GroupReducer";
-import UploadModalReducer from "./UploadModal";
+import ModalReducer from "./Modal";
+import Theme from "./Theme";
 
 const rootReducer = combineReducers({
   groupModal: GroupModalReducer,
   groups: groupReducer,
-  uploadModal: UploadModalReducer,
+  modal: ModalReducer,
+  theme: Theme,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

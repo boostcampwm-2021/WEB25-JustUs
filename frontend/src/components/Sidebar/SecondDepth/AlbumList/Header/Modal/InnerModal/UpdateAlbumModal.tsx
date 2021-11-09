@@ -10,7 +10,7 @@ import { GroupAction } from "@src/action";
 
 const UpdateAlbumModal = () => {
   const dispatch = useDispatch();
-  const { selectedAlbum } = useSelector((state: RootState) => state.uploadModal);
+  const { selectedAlbum } = useSelector((state: RootState) => state.modal);
   const inputRef = useRef<HTMLInputElement>(null);
   const { groups, selectedGroup }: any = useSelector((state: RootState) => state.groups);
 
@@ -121,7 +121,7 @@ const SaveBtnWrapper = styled.div`
   height: 39px;
   border-radius: 10px;
   color: ${COLOR.WHITE};
-  background-color: ${COLOR.THEME1.PRIMARY};
+  background-color: ${(props) => props.theme.PRIMARY};
   margin-top: 50px;
   font-size: 30px;
   cursor: pointer;

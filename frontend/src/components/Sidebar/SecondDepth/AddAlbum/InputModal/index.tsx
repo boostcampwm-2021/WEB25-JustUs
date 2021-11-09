@@ -58,7 +58,7 @@ const AddAlbumModalWrapper = styled.div`
 
 const AlbumCreateInputWrapper = styled.input`
   border: none;
-  border-bottom: 1px solid ${COLOR.THEME1.PRIMARY};
+  border-bottom: 1px solid ${(props) => props.theme.PRIMARY};
   width: 60%;
   text-align: center;
   font-size: 1rem;
@@ -83,7 +83,7 @@ const AlbumCreateBtnWrapper = styled.div`
   ${flexRowCenterAlign}
   width: 3vw;
   height: 5vh;
-  background-color: ${COLOR.THEME1.SECONDARY};
+  background-color: ${(props) => props.theme.SECONDARY};
   color: ${COLOR.WHITE};
   border-radius: 10px;
   cursor: pointer;

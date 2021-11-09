@@ -17,10 +17,10 @@ const AddGroupButton = ({ addGroupBtnRef }: AddGroupButtonProps) => {
 const ButtonWrapper = styled.div`
   min-width: 3vw;
   min-height: 3vw;
-  background: ${COLOR.THEME1.PRIMARY};
+  background: ${(props) => props.theme.PRIMARY};
   background-image: url("/icons/add-group.svg");
   ${flexRowCenterAlign}
-  border: 1px solid ${COLOR.THEME1.SECONDARY};
+  border: 1px solid  ${(props) => props.theme.SECONDARY};
   margin: 10%;
   padding: 10%;
   border-radius: 1vw;

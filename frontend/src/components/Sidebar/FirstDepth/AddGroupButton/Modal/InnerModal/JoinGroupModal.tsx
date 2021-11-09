@@ -14,7 +14,7 @@ const JoinGroupModal = () => {
   return (
     <Modal>
       <ModalContainer
-        onClick={event => {
+        onClick={(event) => {
           event.nativeEvent.stopImmediatePropagation();
         }}
       >
@@ -98,7 +98,7 @@ const JoinBtnWrapper = styled.div`
   height: 39px;
   border-radius: 10px;
   color: ${COLOR.WHITE};
-  background-color: ${COLOR.THEME1.PRIMARY};
+  background-color: ${(props) => props.theme.PRIMARY};
   margin-top: 50px;
   font-size: 30px;
 `;

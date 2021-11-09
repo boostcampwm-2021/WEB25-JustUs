@@ -17,7 +17,7 @@ const Header = ({ isToggle, setIsToggle }: SidebarProps) => {
 
   const onClickMenu = () => {
     if (!groups.length) return;
-    setIsToggle(prev => !prev);
+    setIsToggle((prev) => !prev);
   };
   return (
     <>
@@ -32,7 +32,7 @@ const Header = ({ isToggle, setIsToggle }: SidebarProps) => {
 
 const HeaderContainer = styled.div<{ groups: any }>`
   height: 5vh;
-  background-color: ${COLOR.THEME1.PRIMARY};
+  background-color: ${(props) => props.theme.PRIMARY};
   box-sizing: border-box;
   border-bottom: 1px solid ${COLOR.WHITE};
   padding: 0 1vw;

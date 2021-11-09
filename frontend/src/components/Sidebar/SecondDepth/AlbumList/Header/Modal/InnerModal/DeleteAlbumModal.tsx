@@ -9,7 +9,7 @@ import { GroupAction } from "@src/action";
 
 const DeleteAlbumModal = () => {
   const dispatch = useDispatch();
-  const { selectedAlbum } = useSelector((state: RootState) => state.uploadModal);
+  const { selectedAlbum } = useSelector((state: RootState) => state.modal);
   const { groups, selectedGroup }: any = useSelector((state: RootState) => state.groups);
 
   const closeModal = () => {

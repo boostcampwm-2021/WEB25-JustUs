@@ -80,7 +80,7 @@ const Maps = styled.div`
 `;
 
 const FloatActionBtn = styled.button`
-  background-color: ${COLOR.THEME1.SECONDARY};
+  background-color: ${(props) => props.theme.SECONDARY};
   position: absolute;
   z-index: 2;
   border-radius: 50%;
@@ -92,10 +92,10 @@ const FloatActionBtn = styled.button`
   ${flexRowCenterAlign}
   color: ${COLOR.WHITE};
   font-size: 7vh;
-  box-shadow: 0.2vh 0.2vh 1vh 0.2vh ${COLOR.THEME1.PRIMARY};
+  box-shadow: 0.2vh 0.2vh 1vh 0.2vh ${(props) => props.theme.PRIMARY};
   &:hover {
     cursor: pointer;
-    background-color: ${COLOR.THEME1.PRIMARY};
+    background-color: ${(props) => props.theme.PRIMARY};
   }
 `;
 
