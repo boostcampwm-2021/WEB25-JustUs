@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, ChangeEvent } from "react";
 import styled from "styled-components";
 import COLOR from "@styles/Color";
 import { useDispatch } from "react-redux";
@@ -17,6 +17,8 @@ const UploadInfoModal = ({ changeMode, files }: UploadInfoModalProps) => {
   const [title, setTitle] = useState<string>("");
   const [text, setText] = useState<string>("");
   const [activate, setActivate] = useState<boolean>(false);
+  const [isSubOpened, setIsSubOpened] = useState(false);
+  const [searchKeyword, setSearchKeyword] = useState<string>("");
   const dispatch = useDispatch();
   const highlightsRef = useRef() as React.MutableRefObject<HTMLDivElement>;
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -51,6 +53,15 @@ const UploadInfoModal = ({ changeMode, files }: UploadInfoModalProps) => {
     highlightsRef.current.scrollTop = scrollTop;
   };
 
+  const onClickLocationBtn = () => {
+    setIsSubOpened((prev) => !prev);
+  };
+
+  const handleSearchInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setSearchKeyword(e.target.value);
+  };
+  const handleKeyPress = () => {};
+
   useEffect(() => {
     if (title.length == 0) setActivate(false);
     else setActivate(true);
@@ -61,44 +72,64 @@ const UploadInfoModal = ({ changeMode, files }: UploadInfoModalProps) => {
       onClick={(event) => {
         event.nativeEvent.stopImmediatePropagation();
       }}
+      isSubOpened={isSubOpened}
     >
-      <ModalHeader>
-        <ModalTitle>새 게시물 만들기</ModalTitle>
-        <ModalHeaderRigthBtn onClick={closeModal}>
-          <img src="/icons/x.svg" alt="close" height="90%"></img>
-        </ModalHeaderRigthBtn>
-        <ModalHeaderLeftBtn onClick={changeMode}>
-          <img src="/icons/prev.svg" alt="prev modal" height="90%"></img>
-        </ModalHeaderLeftBtn>
-      </ModalHeader>
-      <ModalContent>
-        <ModalLeft>
-          <Carousel files={files} carouselWidth={250} />
-        </ModalLeft>
-        <ModalRight>
-          <InputTitle type="text" placeholder="제목" value={title} onChange={handelTitleInput} />
-          <div className="backdrop" ref={backdropRef}>
-            <div ref={highlightsRef} className="highlights"></div>
-          </div>
-          <InputText
-            ref={inputRef}
-            placeholder="내용"
-            value={text}
-            onChange={handelTextInput}
-            onScroll={handleScroll}
-          />
-          <InputBottom>
-            <InputDate type="date" />
-            <InputPlace>
-              <InputPlaceName>장소이름</InputPlaceName>
-              <LocationButton>
-                <img src="/icons/location.svg" width="100%" />
-              </LocationButton>
-            </InputPlace>
-          </InputBottom>
-          <UploadButton activate={activate}>게시하기</UploadButton>
-        </ModalRight>
-      </ModalContent>
+      <ModalMain>
+        <ModalHeader>
+          <ModalTitle>새 게시물 만들기</ModalTitle>
+          <ModalHeaderRigthBtn onClick={closeModal}>
+            <img src="/icons/x.svg" alt="close" height="90%"></img>
+          </ModalHeaderRigthBtn>
+          <ModalHeaderLeftBtn onClick={changeMode}>
+            <img src="/icons/prev.svg" alt="prev modal" height="90%"></img>
+          </ModalHeaderLeftBtn>
+        </ModalHeader>
+        <ModalContent>
+          <ModalLeft>
+            <Carousel files={files} carouselWidth={250} />
+          </ModalLeft>
+          <ModalRight>
+            <InputTitle type="text" placeholder="제목" value={title} onChange={handelTitleInput} />
+            <div className="backdrop" ref={backdropRef}>
+              <div ref={highlightsRef} className="highlights"></div>
+            </div>
+            <InputText
+              ref={inputRef}
+              placeholder="내용"
+              value={text}
+              onChange={handelTextInput}
+              onScroll={handleScroll}
+            />
+            <InputBottom>
+              <InputDate type="date" />
+              <InputPlace>
+                <InputPlaceName>장소이름</InputPlaceName>
+                <LocationButton onClick={onClickLocationBtn}>
+                  <img src="/icons/location.svg" width="100%" />
+                </LocationButton>
+              </InputPlace>
+            </InputBottom>
+            <UploadButton activate={activate}>게시하기</UploadButton>
+          </ModalRight>
+        </ModalContent>
+      </ModalMain>
+
+      {isSubOpened && (
+        <ModalSub>
+          <ModalHeader>
+            <SearchContainer>
+              <img src="/icons/search.svg" height="90%" alt="search" />
+              <SearchInput
+                type="text"
+                placeholder="지역명을 입력하세요."
+                onKeyPress={handleKeyPress}
+                onChange={handleSearchInputChange}
+                value={searchKeyword}
+              />
+            </SearchContainer>
+          </ModalHeader>
+        </ModalSub>
+      )}
     </ModalContainer>
   );
 };
@@ -247,14 +278,27 @@ const ModalContent = styled.div`
   box-sizing: border-box;
 `;
 
-const ModalContainer = styled.div`
+const ModalContainer = styled.div<{ isSubOpened: boolean }>`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   background-color: ${COLOR.WHITE};
-  width: 850px;
+  width: ${(props) => (props.isSubOpened ? "1000px" : "850px")};
   height: 530px;
   border-radius: 10px;
   box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
+`;
+
+const ModalMain = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+`;
+const ModalSub = styled.div`
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid ${COLOR.BLACK};
+  z-index: 3;
+  width: 300px;
 `;
 
 const ModalHeaderLeftBtn = styled.button`
@@ -296,4 +340,26 @@ const ModalTitle = styled.div`
   flex-direction: row;
   justify-content: center;
   align-items: center;
+`;
+
+const SearchContainer = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  height: 3vh;
+  width: 100%;
+  background-color: ${COLOR.WHITE};
+  border-radius: 5px;
+  padding: 0.5vh 0;
+  & > img {
+    padding: 0 0.5vw;
+  }
+`;
+
+const SearchInput = styled.input`
+  height: 90%;
+  border: none;
+  &:focus-visible {
+    outline: none;
+  }
 `;
