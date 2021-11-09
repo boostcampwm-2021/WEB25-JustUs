@@ -13,20 +13,9 @@ interface HeaderProps {
   setPostToggle: React.Dispatch<React.SetStateAction<boolean>>;
   modalOpenedIdx: number;
   setModalOpenedIdx: React.Dispatch<React.SetStateAction<number>>;
-  DragHandler: (ev: React.DragEvent<HTMLDivElement>) => void;
-  DragEndHandler: (ev: React.DragEvent<HTMLDivElement>) => void;
 }
 
-const Header = ({
-  albumID,
-  albumName,
-  postToggle,
-  setPostToggle,
-  modalOpenedIdx,
-  setModalOpenedIdx,
-  DragHandler,
-  DragEndHandler,
-}: HeaderProps) => {
+const Header = ({ albumID, albumName, postToggle, setPostToggle, modalOpenedIdx, setModalOpenedIdx }: HeaderProps) => {
   const { nowTheme }: any = useSelector((state: RootState) => state.theme);
 
   const onClickArrowDown = () => {
@@ -38,7 +27,7 @@ const Header = ({
   };
 
   return (
-    <HeaderWrapper onDrag={DragHandler} onDragEnd={DragEndHandler} draggable={true}>
+    <HeaderWrapper draggable={true}>
       <ArrowIcon onClick={onClickArrowDown}>
         {postToggle && <ArrowDownSVG fill={nowTheme.MENUTEXT} />}
         {!postToggle && <ArrowRightSVG fill={nowTheme.MENUTEXT} />}

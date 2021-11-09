@@ -8,8 +8,10 @@ interface AlbumProps {
   setPostSelected: React.Dispatch<React.SetStateAction<number>>;
   modalOpenedIdx: number;
   setModalOpenedIdx: React.Dispatch<React.SetStateAction<number>>;
-  DragHandler: (ev: React.DragEvent<HTMLDivElement>) => void;
+  DragOverHander: (ev: React.DragEvent<HTMLDivElement>) => void;
+  DragLeaveHander: (ev: React.DragEvent<HTMLDivElement>) => void;
   DragEndHandler: (ev: React.DragEvent<HTMLDivElement>) => void;
+  DropHandler: (ev: React.DragEvent<HTMLDivElement>) => void;
 }
 
 const Album = ({
@@ -18,13 +20,15 @@ const Album = ({
   setPostSelected,
   modalOpenedIdx,
   setModalOpenedIdx,
-  DragHandler,
+  DragOverHander,
+  DragLeaveHander,
   DragEndHandler,
+  DropHandler,
 }: AlbumProps) => {
   const [postToggle, setPostToggle] = useState(true);
 
   return (
-    <>
+    <div onDragOver={DragOverHander} onDragLeave={DragLeaveHander} onDragEnd={DragEndHandler} onDrop={DropHandler}>
       <Header
         albumID={album.albumID}
         albumName={album.albumName}
@@ -32,8 +36,6 @@ const Album = ({
         setPostToggle={setPostToggle}
         modalOpenedIdx={modalOpenedIdx}
         setModalOpenedIdx={setModalOpenedIdx}
-        DragHandler={DragHandler}
-        DragEndHandler={DragEndHandler}
       ></Header>
       {postToggle &&
         album.posts.map((post: any) => (
@@ -45,7 +47,7 @@ const Album = ({
             setPostSelected={setPostSelected}
           />
         ))}
-    </>
+    </div>
   );
 };
 

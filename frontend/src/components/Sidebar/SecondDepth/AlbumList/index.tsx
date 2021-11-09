@@ -10,29 +10,42 @@ const AlbumList = () => {
   const { selectedGroup }: any = useSelector((state: RootState) => state.groups);
   const clickedTarget = useSelector((state: RootState) => state.groupModal.clickedTarget);
 
-  function handleDrag(ev: React.DragEvent<HTMLDivElement>) {
-    const selectedItem = ev.target as HTMLElement;
-    const parentItem = selectedItem.parentNode as HTMLElement;
-    const list = parentItem?.parentNode;
+  function onDragOverHandler(ev: React.DragEvent<HTMLDivElement>) {
+    ev.preventDefault();
+    const target = ev.target as HTMLElement;
+    const parent = target.closest(".AlbumItem");
+    if (!parent) return;
+    parent?.classList.add("drag-hover");
+  }
+
+  function onDragLeaveHandler(ev: React.DragEvent<HTMLDivElement>) {
+    const target = ev.target as HTMLElement;
+    const parent = target.closest(".AlbumItem");
+    if (!parent) return;
+    parent?.classList.remove("drag-hover");
+  }
+  function onDropHandler(ev: React.DragEvent<HTMLDivElement>) {
+    const target = ev.target as HTMLElement;
+    const parent = target.closest(".AlbumItem");
+    if (!parent) return;
+    parent?.classList.remove("drag-hover");
+  }
+
+  function onDragEndHandler(ev: React.DragEvent<HTMLDivElement>) {
+    const target = ev.target as HTMLElement;
+    const parent = target.closest(".AlbumItem");
+    if (!parent) return;
+    const list = parent?.parentNode;
     if (!list) return;
     const x = ev.clientX;
     const y = ev.clientY;
-    parentItem.classList.add("drag-sort-active");
-    let swapItem: Element | null =
-      document.elementFromPoint(x, y) === null ? parentItem : document.elementFromPoint(x, y);
+    let swapItem: Element | null = document.elementFromPoint(x, y) === null ? parent : document.elementFromPoint(x, y);
     if (!swapItem) return;
     swapItem = swapItem.closest(".AlbumItem");
-    if (swapItem !== parentItem && list === swapItem?.parentNode) {
-      const referenceNode = swapItem !== parentItem.nextSibling ? swapItem : swapItem.nextSibling;
-      list.insertBefore(parentItem, referenceNode);
+    if (swapItem !== parent && list === swapItem?.parentNode) {
+      const referenceNode = swapItem !== parent.nextSibling ? swapItem : swapItem.nextSibling;
+      list.insertBefore(parent, referenceNode);
     }
-  }
-
-  function handleDrop(ev: React.DragEvent<HTMLDivElement>) {
-    const item = ev.target as HTMLElement;
-    const parentItem = item.closest(".drag-sort-active");
-    if (!parentItem) return;
-    parentItem.classList.remove("drag-sort-active");
   }
 
   useEffect(() => {
@@ -62,8 +75,10 @@ const AlbumList = () => {
                 setPostSelected={setPostSelected}
                 modalOpenedIdx={modalOpenedIdx}
                 setModalOpenedIdx={setModalOpenedIdx}
-                DragHandler={handleDrag}
-                DragEndHandler={handleDrop}
+                DragOverHander={onDragOverHandler}
+                DragLeaveHander={onDragLeaveHandler}
+                DragEndHandler={onDragEndHandler}
+                DropHandler={onDropHandler}
               ></Album>
             </AlbumWrapper>
           );
@@ -74,9 +89,8 @@ const AlbumList = () => {
 
 const DraggableWrapper = styled.div`
   width: 100%;
-  & .drag-sort-active {
-    background: transparent;
-    border: 1px solid ${(props) => props.theme.MENUTEXT};
+  & .drag-hover {
+    border-top: 1px solid ${(props) => props.theme.MENUTEXT};
   }
 `;
 const AlbumWrapper = styled.div`
