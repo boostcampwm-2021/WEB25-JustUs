@@ -1,5 +1,4 @@
-import { Optional } from "@nestjs/common";
-import { IsNotEmpty, IsNumber, IsString } from "class-validator";
+import { IsNotEmpty, IsNumber, IsString, IsOptional } from "class-validator";
 
 export class CreateGroupRequestDto {
   @IsNumber()
@@ -7,7 +6,7 @@ export class CreateGroupRequestDto {
   userId: number;
 
   @IsString()
-  @Optional()
+  @IsOptional()
   groupImage: string;
 
   @IsString()
