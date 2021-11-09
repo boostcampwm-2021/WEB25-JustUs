@@ -108,7 +108,9 @@ const Map = () => {
   return (
     <React.Fragment>
       <Maps id="map" />
-      {isRightClick && <MapLayerPostModal clickInfo={clickInfo} rightPosition={rightPosition} />}
+      {isRightClick && (
+        <MapLayerPostModal clickInfo={clickInfo} rightPosition={rightPosition} setIsRightClick={setIsRightClick} />
+      )}
       <FloatActionBtn onClick={modalOpen}>+</FloatActionBtn>
     </React.Fragment>
   );
