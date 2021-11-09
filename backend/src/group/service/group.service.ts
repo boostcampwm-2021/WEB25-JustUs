@@ -4,6 +4,7 @@ import { GroupRepository } from "../group.repository";
 import { CreateGroupRequestDto } from "src/dto/group/createGroupRequest.dto";
 import { UserRepository } from "src/user/user.repository";
 import { Group } from "../group.entity";
+import { AttendGroupRequestDto } from "src/dto/group/attendGroupRequest.dto";
 
 @Injectable()
 export class GroupService {
@@ -40,5 +41,17 @@ export class GroupService {
     } while (exists);
 
     return code;
+  }
+
+  async attendGroup(attendGroupRequestDto: AttendGroupRequestDto): Promise<number> {
+    const { userId, code } = attendGroupRequestDto;
+
+    const group = await this.groupRepository.findOne({ groupCode: code });
+    const user = await this.userRepository.findOne(userId, { relations: ["groups"] });
+
+    user.groups.push(group);
+    await this.userRepository.save(user);
+
+    return group.groupId;
   }
 }
