@@ -19,7 +19,6 @@ const FirstDepth = ({ isToggle, setIsToggle, addGroupBtnRef }: FirstDepthProps) 
     const selectedItem = ev.target as HTMLElement;
     const list = selectedItem.parentNode;
     if (!list) return;
-    console.log(selectedItem);
     const x = ev.clientX;
     const y = ev.clientY;
     selectedItem.classList.add("drag-sort-active");
