@@ -20,7 +20,7 @@ export class AuthController {
     const accessToken = req.user.accessToken;
 
     res.cookie("accessToken", accessToken);
-    res.redirect("http://localhost:3000");
+    res.redirect("/");
     res.end();
   }
 }
