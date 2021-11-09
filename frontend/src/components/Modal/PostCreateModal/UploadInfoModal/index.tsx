@@ -1,3 +1,4 @@
+/*global kakao*/
 import React, { useEffect, useState, useRef, ChangeEvent } from "react";
 import styled from "styled-components";
 import COLOR from "@styles/Color";
@@ -13,12 +14,35 @@ interface UploadInfoModalProps {
   files: FileObject[];
 }
 
+interface IData {
+  [key: string]: string;
+}
+
+interface IPagination {
+  [key: string]: string;
+}
+
+const SearchResult = ({ searchResult }: any) => {
+  console.log("in SearchResult, searchResult : ", searchResult);
+  return (
+    <SearchResultWrapper>
+      {searchResult.map((location: IData) => (
+        <PlaceWrapper>
+          <PlaceName>{location.place_name}</PlaceName>
+          <AddressName>{location.address_name}</AddressName>
+        </PlaceWrapper>
+      ))}
+    </SearchResultWrapper>
+  );
+};
+
 const UploadInfoModal = ({ changeMode, files }: UploadInfoModalProps) => {
   const [title, setTitle] = useState<string>("");
   const [text, setText] = useState<string>("");
   const [activate, setActivate] = useState<boolean>(false);
   const [isSubOpened, setIsSubOpened] = useState(false);
   const [searchKeyword, setSearchKeyword] = useState<string>("");
+  const [searchResult, setSearchResult] = useState<Array<IData>>([]);
   const dispatch = useDispatch();
   const highlightsRef = useRef() as React.MutableRefObject<HTMLDivElement>;
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -60,7 +84,36 @@ const UploadInfoModal = ({ changeMode, files }: UploadInfoModalProps) => {
   const handleSearchInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchKeyword(e.target.value);
   };
-  const handleKeyPress = () => {};
+  const handleKeyPress = async (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key !== "Enter") return;
+
+    const el = e.target as HTMLInputElement;
+    const keyword = el.value;
+    const ps = new window.kakao.maps.services.Places();
+    const placesSearchCB = (data: IData[], status: number, pagination: IPagination) => {
+      if (status === window.kakao.maps.services.Status.ZERO_RESULT) {
+        alert("검색 결과가 존재하지 않습니다.");
+        return;
+      }
+
+      if (status === window.kakao.maps.services.Status.ERROR) {
+        alert("검색 결과 중 오류가 발생했습니다.");
+        return;
+      }
+
+      console.log(`data : ${data}, status : ${status}, pagination : ${pagination}`);
+
+      for (const location of data) {
+        console.log("location : ", location);
+      }
+      console.log("data.length : ", data.length);
+      console.log(pagination);
+
+      setSearchResult(data);
+    };
+
+    ps.keywordSearch(keyword, placesSearchCB);
+  };
 
   useEffect(() => {
     if (title.length == 0) setActivate(false);
@@ -128,6 +181,7 @@ const UploadInfoModal = ({ changeMode, files }: UploadInfoModalProps) => {
               />
             </SearchContainer>
           </ModalHeader>
+          {searchResult.length && <SearchResult searchResult={searchResult} />}
         </ModalSub>
       )}
     </ModalContainer>
@@ -362,4 +416,27 @@ const SearchInput = styled.input`
   &:focus-visible {
     outline: none;
   }
+`;
+
+const SearchResultWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+`;
+
+const PlaceWrapper = styled.div`
+  cursor: pointer;
+  border-bottom: 1px solid ${COLOR.BLACK};
+  &:hover {
+    background: ${COLOR.GRAY};
+  }
+`;
+
+const PlaceName = styled.div`
+  font-size: 1rem;
+  font-weight: bold;
+`;
+
+const AddressName = styled.div`
+  font-size: 0.8rem;
 `;

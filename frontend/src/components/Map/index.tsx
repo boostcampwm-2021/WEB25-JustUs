@@ -5,6 +5,12 @@ import { flexRowCenterAlign } from "@styles/StyledComponents";
 import { useDispatch } from "react-redux";
 import Marker from "@components/Map/Markers";
 
+declare global {
+  interface Window {
+    kakao: any;
+  }
+}
+
 const load = (url: string, cb: Function, err: Function) => {
   const element = document.createElement("script");
   const parent = "body";
