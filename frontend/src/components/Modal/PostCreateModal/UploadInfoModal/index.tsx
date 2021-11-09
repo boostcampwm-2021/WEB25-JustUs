@@ -203,7 +203,7 @@ const ModalRight = styled.div`
 
   & > .backdrop {
     z-index: 1;
-    background-color: #fff;
+    background-color: ${COLOR.WHITE};
     pointer-events: none;
     font-size: 1.2rem;
     line-height: 1rem;
