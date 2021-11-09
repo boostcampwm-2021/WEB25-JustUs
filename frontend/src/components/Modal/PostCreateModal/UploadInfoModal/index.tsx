@@ -24,18 +24,26 @@ interface IPagination {
   [key: string]: string;
 }
 
+interface ISearchResult {
+  data: IData[];
+  pagination: IPagination;
+}
+
 const UploadInfoModal = ({ changeMode, files }: UploadInfoModalProps) => {
   const [title, setTitle] = useState<string>("");
   const [text, setText] = useState<string>("");
   const [activate, setActivate] = useState<boolean>(false);
   const [isSubOpened, setIsSubOpened] = useState(false);
   const [searchKeyword, setSearchKeyword] = useState<string>("");
-  const [searchResult, setSearchResult] = useState<Array<IData>>([]);
+  const [page, setPage] = useState<number>(1);
+  const [searchResult, setSearchResult] = useState<IData[]>([]);
   const [selectedLocation, setSelectedLocation] = useState<IData>({});
   const dispatch = useDispatch();
   const highlightsRef = useRef() as React.MutableRefObject<HTMLDivElement>;
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const backdropRef = useRef<HTMLDivElement>(null);
+  const searchInputRef = useRef<HTMLInputElement>(null);
+  // const searchResultRef = useRef<React.DOMElement>(null);
 
   const closeModal = () => {
     dispatch({ type: "CLOSE_MODAL" });
@@ -70,15 +78,9 @@ const UploadInfoModal = ({ changeMode, files }: UploadInfoModalProps) => {
     setIsSubOpened((prev) => !prev);
   };
 
-  const handleSearchInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setSearchKeyword(e.target.value);
-  };
+  const handleSearchInputChange = (e: ChangeEvent<HTMLInputElement>) => {};
 
-  const handleKeyPress = async (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key !== "Enter") return;
-
-    const el = e.target as HTMLInputElement;
-    const keyword = el.value;
+  const execSearch = (keyword: string, nowPage: number) => {
     const ps = new window.kakao.maps.services.Places();
     const placesSearchCB = (data: IData[], status: number, pagination: IPagination) => {
       if (status === window.kakao.maps.services.Status.ZERO_RESULT) {
@@ -91,10 +93,24 @@ const UploadInfoModal = ({ changeMode, files }: UploadInfoModalProps) => {
         return;
       }
 
-      setSearchResult(data);
+      if (nowPage === 1) {
+        setSearchResult([...data]);
+        setPage(1);
+        return;
+      }
+
+      setSearchResult([...searchResult, ...data]);
     };
 
-    ps.keywordSearch(keyword, placesSearchCB);
+    ps.keywordSearch(keyword, placesSearchCB, { page: nowPage });
+  };
+
+  const handleKeyPress = async (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key !== "Enter") return;
+
+    const el = e.target as HTMLInputElement;
+    const keyword = el.value;
+    setSearchKeyword(keyword);
   };
 
   const onClickCloseBtn = () => {
@@ -105,6 +121,19 @@ const UploadInfoModal = ({ changeMode, files }: UploadInfoModalProps) => {
     if (title.length == 0) setActivate(false);
     else setActivate(true);
   }, [title]);
+
+  useEffect(() => {
+    if (!searchInputRef.current) return;
+    const keyword = searchInputRef.current.value as string;
+
+    execSearch(keyword, 1);
+  }, [searchKeyword]);
+
+  useEffect(() => {
+    if (!searchInputRef.current) return;
+    const keyword = searchInputRef.current.value as string;
+    execSearch(keyword, page);
+  }, [page]);
 
   return (
     <ModalContainer
@@ -161,16 +190,22 @@ const UploadInfoModal = ({ changeMode, files }: UploadInfoModalProps) => {
             <SearchContainer>
               <img src="/icons/search.svg" height="90%" alt="search" />
               <SearchInput
+                ref={searchInputRef}
                 type="text"
                 placeholder="지역명을 입력하세요."
                 onKeyPress={handleKeyPress}
-                onChange={handleSearchInputChange}
-                value={searchKeyword}
+                // onChange={handleSearchInputChange}
+                // value={searchKeyword}
               />
             </SearchContainer>
           </ModalHeader>
           {!!searchResult.length && (
-            <SearchResult searchResult={searchResult} setSelectedLocation={setSelectedLocation} />
+            <SearchResult
+              searchResult={searchResult}
+              setSelectedLocation={setSelectedLocation}
+              page={page}
+              setPage={setPage}
+            />
           )}
           <CloseBtn onClick={onClickCloseBtn}>
             <img src="/icons/arrow-left.svg" alt="arrow left icon" />

@@ -1,23 +1,43 @@
 import styled from "styled-components";
 import COLOR from "@styles/Color";
-import { Dispatch, SetStateAction } from "react";
+import React, { Dispatch, SetStateAction, UIEvent, useEffect, useRef } from "react";
 
 interface IData {
   [key: string]: string;
 }
+
 interface SearchResultProps {
   searchResult: IData[];
   setSelectedLocation: Dispatch<SetStateAction<IData>>;
+  page: number;
+  setPage: Dispatch<SetStateAction<number>>;
 }
 
-const SearchResult = ({ searchResult, setSelectedLocation }: SearchResultProps) => {
+const SearchResult = ({ searchResult, setSelectedLocation, page, setPage }: SearchResultProps) => {
+  const data = searchResult;
+  const searchResultWrapperRef = useRef() as React.MutableRefObject<HTMLDivElement>;
+
   const handleClickPlaceWrapper = (location: IData) => {
     setSelectedLocation(location);
   };
 
+  const handleScroll = (e: UIEvent<HTMLElement>) => {
+    const target = e.target as HTMLDivElement;
+    const isBottom = target.scrollHeight - target.scrollTop === target.clientHeight;
+
+    if (!isBottom) return;
+    if (page === 3) return;
+
+    setPage((prev) => prev + 1);
+  };
+
+  useEffect(() => {
+    if (page === 1) searchResultWrapperRef.current.scrollTop = 0;
+  });
+
   return (
-    <SearchResultWrapper>
-      {searchResult.map((location: IData, idx) => (
+    <SearchResultWrapper ref={searchResultWrapperRef} onScroll={handleScroll}>
+      {data.map((location: IData, idx) => (
         <PlaceWrapper key={idx} onClick={() => handleClickPlaceWrapper(location)}>
           <PlaceName>{location.place_name}</PlaceName>
           <RoadAddressName>{location.road_address_name}</RoadAddressName>
@@ -69,4 +89,6 @@ const AddressName = styled.div`
   margin: 0.3rem 0;
 `;
 
+const Pagination = styled.div``;
+const Page = styled.span``;
 export default SearchResult;
