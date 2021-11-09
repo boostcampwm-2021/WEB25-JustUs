@@ -12,20 +12,42 @@ const MapLayerPostModal = (e: any) => {
 
   return (
     <MapLayerModalContainer x={e.rightPosition.x} y={e.rightPosition.y}>
-      <button onClick={modalOpen}>
-        좌표 값: ${e.rightPosition.x}${e.rightPosition.y}
-      </button>
+      <MapLayerModal onClick={modalOpen}>
+        <Content>포스트 추가</Content>
+        <HoverContent>
+          좌표 값: ${e.rightPosition.x}${e.rightPosition.y}
+        </HoverContent>
+      </MapLayerModal>
     </MapLayerModalContainer>
   );
 };
 
 const MapLayerModalContainer = styled.div<{ x: number; y: number }>`
-  width: 100px;
-  height: 100px;
   position: absolute;
   z-index: 10;
-  left: ${(props) => `${props.x - 100}px`};
-  top: ${(props) => `${props.y - 100}px`};
+  left: ${(props) => `${props.x}px`};
+  top: ${(props) => `${props.y - 60}px`};
+`;
+
+const MapLayerModal = styled.div`
+  background-color: ${COLOR.WHITE};
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  border: solid 0.2rem ${COLOR.THEME1.SECONDARY};
+  text-align: center;
+  box-shadow: 0 2px 3px 0 ${COLOR.SHADOW_BLACK};
+  &:hover {
+    cursor: pointer;
+    background-color: ${COLOR.THEME1.PRIMARY};
+    font-weight: bold;
+    color: ${COLOR.WHITE};
+  }
+`;
+
+const Content = styled.div``;
+
+const HoverContent = styled.div`
+  display: none;
 `;
 
 export default MapLayerPostModal;
