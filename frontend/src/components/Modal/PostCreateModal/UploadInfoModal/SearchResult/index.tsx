@@ -22,7 +22,9 @@ const SearchResult = ({ searchResult, setSelectedLocation }: SearchResultProps) 
           <PlaceName>{location.place_name}</PlaceName>
           <RoadAddressName>{location.road_address_name}</RoadAddressName>
           <AddressName>
-            <img src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/places_jibun.png" />
+            <span>
+              <img src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/places_jibun.png" />
+            </span>
             {location.address_name}
           </AddressName>
         </PlaceWrapper>
@@ -34,12 +36,15 @@ const SearchResultWrapper = styled.div`
   display: flex;
   flex-direction: column;
   overflow-y: scroll;
+  height: 100%;
+  box-sizing: border-box;
 `;
 
 const PlaceWrapper = styled.div`
   cursor: pointer;
   border-bottom: 1px solid ${COLOR.BLACK};
   padding: 0.5rem;
+  box-sizing: border-box;
 
   &:hover {
     background: ${COLOR.GRAY};

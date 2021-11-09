@@ -5,6 +5,7 @@ import COLOR from "@styles/Color";
 import { useDispatch } from "react-redux";
 import Carousel from "@components/Modal/PostCreateModal/UploadInfoModal/Carousel";
 import SearchResult from "@components/Modal/PostCreateModal/UploadInfoModal/SearchResult";
+import { flexRowCenterAlign } from "@src/styles/StyledComponents";
 
 interface FileObject {
   file: File;
@@ -72,6 +73,7 @@ const UploadInfoModal = ({ changeMode, files }: UploadInfoModalProps) => {
   const handleSearchInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchKeyword(e.target.value);
   };
+
   const handleKeyPress = async (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key !== "Enter") return;
 
@@ -93,6 +95,10 @@ const UploadInfoModal = ({ changeMode, files }: UploadInfoModalProps) => {
     };
 
     ps.keywordSearch(keyword, placesSearchCB);
+  };
+
+  const onClickCloseBtn = () => {
+    setIsSubOpened(false);
   };
 
   useEffect(() => {
@@ -151,7 +157,7 @@ const UploadInfoModal = ({ changeMode, files }: UploadInfoModalProps) => {
 
       {isSubOpened && (
         <ModalSub>
-          <ModalHeader>
+          <ModalHeader className="header-sub">
             <SearchContainer>
               <img src="/icons/search.svg" height="90%" alt="search" />
               <SearchInput
@@ -166,6 +172,9 @@ const UploadInfoModal = ({ changeMode, files }: UploadInfoModalProps) => {
           {!!searchResult.length && (
             <SearchResult searchResult={searchResult} setSelectedLocation={setSelectedLocation} />
           )}
+          <CloseBtn onClick={onClickCloseBtn}>
+            <img src="/icons/arrow-left.svg" alt="arrow left icon" />
+          </CloseBtn>
         </ModalSub>
       )}
     </ModalContainer>
@@ -304,19 +313,16 @@ const ModalRight = styled.div`
     }
   }
 `;
-
 const ModalLeft = styled.div`
   width: 100%;
   height: 45vh;
 `;
-
 const ModalContent = styled.div`
   display: grid;
   height: 100%;
   grid-template-columns: 50% 50%;
   box-sizing: border-box;
 `;
-
 const ModalContainer = styled.div<{ isSubOpened: boolean }>`
   display: flex;
   flex-direction: row;
@@ -326,20 +332,19 @@ const ModalContainer = styled.div<{ isSubOpened: boolean }>`
   border-radius: 10px;
   box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
 `;
-
 const ModalMain = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
 `;
 const ModalSub = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
   border-left: 1px solid ${COLOR.BLACK};
   z-index: 3;
   width: 300px;
 `;
-
 const ModalHeaderLeftBtn = styled.button`
   grid-column-start: 1;
   grid-column-end: 2;
@@ -349,7 +354,6 @@ const ModalHeaderLeftBtn = styled.button`
   background: none;
   cursor: pointer;
 `;
-
 const ModalHeaderRigthBtn = styled.button`
   grid-column-start: 3;
   grid-column-end: 4;
@@ -359,7 +363,6 @@ const ModalHeaderRigthBtn = styled.button`
   background: none;
   cursor: pointer;
 `;
-
 const ModalHeader = styled.div`
   display: grid;
   grid-template-columns: 10% 80% 10%;
@@ -369,7 +372,6 @@ const ModalHeader = styled.div`
   border-bottom: 1px solid ${COLOR.BLACK};
   font-size: max(1.2vw, 20px);
 `;
-
 const ModalTitle = styled.div`
   grid-column-start: 2;
   grid-column-end: 3;
@@ -380,7 +382,6 @@ const ModalTitle = styled.div`
   justify-content: center;
   align-items: center;
 `;
-
 const SearchContainer = styled.div`
   display: flex;
   justify-content: flex-start;
@@ -394,11 +395,22 @@ const SearchContainer = styled.div`
     padding: 0 0.5vw;
   }
 `;
-
 const SearchInput = styled.input`
   height: 90%;
   border: none;
   &:focus-visible {
     outline: none;
   }
+`;
+
+const CloseBtn = styled.div`
+  ${flexRowCenterAlign}
+  position: absolute;
+  left: 85%;
+  width: 3rem;
+  height: 3.71rem;
+  background-color: ${COLOR.WHITE};
+  border-radius: 1rem;
+  cursor: pointer;
+  z-index: 1;
 `;
