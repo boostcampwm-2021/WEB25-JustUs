@@ -17,6 +17,6 @@ export class Group extends TimeStampEntity {
   groupCode: string;
 
   @ManyToMany(() => User)
-  @JoinTable()
+  @JoinTable({ name: "users_groups_TB" })
   users: User[];
 }
