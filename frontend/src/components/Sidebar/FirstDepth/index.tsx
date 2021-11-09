@@ -15,30 +15,59 @@ interface FirstDepthProps {
 const FirstDepth = ({ isToggle, setIsToggle, addGroupBtnRef }: FirstDepthProps) => {
   const { groups }: any = useSelector((state: RootState) => state.groups);
 
-  const onClickMenu = () => {
-    setIsToggle((prev) => !prev);
-  };
+  function handleDrag(ev: React.DragEvent<HTMLDivElement>) {
+    const selectedItem = ev.target as HTMLElement;
+    const list = selectedItem.parentNode;
+    if (!list) return;
+    console.log(selectedItem);
+    const x = ev.clientX;
+    const y = ev.clientY;
+    selectedItem.classList.add("drag-sort-active");
+    let swapItem: Element | null =
+      document.elementFromPoint(x, y) === null ? selectedItem : document.elementFromPoint(x, y);
+    if (!swapItem) return;
 
-  useEffect(() => {}, [groups]);
+    if (list === swapItem.parentNode) {
+      const insertItem = swapItem !== selectedItem.nextSibling ? swapItem : swapItem.nextSibling;
+      list.insertBefore(selectedItem, insertItem);
+    }
+  }
+
+  function handleDrop(ev: React.DragEvent<HTMLDivElement>) {
+    const item = ev.target as HTMLElement;
+    item.classList.remove("drag-sort-active");
+  }
 
   return (
     <>
       <FirstDepthWrapper>
-        {groups.map((group: any) => (
-          <Group
-            key={group.groupID}
-            groupID={group.groupID}
-            groupName={group.groupName}
-            groupImg={group.groupImg}
-            albumList={group.albumList}
-            setIsToggle={setIsToggle}
-          />
-        ))}
+        <DraggableWrapper>
+          {groups.map((group: any) => (
+            <Group
+              key={group.groupID}
+              groupID={group.groupID}
+              groupName={group.groupName}
+              groupImg={group.groupImg}
+              albumList={group.albumList}
+              setIsToggle={setIsToggle}
+              DragHandler={handleDrag}
+              DragEndHandler={handleDrop}
+            />
+          ))}
+        </DraggableWrapper>
         <AddGroupButton addGroupBtnRef={addGroupBtnRef} />
       </FirstDepthWrapper>
     </>
   );
 };
+
+const DraggableWrapper = styled.div`
+  & > .drag-sort-active {
+    background: transparent;
+    color: transparent;
+    border: 1px solid #4ca1af;
+  }
+`;
 
 const FirstDepthWrapper = styled.div`
   width: 5vw;

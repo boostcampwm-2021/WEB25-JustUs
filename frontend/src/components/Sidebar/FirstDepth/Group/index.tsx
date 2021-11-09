@@ -12,9 +12,11 @@ interface GroupProps {
   groupName: string;
   groupImg: string;
   albumList: Array<{ albumID: number; albumName: string; posts: Array<{ postID: number; postTitle: string }> }>;
+  DragHandler: (ev: React.DragEvent<HTMLDivElement>) => void;
+  DragEndHandler: (ev: React.DragEvent<HTMLDivElement>) => void;
 }
 
-const Group = ({ setIsToggle, groupID, groupName, groupImg, albumList }: GroupProps) => {
+const Group = ({ setIsToggle, groupID, groupName, groupImg, albumList, DragHandler, DragEndHandler }: GroupProps) => {
   const dispatch = useDispatch();
   const { selectedGroup }: any = useSelector((state: RootState) => state.groups);
 
@@ -25,9 +27,12 @@ const Group = ({ setIsToggle, groupID, groupName, groupImg, albumList }: GroupPr
 
   return (
     <ButtonWrapper
+      draggable={true}
       selectedGroupID={selectedGroup ? selectedGroup.groupID : -1}
       groupID={groupID}
       groupImg={groupImg}
+      onDrag={DragHandler}
+      onDragEnd={DragEndHandler}
       onClick={onClickGroup}
     ></ButtonWrapper>
   );
