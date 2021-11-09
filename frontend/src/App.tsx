@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
 
 function App() {
-  const { nowTheme }: any = useSelector((state: RootState) => state.theme);
+  const { nowTheme } = useSelector((state: RootState) => state.theme);
   return (
     <>
       <ThemeProvider theme={nowTheme}>
