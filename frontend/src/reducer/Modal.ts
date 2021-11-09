@@ -6,7 +6,7 @@ const initState: { nowModal: string; selectedAlbum: { albumID: number; albumName
   },
 };
 
-const UploadModalReducer = (state = initState, action: any) => {
+const ModalReducer = (state = initState, action: any) => {
   switch (action.type) {
     case "OPEN_MODAL":
       return {
@@ -32,4 +32,4 @@ const UploadModalReducer = (state = initState, action: any) => {
   }
 };
 
-export default UploadModalReducer;
+export default ModalReducer;

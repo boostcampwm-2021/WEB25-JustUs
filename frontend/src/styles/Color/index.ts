@@ -13,14 +13,17 @@ const COLOR = {
   THEME1: {
     PRIMARY: "#52734D",
     SECONDARY: "#91C788CC",
+    MENUTEXT: "#D3D3D3",
   },
   THEME2: {
     PRIMARY: "#E4CE8E",
     SECONDARY: "#D77948",
+    MENUTEXT: "#4f4626",
   },
   THEME3: {
     PRIMARY: "#87AAAA",
     SECONDARY: "#C8E3D4",
+    MENUTEXT: "#603A18",
   },
   MODAL_BACKGROUND: "#00000066",
   SCROLL: "#ffffff70",

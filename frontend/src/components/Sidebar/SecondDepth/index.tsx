@@ -34,7 +34,7 @@ const SecondDepth = ({
 const SecondDepthWrapper = styled.div`
   width: 13vw;
   height: 95vh;
-  background-color: ${COLOR.THEME1.PRIMARY};
+  background-color: ${(props) => props.theme.PRIMARY};
   display: flex;
   flex-direction: column;
   align-items: center;
