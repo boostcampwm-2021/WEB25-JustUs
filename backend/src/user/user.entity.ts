@@ -1,7 +1,8 @@
-import { Entity, Column, PrimaryGeneratedColumn, BaseEntity } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
+import { TimeStampEntity } from "src/myBaseEntity/TimestampEntity";
 
 @Entity({ name: "users" })
-export class User extends BaseEntity {
+export class User extends TimeStampEntity {
   @PrimaryGeneratedColumn()
   userId: number;
 
