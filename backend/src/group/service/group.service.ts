@@ -3,6 +3,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { GroupRepository } from "../group.repository";
 import { CreateGroupRequestDto } from "src/dto/group/createGroupRequest.dto";
 import { UserRepository } from "src/user/user.repository";
+import { Group } from "../group.entity";
 
 @Injectable()
 export class GroupService {
@@ -14,23 +15,30 @@ export class GroupService {
   ) {}
 
   async createGroup(createGroupRequestDto: CreateGroupRequestDto): Promise<number> {
-    // 랜덤 코드 생성해서 그룹 생성
     const { userId, groupImage, groupName } = createGroupRequestDto;
-    const groupCode = this.createInvitaionCode();
+    const groupCode = await this.createInvitaionCode();
 
-    const user = await this.userRepository.findOne(userId, { relations: ["groups"] });
     const group = await this.groupRepository.save({
       groupImage: groupImage,
       groupName: groupName,
       groupCode: groupCode,
     });
+
+    const user = await this.userRepository.findOne(userId, { relations: ["groups"] });
     user.groups.push(group);
     await this.userRepository.save(user);
 
     return group.groupId;
   }
 
-  createInvitaionCode(): string {
-    return "code";
+  async createInvitaionCode(): Promise<string> {
+    let code: string;
+    let exists: Group;
+    do {
+      code = Math.random().toString(36).substr(2, 11);
+      exists = await this.groupRepository.findOne({ groupCode: code });
+    } while (exists);
+
+    return code;
   }
 }
