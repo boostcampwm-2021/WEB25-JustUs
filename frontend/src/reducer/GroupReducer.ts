@@ -78,14 +78,7 @@ const groupReducer = (state = initState, action: any) => {
     case GroupAction.SET_SELECTED_GROUP:
       return {
         ...state,
-        selectedGroup: action.payload
-          ? {
-              groupID: action.payload.groupID,
-              groupName: action.payload.groupName,
-              groupImg: action.payload.groupImg,
-              albumList: action.payload.albumList,
-            }
-          : null,
+        selectedGroup: action.payload ? action.payload : null,
       };
     case GroupAction.DELETE_GROUP:
       return {
