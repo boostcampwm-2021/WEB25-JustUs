@@ -25,7 +25,11 @@ const UploadInfoModal = ({ changeMode, files }: UploadInfoModalProps) => {
   const [text, setText] = useState<string>("");
   const [activate, setActivate] = useState<boolean>(false);
   const [isSubOpened, setIsSubOpened] = useState(false);
+  const [searchKeyword, setSearchKeyword] = useState<string>("");
+  const [searchResult, setSearchResult] = useState<IData[]>([]);
   const [selectedLocation, setSelectedLocation] = useState<IData>({});
+  const [page, setPage] = useState<number>(1);
+  const [lastPage, setLastPage] = useState<number>(1);
   const highlightsRef = useRef() as React.MutableRefObject<HTMLDivElement>;
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const backdropRef = useRef<HTMLDivElement>(null);
@@ -60,7 +64,7 @@ const UploadInfoModal = ({ changeMode, files }: UploadInfoModalProps) => {
   };
 
   const onClickLocationBtn = () => {
-    setIsSubOpened((prev) => !prev);
+    setIsSubOpened(true);
   };
 
   useEffect(() => {
@@ -117,7 +121,20 @@ const UploadInfoModal = ({ changeMode, files }: UploadInfoModalProps) => {
         </ModalContent>
       </ModalMain>
 
-      {isSubOpened && <ModalSub setIsSubOpened={setIsSubOpened} setSelectedLocation={setSelectedLocation} />}
+      {isSubOpened && (
+        <ModalSub
+          searchKeyword={searchKeyword}
+          setSearchKeyword={setSearchKeyword}
+          setIsSubOpened={setIsSubOpened}
+          setSelectedLocation={setSelectedLocation}
+          searchResult={searchResult}
+          setSearchResult={setSearchResult}
+          page={page}
+          setPage={setPage}
+          lastPage={lastPage}
+          setLastPage={setLastPage}
+        />
+      )}
     </ModalContainer>
   );
 };

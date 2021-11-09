@@ -18,17 +18,34 @@ interface ISearchResult {
 }
 
 interface ModalSubProps {
+  searchKeyword: string;
+  setSearchKeyword: Dispatch<SetStateAction<string>>;
   setIsSubOpened: Dispatch<SetStateAction<boolean>>;
   setSelectedLocation: Dispatch<SetStateAction<IData>>;
+  searchResult: IData[];
+  setSearchResult: Dispatch<SetStateAction<IData[]>>;
+  page: number;
+  setPage: Dispatch<SetStateAction<number>>;
+  lastPage: number;
+  setLastPage: Dispatch<SetStateAction<number>>;
 }
 
-const ModalSub = ({ setIsSubOpened, setSelectedLocation }: ModalSubProps) => {
-  const [searchKeyword, setSearchKeyword] = useState<string>("");
-  const [page, setPage] = useState<number>(1);
-  const [searchResult, setSearchResult] = useState<IData[]>([]);
+const ModalSub = ({
+  searchKeyword,
+  setSearchKeyword,
+  setIsSubOpened,
+  setSelectedLocation,
+  searchResult,
+  setSearchResult,
+  page,
+  setPage,
+  lastPage,
+  setLastPage,
+}: ModalSubProps) => {
   const searchInputRef = useRef<HTMLInputElement>(null);
+  const [input, setInput] = useState<string>("");
 
-  const handleKeyPress = async (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key !== "Enter") return;
 
     const el = e.target as HTMLInputElement;
@@ -36,8 +53,13 @@ const ModalSub = ({ setIsSubOpened, setSelectedLocation }: ModalSubProps) => {
     setSearchKeyword(keyword);
   };
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInput(e.target.value);
+  };
+
   const onClickCloseBtn = () => {
     setIsSubOpened(false);
+    setSearchKeyword(input);
   };
 
   const execSearch = (keyword: string, nowPage: number) => {
@@ -56,6 +78,7 @@ const ModalSub = ({ setIsSubOpened, setSelectedLocation }: ModalSubProps) => {
       if (nowPage === 1) {
         setSearchResult([...data]);
         setPage(1);
+        setLastPage(Number(pagination.last));
         return;
       }
 
@@ -64,6 +87,10 @@ const ModalSub = ({ setIsSubOpened, setSelectedLocation }: ModalSubProps) => {
 
     ps.keywordSearch(keyword, placesSearchCB, { page: nowPage });
   };
+
+  useEffect(() => {
+    setInput(searchKeyword);
+  }, []);
 
   useEffect(() => {
     if (!searchInputRef.current || !searchInputRef.current.value) return;
@@ -86,7 +113,9 @@ const ModalSub = ({ setIsSubOpened, setSelectedLocation }: ModalSubProps) => {
             ref={searchInputRef}
             type="text"
             placeholder="지역명을 입력하세요."
-            onKeyPress={handleKeyPress}
+            onKeyDown={handleKeyPress}
+            value={input}
+            onChange={handleInputChange}
           />
         </SearchContainer>
       </ModalHeader>
@@ -96,6 +125,7 @@ const ModalSub = ({ setIsSubOpened, setSelectedLocation }: ModalSubProps) => {
           setSelectedLocation={setSelectedLocation}
           page={page}
           setPage={setPage}
+          lastPage={lastPage}
         />
       )}
       <CloseBtn onClick={onClickCloseBtn}>

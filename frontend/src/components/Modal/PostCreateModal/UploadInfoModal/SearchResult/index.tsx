@@ -11,9 +11,10 @@ interface SearchResultProps {
   setSelectedLocation: Dispatch<SetStateAction<IData>>;
   page: number;
   setPage: Dispatch<SetStateAction<number>>;
+  lastPage: number;
 }
 
-const SearchResult = ({ searchResult, setSelectedLocation, page, setPage }: SearchResultProps) => {
+const SearchResult = ({ searchResult, setSelectedLocation, page, setPage, lastPage }: SearchResultProps) => {
   const data = searchResult;
   const searchResultWrapperRef = useRef() as React.MutableRefObject<HTMLDivElement>;
 
@@ -26,7 +27,7 @@ const SearchResult = ({ searchResult, setSelectedLocation, page, setPage }: Sear
     const isBottom = target.scrollHeight - target.scrollTop === target.clientHeight;
 
     if (!isBottom) return;
-    if (page === 3) return;
+    if (page === lastPage) return;
 
     setPage((prev) => prev + 1);
   };
@@ -52,6 +53,7 @@ const SearchResult = ({ searchResult, setSelectedLocation, page, setPage }: Sear
     </SearchResultWrapper>
   );
 };
+
 const SearchResultWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -59,7 +61,6 @@ const SearchResultWrapper = styled.div`
   height: 100%;
   box-sizing: border-box;
 `;
-
 const PlaceWrapper = styled.div`
   cursor: pointer;
   border-bottom: 1px solid ${COLOR.BLACK};
@@ -70,18 +71,15 @@ const PlaceWrapper = styled.div`
     background: ${COLOR.GRAY};
   }
 `;
-
 const PlaceName = styled.div`
   font-size: 1rem;
   font-weight: bold;
   margin-top: 0.3rem;
 `;
-
 const RoadAddressName = styled.div`
   font-size: 0.8rem;
   margin-top: 0.3rem;
 `;
-
 const AddressName = styled.div`
   display: flex;
   color: ${COLOR.DARKGRAY};
@@ -89,6 +87,4 @@ const AddressName = styled.div`
   margin: 0.3rem 0;
 `;
 
-const Pagination = styled.div``;
-const Page = styled.span``;
 export default SearchResult;
