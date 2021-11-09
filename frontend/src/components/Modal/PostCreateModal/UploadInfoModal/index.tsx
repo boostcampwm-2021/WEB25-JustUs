@@ -30,6 +30,7 @@ const UploadInfoModal = ({ changeMode, files }: UploadInfoModalProps) => {
   const [isSubOpened, setIsSubOpened] = useState(false);
   const [searchKeyword, setSearchKeyword] = useState<string>("");
   const [searchResult, setSearchResult] = useState<Array<IData>>([]);
+  const [selectedLocation, setSelectedLocation] = useState<IData>({});
   const dispatch = useDispatch();
   const highlightsRef = useRef() as React.MutableRefObject<HTMLDivElement>;
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -135,7 +136,9 @@ const UploadInfoModal = ({ changeMode, files }: UploadInfoModalProps) => {
             <InputBottom>
               <InputDate type="date" />
               <InputPlace>
-                <InputPlaceName>장소이름</InputPlaceName>
+                <InputPlaceName>
+                  {Object.keys(selectedLocation).length === 0 ? "장소를 선택하세요." : selectedLocation.place_name}
+                </InputPlaceName>
                 <LocationButton onClick={onClickLocationBtn}>
                   <img src="/icons/location.svg" width="100%" />
                 </LocationButton>
@@ -160,7 +163,9 @@ const UploadInfoModal = ({ changeMode, files }: UploadInfoModalProps) => {
               />
             </SearchContainer>
           </ModalHeader>
-          {searchResult.length && <SearchResult searchResult={searchResult} />}
+          {!!searchResult.length && (
+            <SearchResult searchResult={searchResult} setSelectedLocation={setSelectedLocation} />
+          )}
         </ModalSub>
       )}
     </ModalContainer>
@@ -203,6 +208,7 @@ const InputPlaceName = styled.div`
   margin-right: 30px;
   flex-basis: 90%;
   text-align: right;
+  color: ${COLOR.DARKGRAY};
 `;
 const InputBottom = styled.div`
   position: relative;

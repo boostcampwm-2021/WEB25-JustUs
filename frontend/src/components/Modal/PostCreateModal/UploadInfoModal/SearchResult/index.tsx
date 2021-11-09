@@ -1,15 +1,24 @@
 import styled from "styled-components";
 import COLOR from "@styles/Color";
+import { Dispatch, SetStateAction } from "react";
 
 interface IData {
   [key: string]: string;
 }
+interface SearchResultProps {
+  searchResult: IData[];
+  setSelectedLocation: Dispatch<SetStateAction<IData>>;
+}
 
-const SearchResult = ({ searchResult }: any) => {
+const SearchResult = ({ searchResult, setSelectedLocation }: SearchResultProps) => {
+  const handleClickPlaceWrapper = (location: IData) => {
+    setSelectedLocation(location);
+  };
+
   return (
     <SearchResultWrapper>
-      {searchResult.map((location: IData) => (
-        <PlaceWrapper>
+      {searchResult.map((location: IData, idx) => (
+        <PlaceWrapper key={idx} onClick={() => handleClickPlaceWrapper(location)}>
           <PlaceName>{location.place_name}</PlaceName>
           <RoadAddressName>{location.road_address_name}</RoadAddressName>
           <AddressName>
