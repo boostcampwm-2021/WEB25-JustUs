@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 import COLOR from "@styles/Color";
 import { useDispatch } from "react-redux";
@@ -18,6 +18,10 @@ const UploadInfoModal = ({ changeMode, files }: UploadInfoModalProps) => {
   const [text, setText] = useState<string>("");
   const [activate, setActivate] = useState<boolean>(false);
   const dispatch = useDispatch();
+  const highlightsRef = useRef() as React.MutableRefObject<HTMLDivElement>;
+  const inputRef = useRef<HTMLTextAreaElement>(null);
+  const backdropRef = useRef<HTMLDivElement>(null);
+
   const closeModal = () => {
     dispatch({ type: "CLOSE_MODAL" });
   };
@@ -29,7 +33,22 @@ const UploadInfoModal = ({ changeMode, files }: UploadInfoModalProps) => {
 
   const handelTextInput = (event: React.FormEvent<HTMLTextAreaElement>) => {
     const { value } = event.target as HTMLTextAreaElement;
+    const highlightedText = applyHighlights(value);
+
     setText(value);
+    highlightsRef.current.innerHTML = highlightedText;
+  };
+
+  const applyHighlights = (textParam: string) => {
+    const highlightedText = textParam.replace(/\n$/g, "\n\n").replace(/#([\w|ㄱ-ㅎ|가-힣]+)/g, "<mark>$&</mark>");
+    return highlightedText;
+  };
+
+  const handleScroll = () => {
+    const scrollTop = inputRef.current?.scrollTop as number;
+
+    if (!backdropRef.current) return;
+    highlightsRef.current.scrollTop = scrollTop;
   };
 
   useEffect(() => {
@@ -58,7 +77,16 @@ const UploadInfoModal = ({ changeMode, files }: UploadInfoModalProps) => {
         </ModalLeft>
         <ModalRight>
           <InputTitle type="text" placeholder="제목" value={title} onChange={handelTitleInput} />
-          <InputText placeholder="내용" value={text} onChange={handelTextInput} />
+          <div className="backdrop" ref={backdropRef}>
+            <div ref={highlightsRef} className="highlights"></div>
+          </div>
+          <InputText
+            ref={inputRef}
+            placeholder="내용"
+            value={text}
+            onChange={handelTextInput}
+            onScroll={handleScroll}
+          />
           <InputBottom>
             <InputDate type="date" />
             <InputPlace>
@@ -91,6 +119,9 @@ const UploadButton = styled.button<{ activate: boolean }>`
     if (props.activate) return "pointer";
     else return "not-allowed";
   }};
+  z-index: 3;
+  position: relative;
+  top: -200px;
 `;
 const LocationButton = styled.button`
   border: none;
@@ -110,6 +141,8 @@ const InputPlaceName = styled.div`
   text-align: right;
 `;
 const InputBottom = styled.div`
+  position: relative;
+  top: -200px;
   display: flex;
   flex-direction: column;
   max-height: 5rem;
@@ -121,12 +154,14 @@ const InputBottom = styled.div`
 const InputPlace = styled.div`
   display: flex;
   width: 100%;
+  z-index: 3;
 `;
 const InputDate = styled.input`
   flex-basis: 20vh;
   border: none;
   font-size: 1rem;
   padding-right: 5px;
+  z-index: 3;
 `;
 const InputTitle = styled.input`
   flex-basis: 5vh;
@@ -139,11 +174,22 @@ const InputTitle = styled.input`
   }
 `;
 const InputText = styled.textarea`
-  flex-basis: 60%;
+  position: relative;
+  top: -200px;
   font-size: 1.2rem;
   border: none;
   resize: none;
   margin-bottom: 2vh;
+  z-index: 2;
+  overflow: auto;
+  width: 400px;
+  height: 200px;
+  background-color: transparent;
+  font-family: "NanumGothic", sans-serif;
+  margin: 0;
+  padding: 0;
+  line-height: 1rem;
+
   &:focus {
     outline: none;
   }
@@ -153,12 +199,45 @@ const ModalRight = styled.div`
   flex-direction: column;
   padding: 1vh;
   padding-top: 2vh;
-  padding-bottom: 5vh;
+  height: 100%;
+
+  & > .backdrop {
+    z-index: 1;
+    background-color: #fff;
+    pointer-events: none;
+    font-size: 1.2rem;
+    line-height: 1rem;
+    pointer-events: none;
+    width: 400px;
+    height: 200px;
+
+    & mark {
+      border-radius: 3px;
+      color: transparent;
+      background-color: ${COLOR.THEME1.SECONDARY};
+      letter-spacing: normal;
+      font-size: 1.2rem;
+      width: 400px;
+      height: 200px;
+      overflow: auto;
+    }
+
+    & > .highlights {
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      color: transparent;
+      font-size: 1.2rem;
+      resize: none;
+      width: 400px;
+      height: 200px;
+      overflow: auto;
+    }
+  }
 `;
 
 const ModalLeft = styled.div`
   width: 100%;
-  height: 100%;
+  height: 45vh;
 `;
 
 const ModalContent = styled.div`
