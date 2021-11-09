@@ -3,6 +3,7 @@ import Header from "@components/Sidebar/SecondDepth/AlbumList/Header";
 import Post from "@components/Sidebar/SecondDepth/AlbumList/Post";
 
 interface AlbumProps {
+  albumIdx: number;
   album: any;
   postSelected: number;
   setPostSelected: React.Dispatch<React.SetStateAction<number>>;
@@ -17,6 +18,7 @@ interface AlbumProps {
 }
 
 const Album = ({
+  albumIdx,
   album,
   postSelected,
   setPostSelected,
@@ -53,6 +55,7 @@ const Album = ({
             setPostSelected={setPostSelected}
             PostDragHandler={PostDragHandler}
             PostDragEndHandler={PostDragEndHandler}
+            albumIdx={albumIdx}
           />
         ))}
     </div>

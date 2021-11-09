@@ -1,69 +1,34 @@
 import { GroupAction } from "@src/action";
+import AlbumList from "@src/components/Sidebar/SecondDepth/AlbumList";
+
+interface PostType {
+  postID: number;
+  postTitle: string;
+}
+interface AlbumListItemType {
+  albumID: string;
+  albumName: string;
+  posts: PostType[];
+}
 
 const initState = {
   selectedGroup: null,
+  albumList: [],
   groups: [
     {
       groupID: 0,
       groupName: "그룹 A",
       groupImg: "/img/dummy-group1.png",
-      albumList: [
-        {
-          albumID: 0,
-          albumName: "기본 앨범",
-          posts: [
-            { postID: 4, postTitle: "스타벅스 리저브" },
-            { postID: 5, postTitle: "롯데백화점" },
-          ],
-        },
-        {
-          albumID: 1,
-          albumName: "일상 데이트",
-          posts: [
-            { postID: 0, postTitle: "돼지세끼" },
-            { postID: 1, postTitle: "미삼집" },
-            { postID: 2, postTitle: "남산서울타워" },
-          ],
-        },
-        {
-          albumID: 2,
-          albumName: "2020 일본 여행",
-          posts: [{ postID: 3, postTitle: "후쿠오카" }],
-        },
-      ],
     },
     {
       groupID: 1,
       groupName: "그룹 B",
       groupImg: "/img/dummy-group2.png",
-      albumList: [
-        {
-          albumID: 3,
-          albumName: "기본 앨범",
-          posts: [],
-        },
-        {
-          albumID: 4,
-          albumName: "가족 여행",
-          posts: [
-            { postID: 6, postTitle: "대전" },
-            { postID: 7, postTitle: "부산" },
-            { postID: 8, postTitle: "서울" },
-          ],
-        },
-      ],
     },
     {
       groupID: 2,
       groupName: "그룹 C",
       groupImg: "/img/dummy-group3.png",
-      albumList: [
-        {
-          albumID: 5,
-          albumName: "기본 앨범",
-          posts: [],
-        },
-      ],
     },
   ],
 };
@@ -78,18 +43,40 @@ const groupReducer = (state = initState, action: any) => {
     case GroupAction.SET_SELECTED_GROUP:
       return {
         ...state,
-        selectedGroup: action.payload ? action.payload : null,
+        selectedGroup: action.payload
+          ? { groupID: action.payload.groupID, groupName: action.payload.groupName, groupImg: action.payload.groupImg }
+          : null,
+        albumList: action.payload.albumList,
       };
     case GroupAction.DELETE_GROUP:
       return {
         ...state,
-        groups: state.groups.filter((group) => group.groupID !== action.payload.groupID),
+        selectedGroup: state.groups.filter((group) => group.groupID !== action.payload.groupID),
       };
-    case GroupAction.SET_ALL_GROUPS:
+    case GroupAction.MOVE_POST:
+      const beforeIdx = action.payload.beforeIdx;
+      const afterIdx = action.payload.afterIdx;
+      const post = action.payload.post;
+      const newAlbumList = state.albumList.map((album: AlbumListItemType, idx) => {
+        if (idx != beforeIdx) return album;
+        const updateAlbum: AlbumListItemType = {
+          albumID: album.albumID,
+          albumName: album.albumName,
+          posts: [],
+        };
+        updateAlbum.posts = album.posts.filter((now) => now.postID != post.postID);
+        return updateAlbum;
+      });
+      newAlbumList[afterIdx].posts.push(post);
       return {
         ...state,
-        groups: action.payload,
+        albumList: newAlbumList,
       };
+    // case GroupAction.SET_ALL_GROUPS:
+    //   return {
+    //     ...state,
+    //     groups: action.payload,
+    //   };
 
     default:
       return state;

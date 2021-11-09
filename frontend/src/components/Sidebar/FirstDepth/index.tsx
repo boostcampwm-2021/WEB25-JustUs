@@ -47,7 +47,6 @@ const FirstDepth = ({ isToggle, setIsToggle, addGroupBtnRef }: FirstDepthProps) 
               groupID={group.groupID}
               groupName={group.groupName}
               groupImg={group.groupImg}
-              albumList={group.albumList}
               setIsToggle={setIsToggle}
               DragHandler={handleDrag}
               DragEndHandler={handleDrop}

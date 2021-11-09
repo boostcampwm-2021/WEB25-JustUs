@@ -4,6 +4,7 @@ import COLOR from "@styles/Color";
 
 interface PostProps {
   idx: number;
+  albumIdx: number;
   postSelected: number;
   postTitle: string;
   setPostSelected: Dispatch<SetStateAction<number>>;
@@ -11,7 +12,15 @@ interface PostProps {
   PostDragEndHandler: (ev: React.DragEvent<HTMLDivElement>) => void;
 }
 
-const Post = ({ idx, postTitle, postSelected, setPostSelected, PostDragHandler, PostDragEndHandler }: PostProps) => {
+const Post = ({
+  idx,
+  postTitle,
+  postSelected,
+  setPostSelected,
+  PostDragHandler,
+  PostDragEndHandler,
+  albumIdx,
+}: PostProps) => {
   const onClickPost = () => {
     setPostSelected(idx);
   };
@@ -25,6 +34,8 @@ const Post = ({ idx, postTitle, postSelected, setPostSelected, PostDragHandler, 
       onDrag={PostDragHandler}
       draggable={true}
       onDragEnd={PostDragEndHandler}
+      data-id={idx}
+      data-albumidx={albumIdx}
     >
       {postTitle}
     </PostWrapper>

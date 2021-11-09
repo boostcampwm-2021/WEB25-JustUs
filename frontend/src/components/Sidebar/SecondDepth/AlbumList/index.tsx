@@ -3,23 +3,26 @@ import styled from "styled-components";
 import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
 import Album from "./Album";
+import { GroupAction } from "@src/action";
+import { useDispatch } from "react-redux";
 
 const AlbumList = () => {
+  const dispatch = useDispatch();
   const [postSelected, setPostSelected] = useState<number>(-1);
   const [modalOpenedIdx, setModalOpenedIdx] = useState<number>(-1);
-  const { selectedGroup }: any = useSelector((state: RootState) => state.groups);
+  const { albumList }: any = useSelector((state: RootState) => state.groups);
   const clickedTarget = useSelector((state: RootState) => state.groupModal.clickedTarget);
 
   function onDragLeaveHandler(ev: React.DragEvent<HTMLDivElement>) {
     const target = ev.target as HTMLElement;
-    const parent = target.closest(".AlbumItem");
+    const parent = target.closest(".albumItem");
     if (!parent) return;
     parent?.classList.remove("album-hover");
     parent?.classList.remove("post-hover");
   }
   function onDropHandler(ev: React.DragEvent<HTMLDivElement>) {
     const target = ev.target as HTMLElement;
-    const parent = target.closest(".AlbumItem");
+    const parent = target.closest(".albumItem");
     if (!parent) return;
     parent?.classList.remove("album-hover");
     parent?.classList.remove("post-hover");
@@ -27,7 +30,7 @@ const AlbumList = () => {
 
   function onAlbumDragEndHandler(ev: React.DragEvent<HTMLDivElement>) {
     const target = ev.target as HTMLElement;
-    const parent = target.closest(".AlbumItem");
+    const parent = target.closest(".albumItem");
     if (!parent) return;
     parent?.classList.remove("album-hover");
     parent?.classList.remove("post-hover");
@@ -37,7 +40,7 @@ const AlbumList = () => {
     const y = ev.clientY;
     let swapItem: Element | null = document.elementFromPoint(x, y) === null ? parent : document.elementFromPoint(x, y);
     if (!swapItem) return;
-    swapItem = swapItem.closest(".AlbumItem");
+    swapItem = swapItem.closest(".albumItem");
     if (swapItem !== parent && list === swapItem?.parentNode) {
       const referenceNode = swapItem !== parent.nextSibling ? swapItem : swapItem.nextSibling;
       list.insertBefore(parent, referenceNode);
@@ -46,16 +49,31 @@ const AlbumList = () => {
 
   function onPostDragEndHandler(ev: React.DragEvent<HTMLDivElement>) {
     const target = ev.target as HTMLElement;
-    console.log(target);
+    const parent = target.closest(".albumItem");
+    const x = ev.clientX;
+    const y = ev.clientY;
+    const nowElement = document.elementFromPoint(x, y);
+    const nowParent = nowElement?.closest(".albumItem") as HTMLElement;
+    if (!nowParent) return;
+    if (parent === nowParent) return;
+    const payload = {
+      beforeIdx: target.dataset.albumidx,
+      afterIdx: nowParent.dataset.albumidx,
+      post: { postID: target.dataset.id, postTitle: target.innerHTML },
+    };
+    dispatch({
+      type: GroupAction.MOVE_POST,
+      payload: payload,
+    });
   }
 
   function onPostDragHandler(ev: React.DragEvent<HTMLDivElement>) {
     const target = ev.target as HTMLElement;
-    const parent = target.closest(".AlbumItem");
+    const parent = target.closest(".albumItem");
     const x = ev.clientX;
     const y = ev.clientY;
     const nowElement = document.elementFromPoint(x, y);
-    const nowParent = nowElement?.closest(".AlbumItem");
+    const nowParent = nowElement?.closest(".albumItem");
     if (!nowParent) return;
     if (parent === nowParent) return;
     nowParent.classList.add("post-hover");
@@ -63,11 +81,11 @@ const AlbumList = () => {
 
   function onAlbumDragHandler(ev: React.DragEvent<HTMLDivElement>) {
     const target = ev.target as HTMLElement;
-    const parent = target.closest(".AlbumItem");
+    const parent = target.closest(".albumItem");
     const x = ev.clientX;
     const y = ev.clientY;
     const nowElement = document.elementFromPoint(x, y);
-    const nowParent = nowElement?.closest(".AlbumItem");
+    const nowParent = nowElement?.closest(".albumItem");
     if (!nowParent) return;
     if (parent === nowParent) return;
     nowParent.classList.add("album-hover");
@@ -90,10 +108,10 @@ const AlbumList = () => {
 
   return (
     <DraggableWrapper>
-      {selectedGroup.albumList &&
-        selectedGroup.albumList.map((album: any) => {
+      {albumList &&
+        albumList.map((album: any, idx: number) => {
           return (
-            <AlbumWrapper key={album.albumID} className="AlbumItem">
+            <AlbumWrapper key={album.albumID} className="albumItem" data-albumidx={idx}>
               <Album
                 album={album}
                 postSelected={postSelected}
@@ -106,6 +124,7 @@ const AlbumList = () => {
                 AlbumDragHandler={onAlbumDragHandler}
                 DragLeaveHandler={onDragLeaveHandler}
                 PostDragEndHandler={onPostDragEndHandler}
+                albumIdx={idx}
               ></Album>
             </AlbumWrapper>
           );

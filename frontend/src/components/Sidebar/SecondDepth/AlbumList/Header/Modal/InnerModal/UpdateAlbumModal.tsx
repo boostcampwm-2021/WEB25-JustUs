@@ -19,17 +19,18 @@ const UpdateAlbumModal = () => {
   };
 
   const onClickSave = () => {
-    if (!inputRef.current) return;
+    console.log("로직 수정 예정");
+    // if (!inputRef.current) return;
 
-    const selectedGroupID = selectedGroup.groupID;
-    const selectedAlbumList = groups[selectedGroupID].albumList;
-    const albumID = selectedAlbum.albumID;
-    const albumName = inputRef.current.value;
-    const targetIdx = selectedAlbumList.findIndex((album: any) => album.albumID === albumID);
+    // const selectedGroupID = selectedGroup.groupID;
+    // const selectedAlbumList = groups[selectedGroupID].albumList;
+    // const albumID = selectedAlbum.albumID;
+    // const albumName = inputRef.current.value;
+    // const targetIdx = selectedAlbumList.findIndex((album: any) => album.albumID === albumID);
 
-    selectedAlbumList[targetIdx].albumName = albumName;
+    // selectedAlbumList[targetIdx].albumName = albumName;
 
-    dispatch({ type: GroupAction.SET_ALL_GROUPS, payload: groups });
+    // dispatch({ type: GroupAction.SET_ALL_GROUPS, payload: groups });
     closeModal();
   };
 

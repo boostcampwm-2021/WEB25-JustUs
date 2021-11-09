@@ -60,7 +60,7 @@ const HeaderWrapper = styled.div`
   font-weight: bold;
   display: grid;
   grid-template-columns: 10% 80% 10%;
-  cursor: default;
+  cursor: grab;
 `;
 
 const ArrowIcon = styled.div`
