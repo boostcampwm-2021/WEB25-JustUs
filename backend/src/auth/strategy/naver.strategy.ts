@@ -1,7 +1,7 @@
 import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { PassportStrategy } from "@nestjs/passport";
 import { Strategy } from "passport-naver-v2";
-import { RegisterUserDto } from "src/dto/user/register-user.dto";
+import { UserInfoDto } from "src/dto/user/userInfo.dto";
 import { AuthService } from "../service/auth.service";
 
 @Injectable()
@@ -16,7 +16,7 @@ export class NaverStrategy extends PassportStrategy(Strategy, "naver") {
 
   async validate(naverAccessToken: string, naverRefreshToken: string, profile: any): Promise<{ accessToken: string }> {
     const { email, nickname, profileImage } = profile;
-    const registerUserDto: RegisterUserDto = new RegisterUserDto();
+    const registerUserDto: UserInfoDto = new UserInfoDto();
     registerUserDto.userEmail = email;
     registerUserDto.userNickname = nickname;
     registerUserDto.profileImage = profileImage;
