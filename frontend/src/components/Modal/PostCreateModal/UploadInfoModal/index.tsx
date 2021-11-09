@@ -4,46 +4,31 @@ import styled from "styled-components";
 import COLOR from "@styles/Color";
 import { useDispatch } from "react-redux";
 import Carousel from "@components/Modal/PostCreateModal/UploadInfoModal/Carousel";
-import SearchResult from "@components/Modal/PostCreateModal/UploadInfoModal/SearchResult";
-import { flexRowCenterAlign } from "@src/styles/StyledComponents";
+
+import ModalSub from "./ModalSub";
 
 interface FileObject {
   file: File;
   key: string;
+}
+interface IData {
+  [key: string]: string;
 }
 interface UploadInfoModalProps {
   changeMode: () => void;
   files: FileObject[];
 }
 
-interface IData {
-  [key: string]: string;
-}
-
-interface IPagination {
-  [key: string]: string;
-}
-
-interface ISearchResult {
-  data: IData[];
-  pagination: IPagination;
-}
-
 const UploadInfoModal = ({ changeMode, files }: UploadInfoModalProps) => {
+  const dispatch = useDispatch();
   const [title, setTitle] = useState<string>("");
   const [text, setText] = useState<string>("");
   const [activate, setActivate] = useState<boolean>(false);
   const [isSubOpened, setIsSubOpened] = useState(false);
-  const [searchKeyword, setSearchKeyword] = useState<string>("");
-  const [page, setPage] = useState<number>(1);
-  const [searchResult, setSearchResult] = useState<IData[]>([]);
   const [selectedLocation, setSelectedLocation] = useState<IData>({});
-  const dispatch = useDispatch();
   const highlightsRef = useRef() as React.MutableRefObject<HTMLDivElement>;
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const backdropRef = useRef<HTMLDivElement>(null);
-  const searchInputRef = useRef<HTMLInputElement>(null);
-  // const searchResultRef = useRef<React.DOMElement>(null);
 
   const closeModal = () => {
     dispatch({ type: "CLOSE_MODAL" });
@@ -78,62 +63,10 @@ const UploadInfoModal = ({ changeMode, files }: UploadInfoModalProps) => {
     setIsSubOpened((prev) => !prev);
   };
 
-  const handleSearchInputChange = (e: ChangeEvent<HTMLInputElement>) => {};
-
-  const execSearch = (keyword: string, nowPage: number) => {
-    const ps = new window.kakao.maps.services.Places();
-    const placesSearchCB = (data: IData[], status: number, pagination: IPagination) => {
-      if (status === window.kakao.maps.services.Status.ZERO_RESULT) {
-        alert("검색 결과가 존재하지 않습니다.");
-        return;
-      }
-
-      if (status === window.kakao.maps.services.Status.ERROR) {
-        alert("검색 결과 중 오류가 발생했습니다.");
-        return;
-      }
-
-      if (nowPage === 1) {
-        setSearchResult([...data]);
-        setPage(1);
-        return;
-      }
-
-      setSearchResult([...searchResult, ...data]);
-    };
-
-    ps.keywordSearch(keyword, placesSearchCB, { page: nowPage });
-  };
-
-  const handleKeyPress = async (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key !== "Enter") return;
-
-    const el = e.target as HTMLInputElement;
-    const keyword = el.value;
-    setSearchKeyword(keyword);
-  };
-
-  const onClickCloseBtn = () => {
-    setIsSubOpened(false);
-  };
-
   useEffect(() => {
     if (title.length == 0) setActivate(false);
     else setActivate(true);
   }, [title]);
-
-  useEffect(() => {
-    if (!searchInputRef.current) return;
-    const keyword = searchInputRef.current.value as string;
-
-    execSearch(keyword, 1);
-  }, [searchKeyword]);
-
-  useEffect(() => {
-    if (!searchInputRef.current) return;
-    const keyword = searchInputRef.current.value as string;
-    execSearch(keyword, page);
-  }, [page]);
 
   return (
     <ModalContainer
@@ -184,39 +117,11 @@ const UploadInfoModal = ({ changeMode, files }: UploadInfoModalProps) => {
         </ModalContent>
       </ModalMain>
 
-      {isSubOpened && (
-        <ModalSub>
-          <ModalHeader className="header-sub">
-            <SearchContainer>
-              <img src="/icons/search.svg" height="90%" alt="search" />
-              <SearchInput
-                ref={searchInputRef}
-                type="text"
-                placeholder="지역명을 입력하세요."
-                onKeyPress={handleKeyPress}
-                // onChange={handleSearchInputChange}
-                // value={searchKeyword}
-              />
-            </SearchContainer>
-          </ModalHeader>
-          {!!searchResult.length && (
-            <SearchResult
-              searchResult={searchResult}
-              setSelectedLocation={setSelectedLocation}
-              page={page}
-              setPage={setPage}
-            />
-          )}
-          <CloseBtn onClick={onClickCloseBtn}>
-            <img src="/icons/arrow-left.svg" alt="arrow left icon" />
-          </CloseBtn>
-        </ModalSub>
-      )}
+      {isSubOpened && <ModalSub setIsSubOpened={setIsSubOpened} setSelectedLocation={setSelectedLocation} />}
     </ModalContainer>
   );
 };
 
-export default UploadInfoModal;
 const UploadButton = styled.button<{ activate: boolean }>`
   background-color: ${(props) => {
     if (props.activate) return props.theme.PRIMARY;
@@ -372,14 +277,7 @@ const ModalMain = styled.div`
   flex-direction: column;
   width: 100%;
 `;
-const ModalSub = styled.div`
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  border-left: 1px solid ${COLOR.BLACK};
-  z-index: 3;
-  width: 300px;
-`;
+
 const ModalHeaderLeftBtn = styled.button`
   grid-column-start: 1;
   grid-column-end: 2;
@@ -417,35 +315,5 @@ const ModalTitle = styled.div`
   justify-content: center;
   align-items: center;
 `;
-const SearchContainer = styled.div`
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  height: 3vh;
-  width: 100%;
-  background-color: ${COLOR.WHITE};
-  border-radius: 5px;
-  padding: 0.5vh 0;
-  & > img {
-    padding: 0 0.5vw;
-  }
-`;
-const SearchInput = styled.input`
-  height: 90%;
-  border: none;
-  &:focus-visible {
-    outline: none;
-  }
-`;
 
-const CloseBtn = styled.div`
-  ${flexRowCenterAlign}
-  position: absolute;
-  left: 85%;
-  width: 3rem;
-  height: 3.71rem;
-  background-color: ${COLOR.WHITE};
-  border-radius: 1rem;
-  cursor: pointer;
-  z-index: 1;
-`;
+export default UploadInfoModal;
