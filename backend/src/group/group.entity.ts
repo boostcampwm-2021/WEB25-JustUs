@@ -1,5 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable } from "typeorm";
 import { TimeStampEntity } from "src/myBaseEntity/TimestampEntity";
+import { User } from "src/user/user.entity";
 
 @Entity({ name: "groups_TB" })
 export class Group extends TimeStampEntity {
@@ -14,4 +15,8 @@ export class Group extends TimeStampEntity {
 
   @Column()
   groupCode: string;
+
+  @ManyToMany(() => User)
+  @JoinTable()
+  users: User[];
 }
