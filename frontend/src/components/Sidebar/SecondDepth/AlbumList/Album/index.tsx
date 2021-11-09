@@ -8,10 +8,12 @@ interface AlbumProps {
   setPostSelected: React.Dispatch<React.SetStateAction<number>>;
   modalOpenedIdx: number;
   setModalOpenedIdx: React.Dispatch<React.SetStateAction<number>>;
-  DragOverHander: (ev: React.DragEvent<HTMLDivElement>) => void;
-  DragLeaveHander: (ev: React.DragEvent<HTMLDivElement>) => void;
-  DragEndHandler: (ev: React.DragEvent<HTMLDivElement>) => void;
+  AlbumDragEndHandler: (ev: React.DragEvent<HTMLDivElement>) => void;
+  PostDragEndHandler: (ev: React.DragEvent<HTMLDivElement>) => void;
+  DragLeaveHandler: (ev: React.DragEvent<HTMLDivElement>) => void;
   DropHandler: (ev: React.DragEvent<HTMLDivElement>) => void;
+  PostDragHandler: (ev: React.DragEvent<HTMLDivElement>) => void;
+  AlbumDragHandler: (ev: React.DragEvent<HTMLDivElement>) => void;
 }
 
 const Album = ({
@@ -20,15 +22,17 @@ const Album = ({
   setPostSelected,
   modalOpenedIdx,
   setModalOpenedIdx,
-  DragOverHander,
-  DragLeaveHander,
-  DragEndHandler,
+  AlbumDragEndHandler,
+  PostDragEndHandler,
   DropHandler,
+  PostDragHandler,
+  AlbumDragHandler,
+  DragLeaveHandler,
 }: AlbumProps) => {
   const [postToggle, setPostToggle] = useState(true);
 
   return (
-    <div onDragOver={DragOverHander} onDragLeave={DragLeaveHander} onDragEnd={DragEndHandler} onDrop={DropHandler}>
+    <div onDrop={DropHandler} onDragLeave={DragLeaveHandler}>
       <Header
         albumID={album.albumID}
         albumName={album.albumName}
@@ -36,6 +40,8 @@ const Album = ({
         setPostToggle={setPostToggle}
         modalOpenedIdx={modalOpenedIdx}
         setModalOpenedIdx={setModalOpenedIdx}
+        AlbumDragHandler={AlbumDragHandler}
+        DragEndHandler={AlbumDragEndHandler}
       ></Header>
       {postToggle &&
         album.posts.map((post: any) => (
@@ -45,6 +51,8 @@ const Album = ({
             postSelected={postSelected}
             postTitle={post.postTitle}
             setPostSelected={setPostSelected}
+            PostDragHandler={PostDragHandler}
+            PostDragEndHandler={PostDragEndHandler}
           />
         ))}
     </div>

@@ -7,15 +7,25 @@ interface PostProps {
   postSelected: number;
   postTitle: string;
   setPostSelected: Dispatch<SetStateAction<number>>;
+  PostDragHandler: (ev: React.DragEvent<HTMLDivElement>) => void;
+  PostDragEndHandler: (ev: React.DragEvent<HTMLDivElement>) => void;
 }
 
-const Post = ({ idx, postTitle, postSelected, setPostSelected }: PostProps) => {
+const Post = ({ idx, postTitle, postSelected, setPostSelected, PostDragHandler, PostDragEndHandler }: PostProps) => {
   const onClickPost = () => {
     setPostSelected(idx);
   };
 
   return (
-    <PostWrapper idx={idx} postSelected={postSelected} onClick={onClickPost}>
+    <PostWrapper
+      className="postItem"
+      idx={idx}
+      postSelected={postSelected}
+      onClick={onClickPost}
+      onDrag={PostDragHandler}
+      draggable={true}
+      onDragEnd={PostDragEndHandler}
+    >
       {postTitle}
     </PostWrapper>
   );

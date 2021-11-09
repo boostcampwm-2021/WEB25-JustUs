@@ -10,31 +10,27 @@ const AlbumList = () => {
   const { selectedGroup }: any = useSelector((state: RootState) => state.groups);
   const clickedTarget = useSelector((state: RootState) => state.groupModal.clickedTarget);
 
-  function onDragOverHandler(ev: React.DragEvent<HTMLDivElement>) {
-    ev.preventDefault();
-    const target = ev.target as HTMLElement;
-    const parent = target.closest(".AlbumItem");
-    if (!parent) return;
-    parent?.classList.add("drag-hover");
-  }
-
   function onDragLeaveHandler(ev: React.DragEvent<HTMLDivElement>) {
     const target = ev.target as HTMLElement;
     const parent = target.closest(".AlbumItem");
     if (!parent) return;
-    parent?.classList.remove("drag-hover");
+    parent?.classList.remove("album-hover");
+    parent?.classList.remove("post-hover");
   }
   function onDropHandler(ev: React.DragEvent<HTMLDivElement>) {
     const target = ev.target as HTMLElement;
     const parent = target.closest(".AlbumItem");
     if (!parent) return;
-    parent?.classList.remove("drag-hover");
+    parent?.classList.remove("album-hover");
+    parent?.classList.remove("post-hover");
   }
 
-  function onDragEndHandler(ev: React.DragEvent<HTMLDivElement>) {
+  function onAlbumDragEndHandler(ev: React.DragEvent<HTMLDivElement>) {
     const target = ev.target as HTMLElement;
     const parent = target.closest(".AlbumItem");
     if (!parent) return;
+    parent?.classList.remove("album-hover");
+    parent?.classList.remove("post-hover");
     const list = parent?.parentNode;
     if (!list) return;
     const x = ev.clientX;
@@ -46,6 +42,35 @@ const AlbumList = () => {
       const referenceNode = swapItem !== parent.nextSibling ? swapItem : swapItem.nextSibling;
       list.insertBefore(parent, referenceNode);
     }
+  }
+
+  function onPostDragEndHandler(ev: React.DragEvent<HTMLDivElement>) {
+    const target = ev.target as HTMLElement;
+    console.log(target);
+  }
+
+  function onPostDragHandler(ev: React.DragEvent<HTMLDivElement>) {
+    const target = ev.target as HTMLElement;
+    const parent = target.closest(".AlbumItem");
+    const x = ev.clientX;
+    const y = ev.clientY;
+    const nowElement = document.elementFromPoint(x, y);
+    const nowParent = nowElement?.closest(".AlbumItem");
+    if (!nowParent) return;
+    if (parent === nowParent) return;
+    nowParent.classList.add("post-hover");
+  }
+
+  function onAlbumDragHandler(ev: React.DragEvent<HTMLDivElement>) {
+    const target = ev.target as HTMLElement;
+    const parent = target.closest(".AlbumItem");
+    const x = ev.clientX;
+    const y = ev.clientY;
+    const nowElement = document.elementFromPoint(x, y);
+    const nowParent = nowElement?.closest(".AlbumItem");
+    if (!nowParent) return;
+    if (parent === nowParent) return;
+    nowParent.classList.add("album-hover");
   }
 
   useEffect(() => {
@@ -75,10 +100,12 @@ const AlbumList = () => {
                 setPostSelected={setPostSelected}
                 modalOpenedIdx={modalOpenedIdx}
                 setModalOpenedIdx={setModalOpenedIdx}
-                DragOverHander={onDragOverHandler}
-                DragLeaveHander={onDragLeaveHandler}
-                DragEndHandler={onDragEndHandler}
+                AlbumDragEndHandler={onAlbumDragEndHandler}
                 DropHandler={onDropHandler}
+                PostDragHandler={onPostDragHandler}
+                AlbumDragHandler={onAlbumDragHandler}
+                DragLeaveHandler={onDragLeaveHandler}
+                PostDragEndHandler={onPostDragEndHandler}
               ></Album>
             </AlbumWrapper>
           );
@@ -89,7 +116,10 @@ const AlbumList = () => {
 
 const DraggableWrapper = styled.div`
   width: 100%;
-  & .drag-hover {
+  & .post-hover {
+    border: 2px dotted ${(props) => props.theme.MENUTEXT};
+  }
+  & .album-hover {
     border-top: 1px solid ${(props) => props.theme.MENUTEXT};
   }
 `;
