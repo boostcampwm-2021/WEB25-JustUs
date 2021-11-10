@@ -38,8 +38,8 @@ export class GroupController {
     return this.groupService.updateGroupInfo(groupId, updateGroupInfoRequestDto);
   }
 
-  // @Delete()
-  // LeaveGroup(@Body() leaveGroupDto: LeaveGroupDto): Promise<string> {
-  //   return this.groupService.leaveGroup(leaveGroupDto);
-  // }
+  @Delete("/:groupId")
+  LeaveGroup(@Param("groupId") groupId: number, @Body() leaveGroupDto: LeaveGroupDto): Promise<string> {
+    return this.groupService.leaveGroup(groupId, leaveGroupDto);
+  }
 }

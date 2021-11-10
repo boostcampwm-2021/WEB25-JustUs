@@ -7,6 +7,7 @@ import { CreateGroupRequestDto } from "src/dto/group/createGroupRequest.dto";
 import { AttendGroupRequestDto } from "src/dto/group/attendGroupRequest.dto";
 import { GetGroupInfoResponseDto } from "src/dto/group/getGroupInfoResponse.dto";
 import { UpdateGroupInfoRequestDto } from "src/dto/group/updateGroupInfoRequest.dto";
+import { LeaveGroupDto } from "src/dto/group/leaveGroupRequest.dto";
 
 @Injectable()
 export class GroupService {
@@ -82,5 +83,20 @@ export class GroupService {
     await this.groupRepository.save(group);
 
     return "GroupInfo update success!!";
+  }
+
+  async leaveGroup(groupId: number, leaveGroupDto: LeaveGroupDto): Promise<string> {
+    const { userId } = leaveGroupDto;
+
+    const result = await this.groupRepository
+      .createQueryBuilder()
+      .delete()
+      .from("users_groups_TB")
+      .where("groups_tb_group_id = :groupId AND users_user_id = :userId", { groupId: groupId, userId: userId })
+      .execute();
+
+    if (!result.affected) throw new NotFoundException("그룹에 해당 유저가 없습니다.");
+
+    return "Group leave success!!";
   }
 }
