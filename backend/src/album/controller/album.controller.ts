@@ -8,12 +8,9 @@ import { CreateAlbumRequestDto } from "src/dto/album/createAlbumRequest.dto";
 export class AlbumController {
   constructor(private readonly albumService: AlbumService) {}
 
-  @Post("/:groupId")
+  @Post()
   @HttpCode(200)
-  CreateAlbum(
-    @Param("groupId") groupId: number,
-    @Body() createAlbumRequestDto: CreateAlbumRequestDto,
-  ): Promise<number> {
-    return this.albumService.createAlbum(groupId, createAlbumRequestDto);
+  CreateAlbum(@Body() createAlbumRequestDto: CreateAlbumRequestDto): Promise<number> {
+    return this.albumService.createAlbum(createAlbumRequestDto);
   }
 }
