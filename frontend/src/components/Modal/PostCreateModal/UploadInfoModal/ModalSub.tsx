@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import COLOR from "@src/styles/Color";
-import React, { useState, useEffect, useRef, Dispatch, SetStateAction } from "react";
+import React, { useState, useEffect, Dispatch, SetStateAction } from "react";
 import { flexRowCenterAlign } from "@src/styles/StyledComponents";
 import SearchResult from "@components/Modal/PostCreateModal/UploadInfoModal/SearchResult";
 
@@ -10,11 +10,6 @@ interface IData {
 
 interface IPagination {
   [key: string]: string;
-}
-
-interface ISearchResult {
-  data: IData[];
-  pagination: IPagination;
 }
 
 interface ModalSubProps {
@@ -42,7 +37,6 @@ const ModalSub = ({
   lastPage,
   setLastPage,
 }: ModalSubProps) => {
-  const searchInputRef = useRef<HTMLInputElement>(null);
   const [input, setInput] = useState<string>("");
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -93,15 +87,13 @@ const ModalSub = ({
   }, []);
 
   useEffect(() => {
-    if (!searchInputRef.current || !searchInputRef.current.value) return;
-    const keyword = searchInputRef.current.value as string;
-    execSearch(keyword, 1);
+    if (input === "") return;
+    execSearch(input, 1);
   }, [searchKeyword]);
 
   useEffect(() => {
-    if (!searchInputRef.current || !searchInputRef.current.value) return;
-    const keyword = searchInputRef.current.value as string;
-    execSearch(keyword, page);
+    if (input === "") return;
+    execSearch(input, page);
   }, [page]);
 
   return (
@@ -110,7 +102,6 @@ const ModalSub = ({
         <SearchContainer>
           <img src="/icons/search.svg" height="90%" alt="search" />
           <SearchInput
-            ref={searchInputRef}
             type="text"
             placeholder="지역명을 입력하세요."
             onKeyDown={handleKeyPress}
