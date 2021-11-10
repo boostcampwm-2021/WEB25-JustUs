@@ -83,7 +83,7 @@ const setMap = (
 
   naver.maps.Event.addListener(map, "rightclick", (e: PointerEvent) => {
     setClickInfo(e);
-    setRightPosition({ x: e.pointerEvent.screenX, y: e.pointerEvent.screenY });
+    setRightPosition({ x: e.pointerEvent.pageX, y: e.pointerEvent.pageY });
     setIsRightClick(true);
   });
 

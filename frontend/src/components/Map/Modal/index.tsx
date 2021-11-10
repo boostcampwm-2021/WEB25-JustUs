@@ -26,7 +26,7 @@ const MapLayerModalContainer = styled.div<{ x: number; y: number }>`
   position: absolute;
   z-index: 10;
   left: ${(props) => `${props.x}px`};
-  top: ${(props) => `${props.y - 60}px`};
+  top: ${(props) => `${props.y + 10}px`};
 `;
 
 const MapLayerModal = styled.div`
