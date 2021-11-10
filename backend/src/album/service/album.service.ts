@@ -1,8 +1,9 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { AlbumRepository } from "../album.repository";
-import { CreateAlbumRequestDto } from "src/dto/album/createAlbumRequest.dto";
 import { GroupRepository } from "src/group/group.repository";
+import { CreateAlbumRequestDto } from "src/dto/album/createAlbumRequest.dto";
+import { UpdateAlbumInfoRequestDto } from "src/dto/album/updateAlbumInfoRequest.dto";
 
 @Injectable()
 export class AlbumService {
@@ -24,5 +25,16 @@ export class AlbumService {
     });
 
     return album.albumName;
+  }
+
+  async updateAlbumInfo(albumId: number, updateAlbumInfoRequestDto: UpdateAlbumInfoRequestDto): Promise<string> {
+    const { albumName } = updateAlbumInfoRequestDto;
+    const album = await this.albumRepository.findOne({ albumId });
+    if (!album) throw new NotFoundException("Can not find Album");
+
+    album.albumName = albumName;
+    await this.albumRepository.save(album);
+
+    return "AlbumInfo update success!!";
   }
 }

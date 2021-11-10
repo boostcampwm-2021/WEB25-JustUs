@@ -1,7 +1,8 @@
-import { Body, Controller, HttpCode, Post, UseGuards } from "@nestjs/common";
+import { Body, Controller, HttpCode, Param, Post, Put, UseGuards } from "@nestjs/common";
 import { JwtAuthGuard } from "src/auth/guard/jwt-auth-guard";
 import { AlbumService } from "../service/album.service";
 import { CreateAlbumRequestDto } from "src/dto/album/createAlbumRequest.dto";
+import { UpdateAlbumInfoRequestDto } from "src/dto/album/updateAlbumInfoRequest.dto";
 
 @UseGuards(JwtAuthGuard)
 @Controller("api/albums")
@@ -12,5 +13,14 @@ export class AlbumController {
   @HttpCode(200)
   CreateAlbum(@Body() createAlbumRequestDto: CreateAlbumRequestDto): Promise<string> {
     return this.albumService.createAlbum(createAlbumRequestDto);
+  }
+
+  @Put("/:albumId")
+  @HttpCode(200)
+  UpdateAlbumInfo(
+    @Param("albumId") albumId: number,
+    @Body() updateAlbumInfoRequestDto: UpdateAlbumInfoRequestDto,
+  ): Promise<string> {
+    return this.albumService.updateAlbumInfo(albumId, updateAlbumInfoRequestDto);
   }
 }

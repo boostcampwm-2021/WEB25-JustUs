@@ -1,11 +1,8 @@
-import { IsNotEmpty, IsNumber, IsString } from "class-validator";
+import { IsNotEmpty, IsNumber } from "class-validator";
+import { AlbumInfo } from "./albumInfo";
 
-export class CreateAlbumRequestDto {
+export class CreateAlbumRequestDto extends AlbumInfo {
   @IsNumber()
   @IsNotEmpty()
   groupId: number;
-
-  @IsString()
-  @IsNotEmpty()
-  albumName: string;
 }
