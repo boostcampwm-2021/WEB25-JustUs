@@ -3,10 +3,12 @@ import COLOR from "@styles/Color";
 import styled from "styled-components";
 
 import SearchList from "@components/Header/Profile/Search/SearchList";
+import Recommend from "@components/Header/Profile/Search/Recommend";
 
 const Search = () => {
   const [searchKeyword, setSearchKeyword] = useState<string>("");
   const [isSearchListOpened, setIsSearchListOpened] = useState<Boolean>(false);
+  const [isRecommendOpened, setIsRecommendOpened] = useState<Boolean>(false);
 
   const handleSearchInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchKeyword(e.target.value);
@@ -14,19 +16,29 @@ const Search = () => {
 
   const handleKeyPress = (e: KeyboardEvent<HTMLDivElement>) => {
     if (e.key === "Enter" && searchKeyword) {
-      setIsSearchListOpened(true);
-    } else {
-      setIsSearchListOpened(false);
+      (document.activeElement as HTMLElement).blur();
+      doSearch(searchKeyword);
     }
+  };
+
+  const doSearch = (key: string) => {
+    setIsSearchListOpened(true);
+    setIsRecommendOpened(false);
+  };
+
+  const onFocusInput = () => {
+    setIsRecommendOpened(true);
+    setIsSearchListOpened(false);
   };
 
   const onClickBackGround = () => {
     setIsSearchListOpened(false);
+    setIsRecommendOpened(false);
   };
 
   return (
     <>
-      {isSearchListOpened && <BackGround onClick={onClickBackGround} />}
+      {(isSearchListOpened || isRecommendOpened) && <BackGround onClick={onClickBackGround} />}
       <SearchContainer>
         <img src="/icons/search.svg" height="90%" alt="search" />
         <SearchInput
@@ -35,9 +47,13 @@ const Search = () => {
           onKeyUp={handleKeyPress}
           onChange={handleSearchInputChange}
           value={searchKeyword}
+          onFocus={onFocusInput}
         />
         {isSearchListOpened && (
           <SearchList setSearchKeyword={setSearchKeyword} setIsSearchListOpened={setIsSearchListOpened} />
+        )}
+        {isRecommendOpened && (
+          <Recommend setSearchKeyword={setSearchKeyword} inputKeyword={searchKeyword} doSearch={doSearch} />
         )}
       </SearchContainer>
     </>
