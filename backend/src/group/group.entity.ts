@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable } from "typeorm";
-import { TimeStampEntity } from "src/myBaseEntity/TimestampEntity";
+import { TimeStampEntity } from "src/myBaseEntity/timestampEntity";
 import { User } from "src/user/user.entity";
 
 @Entity({ name: "groups_TB" })
