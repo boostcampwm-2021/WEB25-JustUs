@@ -15,17 +15,24 @@ const Search = () => {
   const handleKeyPress = (e: KeyboardEvent<HTMLDivElement>) => {
     if (e.key === "Enter" && searchKeyword) {
       setIsSearchListOpened(true);
+    } else {
+      setIsSearchListOpened(false);
     }
+  };
+
+  const onClickBackGround = () => {
+    setIsSearchListOpened(false);
   };
 
   return (
     <>
+      {isSearchListOpened && <BackGround onClick={onClickBackGround} />}
       <SearchContainer>
         <img src="/icons/search.svg" height="90%" alt="search" />
         <SearchInput
           type="text"
           placeholder="해시태그를 입력하세요."
-          onKeyPress={handleKeyPress}
+          onKeyUp={handleKeyPress}
           onChange={handleSearchInputChange}
           value={searchKeyword}
         />
@@ -37,6 +44,16 @@ const Search = () => {
   );
 };
 
+const BackGround = styled.div`
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
+  z-index: 3;
+`;
+
 const SearchContainer = styled.div`
   display: flex;
   justify-content: flex-start;
@@ -46,6 +63,7 @@ const SearchContainer = styled.div`
   background-color: ${COLOR.WHITE};
   border-radius: 5px;
   padding: 0.5vh 0;
+  z-index: 6;
   & > img {
     padding: 0 0.5vw;
   }
