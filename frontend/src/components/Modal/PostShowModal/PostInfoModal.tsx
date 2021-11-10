@@ -4,6 +4,7 @@ import Carousel from "@components/Modal/PostCreateModal/UploadInfoModal/Carousel
 import shortid from "shortid";
 import { flexRowCenterAlign, flexColumnCenterAlign } from "@styles/StyledComponents";
 import { ReactComponent as MoreVertSVG } from "@styles/icons/more-vert.svg";
+import ReactDOMServer from "react-dom/server";
 
 interface FileObject {
   file: string;
@@ -19,10 +20,14 @@ const post = {
   postID: 0,
   postTitle: "스타벅스 리저브",
   postContent:
-    "즐거운 여행 어쩌구저쩌구하고 글을 작성하는 칸입니다. 이정도 글은 쓸거같아요즐거칸입니다. 이정도 글은 쓸거같아요이정도 글은 쓸거같아요",
+    "즐거운 여행 #podo 이정도 글은 쓸거같아요즐거칸입니다. 이정도 #모래 글은 쓸거같아요이정도 글은 쓸 #Cheers 거같아요",
   postDate: "2021.10.26 15:40",
   postLocation: "강남역",
   userNickname: "작성자 닉네임",
+};
+
+const highlights = (text: string) => {
+  return text.replace(/#([\w|ㄱ-ㅎ|가-힣]+)/g, "<mark>$&</mark>");
 };
 
 const PostInfoModal = () => {
@@ -43,7 +48,9 @@ const PostInfoModal = () => {
         <CarouselWrapper>
           <Carousel files={files} carouselWidth={350} />
         </CarouselWrapper>
-        <ModalContent>{post.postContent}</ModalContent>
+        <ModalContent>
+          <div dangerouslySetInnerHTML={{ __html: highlights(post.postContent) }}></div>
+        </ModalContent>
         <ModalFooter>
           <FooterItem>{post.postDate}</FooterItem>
           <FooterItem>{post.userNickname}</FooterItem>
@@ -100,7 +107,21 @@ const ModalContent = styled.div`
   font-size: 1.5rem;
   padding: 1rem 1rem 1rem 1rem;
   overflow-y: scroll;
-  font-family: "NanumDaCaeSaRang";
+
+  & div {
+    font-family: "NanumDaCaeSaRang";
+
+    & mark {
+      border-radius: 3px;
+      color: white;
+      background-color: ${(props) => props.theme.SECONDARY};
+      letter-spacing: normal;
+      font-size: 1.2rem;
+      width: 400px;
+      height: 200px;
+      overflow: auto;
+    }
+  }
 `;
 const ModalFooter = styled.div`
   padding-top: 1rem;
