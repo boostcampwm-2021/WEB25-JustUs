@@ -6,6 +6,12 @@ import { useDispatch } from "react-redux";
 import Marker from "@components/Map/Markers";
 import MapLayerPostModal from "./Modal";
 
+declare global {
+  interface Window {
+    kakao: any;
+  }
+}
+
 type Point = any;
 type LatLng = any;
 type Feature = any;
