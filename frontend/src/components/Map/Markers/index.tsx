@@ -25,6 +25,7 @@ const Marker = (map: naver.maps.Map, pos: naver.maps.LatLng, count: number = 3) 
     },
     size: new naver.maps.Size(22, 22),
     origin: new naver.maps.Point(0, 0),
+    draggable: true,
   };
 };
 
