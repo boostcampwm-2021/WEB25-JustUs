@@ -20,16 +20,33 @@ const post = {
   postID: 0,
   postTitle: "스타벅스 리저브",
   postContent:
-    "즐거운 여행 #podo 이정도 글은 쓸거같아요즐거칸입니다. 이정도 #모래 글은 쓸거같아요이정도 글은 쓸 #Cheers 거같아요",
+    "즐거운 여행 이정도 글은 쓸 #hi 거같아요즐거칸입니다.\n\n이정도 글은 쓸거같아요 이정도 글은 쓸 거같아요\n\n\n\n #podo  #Cheers #모래",
   postDate: "2021.10.26 15:40",
   postLocation: "강남역",
   userNickname: "작성자 닉네임",
 };
 
+const textSplit = (text: string) => {
+  return text.split("\n");
+};
+
 const highlights = (text: string) => {
-  return text
-    .split(" ")
-    .map((word) => (word.match(/#([\w|ㄱ-ㅎ|가-힣]+)/) ? <mark>{word} </mark> : <span>{word} </span>));
+  const splited = text.split(/[\u0020]/);
+  const makeSpan = (word: string, idx: number) => {
+    if (idx === splited.length - 1)
+      return (
+        <span key={idx}>
+          {word}
+          <br />
+        </span>
+      );
+
+    return <span key={idx}>{word}</span>;
+  };
+
+  return splited.map((word, idx) =>
+    word.match(/#([\w|ㄱ-ㅎ|가-힣]+)/) ? <mark key={idx}>{word} </mark> : makeSpan(word, idx),
+  );
 };
 
 const PostInfoModal = () => {
@@ -41,7 +58,6 @@ const PostInfoModal = () => {
     >
       <Modal>
         <ModalHeader>
-          <div></div>
           <PostTitle>{post.postTitle}</PostTitle>
           <MoreIconWrapper>
             <MoreVertSVG fill={COLOR.BLACK} />
@@ -50,7 +66,7 @@ const PostInfoModal = () => {
         <CarouselWrapper>
           <Carousel files={files} carouselWidth={350} />
         </CarouselWrapper>
-        <ModalContent>{highlights(post.postContent)}</ModalContent>
+        <ModalContent>{textSplit(post.postContent).map((item) => highlights(item))}</ModalContent>
         <ModalFooter>
           <FooterItem>{post.postDate}</FooterItem>
           <FooterItem>{post.userNickname}</FooterItem>
@@ -91,27 +107,29 @@ const ModalHeader = styled.div`
 `;
 const PostTitle = styled.div`
   ${flexRowCenterAlign}
-  grid-columns-start: 2;
-  grid-columns-end: 3;
+  grid-column-start: 2;
+  grid-column-end: 3;
   font-family: "NanumDaCaeSaRang";
   font-size: 2rem;
 `;
 const MoreIconWrapper = styled.div`
   ${flexRowCenterAlign}
-  grid-columns-start: 3;
-  grid-columns-end: 4;
+  grid-column-start: 3;
+  grid-column-end: 4;
 `;
 const ModalContent = styled.div`
   font-size: 1.5rem;
   padding: 1rem 1rem 1rem 1rem;
   overflow-y: scroll;
   font-family: "NanumDaCaeSaRang";
+  white-space: pre-line;
 
   & mark {
     border-radius: 3px;
     color: ${COLOR.WHITE};
     background-color: ${(props) => props.theme.SECONDARY};
-    font-size: 1.2rem;
+    font-size: 1.5rem;
+    font-family: "NanumDaCaeSaRang";
   }
 
   & span {
