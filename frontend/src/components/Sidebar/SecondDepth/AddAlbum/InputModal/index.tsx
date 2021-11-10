@@ -18,22 +18,23 @@ const InputModal = ({ addAlbumModalRef, setIsAddAlbumModalOpened }: InputModalPr
   const dispatch = useDispatch();
 
   const onClickAddAlbum = () => {
-    if (!inputRef.current) return;
+    console.log("로직 수정 예정");
+    // if (!inputRef.current) return;
 
-    const albumName = inputRef.current.value;
-    const selectedGroupID = selectedGroup.groupID;
-    const selectedAlbumList = groups[selectedGroupID].albumList;
-    const albumID = selectedAlbumList[selectedAlbumList.length - 1].albumID + 1;
+    // const albumName = inputRef.current.value;
+    // const selectedGroupID = selectedGroup.groupID;
+    // const selectedAlbumList = groups[selectedGroupID].albumList;
+    // const albumID = selectedAlbumList[selectedAlbumList.length - 1].albumID + 1;
 
-    const newAlbum = {
-      albumID,
-      albumName,
-      posts: [],
-    };
+    // const newAlbum = {
+    //   albumID,
+    //   albumName,
+    //   posts: [],
+    // };
 
-    selectedAlbumList.push(newAlbum);
+    // selectedAlbumList.push(newAlbum);
 
-    dispatch({ type: GroupAction.SET_ALL_GROUPS, payload: groups });
+    // dispatch({ type: GroupAction.SET_ALL_GROUPS, payload: groups });
     setIsAddAlbumModalOpened(false);
   };
 

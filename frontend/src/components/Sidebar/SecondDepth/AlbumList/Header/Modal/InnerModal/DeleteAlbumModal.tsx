@@ -21,21 +21,22 @@ const DeleteAlbumModal = () => {
   };
 
   const onClickDeleteBtn = () => {
-    const { groupID, groupName, groupImg } = selectedGroup;
-    const selectedAlbumList = groups[groupID].albumList;
+    console.log("로직 변경 예정");
+    //   const { groupID, groupName, groupImg } = selectedGroup;
+    //   const selectedAlbumList = groups[groupID].albumList;
 
-    groups[groupID].albumList = selectedAlbumList.filter((album: any) => album.albumID !== selectedAlbum.albumID);
+    //   groups[groupID].albumList = selectedAlbumList.filter((album: any) => album.albumID !== selectedAlbum.albumID);
 
-    const newGroup = {
-      groupID,
-      groupName,
-      groupImg,
-      albumList: groups[groupID].albumList,
-    };
+    //   const newGroup = {
+    //     groupID,
+    //     groupName,
+    //     groupImg,
+    //     albumList: groups[groupID].albumList,
+    //   };
 
-    dispatch({ type: GroupAction.SET_ALL_GROUPS, payload: groups });
-    dispatch({ type: GroupAction.SET_SELECTED_GROUP, payload: newGroup });
-    closeModal();
+    //   dispatch({ type: GroupAction.SET_ALL_GROUPS, payload: groups });
+    //   dispatch({ type: GroupAction.SET_SELECTED_GROUP, payload: newGroup });
+    //   closeModal();
   };
 
   return (
