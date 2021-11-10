@@ -12,12 +12,16 @@ declare global {
   }
 }
 
-type Point = any;
 type LatLng = any;
 type Feature = any;
 type Event = any;
 type Coord = Point | LatLng;
 type DOMEvent = Event;
+
+interface Point {
+  x: number;
+  y: number;
+}
 
 interface PointerEvent {
   coord: Coord;
@@ -32,8 +36,8 @@ const load = (
   cb: Function,
   err: Function,
   setIsRightClick: Dispatch<SetStateAction<Boolean>>,
-  setRightPosition: Dispatch<SetStateAction<{ x: number; y: number }>>,
-  setClickInfo: Dispatch<SetStateAction<any>>,
+  setRightPosition: Dispatch<SetStateAction<Point>>,
+  setClickInfo: Dispatch<SetStateAction<PointerEvent>>,
 ) => {
   const element = document.createElement("script");
   const parent = "body";
@@ -58,8 +62,8 @@ const setMap = (
   INIT_Y: number,
   ZOOM_SIZE: number,
   setIsRightClick: Dispatch<SetStateAction<Boolean>>,
-  setRightPosition: Dispatch<SetStateAction<{ x: number; y: number }>>,
-  setClickInfo: Dispatch<SetStateAction<any>>,
+  setRightPosition: Dispatch<SetStateAction<Point>>,
+  setClickInfo: Dispatch<SetStateAction<PointerEvent>>,
 ) => {
   const pos = new naver.maps.LatLng(INIT_X, INIT_Y);
   const map = new naver.maps.Map("map", {
