@@ -87,6 +87,10 @@ const setMap = (
     setIsRightClick(true);
   });
 
+  naver.maps.Event.addListener(map, "zoom_changed", (e: Number) => {
+    setIsRightClick(false);
+  });
+
   naver.maps.Event.addListener(map, "click", (e: PointerEvent) => {
     setIsRightClick(false);
   });
@@ -99,7 +103,7 @@ const setError = () => {
 const Map = () => {
   const dispatch = useDispatch();
   const [isRightClick, setIsRightClick] = useState<Boolean>(false);
-  const [rightPosition, setRightPosition] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
+  const [rightPosition, setRightPosition] = useState<Point>({ x: 0, y: 0 });
   const [clickInfo, setClickInfo] = useState<any>();
 
   useEffect(() => {
