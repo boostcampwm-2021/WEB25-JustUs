@@ -1,4 +1,4 @@
-import { Body, Controller, HttpCode, Param, Post, Put, UseGuards } from "@nestjs/common";
+import { Body, Controller, Delete, HttpCode, Param, Post, Put, UseGuards } from "@nestjs/common";
 import { JwtAuthGuard } from "src/auth/guard/jwt-auth-guard";
 import { AlbumService } from "../service/album.service";
 import { CreateAlbumRequestDto } from "src/dto/album/createAlbumRequest.dto";
@@ -22,5 +22,11 @@ export class AlbumController {
     @Body() updateAlbumInfoRequestDto: UpdateAlbumInfoRequestDto,
   ): Promise<string> {
     return this.albumService.updateAlbumInfo(albumId, updateAlbumInfoRequestDto);
+  }
+
+  @Delete("/:albumId")
+  @HttpCode(200)
+  DeleteAlbum(@Param("albumId") albumId: number): Promise<string> {
+    return this.albumService.deleteAlbum(albumId);
   }
 }

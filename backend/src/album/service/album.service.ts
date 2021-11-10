@@ -37,4 +37,13 @@ export class AlbumService {
 
     return "AlbumInfo update success!!";
   }
+
+  async deleteAlbum(albumId: number): Promise<string> {
+    const album = await this.albumRepository.findOne(albumId);
+    if (!album) throw new NotFoundException("Can not find Album");
+
+    await this.albumRepository.softDelete({ albumId });
+
+    return "Album delete success!!";
+  }
 }
