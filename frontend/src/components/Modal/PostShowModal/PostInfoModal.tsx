@@ -34,6 +34,7 @@ const PostInfoModal = () => {
     >
       <Modal>
         <ModalHeader>
+          <div></div>
           <PostTitle>{post.postTitle}</PostTitle>
           <MoreIconWrapper>
             <MoreVertSVG fill={COLOR.BLACK} />
@@ -82,7 +83,7 @@ const CarouselWrapper = styled.div`
 `;
 const ModalHeader = styled.div`
   display: grid;
-  grid-template-columns: 90% 10%;
+  grid-template-columns: 10% 80% 10%;
   font-size: 1.2rem;
   font-weight: bold;
   // border-bottom: 1px solid ${COLOR.GRAY};
@@ -91,16 +92,21 @@ const ModalHeader = styled.div`
 `;
 const PostTitle = styled.div`
   ${flexRowCenterAlign}
+  grid-columns-start: 2;
+  grid-columns-end: 3;
 `;
 const MoreIconWrapper = styled.div`
   ${flexRowCenterAlign}
+  grid-columns-start: 3;
+  grid-columns-end: 4;
 `;
 const ModalContent = styled.div`
   display: flex;
   flex-direction: column;
-  font-size: 1.1rem;
-  padding: 1rem 2rem;
+  font-size: 1.5rem;
+  padding: 1rem 1rem 1rem 1rem;
   overflow-y: scroll;
+  font-family: "NanumDaCaeSaRang";
 `;
 const ModalFooter = styled.div`
   padding-top: 1rem;
