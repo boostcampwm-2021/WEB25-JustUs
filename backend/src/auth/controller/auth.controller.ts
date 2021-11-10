@@ -18,7 +18,7 @@ export class AuthController {
   @UseGuards(NaverOauthGuard)
   async naverAuthRedirect(@Req() req: myRequest, @Res() res: Response) {
     const accessToken = req.user.accessToken;
-    console.log(accessToken, "redirect");
+
     res.cookie("accessToken", accessToken);
     res.redirect("/");
     res.end();
