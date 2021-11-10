@@ -13,7 +13,7 @@ export class AlbumService {
     private groupRepository: GroupRepository,
   ) {}
 
-  async createAlbum(createAlbumRequestDto: CreateAlbumRequestDto): Promise<number> {
+  async createAlbum(createAlbumRequestDto: CreateAlbumRequestDto): Promise<string> {
     const { groupId, albumName } = createAlbumRequestDto;
     const group = await this.groupRepository.findOne({ groupId });
     if (!group) throw new NotFoundException("Not found group with the id " + groupId);
@@ -23,6 +23,6 @@ export class AlbumService {
       group: group,
     });
 
-    return album.albumId;
+    return album.albumName;
   }
 }
