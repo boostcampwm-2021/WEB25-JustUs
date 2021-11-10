@@ -1,8 +1,8 @@
 import { IsNotEmpty, IsNumber } from "class-validator";
 import { GroupInfo } from "./groupInfo";
 
-export class CreateGroupRequestDto extends GroupInfo {
+export class UpdateGroupInfoRequestDto extends GroupInfo {
   @IsNumber()
   @IsNotEmpty()
-  userId: number;
+  groupId: number;
 }

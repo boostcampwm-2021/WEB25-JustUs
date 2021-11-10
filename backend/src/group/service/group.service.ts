@@ -6,6 +6,7 @@ import { Group } from "../group.entity";
 import { CreateGroupRequestDto } from "src/dto/group/createGroupRequest.dto";
 import { AttendGroupRequestDto } from "src/dto/group/attendGroupRequest.dto";
 import { GetGroupInfoResponseDto } from "src/dto/group/getGroupInfoResponse.dto";
+import { UpdateGroupInfoRequestDto } from "src/dto/group/updateGroupInfoRequest.dto";
 
 @Injectable()
 export class GroupService {
@@ -68,5 +69,18 @@ export class GroupService {
 
     const { groupCode, users } = group;
     return { groupCode, users };
+  }
+
+  async updateGroupInfo(updateGroupInfoRequestDto: UpdateGroupInfoRequestDto): Promise<string> {
+    const { groupId, groupImage, groupName } = updateGroupInfoRequestDto;
+    const group = await this.groupRepository.findOne({ groupId });
+
+    if (!group) throw new NotFoundException("Can not find Group");
+
+    group.groupImage = groupImage;
+    group.groupName = groupName;
+    await this.groupRepository.save(group);
+
+    return "GroupInfo update success!!";
   }
 }
