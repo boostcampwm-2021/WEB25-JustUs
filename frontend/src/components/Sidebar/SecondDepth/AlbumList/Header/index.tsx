@@ -13,9 +13,20 @@ interface HeaderProps {
   setPostToggle: React.Dispatch<React.SetStateAction<boolean>>;
   modalOpenedIdx: number;
   setModalOpenedIdx: React.Dispatch<React.SetStateAction<number>>;
+  AlbumDragHandler: (ev: React.DragEvent<HTMLDivElement>) => void;
+  DragEndHandler: (ev: React.DragEvent<HTMLDivElement>) => void;
 }
 
-const Header = ({ albumID, albumName, postToggle, setPostToggle, modalOpenedIdx, setModalOpenedIdx }: HeaderProps) => {
+const Header = ({
+  albumID,
+  albumName,
+  postToggle,
+  setPostToggle,
+  modalOpenedIdx,
+  setModalOpenedIdx,
+  AlbumDragHandler,
+  DragEndHandler,
+}: HeaderProps) => {
   const { nowTheme }: any = useSelector((state: RootState) => state.theme);
 
   const onClickArrowDown = () => {
@@ -27,7 +38,7 @@ const Header = ({ albumID, albumName, postToggle, setPostToggle, modalOpenedIdx,
   };
 
   return (
-    <HeaderWrapper>
+    <HeaderWrapper draggable={true} onDrag={AlbumDragHandler} onDragEnd={DragEndHandler} className={"albumTitle"}>
       <ArrowIcon onClick={onClickArrowDown}>
         {postToggle && <ArrowDownSVG fill={nowTheme.MENUTEXT} />}
         {!postToggle && <ArrowRightSVG fill={nowTheme.MENUTEXT} />}
@@ -49,7 +60,7 @@ const HeaderWrapper = styled.div`
   font-weight: bold;
   display: grid;
   grid-template-columns: 10% 80% 10%;
-  cursor: default;
+  cursor: grab;
 `;
 
 const ArrowIcon = styled.div`
