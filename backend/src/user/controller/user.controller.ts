@@ -11,7 +11,7 @@ export class UserController {
 
   @Get("/:userId")
   GetUserInfo(@Param("userId") userId: number): Promise<UserInfoResponseDto> {
-    return this.userService.findUserInfo(userId);
+    return this.userService.getUserInfo(userId);
   }
 
   @Put()

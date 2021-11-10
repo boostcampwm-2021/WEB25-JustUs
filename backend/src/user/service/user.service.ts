@@ -22,7 +22,7 @@ export class UserService {
     return user;
   }
 
-  async findUserInfo(userId: number): Promise<UserInfoResponseDto> {
+  async getUserInfo(userId: number): Promise<UserInfoResponseDto> {
     const user = await this.userRepository.findOne({ userId });
 
     if (!user) throw new NotFoundException("Can not find User");
