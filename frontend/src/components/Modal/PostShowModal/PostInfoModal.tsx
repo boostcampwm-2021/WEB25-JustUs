@@ -27,7 +27,9 @@ const post = {
 };
 
 const highlights = (text: string) => {
-  return text.replace(/#([\w|ㄱ-ㅎ|가-힣]+)/g, "<mark>$&</mark>");
+  return text
+    .split(" ")
+    .map((word) => (word.match(/#([\w|ㄱ-ㅎ|가-힣]+)/) ? <mark>{word} </mark> : <span>{word} </span>));
 };
 
 const PostInfoModal = () => {
@@ -48,9 +50,7 @@ const PostInfoModal = () => {
         <CarouselWrapper>
           <Carousel files={files} carouselWidth={350} />
         </CarouselWrapper>
-        <ModalContent>
-          <div dangerouslySetInnerHTML={{ __html: highlights(post.postContent) }}></div>
-        </ModalContent>
+        <ModalContent>{highlights(post.postContent)}</ModalContent>
         <ModalFooter>
           <FooterItem>{post.postDate}</FooterItem>
           <FooterItem>{post.userNickname}</FooterItem>
@@ -102,25 +102,20 @@ const MoreIconWrapper = styled.div`
   grid-columns-end: 4;
 `;
 const ModalContent = styled.div`
-  display: flex;
-  flex-direction: column;
   font-size: 1.5rem;
   padding: 1rem 1rem 1rem 1rem;
   overflow-y: scroll;
+  font-family: "NanumDaCaeSaRang";
 
-  & div {
+  & mark {
+    border-radius: 3px;
+    color: ${COLOR.WHITE};
+    background-color: ${(props) => props.theme.SECONDARY};
+    font-size: 1.2rem;
+  }
+
+  & span {
     font-family: "NanumDaCaeSaRang";
-
-    & mark {
-      border-radius: 3px;
-      color: white;
-      background-color: ${(props) => props.theme.SECONDARY};
-      letter-spacing: normal;
-      font-size: 1.2rem;
-      width: 400px;
-      height: 200px;
-      overflow: auto;
-    }
   }
 `;
 const ModalFooter = styled.div`
