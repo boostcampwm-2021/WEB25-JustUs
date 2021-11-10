@@ -1,6 +1,7 @@
 import { Group } from "src/group/group.entity";
 import { TimeStampEntity } from "src/myBaseEntity/timestampEntity";
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Post } from "src/post/post.entity";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({ name: "albums" })
 export class Album extends TimeStampEntity {
@@ -13,4 +14,7 @@ export class Album extends TimeStampEntity {
   @ManyToOne(() => Group, group => group.albums, { onDelete: "CASCADE" })
   @JoinColumn({ name: "group_id" })
   group: Group;
+
+  @OneToMany(() => Post, post => post.album)
+  posts: Post[];
 }

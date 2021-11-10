@@ -21,6 +21,6 @@ export class Group extends TimeStampEntity {
   @JoinTable({ name: "users_groups_TB" })
   users: User[];
 
-  @OneToMany(() => Album, Album => Album.group)
+  @OneToMany(() => Album, album => album.group)
   albums: Album[];
 }
