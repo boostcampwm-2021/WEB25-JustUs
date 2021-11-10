@@ -49,7 +49,6 @@ const SearchList = ({ setSearchKeyword, setIsSearchListOpened }: SearchListProps
     </SearchListContainer>
   );
 };
-
 const SearchListContainer = styled.div`
   position: absolute;
   background-color: ${COLOR.WHITE};
@@ -58,16 +57,17 @@ const SearchListContainer = styled.div`
   z-index: 6;
   width: 25vw;
   font-size: 1rem;
+  box-sizing: border-box;
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    width: 0.6vw;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: ${COLOR.LIGHTGRAY2};
+    border-radius: 5px;
+  }
   & ul {
-    height: 20vh;
-    overflow-y: scroll;
-    &::-webkit-scrollbar {
-      width: 1vw;
-    }
-    &::-webkit-scrollbar-thumb {
-      background-color: ${COLOR.LIGHTGRAY2};
-      border-radius: 5px;
-    }
+    max-height: 20vh;
     margin: 1.5vw 0 1.5vw 1.5vw;
     & li {
       padding: 1vh 0 1vh 1vh;
@@ -82,8 +82,7 @@ const SearchListContainer = styled.div`
         padding-top: 0;
       }
       &:nth-last-child(1) {
-        border-bottom: none;
-        padding-bottom: 0;
+        padding-bottom: 1.2vh;
       }
     }
   }
