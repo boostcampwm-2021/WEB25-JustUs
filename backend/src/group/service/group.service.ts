@@ -71,8 +71,8 @@ export class GroupService {
     return { groupCode, users };
   }
 
-  async updateGroupInfo(updateGroupInfoRequestDto: UpdateGroupInfoRequestDto): Promise<string> {
-    const { groupId, groupImage, groupName } = updateGroupInfoRequestDto;
+  async updateGroupInfo(groupId: number, updateGroupInfoRequestDto: UpdateGroupInfoRequestDto): Promise<string> {
+    const { groupImage, groupName } = updateGroupInfoRequestDto;
     const group = await this.groupRepository.findOne({ groupId });
 
     if (!group) throw new NotFoundException("Can not find Group");

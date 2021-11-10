@@ -1,10 +1,11 @@
-import { Body, Controller, Get, HttpCode, Param, Post, Put, UseGuards } from "@nestjs/common";
+import { Body, Controller, Get, HttpCode, Param, Post, Put, Delete, UseGuards } from "@nestjs/common";
 import { JwtAuthGuard } from "src/auth/guard/jwt-auth-guard";
 import { GroupService } from "../service/group.service";
 import { CreateGroupRequestDto } from "src/dto/group/createGroupRequest.dto";
 import { AttendGroupRequestDto } from "src/dto/group/attendGroupRequest.dto";
 import { GetGroupInfoResponseDto } from "src/dto/group/getGroupInfoResponse.dto";
 import { UpdateGroupInfoRequestDto } from "src/dto/group/updateGroupInfoRequest.dto";
+import { LeaveGroupDto } from "src/dto/group/leaveGroupRequest.dto";
 
 @UseGuards(JwtAuthGuard)
 @Controller("api/groups")
@@ -28,9 +29,17 @@ export class GroupController {
     return this.groupService.getGroupInfo(groupId);
   }
 
-  @Put()
+  @Put("/:groupId")
   @HttpCode(200)
-  UpdateGroupInfo(@Body() updateGroupInfoRequestDto: UpdateGroupInfoRequestDto): Promise<string> {
-    return this.groupService.updateGroupInfo(updateGroupInfoRequestDto);
+  UpdateGroupInfo(
+    @Param("groupId") groupId: number,
+    @Body() updateGroupInfoRequestDto: UpdateGroupInfoRequestDto,
+  ): Promise<string> {
+    return this.groupService.updateGroupInfo(groupId, updateGroupInfoRequestDto);
   }
+
+  // @Delete()
+  // LeaveGroup(@Body() leaveGroupDto: LeaveGroupDto): Promise<string> {
+  //   return this.groupService.leaveGroup(leaveGroupDto);
+  // }
 }

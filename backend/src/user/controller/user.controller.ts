@@ -14,9 +14,12 @@ export class UserController {
     return this.userService.getUserInfo(userId);
   }
 
-  @Put()
+  @Put("/:userId")
   @HttpCode(200)
-  UpdateUserInfo(@Body() updateUserInfoRequestDto: UpdateUserInfoRequestDto): Promise<string> {
-    return this.userService.updateUserInfo(updateUserInfoRequestDto);
+  UpdateUserInfo(
+    @Param("userId") userId: number,
+    @Body() updateUserInfoRequestDto: UpdateUserInfoRequestDto,
+  ): Promise<string> {
+    return this.userService.updateUserInfo(userId, updateUserInfoRequestDto);
   }
 }
