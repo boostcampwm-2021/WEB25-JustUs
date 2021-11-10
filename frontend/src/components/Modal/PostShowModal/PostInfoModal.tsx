@@ -40,15 +40,13 @@ const PostInfoModal = () => {
             <MoreVertSVG fill={COLOR.BLACK} />
           </MoreIconWrapper>
         </ModalHeader>
-
         <CarouselWrapper>
           <Carousel files={files} carouselWidth={350} />
         </CarouselWrapper>
-
         <ModalContent>{post.postContent}</ModalContent>
         <ModalFooter>
-          <PostDate>{post.postDate}</PostDate>
-          <UserNickname>{post.userNickname}</UserNickname>
+          <FooterItem>{post.postDate}</FooterItem>
+          <FooterItem>{post.userNickname}</FooterItem>
         </ModalFooter>
       </Modal>
     </ModalContainer>
@@ -61,9 +59,6 @@ const ModalContainer = styled.div`
   background-color: ${COLOR.WHITE};
   width: 500px;
   height: 750px;
-  // border-radius: 10px;
-
-  // box-shadow: 5px 5px 1px ${COLOR.GRAY};
 
   &::-webkit-scrollbar {
     display: none;
@@ -76,17 +71,14 @@ const Modal = styled.div`
 `;
 const CarouselWrapper = styled.div`
   padding: 1rem 0;
-  // border: 0.8rem solid ${COLOR.THEME1.SECONDARY};
   border-bottom: 0.3rem solid ${COLOR.GRAY};
   border-top: 0.3rem solid ${COLOR.GRAY};
-  // border-radius: 10px;
 `;
 const ModalHeader = styled.div`
   display: grid;
   grid-template-columns: 10% 80% 10%;
   font-size: 1.2rem;
   font-weight: bold;
-  // border-bottom: 1px solid ${COLOR.GRAY};
   width: 100%;
   height: 10vh;
 `;
@@ -94,6 +86,8 @@ const PostTitle = styled.div`
   ${flexRowCenterAlign}
   grid-columns-start: 2;
   grid-columns-end: 3;
+  font-family: "NanumDaCaeSaRang";
+  font-size: 2rem;
 `;
 const MoreIconWrapper = styled.div`
   ${flexRowCenterAlign}
@@ -111,21 +105,15 @@ const ModalContent = styled.div`
 const ModalFooter = styled.div`
   padding-top: 1rem;
   color: ${COLOR.DARKGRAY};
-  font-size: 0.8rem;
+  font-size: 1.5rem;
   display: flex;
   justify-content: flex-end;
   vertical-align: bottom;
-
-  & > .location {
-    font-size: 1rem;
-    color: ${COLOR.BLACK};
-  }
+  font-family: "NanumDaCaeSaRang";
 `;
-const PostDate = styled.div``;
-const UserNickname = styled.div`
-  font-size: 1.2rem;
-  color: ${COLOR.BLACK};
+const FooterItem = styled.div`
   padding-right: 1rem;
+  font-family: "NanumDaCaeSaRang";
 `;
 
 export default PostInfoModal;
