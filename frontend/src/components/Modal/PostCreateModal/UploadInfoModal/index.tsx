@@ -221,7 +221,6 @@ const InputText = styled.textarea`
   width: 400px;
   height: 200px;
   background-color: transparent;
-  font-family: "NanumGothic", sans-serif;
   margin: 0;
   padding: 0;
   line-height: 1rem;

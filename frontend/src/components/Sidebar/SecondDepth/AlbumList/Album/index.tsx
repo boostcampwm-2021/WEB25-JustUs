@@ -3,18 +3,38 @@ import Header from "@components/Sidebar/SecondDepth/AlbumList/Header";
 import Post from "@components/Sidebar/SecondDepth/AlbumList/Post";
 
 interface AlbumProps {
+  albumIdx: number;
   album: any;
   postSelected: number;
   setPostSelected: React.Dispatch<React.SetStateAction<number>>;
   modalOpenedIdx: number;
   setModalOpenedIdx: React.Dispatch<React.SetStateAction<number>>;
+  AlbumDragEndHandler: (ev: React.DragEvent<HTMLDivElement>) => void;
+  PostDragEndHandler: (ev: React.DragEvent<HTMLDivElement>) => void;
+  DragLeaveHandler: (ev: React.DragEvent<HTMLDivElement>) => void;
+  DropHandler: (ev: React.DragEvent<HTMLDivElement>) => void;
+  PostDragHandler: (ev: React.DragEvent<HTMLDivElement>) => void;
+  AlbumDragHandler: (ev: React.DragEvent<HTMLDivElement>) => void;
 }
 
-const Album = ({ album, postSelected, setPostSelected, modalOpenedIdx, setModalOpenedIdx }: AlbumProps) => {
+const Album = ({
+  albumIdx,
+  album,
+  postSelected,
+  setPostSelected,
+  modalOpenedIdx,
+  setModalOpenedIdx,
+  AlbumDragEndHandler,
+  PostDragEndHandler,
+  DropHandler,
+  PostDragHandler,
+  AlbumDragHandler,
+  DragLeaveHandler,
+}: AlbumProps) => {
   const [postToggle, setPostToggle] = useState(true);
 
   return (
-    <>
+    <div onDrop={DropHandler} onDragLeave={DragLeaveHandler}>
       <Header
         albumID={album.albumID}
         albumName={album.albumName}
@@ -22,6 +42,8 @@ const Album = ({ album, postSelected, setPostSelected, modalOpenedIdx, setModalO
         setPostToggle={setPostToggle}
         modalOpenedIdx={modalOpenedIdx}
         setModalOpenedIdx={setModalOpenedIdx}
+        AlbumDragHandler={AlbumDragHandler}
+        DragEndHandler={AlbumDragEndHandler}
       ></Header>
       {postToggle &&
         album.posts.map((post: any) => (
@@ -31,9 +53,12 @@ const Album = ({ album, postSelected, setPostSelected, modalOpenedIdx, setModalO
             postSelected={postSelected}
             postTitle={post.postTitle}
             setPostSelected={setPostSelected}
+            PostDragHandler={PostDragHandler}
+            PostDragEndHandler={PostDragEndHandler}
+            albumIdx={albumIdx}
           />
         ))}
-    </>
+    </div>
   );
 };
 
