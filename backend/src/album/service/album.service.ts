@@ -21,6 +21,7 @@ export class AlbumService {
 
     const album = await this.albumRepository.save({
       albumName: albumName,
+      base: false,
       group: group,
     });
 
