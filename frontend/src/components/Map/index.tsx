@@ -12,12 +12,16 @@ declare global {
   }
 }
 
-type Point = any;
 type LatLng = any;
 type Feature = any;
 type Event = any;
 type Coord = Point | LatLng;
 type DOMEvent = Event;
+
+interface Point {
+  x: number;
+  y: number;
+}
 
 interface PointerEvent {
   coord: Coord;
@@ -32,8 +36,8 @@ const load = (
   cb: Function,
   err: Function,
   setIsRightClick: Dispatch<SetStateAction<Boolean>>,
-  setRightPosition: Dispatch<SetStateAction<{ x: number; y: number }>>,
-  setClickInfo: Dispatch<SetStateAction<any>>,
+  setRightPosition: Dispatch<SetStateAction<Point>>,
+  setClickInfo: Dispatch<SetStateAction<PointerEvent>>,
   dispatch: any,
 ) => {
   const element = document.createElement("script");
@@ -59,8 +63,8 @@ const setMap = (
   INIT_Y: number,
   ZOOM_SIZE: number,
   setIsRightClick: Dispatch<SetStateAction<Boolean>>,
-  setRightPosition: Dispatch<SetStateAction<{ x: number; y: number }>>,
-  setClickInfo: Dispatch<SetStateAction<any>>,
+  setRightPosition: Dispatch<SetStateAction<Point>>,
+  setClickInfo: Dispatch<SetStateAction<PointerEvent>>,
   dispatch: any,
 ) => {
   const pos = new naver.maps.LatLng(INIT_X, INIT_Y);
@@ -68,31 +72,34 @@ const setMap = (
     center: pos,
     zoom: ZOOM_SIZE,
   });
+  
+  setMarker(map);
+
+  naver.maps.Event.addListener(map, "rightclick", (e: PointerEvent) => {
+    setClickInfo(e);
+    setRightPosition({ x: e.pointerEvent.pageX, y: e.pointerEvent.pageY });
+    setIsRightClick(true);
+  });
+  naver.maps.Event.addListener(map, "zoom_changed", (e: Number) => {
+    setIsRightClick(false);
+  });
+  naver.maps.Event.addListener(map, "click", (e: PointerEvent) => {
+    setIsRightClick(false);
+  });
+};
+
+const setMarker = (map: naver.maps.Map) => {
   const markerItems = [
     { id: 0, name: "삼겹살", position: [37.3595704, 127.105399] },
     { id: 1, name: "맥도날드", position: [37.3618025, 127.1153248] },
     { id: 2, name: "미삼집", position: [37.3561936, 127.0983706] },
-    { id: 3, name: "강남역", position: [37.497912, 127.027616] },
   ];
-  const handleClickMarker = () => {
-    dispatch({ type: "OPEN_MODAL", payload: "PostShowModal" });
-  };
 
-  markerItems.forEach((marker) => {
+  const markers = markerItems.map((marker) => {
     const pos1 = new naver.maps.LatLng(marker.position[0], marker.position[1]);
     const mk = new naver.maps.Marker(Marker(map, pos1, marker.id));
-
     naver.maps.Event.addListener(mk, "click", () => handleClickMarker());
-  });
-
-  naver.maps.Event.addListener(map, "rightclick", (e: PointerEvent) => {
-    setClickInfo(e);
-    setRightPosition({ x: e.pointerEvent.screenX, y: e.pointerEvent.screenY });
-    setIsRightClick(true);
-  });
-
-  naver.maps.Event.addListener(map, "click", (e: PointerEvent) => {
-    setIsRightClick(false);
+    return mk
   });
 };
 
@@ -103,7 +110,7 @@ const setError = () => {
 const Map = () => {
   const dispatch = useDispatch();
   const [isRightClick, setIsRightClick] = useState<Boolean>(false);
-  const [rightPosition, setRightPosition] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
+  const [rightPosition, setRightPosition] = useState<Point>({ x: 0, y: 0 });
   const [clickInfo, setClickInfo] = useState<any>();
 
   useEffect(() => {
