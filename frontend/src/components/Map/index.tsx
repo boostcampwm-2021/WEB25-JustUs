@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import Marker from "@components/Map/Markers";
 import MapLayerPostModal from "./Modal";
 
+declare const MarkerClustering: any;
 declare global {
   interface Window {
     kakao: any;
