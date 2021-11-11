@@ -18,4 +18,10 @@ export class ImageService {
       });
     });
   }
+
+  deleteImage(images: number[]): void {
+    images.forEach(imageId => {
+      this.imageRepository.softDelete({ imageId });
+    });
+  }
 }

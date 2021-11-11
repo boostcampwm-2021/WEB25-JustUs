@@ -6,6 +6,7 @@ import { UserRepository } from "src/user/user.repository";
 import { AlbumRepository } from "src/album/album.repository";
 import { CreatePostRequestDto } from "src/dto/post/createPostRequest.dto";
 import { GetPostInfoResponseDto } from "src/dto/post/getPostInfoResponse.dto";
+import { UpdatePostInfoRequestDto } from "src/dto/post/updatePostInfoRequest.dto";
 
 @Injectable()
 export class PostService {
@@ -24,7 +25,7 @@ export class PostService {
       createPostRequestDto;
 
     const user = await this.userRepository.findOne({ userId });
-    if (!user) throw new NotFoundException(`Not found usseleer with the id ${userId}`);
+    if (!user) throw new NotFoundException(`Not found user with the id ${userId}`);
 
     const album = await this.albumRepository.findOne({ albumId });
     if (!album) throw new NotFoundException(`Not found album with the id ${albumId}`);
@@ -50,5 +51,24 @@ export class PostService {
     const { postTitle, postContent, postDate, postLocation, images } = post;
 
     return { postTitle, postContent, postDate, postLocation, images };
+  }
+
+  async updatePostInfo(postId: number, updatePostInfoRequestDto: UpdatePostInfoRequestDto): Promise<string> {
+    const { postTitle, postContent, deleteImages, addImages, postDate, postLocation, postLatitude, postLongitude } =
+      updatePostInfoRequestDto;
+    const post = await this.postRepository.findOne({ postId });
+
+    post.postTitle = postTitle;
+    post.postContent = postContent;
+    post.postDate = postDate;
+    post.postLocation = postLocation;
+    post.postLatitude = postLatitude;
+    post.postLongitude = postLongitude;
+    this.postRepository.save(post);
+
+    this.imageService.saveImage(post, addImages);
+    this.imageService.deleteImage(deleteImages);
+
+    return "PostInfo update success!!";
   }
 }

@@ -1,33 +1,10 @@
-import { IsArray, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
+import { IsNotEmpty, IsNumber, IsArray } from "class-validator";
+import { PostInfo } from "./postInfo";
 
-export class CreatePostRequestDto {
-  @IsString()
-  @IsNotEmpty()
-  postTitle: string;
-
-  @IsString()
-  @IsOptional()
-  postContent: string;
-
+export class CreatePostRequestDto extends PostInfo {
   @IsArray()
   @IsNotEmpty()
   postImages: string[];
-
-  @IsString()
-  @IsNotEmpty()
-  postDate: string;
-
-  @IsString()
-  @IsNotEmpty()
-  postLocation: string;
-
-  @IsNumber()
-  @IsNotEmpty()
-  postLatitude: number;
-
-  @IsNumber()
-  @IsNotEmpty()
-  postLongitude: number;
 
   @IsNumber()
   @IsNotEmpty()
