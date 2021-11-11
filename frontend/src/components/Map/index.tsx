@@ -7,7 +7,9 @@ import { RootState } from "@src/reducer";
 import Marker from "@components/Map/Markers";
 import MapLayerPostModal from "./Modal";
 import dummyPosts from "./dummyPosts";
+import SetClustering from "@components/Map/SetClustering";
 
+declare const MarkerClustering: any;
 declare global {
   interface Window {
     kakao: any;
@@ -38,53 +40,6 @@ interface IDispatch {
   payload: any;
 }
 
-interface IPosts {
-  postID: number;
-  postTitle: string;
-  postLatitude: number;
-  postLongitude: number;
-}
-interface PostType {
-  postID: number;
-  postTitle: string;
-  postLatitude: number;
-  postLongitude: number;
-}
-interface AlbumListItemType {
-  albumID: number;
-  albumName: string;
-  posts: PostType[];
-}
-
-const load = (
-  url: string,
-  cb: Function,
-  err: Function,
-  setIsRightClick: Dispatch<SetStateAction<Boolean>>,
-  setRightPosition: Dispatch<SetStateAction<Point>>,
-  setClickInfo: Dispatch<SetStateAction<PointerEvent>>,
-  dispatch: Dispatch<IDispatch>,
-  posts: IPosts[],
-  setNaverMap: Dispatch<SetStateAction<naver.maps.Map | undefined>>,
-) => {
-  const element = document.createElement("script");
-  const parent = "body";
-  const attr = "src";
-
-  element.async = true;
-  element.onload = () => {
-    const INIT_X = 37.511337;
-    const INIT_Y = 127.012084;
-    const ZOOM_SIZE = 13;
-    cb(INIT_X, INIT_Y, ZOOM_SIZE, setIsRightClick, setRightPosition, setClickInfo, dispatch, posts, setNaverMap);
-  };
-  element.onerror = () => {
-    err();
-  };
-  element[attr] = url;
-  document[parent].appendChild(element);
-};
-
 const setMap = (
   INIT_X: number,
   INIT_Y: number,
@@ -92,8 +47,6 @@ const setMap = (
   setIsRightClick: Dispatch<SetStateAction<Boolean>>,
   setRightPosition: Dispatch<SetStateAction<Point>>,
   setClickInfo: Dispatch<SetStateAction<PointerEvent>>,
-  dispatch: Dispatch<IDispatch>,
-  posts: IPosts[],
   setNaverMap: Dispatch<SetStateAction<naver.maps.Map | undefined>>,
 ) => {
   const pos = new naver.maps.LatLng(INIT_X, INIT_Y);
@@ -117,24 +70,21 @@ const setMap = (
   });
 };
 
-const setError = () => {
-  console.error("잘못되었습니다.");
-};
-
 const Map = () => {
   const dispatch = useDispatch<Dispatch<IDispatch>>();
   const [isRightClick, setIsRightClick] = useState<Boolean>(false);
   const [rightPosition, setRightPosition] = useState<Point>({ x: 0, y: 0 });
   const [clickInfo, setClickInfo] = useState<any>();
-  const { albumList, postsList }: any = useSelector((state: RootState) => state.groups);
+  const { postsList }: any = useSelector((state: RootState) => state.groups);
   const { selectedPost }: any = useSelector((state: RootState) => state.modal);
-  const [naverMap, setNaverMap] = useState<naver.maps.Map | undefined>();
+  const [naverMap, setNaverMap] = useState<naver.maps.Map>();
 
   useEffect(() => {
     const initMap = () => {
-      const clientId: string = process.env.REACT_APP_NCP_CLOUD_ID as string;
-      const url = `https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${clientId}`;
-      load(url, setMap, setError, setIsRightClick, setRightPosition, setClickInfo, dispatch, postsList, setNaverMap);
+      const INIT_X = 37.511337;
+      const INIT_Y = 127.012084;
+      const ZOOM_SIZE = 13;
+      setMap(INIT_X, INIT_Y, ZOOM_SIZE, setIsRightClick, setRightPosition, setClickInfo, setNaverMap);
     };
     initMap();
   }, []);
@@ -155,12 +105,14 @@ const Map = () => {
         dispatch({ type: "OPEN_MODAL", payload: "PostShowModal" });
       };
 
-      const markers = markerItems.map((marker: any) => {
-        const pos1 = new naver.maps.LatLng(marker.position[0], marker.position[1]);
-        const mk = new naver.maps.Marker(Marker(naverMap as naver.maps.Map, pos1, marker.id));
-        naver.maps.Event.addListener(mk, "click", () => handleClickMarker(marker.id));
-        return mk;
+      const markers = markerItems.map((markerItem: any) => {
+        const pos = new naver.maps.LatLng(markerItem.position[0], markerItem.position[1]);
+        const marker = new naver.maps.Marker(Marker(naverMap as naver.maps.Map, pos));
+        naver.maps.Event.addListener(marker, "click", () => handleClickMarker(markerItem.id));
+        return marker;
       });
+
+      const markerClustering = new MarkerClustering(SetClustering(naverMap as naver.maps.Map, markers));
     };
 
     setMarker();
@@ -198,14 +150,6 @@ const Maps = styled.div`
   &:focus-visible {
     outline: none;
   }
-`;
-
-const PostModal = styled.div`
-  background-color: ${COLOR.RED};
-  position: absolute;
-  z-index: 2;
-  height: 30px;
-  width: 40px;
 `;
 
 const FloatActionBtn = styled.button`

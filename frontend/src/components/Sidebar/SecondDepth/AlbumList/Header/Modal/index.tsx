@@ -25,7 +25,7 @@ const AlbumSettingModal = ({ albumID, albumName, setModalOpenedIdx }: AlbumSetti
   return (
     <ModalWrapper>
       <ModalItem delete={false} onClick={onClickUpdateAlbum} className="update-album-btn">
-        앨범 이름 변경
+        이름 변경
       </ModalItem>
       <Divider />
       <ModalItem delete={true} onClick={onClickDeleteAlbum} className="delete-album-btn">
@@ -36,7 +36,7 @@ const AlbumSettingModal = ({ albumID, albumName, setModalOpenedIdx }: AlbumSetti
 };
 
 const ModalWrapper = styled.div`
-  width: 150px;
+  width: 110px;
   height: 100px;
   background-color: ${COLOR.WHITE};
   position: absolute;
@@ -47,7 +47,7 @@ const ModalItem = styled.div<{ delete: boolean }>`
   ${flexRowCenterAlign}
   height: 50%;
   cursor: pointer;
-  color: ${(props) => (props.delete ? "red" : "black")};
+  color: ${(props) => (props.delete ? COLOR.RED : COLOR.BLACK)};
   &:hover {
     opacity: 0.5;
   }

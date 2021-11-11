@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { UserInfoDto } from "src/dto/user/userInfo.dto";
+import { UserInfo } from "src/dto/user/userInfo.dto";
 import { User } from "../user.entity";
 import { UserRepository } from "../user.repository";
 import { UserInfoResponseDto } from "src/dto/user/userInfoResponse.dto";
@@ -13,7 +13,7 @@ export class UserService {
     private userRepository: UserRepository,
   ) {}
 
-  async registeredUser(registerUserDto: UserInfoDto): Promise<User | undefined> {
+  async registeredUser(registerUserDto: UserInfo): Promise<User | undefined> {
     const userEmail = registerUserDto.userEmail;
 
     let user = await this.userRepository.findOne({ userEmail });
@@ -39,7 +39,7 @@ export class UserService {
 
     user.profileImage = profileImage;
     user.userNickname = userNickname;
-    await this.userRepository.save(user);
+    this.userRepository.save(user);
 
     return "UserInfo update success!!";
   }

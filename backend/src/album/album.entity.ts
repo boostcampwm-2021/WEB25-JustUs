@@ -11,6 +11,9 @@ export class Album extends TimeStampEntity {
   @Column()
   albumName: string;
 
+  @Column()
+  base: boolean;
+
   @ManyToOne(() => Group, group => group.albums, { onDelete: "CASCADE" })
   @JoinColumn({ name: "group_id" })
   group: Group;

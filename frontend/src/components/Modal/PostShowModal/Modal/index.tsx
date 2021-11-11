@@ -3,13 +3,9 @@ import { flexRowCenterAlign } from "@src/styles/StyledComponents";
 import COLOR from "@src/styles/Color";
 
 const PostSettingModal = () => {
-  const onClickUpdatePost = () => {
-    console.log("수정 클릭");
-  };
+  const onClickUpdatePost = () => {};
 
-  const onClickDeletePost = () => {
-    console.log("삭제 클릭");
-  };
+  const onClickDeletePost = () => {};
 
   return (
     <ModalWrapper>

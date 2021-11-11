@@ -49,6 +49,7 @@ const InputModal = ({ addAlbumModalRef, setIsAddAlbumModalOpened }: InputModalPr
 const AddAlbumModalWrapper = styled.div`
   ${flexRowCenterAlign}
   width: 90%;
+  margin: 5%;
   height: 7vh;
   background-color: ${COLOR.WHITE};
   position: absolute;

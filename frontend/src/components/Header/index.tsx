@@ -20,13 +20,11 @@ const Header = ({ isToggle, setIsToggle }: SidebarProps) => {
     setIsToggle((prev) => !prev);
   };
   return (
-    <>
-      <HeaderContainer groups={groups}>
-        <img src="/icons/menu.svg" className="pointer" onClick={onClickMenu} alt="menu" />
-        <Search />
-        <Profile />
-      </HeaderContainer>
-    </>
+    <HeaderContainer groups={groups}>
+      <img src="/icons/menu.svg" className="pointer" onClick={onClickMenu} alt="menu" />
+      <Search />
+      <Profile />
+    </HeaderContainer>
   );
 };
 

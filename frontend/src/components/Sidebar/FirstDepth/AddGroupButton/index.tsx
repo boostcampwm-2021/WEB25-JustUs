@@ -1,17 +1,17 @@
 import styled from "styled-components";
 import COLOR from "@styles/Color";
 import { flexRowCenterAlign } from "@src/styles/StyledComponents";
-
+import { useDispatch } from "react-redux";
 interface AddGroupButtonProps {
   addGroupBtnRef: React.RefObject<HTMLDivElement>;
 }
 
 const AddGroupButton = ({ addGroupBtnRef }: AddGroupButtonProps) => {
-  return (
-    <>
-      <ButtonWrapper ref={addGroupBtnRef} className="add-group-btn"></ButtonWrapper>
-    </>
-  );
+  const dispatch = useDispatch();
+  const clickHandler = () => {
+    dispatch({ type: "OPEN_MODAL", payload: "AddGroupModal" });
+  };
+  return <ButtonWrapper onClick={clickHandler} ref={addGroupBtnRef} className="add-group-btn"></ButtonWrapper>;
 };
 
 const ButtonWrapper = styled.div`
