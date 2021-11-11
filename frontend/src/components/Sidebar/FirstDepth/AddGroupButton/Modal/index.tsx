@@ -1,7 +1,73 @@
-import AddGroupModal from "./AddGroupModal";
+import styled, { keyframes } from "styled-components";
+import { flexRowCenterAlign } from "@styles/StyledComponents";
+import COLOR from "@styles/Color";
+import { useDispatch } from "react-redux";
+import Modal from "@components/Modal";
+import React from "react";
+const AddGroupModal = () => {
+  const dispatch = useDispatch();
+  const onClickCreateGroupBtn = (e: React.MouseEvent<HTMLButtonElement>) => {
+    dispatch({ type: "OPEN_MODAL", payload: "CreateGroupModal" });
+  };
 
-const Modal = () => {
-  return;
+  const onClickJoinGroupBtn = () => {
+    dispatch({ type: "OPEN_MODAL", payload: "JoinGroupModal" });
+  };
+
+  return (
+    <Modal>
+      <ModalContainer
+        onClick={(event) => {
+          event.nativeEvent.stopImmediatePropagation();
+        }}
+      >
+        <ModalItem onClick={onClickCreateGroupBtn}>그룹 생성</ModalItem>
+        <Divider />
+        <ModalItem onClick={onClickJoinGroupBtn}>그룹 참가</ModalItem>
+      </ModalContainer>
+    </Modal>
+  );
 };
 
-export default Modal;
+const boxFade = keyframes`
+  0% {
+    height: 10px;
+  }
+  20% {
+    height: 170px;
+  }
+`;
+
+const ModalContainer = styled.div`
+  background-color: ${COLOR.WHITE};
+  width: 240px;
+  height: 170px;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation-name: ${boxFade};
+  animation-duration: 1s;
+  animation-timing-function: ease-out;
+`;
+
+const ModalItem = styled.button`
+  ${flexRowCenterAlign}
+  font-size: 20px;
+  height: 50%;
+  cursor: pointer;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  &:hover {
+    opacity: 0.5;
+  }
+`;
+
+const Divider = styled.div`
+  width: 100%;
+  height: 1px;
+  background-color: ${COLOR.BLACK};
+`;
+
+export default AddGroupModal;

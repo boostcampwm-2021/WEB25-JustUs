@@ -4,15 +4,12 @@ import { RootState } from "@src/reducer";
 import styled from "styled-components";
 import FirstDepth from "./FirstDepth";
 import SecondDepth from "./SecondDepth";
-import AddGroupModal from "@components/Sidebar/FirstDepth/AddGroupButton/Modal/AddGroupModal";
-
 interface SidebarProps {
   isToggle: boolean;
   setIsToggle: Dispatch<SetStateAction<boolean>>;
 }
 
 const Sidebar = ({ isToggle, setIsToggle }: SidebarProps) => {
-  const [isModalOpened, setIsModalOpened] = useState<boolean>(false);
   const [isAddAlbumModalOpened, setIsAddAlbumModalOpened] = useState<boolean>(false);
   const addGroupBtnRef = useRef<HTMLDivElement>(null);
   const addAlbumBtnRef = useRef<HTMLDivElement>(null);
@@ -24,13 +21,8 @@ const Sidebar = ({ isToggle, setIsToggle }: SidebarProps) => {
     const clickHandler = () => {
       if (!clickedTarget.target) return;
 
-      const addgroupButtonEl = clickedTarget.target.closest(".add-group-btn");
       const addAlbumButtonEl = clickedTarget.target.closest(".add-album-btn");
       const addAlbumModalEl = clickedTarget.target.closest(".add-album-modal");
-
-      if (addgroupButtonEl !== addGroupBtnRef.current && addgroupButtonEl !== addGroupBtnRef.current) {
-        setIsModalOpened(false);
-      }
 
       if (
         addAlbumButtonEl !== addGroupBtnRef.current &&
@@ -40,7 +32,6 @@ const Sidebar = ({ isToggle, setIsToggle }: SidebarProps) => {
         setIsAddAlbumModalOpened(false);
       }
 
-      if (addgroupButtonEl) setIsModalOpened(true);
       if (addAlbumButtonEl) setIsAddAlbumModalOpened(true);
     };
 
@@ -58,7 +49,6 @@ const Sidebar = ({ isToggle, setIsToggle }: SidebarProps) => {
           addAlbumModalRef={addAlbumModalRef}
         />
       )}
-      {isModalOpened && <AddGroupModal clientX={clickedTarget.clientX} clientY={clickedTarget.clientY} />}
     </SidebarWrapper>
   );
 };
