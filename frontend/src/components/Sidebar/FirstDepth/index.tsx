@@ -43,6 +43,7 @@ const FirstDepth = ({ isToggle, setIsToggle, addGroupBtnRef }: FirstDepthProps) 
         <DraggableWrapper>
           {groups.map((group: any) => (
             <Group
+              isToggle={isToggle}
               key={group.groupID}
               groupID={group.groupID}
               groupName={group.groupName}
@@ -79,6 +80,7 @@ const FirstDepthWrapper = styled.div`
   overflow-y: auto;
   padding: 0.5vw 0;
   box-sizing: border-box;
+  z-index: 5;
 
   &::-webkit-scrollbar {
     background: transparent;

@@ -14,6 +14,7 @@ const AlbumList = () => {
   const clickedTarget = useSelector((state: RootState) => state.groupModal.clickedTarget);
 
   function onDragLeaveHandler(ev: React.DragEvent<HTMLDivElement>) {
+    ev.preventDefault();
     const target = ev.target as HTMLElement;
     const parent = target.closest(".albumItem");
     if (!parent) return;
@@ -21,6 +22,7 @@ const AlbumList = () => {
     parent?.classList.remove("post-hover");
   }
   function onDropHandler(ev: React.DragEvent<HTMLDivElement>) {
+    ev.preventDefault();
     const target = ev.target as HTMLElement;
     const parent = target.closest(".albumItem");
     if (!parent) return;
@@ -29,6 +31,7 @@ const AlbumList = () => {
   }
 
   function onAlbumDragEndHandler(ev: React.DragEvent<HTMLDivElement>) {
+    ev.preventDefault();
     const target = ev.target as HTMLElement;
     const parent = target.closest(".albumItem");
     if (!parent) return;
@@ -48,6 +51,7 @@ const AlbumList = () => {
   }
 
   function onPostDragEndHandler(ev: React.DragEvent<HTMLDivElement>) {
+    ev.preventDefault();
     const target = ev.target as HTMLElement;
     const parent = target.closest(".albumItem");
     const x = ev.clientX;
@@ -68,6 +72,7 @@ const AlbumList = () => {
   }
 
   function onPostDragHandler(ev: React.DragEvent<HTMLDivElement>) {
+    ev.preventDefault();
     const target = ev.target as HTMLElement;
     const parent = target.closest(".albumItem");
     const x = ev.clientX;
@@ -80,6 +85,7 @@ const AlbumList = () => {
   }
 
   function onAlbumDragHandler(ev: React.DragEvent<HTMLDivElement>) {
+    ev.preventDefault();
     const target = ev.target as HTMLElement;
     const parent = target.closest(".albumItem");
     const x = ev.clientX;
