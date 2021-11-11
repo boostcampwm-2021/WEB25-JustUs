@@ -8,9 +8,5 @@ export class CreatePostRequestDto extends PostInfo {
 
   @IsNumber()
   @IsNotEmpty()
-  userId: number;
-
-  @IsNumber()
-  @IsNotEmpty()
   albumId: number;
 }

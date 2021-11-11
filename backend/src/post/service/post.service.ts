@@ -54,9 +54,21 @@ export class PostService {
   }
 
   async updatePostInfo(postId: number, updatePostInfoRequestDto: UpdatePostInfoRequestDto): Promise<string> {
-    const { postTitle, postContent, deleteImages, addImages, postDate, postLocation, postLatitude, postLongitude } =
-      updatePostInfoRequestDto;
+    const {
+      postTitle,
+      postContent,
+      deleteImages,
+      addImages,
+      postDate,
+      postLocation,
+      postLatitude,
+      postLongitude,
+      userId,
+    } = updatePostInfoRequestDto;
+
     const post = await this.postRepository.findOne({ postId });
+    const postUserId = post.user.userId;
+    if (postUserId !== userId) throw new NotFoundException("It cannot be updated because it is not the author.");
 
     post.postTitle = postTitle;
     post.postContent = postContent;
