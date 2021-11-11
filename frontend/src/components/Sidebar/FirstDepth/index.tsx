@@ -4,7 +4,7 @@ import { RootState } from "@src/reducer";
 import styled from "styled-components";
 import Group from "./Group";
 import AddGroupButton from "./AddGroupButton";
-import COLOR from "@styles/Color";
+import Color from "@styles/Color";
 
 interface SidebarProps {
   isToggle: boolean;
@@ -43,13 +43,12 @@ const FirstDepth = ({ isToggle, setIsToggle, addGroupBtnRef }: SidebarProps) => 
 const FirstDepthWrapper = styled.div`
   width: 5vw;
   height: 95vh;
-  background-color: ${COLOR.THEME1.PRIMARY};
+  background-color: ${Color["theme1-primary"]};
   display: flex;
   flex-direction: column;
   align-items: center;
   overflow-x: hidden;
   overflow-y: auto;
-  padding: 0.5vw 0;
 
   &::-webkit-scrollbar {
     background: transparent;
@@ -57,7 +56,7 @@ const FirstDepthWrapper = styled.div`
   }
 
   &::-webkit-scrollbar-thumb {
-    background-color: ${COLOR.SCROLL};
+    background-color: ${Color.scroll};
     border-radius: 10px;
   }
 `;

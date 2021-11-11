@@ -1,6 +1,6 @@
 import React, { MouseEvent, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import COLOR from "@styles/Color";
+import Color from "@styles/Color";
 import { useDispatch } from "react-redux";
 
 interface FileObject {
@@ -63,7 +63,7 @@ const UploadInfoModal = ({ changeMode, files }: UploadInfoModalProps) => {
             </Carousel>
             <DotContainer>
               {files.map((fileObject, idx) => (
-                <Dot color={imageIndex == idx ? COLOR.BLACK : COLOR.GRAY}></Dot>
+                <Dot color={imageIndex == idx ? Color.black : Color.gray}></Dot>
               ))}
             </DotContainer>
           </CarouselWindow>
@@ -134,7 +134,7 @@ const ModalContent = styled.div`
 const ModalContainer = styled.div`
   display: flex;
   flex-direction: column;
-  background-color: ${COLOR.WHITE};
+  background-color: ${Color.white};
   width: 850px;
   height: 530px;
   border-radius: 10px;
@@ -167,7 +167,7 @@ const ModalHeader = styled.div`
   padding: 1vw;
   height: 60px;
   box-sizing: border-box;
-  border-bottom: 1px solid ${COLOR.BLACK};
+  border-bottom: 1px solid ${Color.black};
   font-size: max(1.2vw, 20px);
 `;
 

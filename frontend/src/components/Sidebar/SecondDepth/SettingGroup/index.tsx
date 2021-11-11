@@ -1,6 +1,8 @@
+import { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
-import COLOR from "@styles/Color";
+import Color from "@styles/Color";
 import { useDispatch } from "react-redux";
+import { GroupModalAction } from "@src/action";
 import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
 
@@ -27,12 +29,12 @@ const SettingGroup = () => {
 const SettingGroupWrapper = styled.div`
   width: 15vw;
   height: 6vh;
-  background-color: ${COLOR.THEME1.PRIMARY};
+  background-color: ${Color["theme1-primary"]};
   display: flex;
   justify-content: space-around;
   align-items: center;
-  border-bottom: 1px ${COLOR.WHITE} solid;
-  color: ${COLOR.WHITE};
+  border-bottom: 1px ${Color.white} solid;
+  color: ${Color.white};
 `;
 
 const SettingIconWrapper = styled.div`

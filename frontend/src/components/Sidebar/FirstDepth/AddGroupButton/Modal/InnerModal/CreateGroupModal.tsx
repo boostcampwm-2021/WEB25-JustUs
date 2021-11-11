@@ -1,10 +1,10 @@
 import React, { ChangeEventHandler, useRef, useState } from "react";
 import styled from "styled-components";
-import { flexRowCenterAlign } from "@styles/StyledComponents";
+import { flexCenterAlign } from "@styles/StyledComponents";
 import Modal from "@components/Modal";
 import { useDispatch } from "react-redux";
-import COLOR from "@styles/Color";
-import { GroupAction } from "@src/action";
+import Color from "@styles/Color";
+import { GroupModalAction, GroupAction } from "@src/action";
 import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
 
@@ -110,7 +110,7 @@ const CreateGroupModal = () => {
 };
 
 const ModalContainer = styled.div`
-  background-color: ${COLOR.WHITE};
+  background-color: ${Color.white};
   min-height: 30vw;
   min-width: 40vw;
   border-radius: 50px;
@@ -138,7 +138,7 @@ const CloseBtn = styled.div`
   margin-right: 30px;
 
   & > button {
-    background-color: ${COLOR.WHITE};
+    background-color: ${Color.white};
     border: none;
   }
 `;
@@ -150,21 +150,21 @@ const Content = styled.div`
 `;
 
 const ImageBackground = styled.div<{ groupImg: string }>`
-  ${flexRowCenterAlign}
+  ${flexCenterAlign}
   margin-top: 30px;
   width: 90px;
   height: 90px;
-  background-color: ${COLOR.THEME1.SECONDARY};
+  background-color: ${Color["theme1-secondary"]};
   opacity: ${props => (props.groupImg === "/icons/person.svg" ? "0.4" : "")};
   border-radius: 100%;
 `;
 
 const UploadImgBtnWrapper = styled.div`
-  ${flexRowCenterAlign}
+  ${flexCenterAlign}
   cursor: pointer;
   margin-top: 20px;
   border-radius: 10px;
-  border: 2px solid ${COLOR.THEME1.PRIMARY};
+  border: 2px solid ${Color["theme1-primary"]};
   font-weight: bold;
   font-size: 15px;
   line-height: 16px;
@@ -175,7 +175,7 @@ const UploadImgBtnWrapper = styled.div`
 const DeleteImgBtnWrapper = styled.div`
   cursor: pointer;
   margin-top: 20px;
-  color: ${COLOR.BLUE};
+  color: ${Color.blue};
   font-weight: bold;
 `;
 
@@ -184,7 +184,7 @@ const GroupNameInputWrapper = styled.input`
   border: none;
   width: 200px;
   font-size: 15px;
-  border-bottom: 1px solid ${COLOR.THEME1.PRIMARY};
+  border-bottom: 1px solid ${Color["theme1-primary"]};
 
   &::-webkit-input-placeholder {
     text-align: center;
@@ -194,13 +194,13 @@ const GroupNameInputWrapper = styled.input`
 `;
 
 const CreateBtnWrapper = styled.div`
-  ${flexRowCenterAlign}
+  ${flexCenterAlign}
   cursor: pointer;
   width: 160px;
   height: 39px;
   border-radius: 10px;
-  color: ${COLOR.WHITE};
-  background-color: ${COLOR.THEME1.PRIMARY};
+  color: ${Color.white};
+  background-color: ${Color["theme1-primary"]};
   margin-top: 50px;
 `;
 

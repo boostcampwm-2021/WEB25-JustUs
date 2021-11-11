@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
-import COLOR from "@styles/Color";
+import Color from "@styles/Color";
 
 interface PostProps {
   idx: number;
@@ -22,9 +22,10 @@ const Post = ({ idx, postTitle, postSelected, setPostSelected }: PostProps) => {
 };
 
 const PostWrapper = styled.div<{ idx: number; postSelected: number }>`
+  postselected: ${props => props.postSelected};
   padding-left: 30px;
-  color: ${({ postSelected, idx }) => (postSelected === idx ? COLOR.WHITE : COLOR.GRAY)};
-  background: ${({ postSelected, idx }) => (postSelected === idx ? COLOR.THEME1.SECONDARY : "")};
+  color: ${({ postSelected, idx }) => (postSelected === idx ? Color.white : Color.gray)};
+  background: ${({ postSelected, idx }) => (postSelected === idx ? Color["theme1-secondary"] : "")};
 
   &:hover {
     cursor: pointer;

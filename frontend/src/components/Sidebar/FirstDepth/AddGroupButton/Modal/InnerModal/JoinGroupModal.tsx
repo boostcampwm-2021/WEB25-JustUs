@@ -1,8 +1,9 @@
 import styled from "styled-components";
-import { flexRowCenterAlign } from "@styles/StyledComponents";
+import { flexCenterAlign } from "@styles/StyledComponents";
 import Modal from "@components/Modal";
 import { useDispatch } from "react-redux";
-import COLOR from "@styles/Color";
+import Color from "@styles/Color";
+import { GroupModalAction } from "@src/action";
 
 const JoinGroupModal = () => {
   const dispatch = useDispatch();
@@ -36,7 +37,7 @@ const JoinGroupModal = () => {
 };
 
 const ModalContainer = styled.div`
-  background-color: ${COLOR.WHITE};
+  background-color: ${Color.white};
   min-height: 20vw;
   min-width: 60vw;
   border-radius: 50px;
@@ -63,7 +64,7 @@ const CloseBtn = styled.div`
   margin-right: 30px;
 
   & > button {
-    background-color: ${COLOR.WHITE};
+    background-color: ${Color.white};
     border: none;
   }
 `;
@@ -80,7 +81,7 @@ const InviteCodeInputWrapper = styled.input`
   height: 100px;
   font-size: 15px;
   border: none;
-  background: ${COLOR.GRAY};
+  background: ${Color.gray};
   border-radius: 10px;
   font-size: 50px;
   text-align: center;
@@ -93,12 +94,12 @@ const InviteCodeInputWrapper = styled.input`
 `;
 
 const JoinBtnWrapper = styled.div`
-  ${flexRowCenterAlign}
+  ${flexCenterAlign}
   width: 160px;
   height: 39px;
   border-radius: 10px;
-  color: ${COLOR.WHITE};
-  background-color: ${COLOR.THEME1.PRIMARY};
+  color: ${Color.white};
+  background-color: ${Color["theme1-primary"]};
   margin-top: 50px;
   font-size: 30px;
 `;

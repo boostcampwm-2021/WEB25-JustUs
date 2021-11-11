@@ -1,8 +1,7 @@
 import { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
-import Profile from "@components/Header/Profile";
-import { flexRowCenterAlign } from "@styles/StyledComponents";
-import COLOR from "@styles/Color";
+import { flexCenterAlign } from "@styles/StyledComponents";
+import Color from "@styles/Color";
 import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
 
@@ -18,15 +17,18 @@ const Header = ({ isToggle, setIsToggle }: SidebarProps) => {
     if (!groups.length) return;
     setIsToggle(prev => !prev);
   };
+
   return (
     <>
       <HeaderContainer groups={groups}>
-        <img src="/icons/menu.svg" className="pointer" onClick={onClickMenu} alt="menu" />
+        <img src="/icons/menu.svg" onClick={onClickMenu} alt="menu" />
         <SearchContainer>
           <img src="/icons/search.svg" height="90%" alt="search" />
           <Search type="text" placeholder="해시태그를 입력하세요." />
         </SearchContainer>
-        <Profile />
+        <ProfileContainer>
+          <img src="/icons/profile.svg" height="90%" alt="profile" />
+        </ProfileContainer>
       </HeaderContainer>
     </>
   );
@@ -34,14 +36,13 @@ const Header = ({ isToggle, setIsToggle }: SidebarProps) => {
 
 const HeaderContainer = styled.div<{ groups: any }>`
   height: 5vh;
-  background-color: ${COLOR.THEME1.PRIMARY};
-  box-sizing: border-box;
-  border-bottom: 1px solid ${COLOR.WHITE};
+  background-color: ${Color["theme1-primary"]};
+  border-bottom: 1px solid ${Color.white};
   padding: 0 1vw;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  & img.pointer {
+  & img {
     &:hover {
       cursor: ${({ groups }) => (groups.length ? "pointer" : "not-allowed")};
     }
@@ -49,10 +50,10 @@ const HeaderContainer = styled.div<{ groups: any }>`
 `;
 
 const SearchContainer = styled.div`
-  ${flexRowCenterAlign}
+  ${flexCenterAlign}
   height: 3vh;
   width: 25vw;
-  background-color: ${COLOR.WHITE};
+  background-color: ${Color.white};
   border-radius: 5px;
   padding: 0.5vh 0;
   & > img {
@@ -66,6 +67,14 @@ const Search = styled.input`
   &:focus-visible {
     outline: none;
   }
+`;
+
+const ProfileContainer = styled.div`
+  ${flexCenterAlign}
+  height: 4vh;
+  width: 4vh;
+  background-color: ${Color.white};
+  border-radius: 10px;
 `;
 
 export default Header;

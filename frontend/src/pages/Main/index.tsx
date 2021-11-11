@@ -8,6 +8,7 @@ import Map from "@components/Map";
 import { GroupModalAction } from "@src/action";
 import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
+import { flexCenterAlign } from "@src/styles/StyledComponents";
 
 const Main = () => {
   const [isToggle, setIsToggle] = useState<boolean>(true);

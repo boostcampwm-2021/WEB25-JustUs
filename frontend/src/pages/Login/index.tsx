@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import COLOR from "@src/styles/Color";
-import { flexColumnCenterAlign, flexRowCenterAlign } from "@src/styles/StyledComponents";
+import { flexCenterAlign } from "@src/styles/StyledComponents";
+import Color from "@styles/Color";
 
 const Login = () => {
   return (
@@ -21,7 +21,7 @@ const Login = () => {
             </LeftSide>
             <div id="right-side">
               <Polaroid id="polaroid">
-                <img src="/img/glass.jpg" width="300px" height="300px" alt="glass" />
+                <img src="/img/glass.jpg" width="300px" height="300px" alt="glass image" />
                 <img src="/img/life_is_travel.png" height="40px" alt="life is travel" />
               </Polaroid>
             </div>
@@ -49,9 +49,9 @@ const BackgroundImg = styled.div<{ imgUrl: string }>`
 `;
 
 const BackgroundWrap = styled.div`
-  ${flexRowCenterAlign}
+  ${flexCenterAlign}
   height: 100vh;
-  background-color: ${COLOR.WRAP};
+  background-color: #ffffff90;
 `;
 
 const Content = styled.div`
@@ -88,12 +88,13 @@ const LogoInfoText = styled.p`
 `;
 
 const Polaroid = styled.div`
-  ${flexColumnCenterAlign}
+  ${flexCenterAlign}
+  flex-direction: column;
   width: 340px;
   height: 500px;
   border-radius: 15px;
-  background-color: ${COLOR.WHITE};
-  box-shadow: 15px 15px 15px ${COLOR.SHADOW_BLACK};
+  background-color: ${Color.white};
+  box-shadow: 15px 15px 15px rgba(0, 0, 0, 0.25);
   & > img {
     padding-top: 35px;
   }
@@ -110,15 +111,15 @@ const FooterContent = styled.div`
   margin: 0 auto;
   padding: 20px;
   width: 80vw;
-  border-top: 2px solid ${COLOR.BLACK};
+  border-top: 2px solid black;
   & > p {
     font-weight: bold;
     margin-bottom: 5px;
   }
   & > div {
-    ${flexRowCenterAlign}
+    ${flexCenterAlign}
     & .names {
-      color: ${COLOR.DARKGRAY};
+      color: #0202029b;
       padding-left: 10px;
     }
   }

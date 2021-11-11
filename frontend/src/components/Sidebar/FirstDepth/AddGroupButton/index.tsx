@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import COLOR from "@styles/Color";
-import { flexRowCenterAlign } from "@src/styles/StyledComponents";
+import { flexCenterAlign } from "@styles/StyledComponents";
+import Color from "@styles/Color";
 
 interface AddGroupButtonProps {
   addGroupBtnRef: React.RefObject<HTMLDivElement>;
@@ -9,25 +9,22 @@ interface AddGroupButtonProps {
 const AddGroupButton = ({ addGroupBtnRef }: AddGroupButtonProps) => {
   return (
     <>
-      <ButtonWrapper ref={addGroupBtnRef} className="add-group-btn"></ButtonWrapper>
+      <ButtonWrapper ref={addGroupBtnRef} className="add-group-btn">
+        <img src="/icons/add-group.svg" alt="add-group icon.svg" />
+      </ButtonWrapper>
     </>
   );
 };
 
 const ButtonWrapper = styled.div`
-  min-width: 3vw;
-  min-height: 3vw;
-  background: ${COLOR.THEME1.PRIMARY};
-  background-image: url("/icons/add-group.svg");
-  ${flexRowCenterAlign}
-  border: 1px solid ${COLOR.THEME1.SECONDARY};
-  margin: 10%;
-  padding: 10%;
-  border-radius: 1vw;
+  ${flexCenterAlign}
+  min-width: 60px;
+  min-height: 60px;
+  background: ${Color["theme1-primary"]};
+  margin: 20px;
+  border-radius: 20px;
+  border: 1px solid ${Color["theme1-secondary"]};
   cursor: pointer;
-  background-repeat: no-repeat;
-  background-size: 70%;
-  background-position: center;
 `;
 
 export default AddGroupButton;

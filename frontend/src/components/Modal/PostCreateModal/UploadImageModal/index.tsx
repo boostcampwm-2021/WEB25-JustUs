@@ -1,8 +1,8 @@
 import React, { useRef } from "react";
 import styled from "styled-components";
-import { flexRowCenterAlign } from "@styles/StyledComponents";
+import { flexCenterAlign } from "@styles/StyledComponents";
+import Color from "@styles/Color";
 import shortid from "shortid";
-import COLOR from "@styles/Color";
 import { useDispatch } from "react-redux";
 
 interface FileObject {
@@ -110,7 +110,7 @@ const ModalHeaderRigthBtn = styled.button`
 `;
 
 const ImagePreview = styled.div`
-  border: 1px solid ${COLOR.LIGHTGRAY1};
+  border: 1px solid ${Color.gray};
   box-sizing: border-box;
   border-radius: 8px;
   margin: 1vw;
@@ -144,13 +144,13 @@ const ImageInput = styled.input`
 const ModalContainer = styled.div`
   display: flex;
   flex-direction: column;
-  background-color: ${COLOR.WHITE};
+  background-color: ${Color.white};
   height: 30vw;
   width: 45vw;
   min-width: 500px;
   min-height: 400px;
   border-radius: 10px;
-  box-shadow: 0 2px 3px 0 ${COLOR.SHADOW_BLACK};
+  box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
 `;
 
 const ModalHeader = styled.div`
@@ -159,7 +159,7 @@ const ModalHeader = styled.div`
   padding: 1vw;
   height: 60px;
   box-sizing: border-box;
-  border-bottom: 1px solid ${COLOR.BLACK};
+  border-bottom: 1px solid ${Color.black};
   font-size: max(1.2vw, 20px);
 `;
 
@@ -172,8 +172,8 @@ const ModalContent = styled.div`
 `;
 
 const UploadButton = styled.div`
-  background-color: ${COLOR.LIGHTGRAY2};
-  border: 1px solid ${COLOR.LIGHTGRAY1};
+  background-color: ${Color.gray};
+  border: 1px solid ${Color.gray};
   box-sizing: border-box;
   border-radius: 8px;
   margin: 1vw;
@@ -186,7 +186,7 @@ const UploadButton = styled.div`
 `;
 
 const ModalTitle = styled.div`
-  ${flexRowCenterAlign}
+  ${flexCenterAlign}
   flex-direction: row;
   grid-column-start: 2;
   grid-column-end: 3;
