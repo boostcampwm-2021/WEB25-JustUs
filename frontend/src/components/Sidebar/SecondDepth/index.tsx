@@ -33,11 +33,11 @@ const SecondDepth = ({
 
 const SecondDepthWrapper = styled.div`
   width: 13vw;
+  min-width: 10rem;
   height: 95vh;
   background-color: ${(props) => props.theme.PRIMARY};
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  display: grid;
+  grid-template-rows: 6vh 1fr 16vh;
   border-left: 1px ${COLOR.WHITE} solid;
   position: absolute;
   left: 5vw;

@@ -26,9 +26,8 @@ const AddAlbum = ({ addAlbumBtnRef }: AddAlbumProps) => {
 const AddAlbumWrapper = styled.div`
   ${flexRowCenterAlign}
   width: 90%;
-  height: 100px;
-  position: absolute;
-  bottom: 0;
+  bottom: 30px;
+  margin: 5%;
 `;
 
 const AddAblumBtnWrapper = styled.div`
