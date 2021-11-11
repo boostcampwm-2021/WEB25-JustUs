@@ -31,33 +31,6 @@ interface PointerEvent {
   feature: Feature;
 }
 
-const load = (
-  url: string,
-  cb: Function,
-  err: Function,
-  setIsRightClick: Dispatch<SetStateAction<Boolean>>,
-  setRightPosition: Dispatch<SetStateAction<Point>>,
-  setClickInfo: Dispatch<SetStateAction<PointerEvent>>,
-  dispatch: any,
-) => {
-  const element = document.createElement("script");
-  const parent = "body";
-  const attr = "src";
-
-  element.async = true;
-  element.onload = () => {
-    const INIT_X = 37.511337;
-    const INIT_Y = 127.012084;
-    const ZOOM_SIZE = 13;
-    cb(INIT_X, INIT_Y, ZOOM_SIZE, setIsRightClick, setRightPosition, setClickInfo, dispatch);
-  };
-  element.onerror = () => {
-    err();
-  };
-  element[attr] = url;
-  document[parent].appendChild(element);
-};
-
 const setMap = (
   INIT_X: number,
   INIT_Y: number,
@@ -168,9 +141,10 @@ const Map = () => {
 
   useEffect(() => {
     const initMap = () => {
-      const clientId: string = process.env.REACT_APP_NCP_CLOUD_ID as string;
-      const url = `https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${clientId}`;
-      load(url, setMap, setError, setIsRightClick, setRightPosition, setClickInfo, dispatch);
+      const INIT_X = 37.511337;
+      const INIT_Y = 127.012084;
+      const ZOOM_SIZE = 13;
+      setMap(INIT_X, INIT_Y, ZOOM_SIZE, setIsRightClick, setRightPosition, setClickInfo, dispatch);
     };
     initMap();
   }, []);
