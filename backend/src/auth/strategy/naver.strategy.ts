@@ -22,7 +22,6 @@ export class NaverStrategy extends PassportStrategy(Strategy, "naver") {
     registerUserDto.profileImage = profileImage;
 
     const user = await this.authService.validateUser(registerUserDto);
-
     if (!user) throw new UnauthorizedException("유저가 존재하지 않습니다.");
 
     const accessToken = this.authService.createToken(user);

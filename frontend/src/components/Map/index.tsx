@@ -38,6 +38,7 @@ const load = (
   setIsRightClick: Dispatch<SetStateAction<Boolean>>,
   setRightPosition: Dispatch<SetStateAction<Point>>,
   setClickInfo: Dispatch<SetStateAction<PointerEvent>>,
+  dispatch: any,
 ) => {
   const element = document.createElement("script");
   const parent = "body";
@@ -48,7 +49,7 @@ const load = (
     const INIT_X = 37.511337;
     const INIT_Y = 127.012084;
     const ZOOM_SIZE = 13;
-    cb(INIT_X, INIT_Y, ZOOM_SIZE, setIsRightClick, setRightPosition, setClickInfo);
+    cb(INIT_X, INIT_Y, ZOOM_SIZE, setIsRightClick, setRightPosition, setClickInfo, dispatch);
   };
   element.onerror = () => {
     err();
@@ -64,13 +65,14 @@ const setMap = (
   setIsRightClick: Dispatch<SetStateAction<Boolean>>,
   setRightPosition: Dispatch<SetStateAction<Point>>,
   setClickInfo: Dispatch<SetStateAction<PointerEvent>>,
+  dispatch: any,
 ) => {
   const pos = new naver.maps.LatLng(INIT_X, INIT_Y);
   const map = new naver.maps.Map("map", {
     center: pos,
     zoom: ZOOM_SIZE,
   });
-
+  
   setMarker(map);
 
   naver.maps.Event.addListener(map, "rightclick", (e: PointerEvent) => {
@@ -95,7 +97,9 @@ const setMarker = (map: naver.maps.Map) => {
 
   const markers = markerItems.map((marker) => {
     const pos1 = new naver.maps.LatLng(marker.position[0], marker.position[1]);
-    return new naver.maps.Marker(Marker(map, pos1, marker.id));
+    const mk = new naver.maps.Marker(Marker(map, pos1, marker.id));
+    naver.maps.Event.addListener(mk, "click", () => handleClickMarker());
+    return mk
   });
 };
 
@@ -113,7 +117,7 @@ const Map = () => {
     const initMap = () => {
       const clientId: string = process.env.REACT_APP_NCP_CLOUD_ID as string;
       const url = `https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${clientId}`;
-      load(url, setMap, setError, setIsRightClick, setRightPosition, setClickInfo);
+      load(url, setMap, setError, setIsRightClick, setRightPosition, setClickInfo, dispatch);
     };
     initMap();
   }, []);

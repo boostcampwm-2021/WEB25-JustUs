@@ -1,15 +1,8 @@
-import { IsNotEmpty, IsNumber, IsString, IsOptional } from "class-validator";
+import { IsNotEmpty, IsNumber } from "class-validator";
+import { GroupInfo } from "./groupInfo";
 
-export class CreateGroupRequestDto {
+export class CreateGroupRequestDto extends GroupInfo {
   @IsNumber()
   @IsNotEmpty()
   userId: number;
-
-  @IsString()
-  @IsOptional()
-  groupImage: string;
-
-  @IsString()
-  @IsNotEmpty()
-  groupName: string;
 }
