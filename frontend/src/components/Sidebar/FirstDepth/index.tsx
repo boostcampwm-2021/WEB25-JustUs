@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
 import Group from "./Group";
 import AddGroupButton from "./AddGroupButton";
-import Color from "@styles/Color";
+import Color from "@components/Styles/Color";
 
 interface SidebarProps {
   isToggle: boolean;

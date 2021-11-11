@@ -1,11 +1,12 @@
 {
-  "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "@src/*": ["src/*"],
-      "@components/*": ["src/components/*"],
-      "@pages/*": ["src/pages/*"],
-      "@styles/*": ["src/styles/*"]
+  "compilerOptions": { 
+    "baseUrl": ".", 
+    "paths": { 
+      "@src/*": [ 
+        "src/*" ], 
+      "@components/*": [ 
+        "src/components/*"
+      ]
     }
-  }
+  } 
 }

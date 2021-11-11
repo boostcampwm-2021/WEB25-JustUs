@@ -11,7 +11,7 @@ if (modalRootEl) {
   modalRootEl.style.left = "0";
   modalRootEl.style.width = "100%";
   modalRootEl.style.height = "100%";
-  modalRootEl.style.backgroundColor = "rgba(0, 0, 0, 0)";
+  modalRootEl.style.backgroundColor = "rgba(0, 0, 0, 0.4)";
 }
 
 interface ModalProps {
@@ -37,7 +37,6 @@ const Modal = ({ children, open = false, closeFn }: ModalProps) => {
     return null;
   }
   modalRootEl.style.display = "flex";
-  modalRootEl.style.backgroundColor = "rgba(0, 0, 0, 0.4)";
 
   return ReactDOM.createPortal(children, modalRootEl);
 };

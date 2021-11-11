@@ -2,7 +2,7 @@ import styled from "styled-components";
 import SettingGroup from "./SettingGroup";
 import AlbumList from "./AlbumList";
 import AddAlbum from "./AddAlbum";
-import Color from "@styles/Color";
+import Color from "@components/Styles/Color";
 
 const SecondDepth = () => {
   return (

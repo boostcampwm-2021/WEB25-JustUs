@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
-import Color from "@styles/Color";
+import Color from "@components/Styles/Color";
 
 interface PostProps {
   idx: number;
