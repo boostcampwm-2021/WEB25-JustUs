@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { GroupRepository } from "../group.repository";
 import { UserRepository } from "src/user/user.repository";
+import { AlbumRepository } from "src/album/album.repository";
 import { Group } from "../group.entity";
 import { CreateGroupRequestDto } from "src/dto/group/createGroupRequest.dto";
 import { AttendGroupRequestDto } from "src/dto/group/attendGroupRequest.dto";
@@ -17,6 +18,8 @@ export class GroupService {
     private groupRepository: GroupRepository,
     @InjectRepository(UserRepository)
     private userRepository: UserRepository,
+    @InjectRepository(AlbumRepository)
+    private albumRepository: AlbumRepository,
   ) {}
 
   async createGroup(createGroupRequestDto: CreateGroupRequestDto): Promise<number> {
@@ -27,6 +30,12 @@ export class GroupService {
       groupImage: groupImage,
       groupName: groupName,
       groupCode: groupCode,
+    });
+
+    await this.albumRepository.save({
+      albumName: "기본 앨범",
+      base: true,
+      group: group,
     });
 
     const user = await this.userRepository.findOne(userId, { relations: ["groups"] });
