@@ -29,9 +29,9 @@ const highlights = (text: string) => {
 
   return splited.map((word, idx) =>
     word.match(/#([\w|ㄱ-ㅎ|가-힣]+)/) ? (
-      <>
-        <mark key={idx}>{word}</mark>&nbsp;
-      </>
+      <span key={idx}>
+        <mark>{word}</mark>&nbsp;
+      </span>
     ) : (
       makeSpan(word, idx)
     ),

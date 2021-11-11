@@ -12,6 +12,8 @@ const postsInfo = [
       { file: "/img/post1-2.jpeg", key: shortid.generate() },
       { file: "/img/post1-3.jpeg", key: shortid.generate() },
     ],
+    postLatitude: 37.497912,
+    postLongitude: 127.027616,
   },
   {
     postID: 1,
@@ -25,6 +27,8 @@ const postsInfo = [
       { file: "/img/post2-3.jpeg", key: shortid.generate() },
       { file: "/img/post2-4.jpeg", key: shortid.generate() },
     ],
+    postLatitude: 37.48670440494385,
+    postLongitude: 126.98218497576075,
   },
   {
     postID: 2,
@@ -39,6 +43,8 @@ const postsInfo = [
       { file: "/img/post3-4.jpeg", key: shortid.generate() },
       { file: "/img/post3-5.jpeg", key: shortid.generate() },
     ],
+    postLatitude: 37.54049696552621,
+    postLongitude: 127.01873018465605,
   },
   {
     postID: 3,
@@ -47,6 +53,8 @@ const postsInfo = [
     postDate: "2021.5.3 토",
     userNickname: "그룹원4",
     postImages: [{ file: "/img/post4-1.jpeg", key: shortid.generate() }],
+    postLatitude: 37.511267024754666,
+    postLongitude: 127.0980426496118,
   },
   {
     postID: 4,
@@ -55,6 +63,8 @@ const postsInfo = [
     postDate: "2021.8.3 토",
     userNickname: "그룹원5",
     postImages: [{ file: "/img/post5-1.jpeg", key: shortid.generate() }],
+    postLatitude: 37.15138152054115,
+    postLongitude: 127.07322113864778,
   },
   {
     postID: 5,
@@ -63,6 +73,8 @@ const postsInfo = [
     postDate: "2021.8.3 토",
     userNickname: "그룹원5",
     postImages: [{ file: "/img/post6-1.jpeg", key: shortid.generate() }],
+    postLatitude: 37.551382027533194,
+    postLongitude: 126.98817295397293,
   },
   {
     postID: 6,
@@ -71,6 +83,8 @@ const postsInfo = [
     postDate: "2021.8.3 토",
     userNickname: "그룹원5",
     postImages: [{ file: "/img/post7-1.jpeg", key: shortid.generate() }],
+    postLatitude: 33.560126973098605,
+    postLongitude: 130.38719144055108,
   },
 ];
 

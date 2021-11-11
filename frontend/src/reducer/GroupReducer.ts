@@ -54,6 +54,7 @@ const groupReducer = (state = initState, action: any) => {
           ? { groupID: action.payload.groupID, groupName: action.payload.groupName, groupImg: action.payload.groupImg }
           : null,
         albumList: action.payload.albumList,
+        postsList: action.payload.albumList.map((album: AlbumListItemType) => [...album.posts]).flat(),
       };
     case GroupAction.DELETE_GROUP:
       return {
@@ -84,7 +85,6 @@ const groupReducer = (state = initState, action: any) => {
     //     ...state,
     //     groups: action.payload,
     //   };
-
     default:
       return state;
   }

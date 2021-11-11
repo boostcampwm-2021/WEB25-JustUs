@@ -65,6 +65,7 @@ const load = (
   setClickInfo: Dispatch<SetStateAction<PointerEvent>>,
   dispatch: Dispatch<IDispatch>,
   posts: IPosts[],
+  setNaverMap: Dispatch<SetStateAction<naver.maps.Map | undefined>>,
 ) => {
   const element = document.createElement("script");
   const parent = "body";
@@ -75,7 +76,7 @@ const load = (
     const INIT_X = 37.511337;
     const INIT_Y = 127.012084;
     const ZOOM_SIZE = 13;
-    cb(INIT_X, INIT_Y, ZOOM_SIZE, setIsRightClick, setRightPosition, setClickInfo, dispatch, posts);
+    cb(INIT_X, INIT_Y, ZOOM_SIZE, setIsRightClick, setRightPosition, setClickInfo, dispatch, posts, setNaverMap);
   };
   element.onerror = () => {
     err();
@@ -93,6 +94,7 @@ const setMap = (
   setClickInfo: Dispatch<SetStateAction<PointerEvent>>,
   dispatch: Dispatch<IDispatch>,
   posts: IPosts[],
+  setNaverMap: Dispatch<SetStateAction<naver.maps.Map | undefined>>,
 ) => {
   const pos = new naver.maps.LatLng(INIT_X, INIT_Y);
   const map = new naver.maps.Map("map", {
@@ -100,7 +102,7 @@ const setMap = (
     zoom: ZOOM_SIZE,
   });
 
-  setMarker(map, dispatch, posts);
+  setNaverMap(map);
 
   naver.maps.Event.addListener(map, "rightclick", (e: PointerEvent) => {
     setClickInfo(e);
@@ -115,27 +117,6 @@ const setMap = (
   });
 };
 
-const setMarker = (map: naver.maps.Map, dispatch: Dispatch<IDispatch>, posts: IPosts[]) => {
-  const markerItems = posts.map((post) => {
-    return { id: post.postID, name: post.postTitle, position: [post.postLatitude, post.postLongitude] };
-  });
-
-  const handleClickMarker = (clickedPostID: number) => {
-    // 아래 로직은 나중에 백엔드 API 요청을 통해 클릭한 게시글의 상세 정보를 가져온다.
-    const targetPost = dummyPosts.find((post) => post.postID === clickedPostID);
-
-    dispatch({ type: "SET_SELECTED_POST", payload: targetPost });
-    dispatch({ type: "OPEN_MODAL", payload: "PostShowModal" });
-  };
-
-  const markers = markerItems.map((marker) => {
-    const pos1 = new naver.maps.LatLng(marker.position[0], marker.position[1]);
-    const mk = new naver.maps.Marker(Marker(map, pos1, marker.id));
-    naver.maps.Event.addListener(mk, "click", () => handleClickMarker(marker.id));
-    return mk;
-  });
-};
-
 const setError = () => {
   console.error("잘못되었습니다.");
 };
@@ -145,21 +126,52 @@ const Map = () => {
   const [isRightClick, setIsRightClick] = useState<Boolean>(false);
   const [rightPosition, setRightPosition] = useState<Point>({ x: 0, y: 0 });
   const [clickInfo, setClickInfo] = useState<any>();
-  const { albumList }: any = useSelector((state: RootState) => state.groups);
-  const posts = albumList
-    .map((album: AlbumListItemType) => {
-      return [...album.posts];
-    })
-    .flat();
+  const { albumList, postsList }: any = useSelector((state: RootState) => state.groups);
+  const { selectedPost }: any = useSelector((state: RootState) => state.modal);
+  const [naverMap, setNaverMap] = useState<naver.maps.Map | undefined>();
 
   useEffect(() => {
     const initMap = () => {
       const clientId: string = process.env.REACT_APP_NCP_CLOUD_ID as string;
       const url = `https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${clientId}`;
-      load(url, setMap, setError, setIsRightClick, setRightPosition, setClickInfo, dispatch, posts);
+      load(url, setMap, setError, setIsRightClick, setRightPosition, setClickInfo, dispatch, postsList, setNaverMap);
     };
     initMap();
-  }, [posts]);
+  }, []);
+
+  useEffect(() => {
+    if (!postsList) return;
+
+    const setMarker = () => {
+      const markerItems = postsList.map((post: any) => {
+        return { id: post.postID, name: post.postTitle, position: [post.postLatitude, post.postLongitude] };
+      });
+
+      const handleClickMarker = (clickedPostID: number) => {
+        // 아래 로직은 나중에 백엔드 API 요청을 통해 클릭한 게시글의 상세 정보를 가져온다.
+        const targetPost = dummyPosts.find((post) => post.postID === clickedPostID);
+
+        dispatch({ type: "SET_SELECTED_POST", payload: targetPost });
+        dispatch({ type: "OPEN_MODAL", payload: "PostShowModal" });
+      };
+
+      const markers = markerItems.map((marker: any) => {
+        const pos1 = new naver.maps.LatLng(marker.position[0], marker.position[1]);
+        const mk = new naver.maps.Marker(Marker(naverMap as naver.maps.Map, pos1, marker.id));
+        naver.maps.Event.addListener(mk, "click", () => handleClickMarker(marker.id));
+        return mk;
+      });
+    };
+
+    setMarker();
+  }, [postsList]);
+
+  useEffect(() => {
+    if (naverMap) {
+      const coord = { lat: selectedPost.postLatitude, lng: selectedPost.postLongitude };
+      naverMap.morph(coord);
+    }
+  }, [selectedPost]);
 
   const modalOpen = () => {
     dispatch({ type: "OPEN_MODAL", payload: "PostCreateModal" });
