@@ -17,7 +17,7 @@ export class AlbumService {
   async createAlbum(createAlbumRequestDto: CreateAlbumRequestDto): Promise<string> {
     const { groupId, albumName } = createAlbumRequestDto;
     const group = await this.groupRepository.findOne({ groupId });
-    if (!group) throw new NotFoundException("Not found group with the id " + groupId);
+    if (!group) throw new NotFoundException(`Not found group with the id ${groupId}`);
 
     const album = await this.albumRepository.save({
       albumName: albumName,
