@@ -23,9 +23,6 @@ const SecondDepth = ({
   setIsAddAlbumModalOpened,
   addAlbumModalRef,
 }: SecondDepthProps) => {
-  useEffect(() => {
-    console.log(isToggle);
-  });
   const { selectedGroup } = useSelector((state: RootState) => state.groups);
   if (!selectedGroup) return null;
   return (

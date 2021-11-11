@@ -15,7 +15,6 @@ const Sidebar = ({ isToggle, setIsToggle }: SidebarProps) => {
   const addAlbumBtnRef = useRef<HTMLDivElement>(null);
   const addAlbumModalRef = useRef<HTMLDivElement>(null);
   const clickedTarget = useSelector((state: RootState) => state.groupModal.clickedTarget);
-  const { selectedGroup } = useSelector((state: RootState) => state.groups);
 
   useEffect(() => {
     const clickHandler = () => {

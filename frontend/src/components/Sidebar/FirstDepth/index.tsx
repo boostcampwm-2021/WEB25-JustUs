@@ -43,6 +43,7 @@ const FirstDepth = ({ isToggle, setIsToggle, addGroupBtnRef }: FirstDepthProps) 
         <DraggableWrapper>
           {groups.map((group: any) => (
             <Group
+              isToggle={isToggle}
               key={group.groupID}
               groupID={group.groupID}
               groupName={group.groupName}
