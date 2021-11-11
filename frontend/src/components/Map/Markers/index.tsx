@@ -10,7 +10,7 @@ const Marker = (map: naver.maps.Map, pos: naver.maps.LatLng) => {
     },
     size: new naver.maps.Size(22, 22),
     origin: new naver.maps.Point(0, 0),
-    draggable: true,
+    draggable: false,
   };
 };
 
