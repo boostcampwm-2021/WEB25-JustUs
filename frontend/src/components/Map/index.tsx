@@ -169,7 +169,10 @@ const Map = () => {
   useEffect(() => {
     if (naverMap) {
       const coord = { lat: selectedPost.postLatitude, lng: selectedPost.postLongitude };
-      naverMap.morph(coord);
+      const zoom = 15;
+      const transitionOptions = { duration: 1000, easing: "linear" };
+
+      naverMap.morph(coord, zoom, transitionOptions);
     }
   }, [selectedPost]);
 
