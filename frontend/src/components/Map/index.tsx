@@ -69,10 +69,9 @@ const setMarker = (map: naver.maps.Map, dispatch: any) => {
   const handleClickMarker = () => {
     dispatch({ type: "OPEN_MODAL", payload: "PostShowModal" });
   };
-
   const markers = markerItems.map((marker) => {
     const pos1 = new naver.maps.LatLng(marker.position[0], marker.position[1]);
-    const mk = new naver.maps.Marker(Marker(map, pos1, marker.id));
+    const mk = new naver.maps.Marker(Marker(map, pos1));
     naver.maps.Event.addListener(mk, "click", () => handleClickMarker());
     return mk;
   });
