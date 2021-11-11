@@ -72,8 +72,8 @@ const setMap = (
     center: pos,
     zoom: ZOOM_SIZE,
   });
-  
-  setMarker(map);
+
+  setMarker(map, dispatch);
 
   naver.maps.Event.addListener(map, "rightclick", (e: PointerEvent) => {
     setClickInfo(e);
@@ -88,18 +88,23 @@ const setMap = (
   });
 };
 
-const setMarker = (map: naver.maps.Map) => {
+const setMarker = (map: naver.maps.Map, dispatch: any) => {
   const markerItems = [
     { id: 0, name: "삼겹살", position: [37.3595704, 127.105399] },
     { id: 1, name: "맥도날드", position: [37.3618025, 127.1153248] },
     { id: 2, name: "미삼집", position: [37.3561936, 127.0983706] },
+    { id: 3, name: "강남역", position: [37.497912, 127.027616] },
   ];
+
+  const handleClickMarker = () => {
+    dispatch({ type: "OPEN_MODAL", payload: "PostShowModal" });
+  };
 
   const markers = markerItems.map((marker) => {
     const pos1 = new naver.maps.LatLng(marker.position[0], marker.position[1]);
     const mk = new naver.maps.Marker(Marker(map, pos1, marker.id));
     naver.maps.Event.addListener(mk, "click", () => handleClickMarker());
-    return mk
+    return mk;
   });
 };
 
