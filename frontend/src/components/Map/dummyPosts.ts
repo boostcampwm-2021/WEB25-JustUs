@@ -64,6 +64,14 @@ const postsInfo = [
     userNickname: "그룹원5",
     postImages: [{ file: "/img/post6-1.jpeg", key: shortid.generate() }],
   },
+  {
+    postID: 6,
+    postTitle: "후쿠오카",
+    postContent: "후쿠오카 짱 좋넹😎 ",
+    postDate: "2021.8.3 토",
+    userNickname: "그룹원5",
+    postImages: [{ file: "/img/post7-1.jpeg", key: shortid.generate() }],
+  },
 ];
 
 export default postsInfo;
