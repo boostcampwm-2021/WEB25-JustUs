@@ -39,7 +39,7 @@ export class UserService {
 
     user.profileImage = profileImage;
     user.userNickname = userNickname;
-    await this.userRepository.save(user);
+    this.userRepository.save(user);
 
     return "UserInfo update success!!";
   }
