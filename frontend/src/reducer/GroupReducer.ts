@@ -1,19 +1,26 @@
 import { GroupAction } from "@src/action";
 import AlbumList from "@src/components/Sidebar/SecondDepth/AlbumList";
 
+interface GroupType {
+  groupID: number;
+  groupName: string;
+  groupImg: string;
+}
 interface PostType {
   postID: number;
   postTitle: string;
+  postLatitude: number;
+  postLongitude: number;
 }
 interface AlbumListItemType {
-  albumID: string;
+  albumID: number;
   albumName: string;
   posts: PostType[];
 }
 
-const initState = {
+const initState: { selectedGroup: GroupType | null; albumList: AlbumListItemType[]; groups: Array<GroupType> } = {
   selectedGroup: null,
-  albumList: [],
+  albumList: [{ albumID: 0, albumName: "", posts: [] }],
   groups: [
     {
       groupID: 0,

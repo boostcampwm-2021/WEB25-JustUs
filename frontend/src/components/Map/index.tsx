@@ -2,9 +2,11 @@ import React, { useEffect, useState, Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
 import COLOR from "@styles/Color";
 import { flexRowCenterAlign } from "@styles/StyledComponents";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "@src/reducer";
 import Marker from "@components/Map/Markers";
 import MapLayerPostModal from "./Modal";
+import dummyPosts from "./dummyPosts";
 
 declare global {
   interface Window {
@@ -36,6 +38,24 @@ interface IDispatch {
   payload: any;
 }
 
+interface IPosts {
+  postID: number;
+  postTitle: string;
+  postLatitude: number;
+  postLongitude: number;
+}
+interface PostType {
+  postID: number;
+  postTitle: string;
+  postLatitude: number;
+  postLongitude: number;
+}
+interface AlbumListItemType {
+  albumID: number;
+  albumName: string;
+  posts: PostType[];
+}
+
 const load = (
   url: string,
   cb: Function,
@@ -44,6 +64,7 @@ const load = (
   setRightPosition: Dispatch<SetStateAction<Point>>,
   setClickInfo: Dispatch<SetStateAction<PointerEvent>>,
   dispatch: Dispatch<IDispatch>,
+  posts: IPosts[],
 ) => {
   const element = document.createElement("script");
   const parent = "body";
@@ -54,7 +75,7 @@ const load = (
     const INIT_X = 37.511337;
     const INIT_Y = 127.012084;
     const ZOOM_SIZE = 13;
-    cb(INIT_X, INIT_Y, ZOOM_SIZE, setIsRightClick, setRightPosition, setClickInfo, dispatch);
+    cb(INIT_X, INIT_Y, ZOOM_SIZE, setIsRightClick, setRightPosition, setClickInfo, dispatch, posts);
   };
   element.onerror = () => {
     err();
@@ -71,6 +92,7 @@ const setMap = (
   setRightPosition: Dispatch<SetStateAction<Point>>,
   setClickInfo: Dispatch<SetStateAction<PointerEvent>>,
   dispatch: Dispatch<IDispatch>,
+  posts: IPosts[],
 ) => {
   const pos = new naver.maps.LatLng(INIT_X, INIT_Y);
   const map = new naver.maps.Map("map", {
@@ -78,7 +100,7 @@ const setMap = (
     zoom: ZOOM_SIZE,
   });
 
-  setMarker(map, dispatch);
+  setMarker(map, dispatch, posts);
 
   naver.maps.Event.addListener(map, "rightclick", (e: PointerEvent) => {
     setClickInfo(e);
@@ -93,22 +115,23 @@ const setMap = (
   });
 };
 
-const setMarker = (map: naver.maps.Map, dispatch: Dispatch<IDispatch>) => {
-  const markerItems = [
-    { id: 0, name: "삼겹살", position: [37.3595704, 127.105399] },
-    { id: 1, name: "맥도날드", position: [37.3618025, 127.1153248] },
-    { id: 2, name: "미삼집", position: [37.3561936, 127.0983706] },
-    { id: 3, name: "강남역", position: [37.497912, 127.027616] },
-  ];
+const setMarker = (map: naver.maps.Map, dispatch: Dispatch<IDispatch>, posts: IPosts[]) => {
+  const markerItems = posts.map((post) => {
+    return { id: post.postID, name: post.postTitle, position: [post.postLatitude, post.postLongitude] };
+  });
 
-  const handleClickMarker = () => {
+  const handleClickMarker = (clickedPostID: number) => {
+    // 아래 로직은 나중에 백엔드 API 요청을 통해 클릭한 게시글의 상세 정보를 가져온다.
+    const targetPost = dummyPosts.find((post) => post.postID === clickedPostID);
+
+    dispatch({ type: "SET_SELECTED_POST", payload: targetPost });
     dispatch({ type: "OPEN_MODAL", payload: "PostShowModal" });
   };
 
   const markers = markerItems.map((marker) => {
     const pos1 = new naver.maps.LatLng(marker.position[0], marker.position[1]);
     const mk = new naver.maps.Marker(Marker(map, pos1, marker.id));
-    naver.maps.Event.addListener(mk, "click", () => handleClickMarker());
+    naver.maps.Event.addListener(mk, "click", () => handleClickMarker(marker.id));
     return mk;
   });
 };
@@ -122,15 +145,21 @@ const Map = () => {
   const [isRightClick, setIsRightClick] = useState<Boolean>(false);
   const [rightPosition, setRightPosition] = useState<Point>({ x: 0, y: 0 });
   const [clickInfo, setClickInfo] = useState<any>();
+  const { albumList }: any = useSelector((state: RootState) => state.groups);
+  const posts = albumList
+    .map((album: AlbumListItemType) => {
+      return [...album.posts];
+    })
+    .flat();
 
   useEffect(() => {
     const initMap = () => {
       const clientId: string = process.env.REACT_APP_NCP_CLOUD_ID as string;
       const url = `https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${clientId}`;
-      load(url, setMap, setError, setIsRightClick, setRightPosition, setClickInfo, dispatch);
+      load(url, setMap, setError, setIsRightClick, setRightPosition, setClickInfo, dispatch, posts);
     };
     initMap();
-  }, []);
+  }, [posts]);
 
   const modalOpen = () => {
     dispatch({ type: "OPEN_MODAL", payload: "PostCreateModal" });
