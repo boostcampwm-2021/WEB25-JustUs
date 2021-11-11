@@ -1,10 +1,8 @@
 import { useState } from "react";
-import styled from "styled-components";
 
 import Header from "@components/Header";
 import Sidebar from "@components/Sidebar";
 import ModalManager from "@components/Modal/ModalManager";
-import Map from "@components/Map";
 
 const Main = () => {
   const [modalOpen, setModal] = useState("");
@@ -28,10 +26,7 @@ const Main = () => {
   return (
     <>
       <Header isToggle={isToggle} setIsToggle={setIsToggle} />
-      <Content>
-        <Sidebar isToggle={isToggle} setIsToggle={setIsToggle} />
-        <Map />
-      </Content>
+      <Sidebar isToggle={isToggle} setIsToggle={setIsToggle} />
       <button onClick={openModal} data-modal="PostCreateModal">
         +
       </button>
@@ -39,9 +34,5 @@ const Main = () => {
     </>
   );
 };
-
-const Content = styled.div`
-  display: flex;
-`;
 
 export default Main;
