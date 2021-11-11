@@ -1,5 +1,5 @@
 import { IsArray, IsNotEmpty, IsString } from "class-validator";
-import { UserInfoDto } from "../user/userInfo.dto";
+import { UserInfo } from "../user/userInfo.dto";
 
 export class GetGroupInfoResponseDto {
   @IsString()
@@ -8,5 +8,5 @@ export class GetGroupInfoResponseDto {
 
   @IsArray()
   @IsNotEmpty()
-  users: UserInfoDto[];
+  users: UserInfo[];
 }
