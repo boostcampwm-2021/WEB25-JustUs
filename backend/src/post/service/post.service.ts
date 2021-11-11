@@ -48,9 +48,10 @@ export class PostService {
 
   async getPostInfo(postId: number): Promise<GetPostInfoResponseDto> {
     const post = await this.postRepository.readPostQuery(postId);
-    const { postTitle, postContent, postDate, postLocation, images } = post;
-
-    return { postTitle, postContent, postDate, postLocation, images };
+    const { user, postTitle, postContent, postDate, postLocation, images } = post;
+    const userId = user.userId;
+    const userNickname = user.userNickname;
+    return { userId, userNickname, postTitle, postContent, postDate, postLocation, images };
   }
 
   async updatePostInfo(postId: number, updatePostInfoRequestDto: UpdatePostInfoRequestDto): Promise<string> {
