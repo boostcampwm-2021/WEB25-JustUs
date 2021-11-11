@@ -21,6 +21,7 @@ export class AlbumService {
 
     const album = await this.albumRepository.save({
       albumName: albumName,
+      base: false,
       group: group,
     });
 
@@ -33,7 +34,7 @@ export class AlbumService {
     if (!album) throw new NotFoundException("Can not find Album");
 
     album.albumName = albumName;
-    await this.albumRepository.save(album);
+    this.albumRepository.save(album);
 
     return "AlbumInfo update success!!";
   }
@@ -42,7 +43,7 @@ export class AlbumService {
     const album = await this.albumRepository.findOne(albumId);
     if (!album) throw new NotFoundException("Can not find Album");
 
-    await this.albumRepository.softDelete({ albumId });
+    this.albumRepository.softDelete({ albumId });
 
     return "Album delete success!!";
   }

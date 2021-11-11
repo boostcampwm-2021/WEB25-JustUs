@@ -5,8 +5,9 @@ import { UserModule } from "./user/user.module";
 import { AuthModule } from "./auth/auth.module";
 import { GroupModule } from "./group/group.module";
 import { AlbumModule } from "./album/album.module";
+import { PostModule } from "./post/post.module";
 
 @Module({
-  imports: [TypeOrmModule.forRoot(typeORMConfig), UserModule, AuthModule, GroupModule, AlbumModule],
+  imports: [TypeOrmModule.forRoot(typeORMConfig), UserModule, AuthModule, GroupModule, AlbumModule, PostModule],
 })
 export class AppModule {}
