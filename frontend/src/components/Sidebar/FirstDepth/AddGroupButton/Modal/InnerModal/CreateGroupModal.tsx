@@ -65,9 +65,8 @@ const CreateGroupModal = () => {
   const createGroup = () => {
     if (!groupNameRef.current) return;
 
-    const groupID = groups.length ? groups[groups.length - 1].groupID + 1 : 0;
-    const albumList = groups[groups.length - 1].albumList;
-    const albumID = albumList[albumList.length - 1].albumID + 1;
+    const groupID = Math.floor(Math.random() * (1000 - 1)) + 1;
+    const albumID = Math.floor(Math.random() * (1000 - 1)) + 1;
     const groupName = groupNameRef.current.value;
     const newGroup = {
       groupID,
