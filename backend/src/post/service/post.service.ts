@@ -58,7 +58,7 @@ export class PostService {
     const {
       postTitle,
       postContent,
-      deleteImages,
+      deleteImagesId,
       addImages,
       postDate,
       postLocation,
@@ -80,7 +80,7 @@ export class PostService {
     this.postRepository.save(post);
 
     this.imageService.saveImage(post, addImages);
-    this.imageService.deleteImage(deleteImages);
+    this.imageService.deleteImage(deleteImagesId);
 
     return "PostInfo update success!!";
   }

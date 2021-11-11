@@ -4,7 +4,7 @@ import { PostInfo } from "./postInfo";
 export class UpdatePostInfoRequestDto extends PostInfo {
   @IsArray()
   @IsNotEmpty()
-  deleteImages: number[];
+  deleteImagesId: number[];
 
   @IsArray()
   @IsNotEmpty()
