@@ -16,7 +16,7 @@ export class Post extends TimeStampEntity {
   postContent: string;
 
   @Column()
-  rememberDate: Date;
+  postDate: Date;
 
   @Column()
   postLocation: string;
