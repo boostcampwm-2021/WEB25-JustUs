@@ -32,14 +32,14 @@ jobs:
         with:
           context: ./backend
           push: true
-          tags: ${{ env.DOCKER_IMAGE_NAME }}/dev_node:latest
+          tags: ${{ env.DOCKER_IMAGE_NAME }}/node:latest
 
       - name: React Build and push
         uses: docker/build-push-action@v2
         with:
           context: ./frontend
           push: true
-          tags: ${{ env.DOCKER_IMAGE_NAME }}/dev_react:latest
+          tags: ${{ env.DOCKER_IMAGE_NAME }}/react:latest
 
   deploy:
     needs: build
