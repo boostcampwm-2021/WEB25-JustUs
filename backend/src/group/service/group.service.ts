@@ -61,7 +61,7 @@ export class GroupService {
 
   async getGroupInfo(groupId: number): Promise<GetGroupInfoResponseDto> {
     const group = await this.readGroupQuery(groupId);
-    if (!group) throw new NotFoundException("Not found group with the id " + groupId);
+    if (!group) throw new NotFoundException(`Not found group with the id ${groupId}`);
 
     const { groupCode, users } = group;
     return { groupCode, users };
