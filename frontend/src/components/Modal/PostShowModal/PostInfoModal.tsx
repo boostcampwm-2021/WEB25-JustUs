@@ -4,6 +4,8 @@ import Carousel from "@components/Modal/PostCreateModal/UploadInfoModal/Carousel
 import shortid from "shortid";
 import { flexRowCenterAlign } from "@styles/StyledComponents";
 import { ReactComponent as MoreVertSVG } from "@styles/icons/more-vert.svg";
+import PostSettingModal from "./Modal";
+import { useState } from "react";
 
 const post = {
   postID: 0,
@@ -44,18 +46,29 @@ const highlights = (text: string) => {
 };
 
 const PostInfoModal = () => {
+  const [modalOpened, setModalOpened] = useState(false);
+
   return (
     <ModalContainer
       onClick={(event) => {
+        const target = event.target as HTMLElement;
+        if (!target.closest(".more-icon")) setModalOpened(false);
+
         event.nativeEvent.stopImmediatePropagation();
       }}
     >
       <Modal>
         <ModalHeader>
           <PostTitle>{post.postTitle}</PostTitle>
-          <MoreIconWrapper>
+          <MoreIconWrapper
+            className="more-icon"
+            onClick={() => {
+              setModalOpened((prev) => !prev);
+            }}
+          >
             <MoreVertSVG fill={COLOR.BLACK} />
           </MoreIconWrapper>
+          {modalOpened && <PostSettingModal />}
         </ModalHeader>
         <CarouselWrapper>
           <Carousel files={post.postImages} carouselWidth={250} />
@@ -99,6 +112,7 @@ const ModalHeader = styled.div`
   font-weight: bold;
   width: 100%;
   height: 10vh;
+  position: relative;
 `;
 const PostTitle = styled.div`
   ${flexRowCenterAlign}
@@ -111,6 +125,7 @@ const MoreIconWrapper = styled.div`
   ${flexRowCenterAlign}
   grid-column-start: 3;
   grid-column-end: 4;
+  cursor: pointer;
 `;
 const ModalContent = styled.div`
   font-size: 1.5rem;
