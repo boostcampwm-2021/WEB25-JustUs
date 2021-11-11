@@ -2,20 +2,9 @@ import styled from "styled-components";
 import COLOR from "@src/styles/Color";
 import Carousel from "@components/Modal/PostCreateModal/UploadInfoModal/Carousel";
 import shortid from "shortid";
-import { flexRowCenterAlign, flexColumnCenterAlign } from "@styles/StyledComponents";
+import { flexRowCenterAlign } from "@styles/StyledComponents";
 import { ReactComponent as MoreVertSVG } from "@styles/icons/more-vert.svg";
-import ReactDOMServer from "react-dom/server";
 
-interface FileObject {
-  file: string;
-  key: string;
-}
-
-const files: FileObject[] = [
-  { file: "/img/podo.png", key: shortid.generate() },
-  { file: "/img/glass.jpg", key: shortid.generate() },
-  { file: "/img/sand.jpg", key: shortid.generate() },
-];
 const post = {
   postID: 0,
   postTitle: "스타벅스 리저브",
@@ -24,6 +13,11 @@ const post = {
   postDate: "2021.10.26 15:40",
   postLocation: "강남역",
   userNickname: "작성자 닉네임",
+  postImages: [
+    { file: "/img/podo.png", key: shortid.generate() },
+    { file: "/img/glass.jpg", key: shortid.generate() },
+    { file: "/img/sand.jpg", key: shortid.generate() },
+  ],
 };
 
 const textSplit = (text: string) => {
@@ -64,7 +58,7 @@ const PostInfoModal = () => {
           </MoreIconWrapper>
         </ModalHeader>
         <CarouselWrapper>
-          <Carousel files={files} carouselWidth={250} />
+          <Carousel files={post.postImages} carouselWidth={250} />
         </CarouselWrapper>
         <ModalContent>{textSplit(post.postContent).map((item) => highlights(item))}</ModalContent>
         <ModalFooter>
