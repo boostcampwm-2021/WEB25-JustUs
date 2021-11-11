@@ -1,6 +1,8 @@
 import { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
 import COLOR from "@styles/Color";
+import { useDispatch } from "react-redux";
+import dummyPosts from "@components/Map/dummyPosts";
 
 interface PostProps {
   idx: number;
@@ -21,8 +23,14 @@ const Post = ({
   PostDragEndHandler,
   albumIdx,
 }: PostProps) => {
+  const dispatch = useDispatch();
+
   const onClickPost = () => {
     setPostSelected(idx);
+    // 아래 로직은 나중에 백엔드 API 요청을 통해 클릭한 게시글의 상세 정보를 가져온다.
+    const targetPost = dummyPosts.find((post) => post.postID === Number(idx));
+    dispatch({ type: "SET_SELECTED_POST", payload: targetPost });
+    dispatch({ type: "OPEN_MODAL", payload: "PostShowModal" });
   };
 
   return (

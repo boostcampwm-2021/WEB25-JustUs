@@ -1,19 +1,26 @@
 import { GroupAction } from "@src/action";
 import AlbumList from "@src/components/Sidebar/SecondDepth/AlbumList";
 
+interface GroupType {
+  groupID: number;
+  groupName: string;
+  groupImg: string;
+}
 interface PostType {
   postID: number;
   postTitle: string;
+  postLatitude: number;
+  postLongitude: number;
 }
 interface AlbumListItemType {
-  albumID: string;
+  albumID: number;
   albumName: string;
   posts: PostType[];
 }
 
-const initState = {
+const initState: { selectedGroup: GroupType | null; albumList: AlbumListItemType[]; groups: Array<GroupType> } = {
   selectedGroup: null,
-  albumList: [],
+  albumList: [{ albumID: 0, albumName: "", posts: [] }],
   groups: [
     {
       groupID: 0,
@@ -47,6 +54,7 @@ const groupReducer = (state = initState, action: any) => {
           ? { groupID: action.payload.groupID, groupName: action.payload.groupName, groupImg: action.payload.groupImg }
           : null,
         albumList: action.payload.albumList,
+        postsList: action.payload.albumList.map((album: AlbumListItemType) => [...album.posts]).flat(),
       };
     case GroupAction.DELETE_GROUP:
       return {
@@ -77,7 +85,6 @@ const groupReducer = (state = initState, action: any) => {
     //     ...state,
     //     groups: action.payload,
     //   };
-
     default:
       return state;
   }
