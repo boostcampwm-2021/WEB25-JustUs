@@ -55,6 +55,7 @@ jobs:
           port: ${{ secrets.NCLOUD_DEV_PORT }}
           script: |
             cd ~
-            docker-compose pull
-            docker-compose up --force-recreate --build -d
+            docker pull soosungp33/node:latest
+            docker pull soosungp33/react:latest
+            docker-compose up -d
             docker rmi $(docker images -f "dangling=true" -q)
