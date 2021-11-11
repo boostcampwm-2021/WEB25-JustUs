@@ -6,13 +6,13 @@ import Group from "./Group";
 import AddGroupButton from "./AddGroupButton";
 import COLOR from "@styles/Color";
 
-interface FirstDepthProps {
+interface SidebarProps {
   isToggle: boolean;
   setIsToggle: Dispatch<SetStateAction<boolean>>;
   addGroupBtnRef: React.RefObject<HTMLDivElement>;
 }
 
-const FirstDepth = ({ isToggle, setIsToggle, addGroupBtnRef }: FirstDepthProps) => {
+const FirstDepth = ({ isToggle, setIsToggle, addGroupBtnRef }: SidebarProps) => {
   const { groups }: any = useSelector((state: RootState) => state.groups);
 
   const onClickMenu = () => {

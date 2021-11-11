@@ -10,15 +10,6 @@ const initState = {
       albumList: [
         {
           albumID: 0,
-          albumName: "기본 앨범",
-          posts: [
-            { postID: 4, postTitle: "스타벅스 리저브" },
-            { postID: 5, postTitle: "롯데백화점" },
-          ],
-        },
-
-        {
-          albumID: 1,
           albumName: "일상 데이트",
           posts: [
             { postID: 0, postTitle: "돼지세끼" },
@@ -27,9 +18,17 @@ const initState = {
           ],
         },
         {
-          albumID: 2,
+          albumID: 1,
           albumName: "2020 일본 여행",
           posts: [{ postID: 3, postTitle: "후쿠오카" }],
+        },
+        {
+          albumID: 2,
+          albumName: "기본 앨범",
+          posts: [
+            { postID: 4, postTitle: "스타벅스 리저브" },
+            { postID: 5, postTitle: "롯데백화점" },
+          ],
         },
       ],
     },
@@ -40,17 +39,17 @@ const initState = {
       albumList: [
         {
           albumID: 3,
-          albumName: "기본 앨범",
-          posts: [],
-        },
-        {
-          albumID: 4,
           albumName: "가족 여행",
           posts: [
             { postID: 6, postTitle: "대전" },
             { postID: 7, postTitle: "부산" },
             { postID: 8, postTitle: "서울" },
           ],
+        },
+        {
+          albumID: 4,
+          albumName: "기본 앨범",
+          posts: [],
         },
       ],
     },

@@ -19,7 +19,6 @@ const Header = ({ albumName, postToggle, setPostToggle }: HeaderProps) => {
         {!postToggle && <img src="/icons/arrow-right.svg" alt="arrow-right icon.svg" />}
       </ArrowIcon>
       {albumName}
-      <MoreIcon>{albumName !== "기본 앨범" && <img src="/icons/more-vert.svg" alt="more-vert icon.svg" />}</MoreIcon>
     </HeaderWrapper>
   );
 };
@@ -27,16 +26,11 @@ const Header = ({ albumName, postToggle, setPostToggle }: HeaderProps) => {
 const HeaderWrapper = styled.div`
   width: 100%;
   color: ${COLOR.WHITE};
-  display: grid;
-  grid-template-columns: 10% 80% 10%;
+  display: flex;
   cursor: default;
 `;
 
 const ArrowIcon = styled.div`
-  cursor: pointer;
-`;
-
-const MoreIcon = styled.div`
   cursor: pointer;
 `;
 

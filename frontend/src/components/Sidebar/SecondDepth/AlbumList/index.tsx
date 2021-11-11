@@ -1,5 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
+import Header from "./Header";
+import Post from "./Post";
 import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
 import Album from "./Album";
