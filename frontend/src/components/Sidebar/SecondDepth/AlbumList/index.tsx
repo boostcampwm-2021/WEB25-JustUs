@@ -12,6 +12,7 @@ const AlbumList = () => {
   const [modalOpenedIdx, setModalOpenedIdx] = useState<number>(-1);
   const { albumList }: any = useSelector((state: RootState) => state.groups);
   const clickedTarget = useSelector((state: RootState) => state.groupModal.clickedTarget);
+  const { selectedPost }: any = useSelector((state: RootState) => state.modal);
 
   function onDragLeaveHandler(ev: React.DragEvent<HTMLDivElement>) {
     ev.preventDefault();
@@ -111,6 +112,10 @@ const AlbumList = () => {
 
     clickHandler();
   }, [clickedTarget]);
+
+  useEffect(() => {
+    setPostSelected(selectedPost.postID);
+  }, [selectedPost]);
 
   return (
     <DraggableWrapper>
