@@ -34,6 +34,7 @@ const load = (
   setIsRightClick: Dispatch<SetStateAction<Boolean>>,
   setRightPosition: Dispatch<SetStateAction<{ x: number; y: number }>>,
   setClickInfo: Dispatch<SetStateAction<any>>,
+  dispatch: any,
 ) => {
   const element = document.createElement("script");
   const parent = "body";
@@ -44,7 +45,7 @@ const load = (
     const INIT_X = 37.511337;
     const INIT_Y = 127.012084;
     const ZOOM_SIZE = 13;
-    cb(INIT_X, INIT_Y, ZOOM_SIZE, setIsRightClick, setRightPosition, setClickInfo);
+    cb(INIT_X, INIT_Y, ZOOM_SIZE, setIsRightClick, setRightPosition, setClickInfo, dispatch);
   };
   element.onerror = () => {
     err();
@@ -60,6 +61,7 @@ const setMap = (
   setIsRightClick: Dispatch<SetStateAction<Boolean>>,
   setRightPosition: Dispatch<SetStateAction<{ x: number; y: number }>>,
   setClickInfo: Dispatch<SetStateAction<any>>,
+  dispatch: any,
 ) => {
   const pos = new naver.maps.LatLng(INIT_X, INIT_Y);
   const map = new naver.maps.Map("map", {
@@ -70,11 +72,17 @@ const setMap = (
     { id: 0, name: "삼겹살", position: [37.3595704, 127.105399] },
     { id: 1, name: "맥도날드", position: [37.3618025, 127.1153248] },
     { id: 2, name: "미삼집", position: [37.3561936, 127.0983706] },
+    { id: 3, name: "강남역", position: [37.497912, 127.027616] },
   ];
+  const handleClickMarker = () => {
+    dispatch({ type: "OPEN_MODAL", payload: "PostShowModal" });
+  };
 
   markerItems.forEach((marker) => {
     const pos1 = new naver.maps.LatLng(marker.position[0], marker.position[1]);
-    new naver.maps.Marker(Marker(map, pos1, marker.id));
+    const mk = new naver.maps.Marker(Marker(map, pos1, marker.id));
+
+    naver.maps.Event.addListener(mk, "click", () => handleClickMarker());
   });
 
   naver.maps.Event.addListener(map, "rightclick", (e: PointerEvent) => {
@@ -102,7 +110,7 @@ const Map = () => {
     const initMap = () => {
       const clientId: string = process.env.REACT_APP_NCP_CLOUD_ID as string;
       const url = `https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${clientId}`;
-      load(url, setMap, setError, setIsRightClick, setRightPosition, setClickInfo);
+      load(url, setMap, setError, setIsRightClick, setRightPosition, setClickInfo, dispatch);
     };
     initMap();
   }, []);
