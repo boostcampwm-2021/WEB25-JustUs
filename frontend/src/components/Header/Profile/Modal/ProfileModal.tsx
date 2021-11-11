@@ -8,24 +8,24 @@ interface ProfileModalProps {
   setIsModalOpened: Dispatch<SetStateAction<boolean>>;
 }
 
-interface ModalListItem {
-  id: number;
-  name: string;
-  payload: string;
-}
-
 const ProfileModal = ({ isModalOpened, setIsModalOpened }: ProfileModalProps) => {
-  const modalListItem: ModalListItem[] = [
-    { id: 0, name: "회원정보", payload: "ProfileModal" },
-    { id: 1, name: "테마설정", payload: "ThemeModal" },
-    { id: 2, name: "로그아웃", payload: "" },
+  const modalListItem = [
+    { id: 0, name: "회원정보" },
+    { id: 1, name: "테마설정" },
+    { id: 2, name: "로그아웃" },
   ];
 
   const dispatch = useDispatch();
-  const onClickProfileItem = ({ payload }: ModalListItem) => {
-    const type = "OPEN_MODAL";
+  const onClickProfileItem: any = (idx: number) => {
     setIsModalOpened(prev => !prev);
-    dispatch({ type, payload });
+    switch (idx) {
+      case 0:
+        dispatch({ type: "OPEN_USER_INFO_MODAL" });
+        return;
+      case 1:
+        dispatch({ type: "OPEN_THEME_SETTING_MODAL" });
+        return;
+    }
   };
 
   return (
@@ -34,7 +34,7 @@ const ProfileModal = ({ isModalOpened, setIsModalOpened }: ProfileModalProps) =>
         <div>프로필</div>
         <ul>
           {modalListItem.map(item => (
-            <li onClick={() => onClickProfileItem(item)} key={item.id}>
+            <li onClick={() => onClickProfileItem(item.id)} key={item.id}>
               {item.name}
             </li>
           ))}
