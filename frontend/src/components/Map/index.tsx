@@ -31,6 +31,11 @@ interface PointerEvent {
   feature: Feature;
 }
 
+interface IDispatch {
+  type: string;
+  payload: any;
+}
+
 const load = (
   url: string,
   cb: Function,
@@ -38,7 +43,7 @@ const load = (
   setIsRightClick: Dispatch<SetStateAction<Boolean>>,
   setRightPosition: Dispatch<SetStateAction<Point>>,
   setClickInfo: Dispatch<SetStateAction<PointerEvent>>,
-  dispatch: any,
+  dispatch: Dispatch<IDispatch>,
 ) => {
   const element = document.createElement("script");
   const parent = "body";
@@ -65,7 +70,7 @@ const setMap = (
   setIsRightClick: Dispatch<SetStateAction<Boolean>>,
   setRightPosition: Dispatch<SetStateAction<Point>>,
   setClickInfo: Dispatch<SetStateAction<PointerEvent>>,
-  dispatch: any,
+  dispatch: Dispatch<IDispatch>,
 ) => {
   const pos = new naver.maps.LatLng(INIT_X, INIT_Y);
   const map = new naver.maps.Map("map", {
@@ -88,7 +93,7 @@ const setMap = (
   });
 };
 
-const setMarker = (map: naver.maps.Map, dispatch: any) => {
+const setMarker = (map: naver.maps.Map, dispatch: Dispatch<IDispatch>) => {
   const markerItems = [
     { id: 0, name: "삼겹살", position: [37.3595704, 127.105399] },
     { id: 1, name: "맥도날드", position: [37.3618025, 127.1153248] },
@@ -113,7 +118,7 @@ const setError = () => {
 };
 
 const Map = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<Dispatch<IDispatch>>();
   const [isRightClick, setIsRightClick] = useState<Boolean>(false);
   const [rightPosition, setRightPosition] = useState<Point>({ x: 0, y: 0 });
   const [clickInfo, setClickInfo] = useState<any>();
