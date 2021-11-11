@@ -94,6 +94,14 @@ const setMarker = (map: naver.maps.Map, dispatch: any) => {
     { id: 1, name: "맥도날드", position: [37.3618025, 127.1153248] },
     { id: 2, name: "미삼집", position: [37.3561936, 127.0983706] },
     { id: 3, name: "강남역", position: [37.497912, 127.027616] },
+    { id: 4, name: "강남역1", position: [37.497912, 127.027616] },
+    { id: 5, name: "강남역2", position: [37.497912, 127.027616] },
+    { id: 6, name: "강남역3", position: [37.497912, 127.027616] },
+    { id: 7, name: "강남역4", position: [37.497912, 127.027616] },
+    { id: 8, name: "강남역5", position: [37.497912, 127.027616] },
+    { id: 9, name: "강남역6", position: [37.497912, 127.027616] },
+    { id: 10, name: "강남역7", position: [37.497912, 127.027616] },
+    { id: 11, name: "강남역8", position: [37.497912, 127.027616] },
   ];
 
   const handleClickMarker = () => {
@@ -105,6 +113,46 @@ const setMarker = (map: naver.maps.Map, dispatch: any) => {
     const mk = new naver.maps.Marker(Marker(map, pos1, marker.id));
     naver.maps.Event.addListener(mk, "click", () => handleClickMarker());
     return mk;
+  });
+
+  const SIZE = 40;
+  const POINT = 20;
+
+  const htmlMarker1 = {
+    content: `<div>2</div><img src="/icons/podo-three.png" alt="marker">`,
+    size: new naver.maps.Size(SIZE, SIZE),
+    origin: new naver.maps.Point(POINT, POINT),
+  };
+  const htmlMarker2 = {
+    content: `<div>3</div><img src="/icons/podo-three.png" alt="marker">`,
+    size: new naver.maps.Size(SIZE, SIZE),
+    origin: new naver.maps.Point(POINT, POINT),
+  };
+  const htmlMarker3 = {
+    content: `<div>4</div><img src="/icons/podo-many.png" alt="marker">`,
+    size: new naver.maps.Size(SIZE, SIZE),
+    origin: new naver.maps.Point(POINT, POINT),
+  };
+  const htmlMarker4 = {
+    content: `<div>5</div><img src="/icons/podo-many.png" alt="marker">`,
+    size: new naver.maps.Size(SIZE, SIZE),
+    origin: new naver.maps.Point(POINT, POINT),
+  };
+  const htmlMarker5 = {
+    content: `<div>5</div><img src="/icons/podo-many.png" alt="marker">`,
+    size: new naver.maps.Size(SIZE, SIZE),
+    origin: new naver.maps.Point(POINT, POINT),
+  };
+
+  const markerClustering = new MarkerClustering({
+    minClusterSize: 2,
+    maxZoom: 13,
+    map: map,
+    markers: markers,
+    disableClickZoom: false,
+    gridSize: 120,
+    icons: [htmlMarker1, htmlMarker2, htmlMarker3, htmlMarker4, htmlMarker5],
+    indexGenerator: [2, 3, 4, 5, 6],
   });
 };
 
