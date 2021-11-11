@@ -34,7 +34,7 @@ const Album = ({
   const [postToggle, setPostToggle] = useState(true);
 
   return (
-    <div onDrop={DropHandler} onDragLeave={DragLeaveHandler}>
+    <div onDrop={DropHandler} onDragLeave={DragLeaveHandler} onDragOver={(e) => e.preventDefault()}>
       <Header
         albumID={album.albumID}
         albumName={album.albumName}

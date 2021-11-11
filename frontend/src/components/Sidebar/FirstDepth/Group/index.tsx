@@ -57,6 +57,7 @@ const Group = ({ setIsToggle, groupID, groupName, groupImg, DragHandler, DragEnd
       onDrag={DragHandler}
       onDragEnd={DragEndHandler}
       onClick={onClickGroup}
+      onDragOver={(e) => e.preventDefault()}
     ></ButtonWrapper>
   );
 };

@@ -36,6 +36,7 @@ const Post = ({
       onDragEnd={PostDragEndHandler}
       data-id={idx}
       data-albumidx={albumIdx}
+      onDragOver={(e) => e.preventDefault()}
     >
       {postTitle}
     </PostWrapper>
