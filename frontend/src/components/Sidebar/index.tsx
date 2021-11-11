@@ -41,14 +41,13 @@ const Sidebar = ({ isToggle, setIsToggle }: SidebarProps) => {
   return (
     <SidebarWrapper>
       <FirstDepth isToggle={isToggle} setIsToggle={setIsToggle} addGroupBtnRef={addGroupBtnRef} />
-      {isToggle && selectedGroup && (
-        <SecondDepth
-          addAlbumBtnRef={addAlbumBtnRef}
-          isAddAlbumModalOpened={isAddAlbumModalOpened}
-          setIsAddAlbumModalOpened={setIsAddAlbumModalOpened}
-          addAlbumModalRef={addAlbumModalRef}
-        />
-      )}
+      <SecondDepth
+        isToggle={isToggle}
+        addAlbumBtnRef={addAlbumBtnRef}
+        isAddAlbumModalOpened={isAddAlbumModalOpened}
+        setIsAddAlbumModalOpened={setIsAddAlbumModalOpened}
+        addAlbumModalRef={addAlbumModalRef}
+      />
     </SidebarWrapper>
   );
 };

@@ -29,7 +29,7 @@ const AddGroupModal = () => {
   );
 };
 
-const boxFade = keyframes`
+const modalOpen = keyframes`
   0% {
     height: 10px;
   }
@@ -46,7 +46,7 @@ const ModalContainer = styled.div`
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  animation-name: ${boxFade};
+  animation-name: ${modalOpen};
   animation-duration: 1s;
   animation-timing-function: ease-out;
 `;

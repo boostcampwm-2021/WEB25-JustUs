@@ -79,6 +79,7 @@ const FirstDepthWrapper = styled.div`
   overflow-y: auto;
   padding: 0.5vw 0;
   box-sizing: border-box;
+  z-index: 5;
 
   &::-webkit-scrollbar {
     background: transparent;
