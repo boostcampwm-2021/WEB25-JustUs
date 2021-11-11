@@ -3,15 +3,19 @@ import Modal from "@components/Modal";
 import { useDispatch } from "react-redux";
 import Color from "@styles/Color";
 
-const JoinGroupModal = () => {
-  const dispatch = useDispatch();
+interface JoinGroupModalProps {
+  closeFn: () => void;
+  open: boolean;
+}
 
-  const closeModal = () => {
-    dispatch({ type: "CLOSE_MODAL" });
+const JoinGroupModal = ({ closeFn, open = false }: JoinGroupModalProps) => {
+  const dispatch = useDispatch();
+  const closeJoinGroupModal = () => {
+    dispatch({ type: "CLOSE_JOIN_GROUP_MODAL" });
   };
 
   return (
-    <Modal>
+    <Modal open={open} closeFn={closeFn}>
       <ModalContainer
         onClick={event => {
           event.nativeEvent.stopImmediatePropagation();
@@ -19,7 +23,13 @@ const JoinGroupModal = () => {
       >
         <Header>
           <CloseBtn>
-            <button type="button" onClick={closeModal}>
+            <button
+              type="button"
+              onClick={() => {
+                closeFn();
+                closeJoinGroupModal();
+              }}
+            >
               <img src="/icons/clear.svg" alt="clear icon" />
             </button>
           </CloseBtn>

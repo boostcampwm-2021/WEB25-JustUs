@@ -4,17 +4,21 @@ import Modal from "@components/Modal";
 import { useDispatch } from "react-redux";
 import Color from "@styles/Color";
 
-const CreateGroupModal = () => {
+interface CreateGroupModalProps {
+  closeFn: () => void;
+  open: boolean;
+}
+
+const CreateGroupModal = ({ closeFn, open = false }: CreateGroupModalProps) => {
   const uploadBtnRef = useRef<HTMLInputElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
   const groupNameRef = useRef<HTMLInputElement>(null);
   const [groupImg, setGroupImg] = useState("/icons/person.svg");
+
   const dispatch = useDispatch();
-
-  const closeModal = () => {
-    dispatch({ type: "CLOSE_MODAL" });
+  const closeCreateGroupModal = () => {
+    dispatch({ type: "CLOSE_CREATE_GROUP_MODAL" });
   };
-
   const onClickUploadBtn = () => {
     if (uploadBtnRef.current === null) return;
     uploadBtnRef.current.click();
@@ -50,7 +54,7 @@ const CreateGroupModal = () => {
   };
 
   return (
-    <Modal>
+    <Modal open={open} closeFn={closeFn}>
       <ModalContainer
         onClick={event => {
           event.nativeEvent.stopImmediatePropagation();
@@ -58,7 +62,13 @@ const CreateGroupModal = () => {
       >
         <Header>
           <CloseBtn>
-            <button type="button" onClick={closeModal}>
+            <button
+              type="button"
+              onClick={() => {
+                closeFn();
+                closeCreateGroupModal();
+              }}
+            >
               <img src="/icons/clear.svg" alt="clear icon" />
             </button>
           </CloseBtn>

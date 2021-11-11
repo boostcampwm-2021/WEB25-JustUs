@@ -1,28 +1,17 @@
 import React, { useState } from "react";
+import styled from "styled-components";
 import Modal from "../";
 import UploadImageModal from "./UploadImageModal";
-import UploadInfoModal from "./UploadInfoModal";
 
-interface FileObject {
-  file: File;
-  key: string;
+interface PostCreateModalProps {
+  closeFn: () => void;
+  open: boolean;
 }
 
-const PostCreateModal = () => {
-  const [mode, setMode] = useState<string>("image");
-  const [files, setFiles] = useState<FileObject[]>([]);
-  const changeMode = () => {
-    if (mode === "image") setMode("info");
-    else setMode("image");
-  };
-
+const PostCreateModal = ({ closeFn, open = false }: PostCreateModalProps) => {
   return (
-    <Modal>
-      {mode === "image" ? (
-        <UploadImageModal files={files} setFiles={setFiles} changeMode={changeMode} />
-      ) : (
-        <UploadInfoModal files={files} changeMode={changeMode} />
-      )}
+    <Modal open={open} closeFn={closeFn}>
+      <UploadImageModal closeFn={closeFn} />
     </Modal>
   );
 };

@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import styled from "styled-components";
 import Color from "@styles/Color";
 import { flexCenterAlign } from "@styles/StyledComponents";
-import { useDispatch } from "react-redux";
 
 const load = (url: string, cb: Function, err: Function) => {
   const element = document.createElement("script");
@@ -19,9 +18,8 @@ const load = (url: string, cb: Function, err: Function) => {
   element[attr] = url;
   document[parent].appendChild(element);
 };
-const Map = () => {
-  const dispatch = useDispatch();
 
+const Map = () => {
   useEffect(() => {
     const initMap = () => {
       const clientId: string = process.env.REACT_APP_NCP_CLOUD_ID as string;
@@ -42,14 +40,10 @@ const Map = () => {
     initMap();
   }, []);
 
-  const modalOpen = () => {
-    dispatch({ type: "OPEN_MODAL", payload: "PostCreateModal" });
-  };
-
   return (
     <React.Fragment>
       <Maps id="map" />
-      <FloatActionBtn onClick={modalOpen}>+</FloatActionBtn>
+      <FloatActionBtn>+</FloatActionBtn>
     </React.Fragment>
   );
 };
@@ -59,8 +53,7 @@ const Maps = styled.div`
   height: 95vh;
 `;
 
-const FloatActionBtn = styled.button`
-  border: none;
+const FloatActionBtn = styled.div`
   background-color: ${Color["theme1-secondary"]};
   position: absolute;
   border-radius: 50%;
