@@ -1,9 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
-import { flexCenterAlign } from "@styles/StyledComponents";
 import Color from "@styles/Color";
-import { useSelector } from "react-redux";
-import { RootState } from "@src/reducer";
 
 interface SidebarProps {
   isToggle: boolean;
@@ -11,16 +8,13 @@ interface SidebarProps {
 }
 
 const Header = ({ isToggle, setIsToggle }: SidebarProps) => {
-  const { groups }: any = useSelector((state: RootState) => state.groups);
-
   const onClickMenu = () => {
-    if (!groups.length) return;
     setIsToggle(prev => !prev);
   };
 
   return (
     <>
-      <HeaderContainer groups={groups}>
+      <HeaderContainer>
         <img src="/icons/menu.svg" onClick={onClickMenu} alt="menu" />
         <SearchContainer>
           <img src="/icons/search.svg" height="90%" alt="search" />
@@ -34,7 +28,7 @@ const Header = ({ isToggle, setIsToggle }: SidebarProps) => {
   );
 };
 
-const HeaderContainer = styled.div<{ groups: any }>`
+const HeaderContainer = styled.div`
   height: 5vh;
   background-color: ${Color["theme1-primary"]};
   border-bottom: 1px solid ${Color.white};
@@ -44,18 +38,20 @@ const HeaderContainer = styled.div<{ groups: any }>`
   align-items: center;
   & img {
     &:hover {
-      cursor: ${({ groups }) => (groups.length ? "pointer" : "not-allowed")};
+      cursor: pointer;
     }
   }
 `;
 
 const SearchContainer = styled.div`
-  ${flexCenterAlign}
   height: 3vh;
   width: 25vw;
   background-color: ${Color.white};
   border-radius: 5px;
+  display: flex;
   padding: 0.5vh 0;
+  justify-content: start;
+  align-items: center;
   & > img {
     padding: 0 0.5vw;
   }
@@ -70,11 +66,13 @@ const Search = styled.input`
 `;
 
 const ProfileContainer = styled.div`
-  ${flexCenterAlign}
   height: 4vh;
   width: 4vh;
   background-color: ${Color.white};
   border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 export default Header;

@@ -3,8 +3,6 @@ import SettingGroup from "./SettingGroup";
 import AlbumList from "./AlbumList";
 import AddAlbum from "./AddAlbum";
 import Color from "@styles/Color";
-import { useSelector } from "react-redux";
-import { RootState } from "@src/reducer";
 
 const SecondDepth = () => {
   return (

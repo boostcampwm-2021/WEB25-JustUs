@@ -1,7 +1,5 @@
-import { GroupModalAction } from "@src/action";
-
 const initState = {
-  clickedTarget: { target: document.body, clientX: 0, clientY: 0 },
+  clickedTarget: { element: document.body },
   addJoinMOdalOpened: false,
   createGroupModalOpened: false,
   joinGroupModalOpened: false,
@@ -10,41 +8,37 @@ const initState = {
 
 const groupModalReducer = (state = initState, action: any) => {
   switch (action.type) {
-    case GroupModalAction.SET_CLICKED_TARGET:
+    case "SET_CLICKED_TARGET":
       return {
         ...state,
-        clickedTarget: {
-          target: action.payload.target,
-          clientX: action.payload.clientX,
-          clientY: action.payload.clientY,
-        },
+        clickedTarget: { element: action.payload },
       };
-    case GroupModalAction.OPEN_CREATE_GROUP_MODAL:
+    case "OPEN_CREATE_GROUP_MODAL":
       return {
         ...state,
         createGroupModalOpened: true,
       };
-    case GroupModalAction.CLOSE_CREATE_GROUP_MODAL:
+    case "CLOSE_CREATE_GROUP_MODAL":
       return {
         ...state,
         createGroupModalOpened: false,
       };
-    case GroupModalAction.OPEN_JOIN_GROUP_MODAL:
+    case "OPEN_JOIN_GROUP_MODAL":
       return {
         ...state,
         joinGroupModalOpened: true,
       };
-    case GroupModalAction.CLOSE_JOIN_GROUP_MODAL:
+    case "CLOSE_JOIN_GROUP_MODAL":
       return {
         ...state,
         joinGroupModalOpened: false,
       };
-    case GroupModalAction.OPEN_SETTING_GROUP_MODAL:
+    case "OPEN_SETTING_GROUP_MODAL":
       return {
         ...state,
         settingGroupModalOpened: true,
       };
-    case GroupModalAction.CLOSE_SETTING_GROUP_MODAL:
+    case "CLOSE_SETTING_GROUP_MODAL":
       return {
         ...state,
         settingGroupModalOpened: false,

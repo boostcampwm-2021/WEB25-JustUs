@@ -3,21 +3,12 @@ import Color from "@styles/Color";
 
 interface HeaderProps {
   albumName: string;
-  postToggle: boolean;
-  setPostToggle: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const Header = ({ albumName, postToggle, setPostToggle }: HeaderProps) => {
-  const onClickArrowDown = () => {
-    setPostToggle(prev => !prev);
-  };
-
+const Header = ({ albumName }: HeaderProps) => {
   return (
     <HeaderWrapper>
-      <ArrowIcon onClick={onClickArrowDown}>
-        {postToggle && <img src="/icons/arrow-down.svg" alt="arrow-down icon.svg" />}
-        {!postToggle && <img src="/icons/arrow-right.svg" alt="arrow-right icon.svg" />}
-      </ArrowIcon>
+      <img src="/icons/arrow-down.svg" alt="arrow-down icon.svg" />
       {albumName}
     </HeaderWrapper>
   );
@@ -27,11 +18,6 @@ const HeaderWrapper = styled.div`
   width: 100%;
   color: ${Color.white};
   display: flex;
-  cursor: default;
-`;
-
-const ArrowIcon = styled.div`
-  cursor: pointer;
 `;
 
 export default Header;

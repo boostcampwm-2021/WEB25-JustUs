@@ -1,7 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import { flexCenterAlign } from "@src/styles/StyledComponents";
-import Color from "@styles/Color";
 
 const Login = () => {
   return (
@@ -49,7 +47,9 @@ const BackgroundImg = styled.div<{ imgUrl: string }>`
 `;
 
 const BackgroundWrap = styled.div`
-  ${flexCenterAlign}
+  display: flex;
+  justify-content: center;
+  align-items: center;
   height: 100vh;
   background-color: #ffffff90;
 `;
@@ -88,12 +88,14 @@ const LogoInfoText = styled.p`
 `;
 
 const Polaroid = styled.div`
-  ${flexCenterAlign}
+  display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
   width: 340px;
   height: 500px;
   border-radius: 15px;
-  background-color: ${Color.white};
+  background-color: white;
   box-shadow: 15px 15px 15px rgba(0, 0, 0, 0.25);
   & > img {
     padding-top: 35px;
@@ -117,7 +119,9 @@ const FooterContent = styled.div`
     margin-bottom: 5px;
   }
   & > div {
-    ${flexCenterAlign}
+    display: flex;
+    justify-content: center;
+    align-items: center;
     & .names {
       color: #0202029b;
       padding-left: 10px;
