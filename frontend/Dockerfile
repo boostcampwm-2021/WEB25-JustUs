@@ -3,8 +3,6 @@ WORKDIR /usr/src/app
 COPY ./package.json ./
 RUN yarn
 COPY . .
-ARG REACT_APP_NCP_CLOUD_ID
-ENV REACT_APP_NCP_CLOUD_ID=$REACT_APP_NCP_CLOUD_ID
 RUN yarn build
 
 FROM nginx
