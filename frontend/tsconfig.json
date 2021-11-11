@@ -22,7 +22,8 @@
   },
   "include": [
     "src",
-    "craco.config.js"
+    "craco.config.js",
+    "fonts.d.ts"
   ],
   "extends": "./tsconfig.paths.json"
 }

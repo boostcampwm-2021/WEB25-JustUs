@@ -1,5 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
 import PostCreateModal from "../PostCreateModal";
+import PostShowModal from "../PostShowModal";
 import CreateGroupModal from "@components/Sidebar/FirstDepth/AddGroupButton/Modal/InnerModal/CreateGroupModal";
 import JoinGroupModal from "@components/Sidebar/FirstDepth/AddGroupButton/Modal/InnerModal/JoinGroupModal";
 import SettingGroupModal from "@components/Sidebar/SecondDepth/SettingGroup/Modal";
@@ -22,6 +23,7 @@ const ModalManager = ({ setIsToggle }: ModalManagerProps) => {
     <>
       {nowModal === "" && <CloseModal />}
       {nowModal === "PostCreateModal" && <PostCreateModal />}
+      {nowModal === "PostShowModal" && <PostShowModal />}
       {nowModal === "CreateGroupModal" && <CreateGroupModal />}
       {nowModal === "JoinGroupModal" && <JoinGroupModal />}
       {nowModal === "SettingGroupModal" && <SettingGroupModal setIsToggle={setIsToggle} />}
