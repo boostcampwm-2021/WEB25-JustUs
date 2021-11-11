@@ -28,7 +28,7 @@ const SettingGroup = () => {
 
 const SettingGroupWrapper = styled.div`
   width: 100%;
-  height: 6vh;
+  height: 100%;
   background-color: ${(props) => props.theme.PRIMARY};
   display: flex;
   justify-content: space-around;
