@@ -5,6 +5,7 @@ import { PostRepository } from "../post.repository";
 import { UserRepository } from "src/user/user.repository";
 import { AlbumRepository } from "src/album/album.repository";
 import { CreatePostRequestDto } from "src/dto/post/createPostRequest.dto";
+import { GetPostInfoResponseDto } from "src/dto/post/getPostInfoResponse.dto";
 
 @Injectable()
 export class PostService {
@@ -19,7 +20,7 @@ export class PostService {
   ) {}
 
   async createPost(createPostRequestDto: CreatePostRequestDto): Promise<number> {
-    const { postTitle, postContent, postImage, postDate, postLocation, postLatitude, postLongitude, userId, albumId } =
+    const { postTitle, postContent, postImages, postDate, postLocation, postLatitude, postLongitude, userId, albumId } =
       createPostRequestDto;
 
     const user = await this.userRepository.findOne({ userId });
@@ -39,8 +40,15 @@ export class PostService {
       album: album,
     });
 
-    this.imageService.saveImage(post, postImage);
+    this.imageService.saveImage(post, postImages);
 
     return post.postId;
+  }
+
+  async getPostInfo(postId: number): Promise<GetPostInfoResponseDto> {
+    const post = await this.postRepository.readPostQuery(postId);
+    const { postTitle, postContent, postDate, postLocation, images } = post;
+
+    return { postTitle, postContent, postDate, postLocation, images };
   }
 }

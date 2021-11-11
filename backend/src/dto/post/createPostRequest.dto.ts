@@ -11,7 +11,7 @@ export class CreatePostRequestDto {
 
   @IsArray()
   @IsNotEmpty()
-  postImage: string[];
+  postImages: string[];
 
   @IsString()
   @IsNotEmpty()
