@@ -5,7 +5,10 @@ import { flexRowCenterAlign } from "@styles/StyledComponents";
 import { useDispatch } from "react-redux";
 import Marker from "@components/Map/Markers";
 import MapLayerPostModal from "./Modal";
+import SetClustering from "@components/Map/SetClustering";
+import DATA from "./tempData";
 
+declare const MarkerClustering: any;
 declare global {
   interface Window {
     kakao: any;
@@ -30,33 +33,6 @@ interface PointerEvent {
   pointerEvent: DOMEvent;
   feature: Feature;
 }
-
-const load = (
-  url: string,
-  cb: Function,
-  err: Function,
-  setIsRightClick: Dispatch<SetStateAction<Boolean>>,
-  setRightPosition: Dispatch<SetStateAction<Point>>,
-  setClickInfo: Dispatch<SetStateAction<PointerEvent>>,
-  dispatch: any,
-) => {
-  const element = document.createElement("script");
-  const parent = "body";
-  const attr = "src";
-
-  element.async = true;
-  element.onload = () => {
-    const INIT_X = 37.511337;
-    const INIT_Y = 127.012084;
-    const ZOOM_SIZE = 13;
-    cb(INIT_X, INIT_Y, ZOOM_SIZE, setIsRightClick, setRightPosition, setClickInfo, dispatch);
-  };
-  element.onerror = () => {
-    err();
-  };
-  element[attr] = url;
-  document[parent].appendChild(element);
-};
 
 const setMap = (
   INIT_X: number,
@@ -89,23 +65,18 @@ const setMap = (
 };
 
 const setMarker = (map: naver.maps.Map, dispatch: any) => {
-  const markerItems = [
-    { id: 0, name: "삼겹살", position: [37.3595704, 127.105399] },
-    { id: 1, name: "맥도날드", position: [37.3618025, 127.1153248] },
-    { id: 2, name: "미삼집", position: [37.3561936, 127.0983706] },
-    { id: 3, name: "강남역", position: [37.497912, 127.027616] },
-  ];
-
+  const markerItems = DATA;
   const handleClickMarker = () => {
     dispatch({ type: "OPEN_MODAL", payload: "PostShowModal" });
   };
-
   const markers = markerItems.map((marker) => {
     const pos1 = new naver.maps.LatLng(marker.position[0], marker.position[1]);
-    const mk = new naver.maps.Marker(Marker(map, pos1, marker.id));
+    const mk = new naver.maps.Marker(Marker(map, pos1));
     naver.maps.Event.addListener(mk, "click", () => handleClickMarker());
     return mk;
   });
+
+  const markerClustering = new MarkerClustering(SetClustering(map, markers));
 };
 
 const setError = () => {
@@ -120,9 +91,10 @@ const Map = () => {
 
   useEffect(() => {
     const initMap = () => {
-      const clientId: string = process.env.REACT_APP_NCP_CLOUD_ID as string;
-      const url = `https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${clientId}`;
-      load(url, setMap, setError, setIsRightClick, setRightPosition, setClickInfo, dispatch);
+      const INIT_X = 37.511337;
+      const INIT_Y = 127.012084;
+      const ZOOM_SIZE = 13;
+      setMap(INIT_X, INIT_Y, ZOOM_SIZE, setIsRightClick, setRightPosition, setClickInfo, dispatch);
     };
     initMap();
   }, []);
