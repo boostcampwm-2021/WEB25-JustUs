@@ -17,7 +17,6 @@ const Main = () => {
   useEffect(() => {
     document.addEventListener("click", (event) => {
       const { target, clientX, clientY } = event;
-
       if (!(event.target instanceof HTMLElement)) return;
 
       dispatch({ type: GroupModalAction.SET_CLICKED_TARGET, payload: { target, clientX, clientY } });
