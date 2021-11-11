@@ -50,7 +50,7 @@ jobs:
           tags: ${{ env.DOCKER_IMAGE_NAME }}/react:latest
 
   deploy:
-    needs: build
+    need: build
     runs-on: ubuntu-latest
 
     steps:
