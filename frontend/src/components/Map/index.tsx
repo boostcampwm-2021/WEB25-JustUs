@@ -5,6 +5,7 @@ import { flexRowCenterAlign } from "@styles/StyledComponents";
 import { useDispatch } from "react-redux";
 import Marker from "@components/Map/Markers";
 import MapLayerPostModal from "./Modal";
+import SetClustering from "@components/Map/SetClustering";
 
 declare const MarkerClustering: any;
 declare global {
@@ -89,45 +90,7 @@ const setMarker = (map: naver.maps.Map, dispatch: any) => {
     return mk;
   });
 
-  const SIZE = 40;
-  const POINT = 20;
-
-  const htmlMarker1 = {
-    content: `<div>2</div><img src="/icons/podo-three.png" alt="marker">`,
-    size: new naver.maps.Size(SIZE, SIZE),
-    origin: new naver.maps.Point(POINT, POINT),
-  };
-  const htmlMarker2 = {
-    content: `<div>3</div><img src="/icons/podo-three.png" alt="marker">`,
-    size: new naver.maps.Size(SIZE, SIZE),
-    origin: new naver.maps.Point(POINT, POINT),
-  };
-  const htmlMarker3 = {
-    content: `<div>4</div><img src="/icons/podo-many.png" alt="marker">`,
-    size: new naver.maps.Size(SIZE, SIZE),
-    origin: new naver.maps.Point(POINT, POINT),
-  };
-  const htmlMarker4 = {
-    content: `<div>5</div><img src="/icons/podo-many.png" alt="marker">`,
-    size: new naver.maps.Size(SIZE, SIZE),
-    origin: new naver.maps.Point(POINT, POINT),
-  };
-  const htmlMarker5 = {
-    content: `<div>5</div><img src="/icons/podo-many.png" alt="marker">`,
-    size: new naver.maps.Size(SIZE, SIZE),
-    origin: new naver.maps.Point(POINT, POINT),
-  };
-
-  const markerClustering = new MarkerClustering({
-    minClusterSize: 2,
-    maxZoom: 13,
-    map: map,
-    markers: markers,
-    disableClickZoom: false,
-    gridSize: 120,
-    icons: [htmlMarker1, htmlMarker2, htmlMarker3, htmlMarker4, htmlMarker5],
-    indexGenerator: [2, 3, 4, 5, 6],
-  });
+  const markerClustering = new MarkerClustering(SetClustering(map, markers));
 };
 
 const setError = () => {
