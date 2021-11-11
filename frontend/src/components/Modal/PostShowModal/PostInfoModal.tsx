@@ -64,7 +64,7 @@ const PostInfoModal = () => {
           </MoreIconWrapper>
         </ModalHeader>
         <CarouselWrapper>
-          <Carousel files={files} carouselWidth={350} />
+          <Carousel files={files} carouselWidth={250} />
         </CarouselWrapper>
         <ModalContent>{textSplit(post.postContent).map((item) => highlights(item))}</ModalContent>
         <ModalFooter>
@@ -81,7 +81,7 @@ const ModalContainer = styled.div`
   flex-direction: row;
   background-color: ${COLOR.WHITE};
   width: 500px;
-  height: 750px;
+  height: 70vh;
 
   &::-webkit-scrollbar {
     display: none;
@@ -96,6 +96,7 @@ const CarouselWrapper = styled.div`
   padding: 1rem 0;
   border-bottom: 0.3rem solid ${COLOR.GRAY};
   border-top: 0.3rem solid ${COLOR.GRAY};
+  height: 40vh;
 `;
 const ModalHeader = styled.div`
   display: grid;
@@ -123,6 +124,7 @@ const ModalContent = styled.div`
   overflow-y: scroll;
   font-family: "NanumDaCaeSaRang";
   white-space: pre-line;
+  height: 20vh;
 
   & mark {
     border-radius: 3px;
