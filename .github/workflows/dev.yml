@@ -63,7 +63,6 @@ jobs:
           port: ${{ secrets.NCLOUD_DEV_PORT }}
       - name: Docker compose
         run: |
-          cd ~
           docker pull soosungp33/node:latest
           docker pull soosungp33/react:latest
           docker-compose restart
