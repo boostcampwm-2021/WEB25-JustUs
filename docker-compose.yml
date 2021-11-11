@@ -14,7 +14,7 @@ services:
     restart: always
     build:
       dockerfile: Dockerfile
-      context: ./nginx_proxy
+      context: ./nginx
     ports:
       - "3000:80"
 

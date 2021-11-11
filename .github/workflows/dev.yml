@@ -3,6 +3,9 @@ name: dev
 on:
   push:
     branches: [develop]
+  pull_request:
+    types: [closed]
+    branches: [develop]
 
 env:
   DOCKER_IMAGE_NAME: soosungp33
