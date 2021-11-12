@@ -84,4 +84,13 @@ export class PostService {
 
     return "PostInfo update success!!";
   }
+
+  async deletePost(postId: number): Promise<string> {
+    const post = await this.postRepository.findOne(postId, { relations: ["images"] });
+    if (!post) throw new NotFoundException(`Not found post with the id ${postId}`);
+
+    this.postRepository.softDelete({ postId });
+
+    return "Post delete success!!";
+  }
 }

@@ -40,7 +40,7 @@ export class AlbumService {
   }
 
   async deleteAlbum(albumId: number): Promise<string> {
-    const album = await this.albumRepository.findOne(albumId);
+    const album = await this.albumRepository.findOne(albumId, { relations: ["posts"] });
     if (!album) throw new NotFoundException(`Not found album with the id ${albumId}`);
 
     this.albumRepository.softDelete({ albumId });

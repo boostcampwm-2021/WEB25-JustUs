@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, Param, Post, Put, UseGuards } from "@nestjs/common";
+import { Body, Controller, Delete, Get, HttpCode, Param, Post, Put, UseGuards } from "@nestjs/common";
 import { JwtAuthGuard } from "src/auth/guard/jwt-auth-guard";
 import { PostService } from "../service/post.service";
 import { CreatePostRequestDto } from "src/dto/post/createPostRequest.dto";
@@ -27,5 +27,10 @@ export class PostController {
     @Body() updatePostInfoRequestDto: UpdatePostInfoRequestDto,
   ): Promise<string> {
     return this.postService.updatePostInfo(postId, updatePostInfoRequestDto);
+  }
+
+  @Delete("/:postId")
+  DeletePost(@Param("postId") postId: number): Promise<string> {
+    return this.postService.deletePost(postId);
   }
 }
