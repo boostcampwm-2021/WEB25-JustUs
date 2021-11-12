@@ -7,7 +7,6 @@ import { AlbumRepository } from "src/album/album.repository";
 import { CreatePostRequestDto } from "src/dto/post/createPostRequest.dto";
 import { GetPostInfoResponseDto } from "src/dto/post/getPostInfoResponse.dto";
 import { UpdatePostInfoRequestDto } from "src/dto/post/updatePostInfoRequest.dto";
-import { Image } from "src/image/image.entity";
 
 @Injectable()
 export class PostService {
@@ -28,14 +27,10 @@ export class PostService {
     const user = await this.userRepository.findOne({ userId });
     if (!user) throw new NotFoundException(`Not found user with the id ${userId}`);
 
-    const album = await this.albumRepository.findOne({ albumId });
+    const album = await this.albumRepository.findOne(albumId);
     if (!album) throw new NotFoundException(`Not found album with the id ${albumId}`);
 
-    // const images = postImages.map(e => {
-    //   const image = new Image();
-    //   image.imageUrl = e;
-    //   return image;
-    // });
+    const images = this.imageService.saveImage(postImages);
 
     const post = await this.postRepository.save({
       postTitle: postTitle,
@@ -46,19 +41,19 @@ export class PostService {
       postLongitude: postLongitude,
       user: user,
       album: album,
-      //images: images,
+      images: images,
     });
-
-    this.imageService.saveImage(post, postImages);
 
     return post.postId;
   }
 
   async getPostInfo(postId: number): Promise<GetPostInfoResponseDto> {
     const post = await this.postRepository.readPostQuery(postId);
+
     const { user, postTitle, postContent, postDate, postLocation, images } = post;
     const userId = user.userId;
     const userNickname = user.userNickname;
+
     return { userId, userNickname, postTitle, postContent, postDate, postLocation, images };
   }
 
@@ -75,7 +70,8 @@ export class PostService {
       userId,
     } = updatePostInfoRequestDto;
 
-    const post = await this.postRepository.findOne({ postId });
+    const post = await this.postRepository.findOne(postId, { relations: ["user"] });
+
     const postUserId = post.user.userId;
     if (postUserId !== userId) throw new NotFoundException("It cannot be updated because it is not the author.");
 
@@ -87,8 +83,7 @@ export class PostService {
     post.postLongitude = postLongitude;
     this.postRepository.save(post);
 
-    this.imageService.saveImage(post, addImages);
-    this.imageService.deleteImage(deleteImagesId);
+    this.imageService.updateImages(post, addImages, deleteImagesId);
 
     return "PostInfo update success!!";
   }
