@@ -43,7 +43,7 @@ export class AlbumService {
     const album = await this.albumRepository.findOne(albumId, { relations: ["posts"] });
     if (!album) throw new NotFoundException(`Not found album with the id ${albumId}`);
 
-    this.albumRepository.softDelete({ albumId });
+    this.albumRepository.softRemove(album);
 
     return "Album delete success!!";
   }

@@ -7,6 +7,7 @@ import { AlbumRepository } from "src/album/album.repository";
 import { CreatePostRequestDto } from "src/dto/post/createPostRequest.dto";
 import { GetPostInfoResponseDto } from "src/dto/post/getPostInfoResponse.dto";
 import { UpdatePostInfoRequestDto } from "src/dto/post/updatePostInfoRequest.dto";
+import { Image } from "src/image/image.entity";
 
 @Injectable()
 export class PostService {
@@ -30,6 +31,12 @@ export class PostService {
     const album = await this.albumRepository.findOne({ albumId });
     if (!album) throw new NotFoundException(`Not found album with the id ${albumId}`);
 
+    // const images = postImages.map(e => {
+    //   const image = new Image();
+    //   image.imageUrl = e;
+    //   return image;
+    // });
+
     const post = await this.postRepository.save({
       postTitle: postTitle,
       postContent: postContent,
@@ -39,6 +46,7 @@ export class PostService {
       postLongitude: postLongitude,
       user: user,
       album: album,
+      //images: images,
     });
 
     this.imageService.saveImage(post, postImages);
@@ -89,7 +97,7 @@ export class PostService {
     const post = await this.postRepository.findOne(postId, { relations: ["images"] });
     if (!post) throw new NotFoundException(`Not found post with the id ${postId}`);
 
-    this.postRepository.softDelete({ postId });
+    this.postRepository.softRemove(post);
 
     return "Post delete success!!";
   }

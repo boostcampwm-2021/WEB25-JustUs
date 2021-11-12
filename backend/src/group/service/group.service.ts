@@ -97,7 +97,7 @@ export class GroupService {
     const group = await this.groupRepository.readGroupQuery(groupId);
     const { users } = group;
 
-    if (!users.length) this.groupRepository.softDelete({ groupId });
+    if (!users.length) this.groupRepository.softRemove(group);
 
     return "Group leave success!!";
   }

@@ -35,6 +35,6 @@ export class Post extends TimeStampEntity {
   @JoinColumn({ name: "user_id" })
   user: User;
 
-  @OneToMany(() => Image, image => image.post)
+  @OneToMany(() => Image, image => image.post, { cascade: true })
   images: Image[];
 }
