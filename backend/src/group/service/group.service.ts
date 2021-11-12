@@ -94,7 +94,7 @@ export class GroupService {
     const result = await this.groupRepository.leaveGroupQuery(groupId, userId);
     if (!result.affected) throw new NotFoundException("그룹에 해당 유저가 없습니다.");
 
-    const group = await this.groupRepository.readGroupQuery(groupId);
+    const group = await this.groupRepository.findOne(groupId, { relations: ["users", "albums"] });
     const { users } = group;
 
     if (!users.length) this.groupRepository.softRemove(group);
