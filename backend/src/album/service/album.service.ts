@@ -31,7 +31,7 @@ export class AlbumService {
   async updateAlbumInfo(albumId: number, updateAlbumInfoRequestDto: UpdateAlbumInfoRequestDto): Promise<string> {
     const { albumName } = updateAlbumInfoRequestDto;
     const album = await this.albumRepository.findOne({ albumId });
-    if (!album) throw new NotFoundException("Can not find Album");
+    if (!album) throw new NotFoundException(`Not found album with the id ${albumId}`);
 
     album.albumName = albumName;
     this.albumRepository.save(album);
@@ -41,7 +41,7 @@ export class AlbumService {
 
   async deleteAlbum(albumId: number): Promise<string> {
     const album = await this.albumRepository.findOne(albumId);
-    if (!album) throw new NotFoundException("Can not find Album");
+    if (!album) throw new NotFoundException(`Not found album with the id ${albumId}`);
 
     this.albumRepository.softDelete({ albumId });
 
