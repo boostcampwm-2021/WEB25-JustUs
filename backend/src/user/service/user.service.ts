@@ -5,6 +5,7 @@ import { User } from "../user.entity";
 import { UserRepository } from "../user.repository";
 import { UserInfoResponseDto } from "src/dto/user/userInfoResponse.dto";
 import { UpdateUserInfoRequestDto } from "src/dto/user/updateUserInfoRequest.dto";
+import { UpdateResult } from "typeorm";
 
 @Injectable()
 export class UserService {
@@ -40,5 +41,9 @@ export class UserService {
     this.userRepository.save(user);
 
     return "UserInfo update success!!";
+  }
+
+  async updateToken(userId: number, refreshToken: string): Promise<UpdateResult> {
+    return this.userRepository.update(userId, { refreshToken });
   }
 }
