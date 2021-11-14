@@ -75,9 +75,10 @@ const Map = () => {
   const [isRightClick, setIsRightClick] = useState<Boolean>(false);
   const [rightPosition, setRightPosition] = useState<Point>({ x: 0, y: 0 });
   const [clickInfo, setClickInfo] = useState<any>();
+  const [naverMap, setNaverMap] = useState<naver.maps.Map>();
+  const [currentMarkers, setCurrentMarkers] = useState<Array<naver.maps.Marker>>([]);
   const { postsList }: any = useSelector((state: RootState) => state.groups);
   const { selectedPost }: any = useSelector((state: RootState) => state.modal);
-  const [naverMap, setNaverMap] = useState<naver.maps.Map>();
 
   useEffect(() => {
     const initMap = () => {
@@ -113,10 +114,20 @@ const Map = () => {
       });
 
       const markerClustering = new MarkerClustering(SetClustering(naverMap as naver.maps.Map, markers));
+      setCurrentMarkers(markers);
     };
 
     setMarker();
   }, [postsList]);
+
+  useEffect(() => {
+    return () => {
+      currentMarkers.forEach((marker) => {
+        marker.setVisible(false);
+        marker.setMap(null);
+      });
+    };
+  }, [currentMarkers]);
 
   useEffect(() => {
     if (naverMap) {
