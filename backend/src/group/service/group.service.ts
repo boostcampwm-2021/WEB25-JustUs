@@ -9,6 +9,7 @@ import { AttendGroupRequestDto } from "src/dto/group/attendGroupRequest.dto";
 import { GetGroupInfoResponseDto } from "src/dto/group/getGroupInfoResponse.dto";
 import { UpdateGroupInfoRequestDto } from "src/dto/group/updateGroupInfoRequest.dto";
 import { LeaveGroupDto } from "src/dto/group/leaveGroupRequest.dto";
+import { GetAlbumsResponseDto } from "src/dto/group/getAlbumsResponse.dto";
 
 @Injectable()
 export class GroupService {
@@ -68,7 +69,7 @@ export class GroupService {
   }
 
   async getGroupInfo(groupId: number): Promise<GetGroupInfoResponseDto> {
-    const group = await this.groupRepository.readGroupQuery(groupId);
+    const group = await this.groupRepository.getGroupQuery(groupId);
     if (!group) throw new NotFoundException(`Not found group with the id ${groupId}`);
 
     const { groupCode, users } = group;
@@ -100,5 +101,12 @@ export class GroupService {
     if (!users.length) this.groupRepository.softRemove(group);
 
     return "Group leave success!!";
+  }
+
+  async getAlbums(groupId: number): Promise<GetAlbumsResponseDto> {
+    const albumsInfo = await this.groupRepository.getAlbumsQuery(groupId);
+    if (!albumsInfo) throw new NotFoundException(`Not found group with the id ${groupId}`);
+
+    return albumsInfo;
   }
 }
