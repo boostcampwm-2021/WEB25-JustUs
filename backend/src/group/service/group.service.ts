@@ -85,9 +85,7 @@ export class GroupService {
     const group = await this.groupRepository.findOne({ groupId });
     if (!group) throw new NotFoundException(`Not found group with the id ${groupId}`);
 
-    group.groupImage = groupImage;
-    group.groupName = groupName;
-    this.groupRepository.save(group);
+    this.groupRepository.update(groupId, { groupImage, groupName });
 
     return "GroupInfo update success!!";
   }

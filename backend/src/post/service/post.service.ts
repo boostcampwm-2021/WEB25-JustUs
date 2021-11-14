@@ -72,13 +72,7 @@ export class PostService {
     const postUserId = post.user.userId;
     if (postUserId !== userId) throw new NotFoundException("It cannot be updated because it is not the author.");
 
-    post.postTitle = postTitle;
-    post.postContent = postContent;
-    post.postDate = postDate;
-    post.postLocation = postLocation;
-    post.postLatitude = postLatitude;
-    post.postLongitude = postLongitude;
-    this.postRepository.save(post);
+    this.postRepository.update(postId, { postTitle, postContent, postDate, postLocation, postLatitude, postLongitude });
 
     this.imageService.updateImages(post, addImages, deleteImagesId);
 

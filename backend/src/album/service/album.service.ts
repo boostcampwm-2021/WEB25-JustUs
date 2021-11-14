@@ -33,8 +33,7 @@ export class AlbumService {
     const album = await this.albumRepository.findOne({ albumId });
     if (!album) throw new NotFoundException(`Not found album with the id ${albumId}`);
 
-    album.albumName = albumName;
-    this.albumRepository.save(album);
+    this.albumRepository.update(albumId, { albumName });
 
     return "AlbumInfo update success!!";
   }

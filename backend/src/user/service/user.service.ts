@@ -36,9 +36,7 @@ export class UserService {
     const user = await this.userRepository.findOne({ userId });
     if (!user) throw new NotFoundException(`Not found user with the id ${userId}`);
 
-    user.profileImage = profileImage;
-    user.userNickname = userNickname;
-    this.userRepository.save(user);
+    this.userRepository.update(userId, { profileImage, userNickname });
 
     return "UserInfo update success!!";
   }
