@@ -24,8 +24,7 @@ export class UserService {
 
   async getUserInfo(userId: number): Promise<UserInfoResponseDto> {
     const user = await this.userRepository.findOne({ userId });
-
-    if (!user) throw new NotFoundException("Can not find User");
+    if (!user) throw new NotFoundException(`Not found user with the id ${userId}`);
 
     const { profileImage, userNickname } = user;
     return { profileImage, userNickname };
@@ -34,8 +33,7 @@ export class UserService {
   async updateUserInfo(userId: number, updateUserInfoRequestDto: UpdateUserInfoRequestDto): Promise<string> {
     const { profileImage, userNickname } = updateUserInfoRequestDto;
     const user = await this.userRepository.findOne({ userId });
-
-    if (!user) throw new NotFoundException("Can not find User");
+    if (!user) throw new NotFoundException(`Not found user with the id ${userId}`);
 
     user.profileImage = profileImage;
     user.userNickname = userNickname;

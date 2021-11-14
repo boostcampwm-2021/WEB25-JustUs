@@ -39,6 +39,7 @@ export class GroupService {
     });
 
     const user = await this.userRepository.findOne(userId, { relations: ["groups"] });
+    if (!user) throw new NotFoundException(`Not found user with the id ${userId}`);
     user.groups.push(group);
     this.userRepository.save(user);
 
@@ -60,7 +61,10 @@ export class GroupService {
     const { userId, code } = attendGroupRequestDto;
 
     const group = await this.groupRepository.findOne({ groupCode: code });
+    if (!group) throw new NotFoundException(`Not found group with the code ${code}`);
+
     const user = await this.userRepository.findOne(userId, { relations: ["groups"] });
+    if (!user) throw new NotFoundException(`Not found user with the id ${userId}`);
 
     user.groups.push(group);
     this.userRepository.save(user);
@@ -80,7 +84,7 @@ export class GroupService {
     const { groupImage, groupName } = updateGroupInfoRequestDto;
 
     const group = await this.groupRepository.findOne({ groupId });
-    if (!group) throw new NotFoundException("Can not find Group");
+    if (!group) throw new NotFoundException(`Not found group with the id ${groupId}`);
 
     group.groupImage = groupImage;
     group.groupName = groupName;
@@ -96,6 +100,7 @@ export class GroupService {
     if (!result.affected) throw new NotFoundException("그룹에 해당 유저가 없습니다.");
 
     const group = await this.groupRepository.findOne(groupId, { relations: ["users", "albums"] });
+    if (!group) throw new NotFoundException(`Not found group with the id ${groupId}`);
     const { users } = group;
 
     if (!users.length) this.groupRepository.softRemove(group);

@@ -48,7 +48,8 @@ export class PostService {
   }
 
   async getPostInfo(postId: number): Promise<GetPostInfoResponseDto> {
-    const post = await this.postRepository.readPostQuery(postId);
+    const post = await this.postRepository.getPostQuery(postId);
+    if (!post) throw new NotFoundException(`Not found post with the id ${postId}`);
 
     const { user, postTitle, postContent, postDate, postLocation, images } = post;
     const userId = user.userId;
@@ -71,6 +72,7 @@ export class PostService {
     } = updatePostInfoRequestDto;
 
     const post = await this.postRepository.findOne(postId, { relations: ["user"] });
+    if (!post) throw new NotFoundException(`Not found post with the id ${postId}`);
 
     const postUserId = post.user.userId;
     if (postUserId !== userId) throw new NotFoundException("It cannot be updated because it is not the author.");
