@@ -1,11 +1,11 @@
-import { Body, Controller, Get, HttpCode, Param, Post, Put, Delete, UseGuards } from "@nestjs/common";
+import { Body, Controller, Req, Get, HttpCode, Param, Post, Put, Delete, UseGuards } from "@nestjs/common";
+import { CustomRequest } from "src/myRequest/customRequest";
 import { JwtAuthGuard } from "src/auth/guard/jwt-auth-guard";
 import { GroupService } from "../service/group.service";
 import { CreateGroupRequestDto } from "src/dto/group/createGroupRequest.dto";
 import { AttendGroupRequestDto } from "src/dto/group/attendGroupRequest.dto";
 import { GetGroupInfoResponseDto } from "src/dto/group/getGroupInfoResponse.dto";
 import { UpdateGroupInfoRequestDto } from "src/dto/group/updateGroupInfoRequest.dto";
-import { LeaveGroupDto } from "src/dto/group/leaveGroupRequest.dto";
 import { GetAlbumsResponseDto } from "src/dto/group/getAlbumsResponse.dto";
 
 @UseGuards(JwtAuthGuard)
@@ -15,14 +15,16 @@ export class GroupController {
 
   @Post()
   @HttpCode(200)
-  CreateGroup(@Body() createGroupRequestDto: CreateGroupRequestDto): Promise<number> {
-    return this.groupService.createGroup(createGroupRequestDto);
+  CreateGroup(@Req() { user }: CustomRequest, @Body() createGroupRequestDto: CreateGroupRequestDto): Promise<number> {
+    const { userId } = user;
+    return this.groupService.createGroup(userId, createGroupRequestDto);
   }
 
   @Post("/join")
   @HttpCode(200)
-  AttendGroup(@Body() attendGroupRequestDto: AttendGroupRequestDto): Promise<number> {
-    return this.groupService.attendGroup(attendGroupRequestDto);
+  AttendGroup(@Req() { user }: CustomRequest, @Body() attendGroupRequestDto: AttendGroupRequestDto): Promise<number> {
+    const { userId } = user;
+    return this.groupService.attendGroup(userId, attendGroupRequestDto);
   }
 
   @Get("/:groupId")
@@ -45,7 +47,8 @@ export class GroupController {
   }
 
   @Delete("/:groupId")
-  LeaveGroup(@Param("groupId") groupId: number, @Body() leaveGroupDto: LeaveGroupDto): Promise<string> {
-    return this.groupService.leaveGroup(groupId, leaveGroupDto);
+  LeaveGroup(@Req() { user }: CustomRequest, @Param("groupId") groupId: number): Promise<string> {
+    const { userId } = user;
+    return this.groupService.leaveGroup(userId, groupId);
   }
 }

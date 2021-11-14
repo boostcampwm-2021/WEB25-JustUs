@@ -1,4 +1,5 @@
-import { Body, Controller, Delete, Get, HttpCode, Param, Post, Put, UseGuards } from "@nestjs/common";
+import { Body, Req, Controller, Delete, Get, HttpCode, Param, Post, Put, UseGuards } from "@nestjs/common";
+import { CustomRequest } from "src/myRequest/customRequest";
 import { JwtAuthGuard } from "src/auth/guard/jwt-auth-guard";
 import { PostService } from "../service/post.service";
 import { CreatePostRequestDto } from "src/dto/post/createPostRequest.dto";
@@ -12,8 +13,9 @@ export class PostController {
 
   @Post()
   @HttpCode(200)
-  CreatePost(@Body() createPostRequestDto: CreatePostRequestDto): Promise<number> {
-    return this.postService.createPost(createPostRequestDto);
+  CreatePost(@Req() { user }: CustomRequest, @Body() createPostRequestDto: CreatePostRequestDto): Promise<number> {
+    const { userId } = user;
+    return this.postService.createPost(userId, createPostRequestDto);
   }
 
   @Get("/:postId")
@@ -23,10 +25,12 @@ export class PostController {
 
   @Put("/:postId")
   UpdatePost(
+    @Req() { user }: CustomRequest,
     @Param("postId") postId: number,
     @Body() updatePostInfoRequestDto: UpdatePostInfoRequestDto,
   ): Promise<string> {
-    return this.postService.updatePostInfo(postId, updatePostInfoRequestDto);
+    const { userId } = user;
+    return this.postService.updatePostInfo(userId, postId, updatePostInfoRequestDto);
   }
 
   @Delete("/:postId")

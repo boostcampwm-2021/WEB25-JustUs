@@ -20,8 +20,8 @@ export class PostService {
     private albumRepository: AlbumRepository,
   ) {}
 
-  async createPost(createPostRequestDto: CreatePostRequestDto): Promise<number> {
-    const { postTitle, postContent, postImages, postDate, postLocation, postLatitude, postLongitude, userId, albumId } =
+  async createPost(userId: number, createPostRequestDto: CreatePostRequestDto): Promise<number> {
+    const { postTitle, postContent, postImages, postDate, postLocation, postLatitude, postLongitude, albumId } =
       createPostRequestDto;
 
     const user = await this.userRepository.findOne({ userId });
@@ -58,18 +58,13 @@ export class PostService {
     return { userId, userNickname, postTitle, postContent, postDate, postLocation, images };
   }
 
-  async updatePostInfo(postId: number, updatePostInfoRequestDto: UpdatePostInfoRequestDto): Promise<string> {
-    const {
-      postTitle,
-      postContent,
-      deleteImagesId,
-      addImages,
-      postDate,
-      postLocation,
-      postLatitude,
-      postLongitude,
-      userId,
-    } = updatePostInfoRequestDto;
+  async updatePostInfo(
+    userId: number,
+    postId: number,
+    updatePostInfoRequestDto: UpdatePostInfoRequestDto,
+  ): Promise<string> {
+    const { postTitle, postContent, deleteImagesId, addImages, postDate, postLocation, postLatitude, postLongitude } =
+      updatePostInfoRequestDto;
 
     const post = await this.postRepository.findOne(postId, { relations: ["user"] });
     if (!post) throw new NotFoundException(`Not found post with the id ${postId}`);
