@@ -7,6 +7,7 @@ export class JwtAuthGuard extends AuthGuard("jwt") {
   constructor(private jwtService: JwtService) {
     super();
   }
+
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
     const response = context.switchToHttp().getResponse();
@@ -14,6 +15,7 @@ export class JwtAuthGuard extends AuthGuard("jwt") {
     const { accessToken, refreshToken } = request.cookies;
 
     const validationAccessToken = await this.validateToken(accessToken);
+
     if (validationAccessToken) {
       request.user = validationAccessToken;
       return true;
@@ -33,6 +35,7 @@ export class JwtAuthGuard extends AuthGuard("jwt") {
 
   async validateToken(token: string): Promise<{ userId: number }> {
     const { userId } = await this.jwtService.verify(token);
+
     return { userId: userId };
   }
 
