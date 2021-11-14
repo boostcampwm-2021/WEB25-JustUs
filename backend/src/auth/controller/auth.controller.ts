@@ -1,10 +1,7 @@
 import { Controller, Get, Req, Res, UseGuards } from "@nestjs/common";
-import { Request, Response } from "express";
+import { Response } from "express";
 import { NaverOauthGuard } from "../guard/naver-auth.guard";
-
-interface myRequest extends Request {
-  user: { accessToken: string };
-}
+import { CustomRequest } from "src/myRequest/customRequest";
 
 @Controller("/api/login")
 export class AuthController {
@@ -16,10 +13,11 @@ export class AuthController {
 
   @Get("/oauth/callback")
   @UseGuards(NaverOauthGuard)
-  async naverAuthRedirect(@Req() req: myRequest, @Res() res: Response) {
-    const accessToken = req.user.accessToken;
+  async naverAuthRedirect(@Req() req: CustomRequest, @Res() res: Response) {
+    const { accessToken, refreshToken } = req.user;
 
     res.cookie("accessToken", accessToken);
+    res.cookie("refreshToken", refreshToken);
     res.redirect("/");
     res.end();
   }

@@ -17,6 +17,9 @@ export class User extends TimeStampEntity {
   @Column()
   userEmail: string;
 
+  @Column()
+  refreshToken: string;
+
   @ManyToMany(() => Group)
   @JoinTable({ name: "users_groups_TB" })
   groups: Group[];
