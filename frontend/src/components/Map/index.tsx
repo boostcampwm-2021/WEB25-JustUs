@@ -129,6 +129,7 @@ const Map = () => {
   }, [selectedPost]);
 
   const modalOpen = () => {
+    dispatch({ type: "SET_ADDRESS", payload: "" });
     dispatch({ type: "OPEN_MODAL", payload: "PostCreateModal" });
   };
 

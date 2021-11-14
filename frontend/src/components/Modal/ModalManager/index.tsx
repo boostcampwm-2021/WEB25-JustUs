@@ -1,4 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
+import UploadAddressModal from "@components/Map/Modal/UploadAddressModal";
 import PostCreateModal from "../PostCreateModal";
 import PostShowModal from "../PostShowModal";
 import CreateGroupModal from "@components/Sidebar/FirstDepth/AddGroupButton/Modal/InnerModal/CreateGroupModal";
@@ -23,6 +24,7 @@ const ModalManager = ({ setIsToggle }: ModalManagerProps) => {
   return (
     <>
       {nowModal === "" && <CloseModal />}
+      {nowModal === "UploadAddressModal" && <UploadAddressModal />}
       {nowModal === "PostCreateModal" && <PostCreateModal />}
       {nowModal === "PostShowModal" && <PostShowModal />}
       {nowModal === "CreateGroupModal" && <CreateGroupModal />}

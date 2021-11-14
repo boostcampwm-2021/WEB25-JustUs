@@ -1,5 +1,6 @@
 const initState: {
   nowModal: string;
+  nowAddress: string;
   selectedAlbum: { albumID: number; albumName: string };
   selectedPost: {
     postID: number;
@@ -11,6 +12,7 @@ const initState: {
   };
 } = {
   nowModal: "",
+  nowAddress: "",
   selectedAlbum: {
     albumID: -1,
     albumName: "",

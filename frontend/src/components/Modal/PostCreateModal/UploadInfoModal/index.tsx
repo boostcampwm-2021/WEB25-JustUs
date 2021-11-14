@@ -2,9 +2,9 @@
 import React, { useEffect, useState, useRef, ChangeEvent } from "react";
 import styled from "styled-components";
 import COLOR from "@styles/Color";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Carousel from "@components/Modal/PostCreateModal/UploadInfoModal/Carousel";
-
+import { RootState } from "@src/reducer";
 import ModalSub from "./ModalSub";
 
 interface FileObject {
@@ -33,6 +33,7 @@ const UploadInfoModal = ({ changeMode, files }: UploadInfoModalProps) => {
   const highlightsRef = useRef() as React.MutableRefObject<HTMLDivElement>;
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const backdropRef = useRef<HTMLDivElement>(null);
+  const { address }: any = useSelector((state: RootState) => state.address);
 
   const closeModal = () => {
     dispatch({ type: "CLOSE_MODAL" });
@@ -68,7 +69,7 @@ const UploadInfoModal = ({ changeMode, files }: UploadInfoModalProps) => {
   };
 
   useEffect(() => {
-    if (title.length == 0) setActivate(false);
+    if (title.length === 0) setActivate(false);
     else setActivate(true);
   }, [title]);
 
@@ -108,9 +109,13 @@ const UploadInfoModal = ({ changeMode, files }: UploadInfoModalProps) => {
             <InputBottom>
               <InputDate type="date" />
               <InputPlace>
-                <InputPlaceName>
-                  {Object.keys(selectedLocation).length === 0 ? "장소를 선택하세요." : selectedLocation.place_name}
-                </InputPlaceName>
+                {address === "" ? (
+                  <InputPlaceName>
+                    {Object.keys(selectedLocation).length === 0 ? "장소를 선택하세요." : selectedLocation.place_name}
+                  </InputPlaceName>
+                ) : (
+                  <InputPlaceName>{address}</InputPlaceName>
+                )}
                 <LocationButton onClick={onClickLocationBtn}>
                   <img src="/icons/location.svg" width="100%" />
                 </LocationButton>
