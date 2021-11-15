@@ -1,4 +1,17 @@
-import { Body, Req, Controller, Delete, Get, HttpCode, Param, Post, Put, UseGuards } from "@nestjs/common";
+import {
+  Body,
+  Req,
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  Param,
+  Post,
+  Put,
+  UseGuards,
+  UseInterceptors,
+  UploadedFiles,
+} from "@nestjs/common";
 import { ApiTags, ApiOkResponse, ApiParam, ApiResponse, ApiBearerAuth } from "@nestjs/swagger";
 import { CustomRequest } from "src/myRequest/customRequest";
 import { JwtAuthGuard } from "src/auth/guard/jwt-auth-guard";
@@ -6,6 +19,8 @@ import { PostService } from "../service/post.service";
 import { CreatePostRequestDto } from "src/dto/post/createPostRequest.dto";
 import { GetPostInfoResponseDto } from "src/dto/post/getPostInfoResponse.dto";
 import { UpdatePostInfoRequestDto } from "src/dto/post/updatePostInfoRequest.dto";
+import { FilesInterceptor } from "@nestjs/platform-express";
+import { multerOption } from "src/image/service/image.service";
 
 @ApiTags("게시글 API")
 @ApiBearerAuth()
@@ -16,10 +31,15 @@ export class PostController {
 
   @Post()
   @HttpCode(200)
+  //@UseInterceptors(FilesInterceptor("upload", 5, multerOption))
   @ApiResponse({ type: Number, description: "생성된 게시글 ID", status: 200 })
-  CreatePost(@Req() { user }: CustomRequest, @Body() createPostRequestDto: CreatePostRequestDto): Promise<number> {
+  CreatePost(
+    @Req() { user }: CustomRequest,
+    @Body() createPostRequestDto: CreatePostRequestDto,
+    //@UploadedFiles() files: Express.Multer.File[],
+  ): Promise<number> {
     const { userId } = user;
-
+    //console.log(files);
     return this.postService.createPost(userId, createPostRequestDto);
   }
 
