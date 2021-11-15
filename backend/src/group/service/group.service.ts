@@ -8,7 +8,7 @@ import { CreateGroupRequestDto } from "src/dto/group/createGroupRequest.dto";
 import { AttendGroupRequestDto } from "src/dto/group/attendGroupRequest.dto";
 import { GetGroupInfoResponseDto } from "src/dto/group/getGroupInfoResponse.dto";
 import { UpdateGroupInfoRequestDto } from "src/dto/group/updateGroupInfoRequest.dto";
-import { LeaveGroupDto } from "src/dto/group/leaveGroupRequest.dto";
+import { GetAlbumsResponseDto } from "src/dto/group/getAlbumsResponse.dto";
 
 @Injectable()
 export class GroupService {
@@ -21,8 +21,8 @@ export class GroupService {
     private albumRepository: AlbumRepository,
   ) {}
 
-  async createGroup(createGroupRequestDto: CreateGroupRequestDto): Promise<number> {
-    const { userId, groupImage, groupName } = createGroupRequestDto;
+  async createGroup(userId: number, createGroupRequestDto: CreateGroupRequestDto): Promise<number> {
+    const { groupImage, groupName } = createGroupRequestDto;
     const groupCode = await this.createInvitaionCode();
 
     const group = await this.groupRepository.save({
@@ -38,6 +38,7 @@ export class GroupService {
     });
 
     const user = await this.userRepository.findOne(userId, { relations: ["groups"] });
+    if (!user) throw new NotFoundException(`Not found user with the id ${userId}`);
     user.groups.push(group);
     this.userRepository.save(user);
 
@@ -55,11 +56,14 @@ export class GroupService {
     return code;
   }
 
-  async attendGroup(attendGroupRequestDto: AttendGroupRequestDto): Promise<number> {
-    const { userId, code } = attendGroupRequestDto;
+  async attendGroup(userId: number, attendGroupRequestDto: AttendGroupRequestDto): Promise<number> {
+    const { code } = attendGroupRequestDto;
 
     const group = await this.groupRepository.findOne({ groupCode: code });
+    if (!group) throw new NotFoundException(`Not found group with the code ${code}`);
+
     const user = await this.userRepository.findOne(userId, { relations: ["groups"] });
+    if (!user) throw new NotFoundException(`Not found user with the id ${userId}`);
 
     user.groups.push(group);
     this.userRepository.save(user);
@@ -68,7 +72,7 @@ export class GroupService {
   }
 
   async getGroupInfo(groupId: number): Promise<GetGroupInfoResponseDto> {
-    const group = await this.groupRepository.readGroupQuery(groupId);
+    const group = await this.groupRepository.getGroupQuery(groupId);
     if (!group) throw new NotFoundException(`Not found group with the id ${groupId}`);
 
     const { groupCode, users } = group;
@@ -79,26 +83,30 @@ export class GroupService {
     const { groupImage, groupName } = updateGroupInfoRequestDto;
 
     const group = await this.groupRepository.findOne({ groupId });
-    if (!group) throw new NotFoundException("Can not find Group");
+    if (!group) throw new NotFoundException(`Not found group with the id ${groupId}`);
 
-    group.groupImage = groupImage;
-    group.groupName = groupName;
-    this.groupRepository.save(group);
+    this.groupRepository.update(groupId, { groupImage, groupName });
 
     return "GroupInfo update success!!";
   }
 
-  async leaveGroup(groupId: number, leaveGroupDto: LeaveGroupDto): Promise<string> {
-    const { userId } = leaveGroupDto;
-
+  async leaveGroup(userId: number, groupId: number): Promise<string> {
     const result = await this.groupRepository.leaveGroupQuery(groupId, userId);
     if (!result.affected) throw new NotFoundException("그룹에 해당 유저가 없습니다.");
 
-    const group = await this.groupRepository.readGroupQuery(groupId);
+    const group = await this.groupRepository.findOne(groupId, { relations: ["users", "albums"] });
+    if (!group) throw new NotFoundException(`Not found group with the id ${groupId}`);
     const { users } = group;
 
-    if (!users.length) this.groupRepository.softDelete({ groupId });
+    if (!users.length) this.groupRepository.softRemove(group);
 
     return "Group leave success!!";
+  }
+
+  async getAlbums(groupId: number): Promise<GetAlbumsResponseDto> {
+    const albumsInfo = await this.groupRepository.getAlbumsQuery(groupId);
+    if (!albumsInfo) throw new NotFoundException(`Not found group with the id ${groupId}`);
+
+    return albumsInfo;
   }
 }

@@ -17,10 +17,13 @@ export class User extends TimeStampEntity {
   @Column()
   userEmail: string;
 
+  @Column({ nullable: true })
+  refreshToken: string;
+
   @ManyToMany(() => Group)
   @JoinTable({ name: "users_groups_TB" })
   groups: Group[];
 
-  @OneToMany(() => Post, post => post.user)
+  @OneToMany(() => Post, post => post.user, { cascade: true })
   posts: Post[];
 }
