@@ -2,6 +2,7 @@ import { combineReducers } from "redux";
 import GroupModalReducer from "./GroupModalReducer";
 import groupReducer from "./GroupReducer";
 import ModalReducer from "./Modal";
+import AddressReducer from "./AddressReducer";
 import Theme from "./Theme";
 
 const rootReducer = combineReducers({
@@ -9,6 +10,7 @@ const rootReducer = combineReducers({
   groups: groupReducer,
   modal: ModalReducer,
   theme: Theme,
+  address: AddressReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
