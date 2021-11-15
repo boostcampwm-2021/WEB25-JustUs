@@ -51,16 +51,16 @@ export class ImageService {
     });
   }
 
-  updateImages(post: Post, addImages: string[], deleteImagesId: number[]): void {
+  async updateImages(post: Post, addImages: string[], deleteImagesId: number[]): Promise<void> {
     deleteImagesId.forEach(imageId => {
       this.imageRepository.softRemove({ imageId });
     });
-    addImages.forEach(e => {
-      this.imageRepository.save({
-        imageUrl: e,
+    for (const image of addImages) {
+      await this.imageRepository.save({
+        imageUrl: image,
         post: post,
       });
-    });
+    }
   }
 
   deleteImage(images: number[]): void {

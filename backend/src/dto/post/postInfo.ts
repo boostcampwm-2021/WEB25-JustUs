@@ -1,5 +1,6 @@
-import { IsNotEmpty, IsOptional, IsString } from "class-validator";
+import { IsNotEmpty, IsOptional, IsString, IsNumber } from "class-validator";
 import { ApiProperty } from "@nestjs/swagger";
+import { Transform } from "class-transformer";
 
 export class PostInfo {
   @IsString()
@@ -22,13 +23,15 @@ export class PostInfo {
   @ApiProperty()
   postLocation: string;
 
-  //@IsNumber()
+  @IsNumber()
   @IsNotEmpty()
+  @Transform(({ value }) => Number(value))
   @ApiProperty()
   postLatitude: number;
 
-  //@IsNumber()
+  @IsNumber()
   @IsNotEmpty()
+  @Transform(({ value }) => Number(value))
   @ApiProperty()
   postLongitude: number;
 }

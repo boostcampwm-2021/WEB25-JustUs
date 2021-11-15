@@ -31,7 +31,7 @@ export class PostController {
 
   @Post()
   @HttpCode(200)
-  @UseInterceptors(FilesInterceptor("upload", 5, multerOption))
+  @UseInterceptors(FilesInterceptor("postImage", 5, multerOption))
   @ApiResponse({ type: Number, description: "생성된 게시글 ID", status: 200 })
   CreatePost(
     @Req() { user }: CustomRequest,
@@ -51,15 +51,18 @@ export class PostController {
   }
 
   @Put("/:postId")
+  @UseInterceptors(FilesInterceptor("addImage", 5, multerOption))
   @ApiParam({ name: "postId", type: Number })
   @ApiOkResponse({ description: "게시글 수정 성공" })
   UpdatePost(
     @Req() { user }: CustomRequest,
     @Param("postId") postId: number,
     @Body() updatePostInfoRequestDto: UpdatePostInfoRequestDto,
+    @UploadedFiles() files: Express.Multer.File[],
   ): Promise<string> {
     const { userId } = user;
-    return this.postService.updatePostInfo(userId, postId, updatePostInfoRequestDto);
+
+    return this.postService.updatePostInfo(userId, postId, files, updatePostInfoRequestDto);
   }
 
   @Delete("/:postId")
