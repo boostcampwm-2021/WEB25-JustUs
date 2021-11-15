@@ -379,7 +379,6 @@ const ModalHeader = styled.div`
   padding: 1vw;
   height: 60px;
   box-sizing: border-box;
-  border-bottom: 1px solid ${COLOR.BLACK};
   font-size: max(1.2vw, 20px);
 `;
 const ModalTitle = styled.div`
