@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import COLOR from "@src/styles/Color";
 import React, { useState, useEffect, Dispatch, SetStateAction } from "react";
 import { flexRowCenterAlign } from "@src/styles/StyledComponents";

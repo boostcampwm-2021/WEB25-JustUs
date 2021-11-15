@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import Modal from "@components/Modal";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
@@ -69,6 +69,16 @@ const UserInfoModal = () => {
   );
 };
 
+const modalSlideUp = keyframes`
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  30% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
 const ThemeListInfo = styled.div`
   display: flex;
   padding: 10px;
@@ -127,6 +137,8 @@ const ModalContainer = styled.div`
   border-radius: 50px;
   display: flex;
   flex-direction: column;
+  animation-name: ${modalSlideUp};
+  animation-duration: 1s;
 `;
 
 const Container = styled.div`

@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { flexRowCenterAlign } from "@styles/StyledComponents";
 import Modal from "@components/Modal";
 import { useDispatch } from "react-redux";
@@ -58,6 +58,16 @@ const UpdateAlbumModal = () => {
   );
 };
 
+const modalSlideUp = keyframes`
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  30% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
 const ModalContainer = styled.div`
   background-color: ${COLOR.WHITE};
   min-height: 40vh;
@@ -65,6 +75,8 @@ const ModalContainer = styled.div`
   border-radius: 50px;
   display: flex;
   flex-direction: column;
+  animation-name: ${modalSlideUp};
+  animation-duration: 1s;
 `;
 
 const Header = styled.div`

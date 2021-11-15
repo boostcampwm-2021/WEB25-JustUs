@@ -1,5 +1,5 @@
 import { useState, Dispatch, SetStateAction } from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { flexRowCenterAlign, yesNoButtonWrapper } from "@src/styles/StyledComponents";
 import Modal from "@components/Modal";
 import { useDispatch, useSelector } from "react-redux";
@@ -68,7 +68,7 @@ const SettingGroupModal = ({ setIsToggle }: SettingGroupModalProps) => {
   return (
     <Modal>
       <ModalContainer
-        onClick={event => {
+        onClick={(event) => {
           event.nativeEvent.stopImmediatePropagation();
         }}
       >
@@ -87,7 +87,7 @@ const SettingGroupModal = ({ setIsToggle }: SettingGroupModalProps) => {
             <GroupMemberListWrapper>
               <GroupMemberListGuide>그룹원</GroupMemberListGuide>
               <GroupMemberList>
-                {groupMemberList.map(groupMember => (
+                {groupMemberList.map((groupMember) => (
                   <GroupMember key={groupMember.userID}>
                     <img src="/icons/person.svg" alt="person icon" />
                     {groupMember.userNickname}
@@ -112,6 +112,16 @@ const SettingGroupModal = ({ setIsToggle }: SettingGroupModalProps) => {
   );
 };
 
+const modalSlideUp = keyframes`
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  30% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
 const ModalContainer = styled.div`
   background-color: ${COLOR.WHITE};
   min-height: 30vw;
@@ -119,6 +129,8 @@ const ModalContainer = styled.div`
   border-radius: 50px;
   display: flex;
   flex-direction: column;
+  animation-name: ${modalSlideUp};
+  animation-duration: 1s;
 `;
 
 const Header = styled.div`

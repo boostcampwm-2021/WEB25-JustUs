@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { flexRowCenterAlign } from "@styles/StyledComponents";
 import COLOR from "@styles/Color";
 import { useDispatch } from "react-redux";
@@ -35,6 +35,16 @@ const AlbumSettingModal = ({ albumID, albumName, setModalOpenedIdx }: AlbumSetti
   );
 };
 
+const modalSlideUp = keyframes`
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  30% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
 const ModalWrapper = styled.div`
   width: 110px;
   height: 100px;
@@ -42,6 +52,8 @@ const ModalWrapper = styled.div`
   position: absolute;
   border-radius: 10px;
   z-index: 5;
+  animation-name: ${modalSlideUp};
+  animation-duration: 1s;
 `;
 const ModalItem = styled.div<{ delete: boolean }>`
   ${flexRowCenterAlign}

@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { flexRowCenterAlign } from "@styles/StyledComponents";
 import shortid from "shortid";
 import COLOR from "@styles/Color";
@@ -89,6 +89,16 @@ const UploadImageModal = ({ changeMode, files, setFiles }: UploadImageModalProps
 
 export default UploadImageModal;
 
+const modalSlideUp = keyframes`
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  30% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
 const DeleteImageBtn = styled.button`
   position: absolute;
   z-index: 1;
@@ -151,6 +161,8 @@ const ModalContainer = styled.div`
   height: 530px;
   border-radius: 10px;
   box-shadow: 0 2px 3px 0 ${COLOR.SHADOW_BLACK};
+  animation-name: ${modalSlideUp};
+  animation-duration: 1s;
 `;
 
 const ModalHeader = styled.div`
