@@ -19,6 +19,7 @@ const yesNoButtonWrapper = css`
   border-radius: 10px;
   margin-left: 30px;
   cursor: pointer;
+  font-size: 2.2rem;
 `;
 
 export { flexRowCenterAlign, flexColumnCenterAlign, yesNoButtonWrapper };

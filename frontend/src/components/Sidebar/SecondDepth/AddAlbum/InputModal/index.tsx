@@ -75,11 +75,10 @@ const AlbumCreateInputWrapper = styled.input`
   border-bottom: 1px solid ${(props) => props.theme.PRIMARY};
   width: 60%;
   text-align: center;
-  font-size: 1rem;
 
   &::-webkit-input-placeholder {
     text-align: center;
-    font-size: 1.2rem;
+    font-size: 1.6rem;
   }
 
   &:focus-visible {

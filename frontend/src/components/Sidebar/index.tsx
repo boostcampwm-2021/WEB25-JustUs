@@ -53,6 +53,7 @@ const Sidebar = ({ isToggle, setIsToggle }: SidebarProps) => {
 
 const SidebarWrapper = styled.div`
   display: flex;
+  font-size: 1.6rem;
 `;
 
 export default Sidebar;

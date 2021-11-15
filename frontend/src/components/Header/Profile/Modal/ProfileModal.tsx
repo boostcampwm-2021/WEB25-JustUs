@@ -24,7 +24,7 @@ const ProfileModal = ({ isModalOpened, setIsModalOpened }: ProfileModalProps) =>
   const dispatch = useDispatch();
   const onClickProfileItem = ({ payload }: ModalListItem) => {
     const type = "OPEN_MODAL";
-    setIsModalOpened(prev => !prev);
+    setIsModalOpened((prev) => !prev);
     dispatch({ type, payload });
   };
 
@@ -33,7 +33,7 @@ const ProfileModal = ({ isModalOpened, setIsModalOpened }: ProfileModalProps) =>
       <Container>
         <div>프로필</div>
         <ul>
-          {modalListItem.map(item => (
+          {modalListItem.map((item) => (
             <li onClick={() => onClickProfileItem(item)} key={item.id}>
               {item.name}
             </li>
@@ -56,9 +56,11 @@ const ModalWrapper = styled.div`
 
 const Container = styled.div`
   margin: 10%;
+  font-size: 2rem;
+
   & li {
     padding: 10%;
-    font-size: 1.2rem;
+
     &:hover {
       font-weight: bold;
       cursor: pointer;

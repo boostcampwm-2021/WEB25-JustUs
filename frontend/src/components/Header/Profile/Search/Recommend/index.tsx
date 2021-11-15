@@ -86,7 +86,7 @@ const SearchListContainer = styled.div`
       border-radius: 20px;
       padding: 0.4vw;
       color: ${COLOR.WHITE};
-      font-size: 0.8rem;
+      font-size: 1.4rem;
       &:hover {
         background-color: ${(props) => props.theme.PRIMARY};
         cursor: pointer;

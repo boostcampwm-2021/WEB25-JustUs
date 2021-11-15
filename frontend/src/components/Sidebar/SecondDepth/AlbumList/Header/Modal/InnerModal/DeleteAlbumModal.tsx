@@ -94,7 +94,7 @@ const Header = styled.div`
 `;
 
 const Title = styled.div`
-  font-size: 40px;
+  font-size: 3.5rem;
 `;
 
 const CloseBtn = styled.div`

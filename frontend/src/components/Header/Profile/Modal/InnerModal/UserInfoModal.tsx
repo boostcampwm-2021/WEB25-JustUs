@@ -57,6 +57,7 @@ const UserInfoModal = () => {
         }}
       >
         <Header>
+          <Title>회원 정보</Title>
           <CloseBtn>
             <button
               type="button"
@@ -67,22 +68,21 @@ const UserInfoModal = () => {
               <img src="/icons/clear.svg" alt="clear icon" />
             </button>
           </CloseBtn>
-          <Container>
-            <Title>회원 정보</Title>
-            <Content>
-              <ImageBackground userImg={userImg}>
-                <img src={userImg} alt="person icon" ref={imageRef} width="100%" height="100%" />
-              </ImageBackground>
-              <UploadImgBtnWrapper onClick={onClickUploadBtn}>
-                <input type="file" accept="image/*" hidden ref={uploadBtnRef} onChange={loadImage} />
-                이미지 업로드
-              </UploadImgBtnWrapper>
-              <DeleteImgBtnWrapper onClick={onClickDeleteBtn}>사진 제거</DeleteImgBtnWrapper>
-              <UserNameInputWrapper placeholder="기존 닉네임" ref={userNameRef} />
-              <SaveBtnWrapper onClick={onClickCreateBtn}>저장하기</SaveBtnWrapper>
-            </Content>
-          </Container>
         </Header>
+        <Container>
+          <Content>
+            <ImageBackground userImg={userImg}>
+              <img src={userImg} alt="person icon" ref={imageRef} width="100%" height="100%" />
+            </ImageBackground>
+            <UploadImgBtnWrapper onClick={onClickUploadBtn}>
+              <input type="file" accept="image/*" hidden ref={uploadBtnRef} onChange={loadImage} />
+              이미지 업로드
+            </UploadImgBtnWrapper>
+            <DeleteImgBtnWrapper onClick={onClickDeleteBtn}>사진 제거</DeleteImgBtnWrapper>
+            <UserNameInputWrapper placeholder="기존 닉네임" ref={userNameRef} />
+            <SaveBtnWrapper onClick={onClickCreateBtn}>저장하기</SaveBtnWrapper>
+          </Content>
+        </Container>
       </ModalContainer>
     </Modal>
   );
@@ -100,17 +100,20 @@ const modalSlideUp = keyframes`
 `;
 const ModalContainer = styled.div`
   background-color: ${COLOR.WHITE};
-  min-height: 30vw;
-  min-width: 40vw;
-  border-radius: 50px;
+  min-height: 55rem;
+  min-width: 30vw;
+  border-radius: 5rem;
   display: flex;
   flex-direction: column;
   animation-name: ${modalSlideUp};
   animation-duration: 1s;
+  border-radius: 5rem;
 `;
 
 const Header = styled.div`
-  ${flexColumnCenterAlign}
+  display: grid;
+  grid-template-columns: 10% 80% 10%;
+  padding: 2rem;
 `;
 
 const Container = styled.div`
@@ -118,19 +121,16 @@ const Container = styled.div`
 `;
 
 const Title = styled.div`
-  margin-top: 20px;
-  font-size: 40px;
-  font-weight: bold;
+  font-size: 3.5rem;
   text-align: center;
+  grid-column-start: 2;
+  grid-column-end: 3;
 `;
-
 const CloseBtn = styled.div`
   width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  margin-top: 30px;
-  margin-right: 30px;
+  ${flexRowCenterAlign};
+  grid-column-start: 3;
+  grid-column-end: 4;
 
   & > button {
     background-color: ${COLOR.WHITE};
@@ -146,7 +146,7 @@ const Content = styled.div`
 `;
 
 const ImageBackground = styled.div<{ userImg: string }>`
-  margin-top: 30px;
+  margin-top: 4rem;
   width: 90px;
   height: 90px;
   background-color: ${(props) => props.theme.SECONDARY};
@@ -157,12 +157,12 @@ const ImageBackground = styled.div<{ userImg: string }>`
 
 const UploadImgBtnWrapper = styled.div`
   cursor: pointer;
-  margin-top: 20px;
+  margin-top: 4rem;
   border-radius: 10px;
   border: 2px solid ${(props) => props.theme.PRIMARY};
   font-weight: bold;
-  font-size: 15px;
-  line-height: 16px;
+  font-size: 1.6rem;
+  line-height: 1rem;
   width: 150px;
   height: 33px;
   ${flexRowCenterAlign}
@@ -173,19 +173,20 @@ const DeleteImgBtnWrapper = styled.div`
   margin-top: 20px;
   color: ${COLOR.BLUE};
   font-weight: bold;
+  font-size: 1.6rem;
 `;
 
 const UserNameInputWrapper = styled.input`
-  margin-top: 30px;
+  margin-top: 4rem;
   border: none;
   width: 200px;
-  font-size: 15px;
+  font-size: 1.6rem;
   border-bottom: 1px solid ${(props) => props.theme.PRIMARY};
 
   &::-webkit-input-placeholder {
     text-align: center;
     font-weight: 800;
-    font-size: 1rem;
+    font-size: 1.6rem;
   }
   &:focus-visible {
     outline: none;
@@ -195,12 +196,13 @@ const UserNameInputWrapper = styled.input`
 const SaveBtnWrapper = styled.div`
   cursor: pointer;
   width: 10rem;
-  height: 2.5rem;
+  height: 4rem;
   border-radius: 1rem;
   color: ${COLOR.WHITE};
   background-color: ${(props) => props.theme.PRIMARY};
   ${flexRowCenterAlign}
-  margin-top: 3rem;
+  margin-top: 4rem;
+  font-size: 1.6rem;
 `;
 
 export default UserInfoModal;

@@ -92,6 +92,9 @@ const SearchInput = styled.input`
   &:focus-visible {
     outline: none;
   }
+  &::-webkit-input-placeholder {
+    font-size: 1.6rem;
+  }
 `;
 
 export default Search;

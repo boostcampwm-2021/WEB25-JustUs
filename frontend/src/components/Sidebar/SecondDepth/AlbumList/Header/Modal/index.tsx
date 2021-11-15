@@ -60,6 +60,8 @@ const ModalItem = styled.div<{ delete: boolean }>`
   height: 50%;
   cursor: pointer;
   color: ${(props) => (props.delete ? COLOR.RED : COLOR.BLACK)};
+  font-size: 1.6rem;
+
   &:hover {
     opacity: 0.5;
   }

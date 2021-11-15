@@ -174,7 +174,7 @@ const ModalSubWrapper = styled.div<{ isToggle: boolean }>`
   display: flex;
   flex-direction: column;
   border-left: 1px solid ${COLOR.BLACK};
-  width: ${(props) => (props.isToggle ? "13rem" : "0")};
+  width: ${(props) => (props.isToggle ? "22rem" : "0")};
   z-index: ${(props) => (props.isToggle ? 4 : 0)};
   animation-name: ${(props) => (props.isToggle ? SidebarOpen : SidebarHide)};
   animation-duration: 1s;
@@ -186,7 +186,7 @@ const ModalHeader = styled.div`
   height: 60px;
   box-sizing: border-box;
   border-bottom: 1px solid ${COLOR.BLACK};
-  font-size: max(1.2vw, 20px);
+  font-size: 1.6rem;
 `;
 const SearchContainer = styled.div`
   display: flex;
@@ -198,20 +198,25 @@ const SearchContainer = styled.div`
   border-radius: 5px;
   padding: 0.5vh 0;
   & > img {
-    padding: 0 0.5vw;
+    // padding: 0 0.5vw;
+    padding-right: 1rem;
   }
 `;
 const SearchInput = styled.input`
   height: 90%;
+  min-width: 14rem;
   border: none;
   &:focus-visible {
     outline: none;
+  }
+  &::-webkit-input-placeholder {
+    font-size: 1.6rem;
   }
 `;
 const CloseBtn = styled.div<{ isToggle: boolean }>`
   ${flexRowCenterAlign}
   position: absolute;
-  left: 85%;
+  left: 90%;
   width: 3rem;
   height: 3.71rem;
   background-color: ${COLOR.WHITE};

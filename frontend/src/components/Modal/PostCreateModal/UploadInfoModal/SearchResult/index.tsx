@@ -72,18 +72,18 @@ const PlaceWrapper = styled.div`
   }
 `;
 const PlaceName = styled.div`
-  font-size: 1rem;
+  font-size: 1.6rem;
   font-weight: bold;
   margin-top: 0.3rem;
 `;
 const RoadAddressName = styled.div`
-  font-size: 0.8rem;
+  font-size: 1.4rem;
   margin-top: 0.3rem;
 `;
 const AddressName = styled.div`
   display: flex;
   color: ${COLOR.DARKGRAY};
-  font-size: 0.8rem;
+  font-size: 1rem;
   margin: 0.3rem 0;
 `;
 

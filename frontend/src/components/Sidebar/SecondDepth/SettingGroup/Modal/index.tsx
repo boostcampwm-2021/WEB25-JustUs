@@ -1,6 +1,6 @@
 import { useState, Dispatch, SetStateAction } from "react";
 import styled, { keyframes } from "styled-components";
-import { flexRowCenterAlign, yesNoButtonWrapper } from "@src/styles/StyledComponents";
+import { flexColumnCenterAlign, flexRowCenterAlign, yesNoButtonWrapper } from "@src/styles/StyledComponents";
 import Modal from "@components/Modal";
 import { useDispatch, useSelector } from "react-redux";
 import COLOR from "@styles/Color";
@@ -73,12 +73,14 @@ const SettingGroupModal = ({ setIsToggle }: SettingGroupModalProps) => {
         }}
       >
         <Header>
+          <Title>그룹 설정</Title>
           <CloseBtn>
             <button type="button" onClick={closeModal}>
               <img src="/icons/clear.svg" alt="clear icon" />
             </button>
           </CloseBtn>
-          <Title>그룹 설정</Title>
+        </Header>
+        <ContentWrapper>
           <Content>
             <JoinCodeWrapper>
               <JoinCodeGuide>초대 코드</JoinCodeGuide>
@@ -89,8 +91,10 @@ const SettingGroupModal = ({ setIsToggle }: SettingGroupModalProps) => {
               <GroupMemberList>
                 {groupMemberList.map((groupMember) => (
                   <GroupMember key={groupMember.userID}>
-                    <img src="/icons/person.svg" alt="person icon" />
-                    {groupMember.userNickname}
+                    <GroupImg>
+                      <img src="/icons/person.svg" alt="person icon" />
+                    </GroupImg>
+                    <MemberNickname>{groupMember.userNickname}</MemberNickname>
                   </GroupMember>
                 ))}
               </GroupMemberList>
@@ -106,7 +110,7 @@ const SettingGroupModal = ({ setIsToggle }: SettingGroupModalProps) => {
               )}
             </GroupDropWrapper>
           </Content>
-        </Header>
+        </ContentWrapper>
       </ModalContainer>
     </Modal>
   );
@@ -124,33 +128,31 @@ const modalSlideUp = keyframes`
 `;
 const ModalContainer = styled.div`
   background-color: ${COLOR.WHITE};
-  min-height: 30vw;
-  min-width: 40vw;
-  border-radius: 50px;
-  display: flex;
-  flex-direction: column;
+  min-height: 65rem;
+  min-width: 35vw;
+  border-radius: 2rem;
   animation-name: ${modalSlideUp};
   animation-duration: 1s;
 `;
 
 const Header = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  display: grid;
+  grid-template-columns: 10% 80% 10%;
 `;
 
 const Title = styled.div`
-  margin-top: 20px;
-  font-size: 40px;
+  font-size: 3.5rem;
+  grid-column-start: 2;
+  grid-column-end: 3;
+  ${flexRowCenterAlign}
+  padding: 2rem;
 `;
 
 const CloseBtn = styled.div`
   width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  margin-top: 30px;
-  margin-right: 30px;
+  ${flexRowCenterAlign}
+  grid-column-start: 3;
+  grid-column-end: 4;
 
   & > button {
     background-color: ${COLOR.WHITE};
@@ -159,17 +161,20 @@ const CloseBtn = styled.div`
   }
 `;
 
+const ContentWrapper = styled.div`
+  ${flexColumnCenterAlign}
+`;
 const Content = styled.div`
   width: 80%;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  justify-content: center;
   font-size: 24px;
 `;
 
 const JoinCodeWrapper = styled.div`
   width: 100%;
-  margin-top: 20px;
+  margin-top: 3rem;
   display: flex;
 `;
 
@@ -184,7 +189,7 @@ const JoinCode = styled.div`
 
 const GroupMemberListWrapper = styled.div`
   width: 100%;
-  margin-top: 20px;
+  margin-top: 3rem;
   display: flex;
   height: 300px;
   overflow-y: auto;
@@ -201,12 +206,30 @@ const GroupMemberList = styled.div`
   flex-direction: column;
   margin-left: 30px;
 `;
-const GroupMember = styled.div``;
+const GroupMember = styled.div`
+  font-size: 1.6rem;
+  display: flex;
+  margin-top: 1rem;
+`;
+const GroupImg = styled.div`
+  width: 5rem;
+  height: 5rem;
+  border-radius: 100%;
+  border: 1px solid ${COLOR.GRAY};
 
+  & > img {
+    width: 5rem;
+    height: 5rem;
+  }
+`;
+const MemberNickname = styled.div`
+  ${flexRowCenterAlign};
+  margin-left: 2rem;
+`;
 const GroupDropWrapper = styled.div`
   display: flex;
   width: 100%;
-  margin-top: 20px;
+  margin-top: 3rem;
 
   & > .guide {
     font-size: 20px;
@@ -226,6 +249,7 @@ const DropGroupButtonWrapper = styled.div`
   border: 2px solid ${COLOR.RED};
   margin-left: 30px;
   cursor: pointer;
+  font-size: 2.2rem;
 `;
 
 const YesButtonWrapper = styled.div`

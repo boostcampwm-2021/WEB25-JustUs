@@ -87,25 +87,27 @@ const CreateGroupModal = () => {
         }}
       >
         <Header>
+          <TitleWrapper>
+            <div>새 그룹 생성</div>
+          </TitleWrapper>
           <CloseBtn>
             <button type="button" onClick={closeModal}>
               <img src="/icons/clear.svg" alt="clear icon" />
             </button>
           </CloseBtn>
-          <Title>새 그룹 생성</Title>
-          <Content>
-            <ImageBackground groupImg={groupImg}>
-              <img src={groupImg} alt="person icon" ref={imageRef} width="100%" height="100%" />
-            </ImageBackground>
-            <UploadImgBtnWrapper onClick={onClickUploadBtn}>
-              <input type="file" accept="image/*" hidden ref={uploadBtnRef} onChange={loadImage} />
-              이미지 업로드
-            </UploadImgBtnWrapper>
-            <DeleteImgBtnWrapper onClick={onClickDeleteBtn}>사진 제거</DeleteImgBtnWrapper>
-            <GroupNameInputWrapper placeholder="그룹 이름을 입력해주세요" ref={groupNameRef} />
-            <CreateBtnWrapper onClick={onClickCreateBtn}>생성하기</CreateBtnWrapper>
-          </Content>
         </Header>
+        <Content>
+          <ImageBackground groupImg={groupImg}>
+            <img src={groupImg} alt="person icon" ref={imageRef} width="100%" height="100%" />
+          </ImageBackground>
+          <UploadImgBtnWrapper onClick={onClickUploadBtn}>
+            <input type="file" accept="image/*" hidden ref={uploadBtnRef} onChange={loadImage} />
+            이미지 업로드
+          </UploadImgBtnWrapper>
+          <DeleteImgBtnWrapper onClick={onClickDeleteBtn}>사진 제거</DeleteImgBtnWrapper>
+          <GroupNameInputWrapper placeholder="그룹 이름을 입력해주세요" ref={groupNameRef} />
+          <CreateBtnWrapper onClick={onClickCreateBtn}>생성하기</CreateBtnWrapper>
+        </Content>
       </ModalContainer>
     </Modal>
   );
@@ -124,9 +126,9 @@ const modalSlideUp = keyframes`
 
 const ModalContainer = styled.div`
   background-color: ${COLOR.WHITE};
-  min-height: 30vw;
-  min-width: 40vw;
-  border-radius: 50px;
+  min-height: 55rem;
+  min-width: 30vw;
+  border-radius: 5rem;
   display: flex;
   flex-direction: column;
   animation-name: ${modalSlideUp};
@@ -134,26 +136,28 @@ const ModalContainer = styled.div`
 `;
 
 const Header = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  display: grid;
+  grid-template-columns: 10% 80% 10%;
+  padding: 2rem;
 `;
 
-const Title = styled.div`
-  margin-top: 20px;
-  font-size: 40px;
+const TitleWrapper = styled.div`
+  text-align: center;
+  font-size: 2.5rem;
+  grid-column-start: 2;
+  grid-column-end: 3;
+  ${flexRowCenterAlign}
 `;
 
 const CloseBtn = styled.div`
+  grid-column-start: 3;
+  grid-column-end: 4;
   width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  margin-top: 30px;
-  margin-right: 30px;
+  ${flexRowCenterAlign};
 
   & > button {
-    background-color: ${COLOR.WHITE};
+    // background-color: ${COLOR.WHITE};
+    background: transparent;
     border: none;
   }
 `;
@@ -166,9 +170,9 @@ const Content = styled.div`
 
 const ImageBackground = styled.div<{ groupImg: string }>`
   ${flexRowCenterAlign}
-  margin-top: 30px;
-  width: 90px;
-  height: 90px;
+  margin-top: 4rem;
+  width: 10rem;
+  height: 10rem;
   background-color: ${(props) => props.theme.SECONDARY};
   opacity: ${(props) => (props.groupImg === "/icons/person.svg" ? "0.4" : "")};
   border-radius: 100%;
@@ -177,11 +181,11 @@ const ImageBackground = styled.div<{ groupImg: string }>`
 const UploadImgBtnWrapper = styled.div`
   ${flexRowCenterAlign}
   cursor: pointer;
-  margin-top: 20px;
+  margin-top: 4rem;
   border-radius: 10px;
   border: 2px solid ${(props) => props.theme.PRIMARY};
   font-weight: bold;
-  font-size: 15px;
+  font-size: 1.6rem;
   line-height: 16px;
   width: 150px;
   height: 33px;
@@ -189,33 +193,35 @@ const UploadImgBtnWrapper = styled.div`
 
 const DeleteImgBtnWrapper = styled.div`
   cursor: pointer;
-  margin-top: 20px;
+  margin-top: 4rem;
   color: ${COLOR.BLUE};
   font-weight: bold;
+  font-size: 1.6rem;
 `;
 
 const GroupNameInputWrapper = styled.input`
-  margin-top: 30px;
+  margin-top: 4rem;
   border: none;
   width: 200px;
-  font-size: 15px;
+  font-size: 1.6rem;
   border-bottom: 1px solid ${(props) => props.theme.PRIMARY};
   &::-webkit-input-placeholder {
     text-align: center;
     font-weight: 800;
-    font-size: 15px;
+    font-size: 1.6rem;
   }
 `;
 
 const CreateBtnWrapper = styled.div`
   ${flexRowCenterAlign}
   cursor: pointer;
-  width: 160px;
-  height: 39px;
+  width: 7vw;
+  height: 5vh;
   border-radius: 10px;
   color: ${COLOR.WHITE};
   background-color: ${(props) => props.theme.PRIMARY};
-  margin-top: 50px;
+  margin-top: 4rem;
+  font-size: 2rem;
 `;
 
 export default CreateGroupModal;

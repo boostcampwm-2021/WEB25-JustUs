@@ -113,7 +113,7 @@ const PostTitle = styled.div`
   grid-column-start: 2;
   grid-column-end: 3;
   font-family: "NanumDaCaeSaRang";
-  font-size: 2rem;
+  font-size: 3rem;
 `;
 const MoreIconWrapper = styled.div`
   ${flexRowCenterAlign}
@@ -122,9 +122,9 @@ const MoreIconWrapper = styled.div`
   cursor: pointer;
 `;
 const ModalContent = styled.div`
-  font-size: 1.5rem;
+  font-size: 2.5rem;
   padding: 1rem 1rem 1rem 1rem;
-  overflow-y: scroll;
+  overflow-y: auto;
   font-family: "NanumDaCaeSaRang";
   white-space: pre-line;
   height: 20vh;
@@ -133,7 +133,7 @@ const ModalContent = styled.div`
     border-radius: 3px;
     color: ${COLOR.WHITE};
     background-color: ${(props) => props.theme.SECONDARY};
-    font-size: 1.5rem;
+    font-size: 2.5rem;
     font-family: "NanumDaCaeSaRang";
   }
 
@@ -144,7 +144,7 @@ const ModalContent = styled.div`
 const ModalFooter = styled.div`
   padding-top: 1rem;
   color: ${COLOR.DARKGRAY};
-  font-size: 1.5rem;
+  font-size: 2.5rem;
   display: flex;
   justify-content: flex-end;
   vertical-align: bottom;

@@ -46,7 +46,7 @@ const UserInfoModal = () => {
         <ModalHeader>
           <ModalTitle>테마 설정</ModalTitle>
           <ModalHeaderRigthBtn onClick={closeUserInfoModal}>
-            <img src="/icons/clear.svg" alt="next" height="90%"></img>
+            <img src="/icons/clear.svg" alt="next"></img>
           </ModalHeaderRigthBtn>
         </ModalHeader>
         <Container>
@@ -94,8 +94,15 @@ const ThemeList = styled.li`
   flex-direction: column;
   border: 1px solid ${COLOR.LIGHTGRAY1};
   box-sizing: border-box;
-  border-radius: 20px;
+  border-radius: 2rem;
   overflow: hidden;
+  width: 25rem;
+  height: 20rem;
+
+  & > img {
+    width: 100%;
+    height: 80%;
+  }
 `;
 const ThemeListGroup = styled.ul`
   display: flex;
@@ -105,8 +112,6 @@ const ThemeListGroup = styled.ul`
 const ModalHeaderRigthBtn = styled.button`
   grid-column-start: 3;
   grid-column-end: 4;
-  grid-row-start: 1;
-  grid-row-end: 2;
   border: none;
   background: none;
   cursor: pointer;
@@ -119,36 +124,34 @@ const ModalTitle = styled.div`
   grid-column-end: 3;
   grid-row-start: 1;
   grid-row-end: 2;
+  font-size: 2.5rem;
 `;
 
 const ModalHeader = styled.div`
   display: grid;
   grid-template-columns: 10% 80% 10%;
-  padding: 1vw;
   height: 60px;
   box-sizing: border-box;
   font-size: max(1.2vw, 20px);
+  padding: 2rem;
 `;
 
 const ModalContainer = styled.div`
   background-color: ${COLOR.WHITE};
-  height: 30vw;
-  width: 40vw;
-  border-radius: 50px;
+  min-height: 55rem;
+  min-width: 28vw;
+  border-radius: 5rem;
   display: flex;
   flex-direction: column;
   animation-name: ${modalSlideUp};
   animation-duration: 1s;
+  font-size: 1.6rem;
 `;
 
 const Container = styled.div`
   padding: 10px;
   display: flex;
   height: 100%;
-`;
-
-const Content = styled.div`
-  ${flexColumnCenterAlign}
 `;
 
 export default UserInfoModal;

@@ -194,6 +194,10 @@ const UploadButton = styled.div`
   justify-content: space-around;
   flex-direction: column;
   cursor: pointer;
+
+  & > p {
+    font-size: 1.6rem;
+  }
 `;
 
 const ModalTitle = styled.div`
@@ -203,4 +207,5 @@ const ModalTitle = styled.div`
   grid-column-end: 3;
   grid-row-start: 1;
   grid-row-end: 2;
+  font-size: 2.5rem;
 `;
