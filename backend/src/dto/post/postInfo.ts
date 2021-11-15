@@ -24,8 +24,4 @@ export class PostInfo {
   @IsNumber()
   @IsNotEmpty()
   postLongitude: number;
-
-  @IsNumber()
-  @IsNotEmpty()
-  userId: number;
 }

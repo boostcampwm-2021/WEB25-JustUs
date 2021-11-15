@@ -80,6 +80,34 @@ const groupReducer = (state = initState, action: any) => {
         ...state,
         albumList: newAlbumList,
       };
+    case "DELETE_POST":
+      const targetPost = action.payload;
+      const targetAlbum = state.albumList.find((album) => {
+        const found = album.posts.find((innerPost) => innerPost.postID === targetPost.postID);
+        if (found) return true;
+      });
+
+      if (!targetAlbum) return { ...state };
+
+      targetAlbum.posts = targetAlbum.posts.filter((innerPost) => innerPost.postID !== targetPost.postID);
+
+      return {
+        ...state,
+      };
+    case "UPDATE_POST":
+      const targetPost2 = action.payload;
+      let targetIdx = -1;
+
+      const targetAlbum2 = state.albumList.find((album) => {
+        targetIdx = album.posts.findIndex((innerPost) => innerPost.postID === targetPost2.postID);
+        if (targetIdx !== -1) return true;
+      });
+
+      if (!targetAlbum2) return { ...state };
+      if (targetIdx === -1) return { ...state };
+
+      targetAlbum2.posts[targetIdx] = targetPost2;
+      return { ...state };
     // case GroupAction.SET_ALL_GROUPS:
     //   return {
     //     ...state,

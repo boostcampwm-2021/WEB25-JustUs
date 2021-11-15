@@ -6,34 +6,57 @@ import { useDispatch, useSelector } from "react-redux";
 import Carousel from "@components/Modal/PostCreateModal/UploadInfoModal/Carousel";
 import { RootState } from "@src/reducer";
 import ModalSub from "./ModalSub";
+import dummyPosts from "@components/Map/dummyPosts";
+import { RootState } from "@src/reducer";
+import shortid from "shortid";
 
 interface FileObject {
-  file: File;
+  file: File | string;
   key: string;
 }
 interface IData {
   [key: string]: string;
 }
 interface UploadInfoModalProps {
+  mode: string;
   changeMode: () => void;
   files: FileObject[];
+  prevTitle: string | "";
+  prevText: string | "";
+  prevDate: string | "";
+  prevLocation: IData | {};
 }
 
-const UploadInfoModal = ({ changeMode, files }: UploadInfoModalProps) => {
+const UploadInfoModal = ({
+  mode,
+  changeMode,
+  files,
+  prevTitle,
+  prevText,
+  prevDate,
+  prevLocation,
+}: UploadInfoModalProps) => {
   const dispatch = useDispatch();
-  const [title, setTitle] = useState<string>("");
-  const [text, setText] = useState<string>("");
+  const [title, setTitle] = useState<string>(prevTitle);
+  const [text, setText] = useState<string>(prevText);
   const [activate, setActivate] = useState<boolean>(false);
   const [isSubOpened, setIsSubOpened] = useState(false);
   const [searchKeyword, setSearchKeyword] = useState<string>("");
   const [searchResult, setSearchResult] = useState<IData[]>([]);
-  const [selectedLocation, setSelectedLocation] = useState<IData>({});
+  const [date, setDate] = useState<string>(prevDate);
+  const [selectedLocation, setSelectedLocation] = useState<IData>(prevLocation);
   const [page, setPage] = useState<number>(1);
   const [lastPage, setLastPage] = useState<number>(1);
   const highlightsRef = useRef() as React.MutableRefObject<HTMLDivElement>;
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const backdropRef = useRef<HTMLDivElement>(null);
   const { address }: any = useSelector((state: RootState) => state.address);
+  const { selectedPost }: any = useSelector((state: RootState) => state.modal);
+  const { selectedGroup, albumList }: any = useSelector((state: RootState) => state.groups);
+
+  useEffect(() => {
+    handelTextInput(null);
+  }, []);
 
   const closeModal = () => {
     dispatch({ type: "CLOSE_MODAL" });
@@ -44,8 +67,8 @@ const UploadInfoModal = ({ changeMode, files }: UploadInfoModalProps) => {
     setTitle(value);
   };
 
-  const handelTextInput = (event: React.FormEvent<HTMLTextAreaElement>) => {
-    const { value } = event.target as HTMLTextAreaElement;
+  const handelTextInput = (event: React.FormEvent<HTMLTextAreaElement> | null) => {
+    const value = event ? (event.target as HTMLTextAreaElement).value : text;
     const highlightedText = applyHighlights(value);
 
     setText(value);
@@ -68,6 +91,32 @@ const UploadInfoModal = ({ changeMode, files }: UploadInfoModalProps) => {
     setIsSubOpened(true);
   };
 
+  const handleSaveBtn = () => {
+    if (mode === "create") {
+      console.log("새 게시글 등록 로직 아직 구현 안함.");
+    } else if (mode === "update") {
+      // 1. api 요청해 DB 데이터 변경
+      const target = dummyPosts.find((post) => post.postID === selectedPost.postID);
+      if (!target) return;
+
+      target.postTitle = title;
+      target.postContent = text;
+      target.postDate = date;
+      target.postImages = files.map((fileObject) => {
+        return { file: fileObject.file as string, key: fileObject.file as string };
+      });
+      target.postLocation = selectedLocation.place_name;
+      target.postLatitude = Number(selectedLocation.x);
+      target.postLongitude = Number(selectedLocation.y);
+
+      // 2. store 변경
+      dispatch({ type: "SET_SELECTED_POST", payload: target });
+      dispatch({ type: "UPDATE_POST", payload: target });
+    }
+
+    closeModal();
+  };
+
   useEffect(() => {
     if (title.length === 0) setActivate(false);
     else setActivate(true);
@@ -82,7 +131,7 @@ const UploadInfoModal = ({ changeMode, files }: UploadInfoModalProps) => {
     >
       <ModalMain>
         <ModalHeader>
-          <ModalTitle>새 게시물 만들기</ModalTitle>
+          <ModalTitle>{title ? "게시물 수정" : "새 게시물 만들기"}</ModalTitle>
           <ModalHeaderRigthBtn onClick={closeModal}>
             <img src="/icons/x.svg" alt="close" height="90%"></img>
           </ModalHeaderRigthBtn>
@@ -107,7 +156,13 @@ const UploadInfoModal = ({ changeMode, files }: UploadInfoModalProps) => {
               onScroll={handleScroll}
             />
             <InputBottom>
-              <InputDate type="date" />
+              <InputDate
+                type="date"
+                value={date}
+                onChange={(e) => {
+                  setDate(e.target.value);
+                }}
+              />
               <InputPlace>
                 {address === "" ? (
                   <InputPlaceName>
@@ -121,7 +176,9 @@ const UploadInfoModal = ({ changeMode, files }: UploadInfoModalProps) => {
                 </LocationButton>
               </InputPlace>
             </InputBottom>
-            <UploadButton activate={activate}>게시하기</UploadButton>
+            <UploadButton activate={activate} onClick={handleSaveBtn}>
+              게시하기
+            </UploadButton>
           </ModalRight>
         </ModalContent>
       </ModalMain>

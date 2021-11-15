@@ -5,6 +5,7 @@ import { User } from "../user.entity";
 import { UserRepository } from "../user.repository";
 import { UserInfoResponseDto } from "src/dto/user/userInfoResponse.dto";
 import { UpdateUserInfoRequestDto } from "src/dto/user/updateUserInfoRequest.dto";
+import { UpdateResult } from "typeorm";
 
 @Injectable()
 export class UserService {
@@ -24,8 +25,7 @@ export class UserService {
 
   async getUserInfo(userId: number): Promise<UserInfoResponseDto> {
     const user = await this.userRepository.findOne({ userId });
-
-    if (!user) throw new NotFoundException("Can not find User");
+    if (!user) throw new NotFoundException(`Not found user with the id ${userId}`);
 
     const { profileImage, userNickname } = user;
     return { profileImage, userNickname };
@@ -34,13 +34,14 @@ export class UserService {
   async updateUserInfo(userId: number, updateUserInfoRequestDto: UpdateUserInfoRequestDto): Promise<string> {
     const { profileImage, userNickname } = updateUserInfoRequestDto;
     const user = await this.userRepository.findOne({ userId });
+    if (!user) throw new NotFoundException(`Not found user with the id ${userId}`);
 
-    if (!user) throw new NotFoundException("Can not find User");
-
-    user.profileImage = profileImage;
-    user.userNickname = userNickname;
-    this.userRepository.save(user);
+    this.userRepository.update(userId, { profileImage, userNickname });
 
     return "UserInfo update success!!";
+  }
+
+  async updateToken(userId: number, refreshToken: string): Promise<UpdateResult> {
+    return this.userRepository.update(userId, { refreshToken });
   }
 }

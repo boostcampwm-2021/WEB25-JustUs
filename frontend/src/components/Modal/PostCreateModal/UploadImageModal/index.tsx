@@ -6,7 +6,7 @@ import COLOR from "@styles/Color";
 import { useDispatch } from "react-redux";
 
 interface FileObject {
-  file: File;
+  file: File | string;
   key: string;
 }
 interface UploadImageModalProps {
@@ -50,7 +50,7 @@ const UploadImageModal = ({ changeMode, files, setFiles }: UploadImageModalProps
       }}
     >
       <ModalHeader>
-        <ModalTitle>새 게시물 만들기</ModalTitle>
+        <ModalTitle>{files.length ? "게시물 수정" : "새 게시물 만들기"}</ModalTitle>
         {files.length === 0 ? (
           <ModalHeaderRigthBtn onClick={closeModal}>
             <img src="/icons/x.svg" alt="close" height="90%"></img>
@@ -75,7 +75,9 @@ const UploadImageModal = ({ changeMode, files, setFiles }: UploadImageModalProps
               <DeleteImageBtn onClick={() => deleteImage(fileObject.key)}>
                 <img src="/icons/delete.svg" alt="delete"></img>
               </DeleteImageBtn>
-              <img src={URL.createObjectURL(fileObject.file)}></img>
+              <img
+                src={typeof fileObject.file === "string" ? fileObject.file : URL.createObjectURL(fileObject.file)}
+              ></img>
             </ImagePreview>
           ),
           "",

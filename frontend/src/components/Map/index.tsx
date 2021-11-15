@@ -40,6 +40,24 @@ interface IDispatch {
   payload: any;
 }
 
+interface IPodo {
+  content: string;
+  size: naver.maps.Size;
+  origin: naver.maps.Point;
+}
+
+interface IMarkerClustering {
+  minClusterSize: number;
+  maxZoom: number;
+  map: naver.maps.Map;
+  markers: Array<naver.maps.Marker>;
+  disableClickZoom: boolean;
+  gridSize: number;
+  icons: Array<IPodo>;
+  indexGenerator: Array<number>;
+  setMap: Function;
+}
+
 const setMap = (
   INIT_X: number,
   INIT_Y: number,
@@ -75,9 +93,11 @@ const Map = () => {
   const [isRightClick, setIsRightClick] = useState<Boolean>(false);
   const [rightPosition, setRightPosition] = useState<Point>({ x: 0, y: 0 });
   const [clickInfo, setClickInfo] = useState<any>();
+  const [naverMap, setNaverMap] = useState<naver.maps.Map>();
+  const [currentMarkers, setCurrentMarkers] = useState<Array<naver.maps.Marker>>([]);
+  const [currentClustering, setCurrentClustering] = useState<IMarkerClustering | undefined>(undefined);
   const { postsList }: any = useSelector((state: RootState) => state.groups);
   const { selectedPost }: any = useSelector((state: RootState) => state.modal);
-  const [naverMap, setNaverMap] = useState<naver.maps.Map>();
 
   useEffect(() => {
     const initMap = () => {
@@ -100,7 +120,6 @@ const Map = () => {
       const handleClickMarker = (clickedPostID: number) => {
         // 아래 로직은 나중에 백엔드 API 요청을 통해 클릭한 게시글의 상세 정보를 가져온다.
         const targetPost = dummyPosts.find((post) => post.postID === clickedPostID);
-
         dispatch({ type: "SET_SELECTED_POST", payload: targetPost });
         dispatch({ type: "OPEN_MODAL", payload: "PostShowModal" });
       };
@@ -113,10 +132,24 @@ const Map = () => {
       });
 
       const markerClustering = new MarkerClustering(SetClustering(naverMap as naver.maps.Map, markers));
+      setCurrentMarkers(markers);
+      setCurrentClustering(markerClustering);
     };
 
     setMarker();
   }, [postsList]);
+
+  useEffect(() => {
+    return () => {
+      currentMarkers.forEach((marker) => {
+        marker.setVisible(false);
+        marker.setMap(null);
+      });
+
+      if (!currentClustering) return;
+      currentClustering.setMap(null);
+    };
+  }, [currentMarkers]);
 
   useEffect(() => {
     if (naverMap) {
