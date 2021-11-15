@@ -26,7 +26,7 @@ var MarkerClustering = function (options) {
     // 클러스터 마커를 구성할 마커입니다.
     markers: [],
     // 클러스터 마커 클릭 시 줌 동작 여부입니다.
-    disableClickZoom: true,
+    disableClick: true,
     // 클러스터를 구성할 최소 마커 수입니다.
     minClusterSize: 2,
     // 클러스터 마커로 표현할 최대 줌 레벨입니다. 해당 줌 레벨보다 높으면, 클러스터를 구성하고 있는 마커를 노출합니다.
@@ -41,6 +41,7 @@ var MarkerClustering = function (options) {
     averageCenter: false,
     // 클러스터 마커를 갱신할 때 호출하는 콜백함수입니다. 이 함수를 통해 클러스터 마커에 개수를 표현하는 등의 엘리먼트를 조작할 수 있습니다.
     stylingFunction: function () {},
+    clickHandler: function () {},
   };
 
   this._clusters = [];
@@ -110,7 +111,6 @@ naver.maps.Util.ClassExtend(MarkerClustering, naver.maps.OverlayView, {
   getOptions: function (key) {
     var _this = this,
       options = {};
-
     if (key !== undefined) {
       return _this.get(key);
     } else {
@@ -234,20 +234,28 @@ naver.maps.Util.ClassExtend(MarkerClustering, naver.maps.OverlayView, {
     this.setOptions("stylingFunction", func);
   },
 
+  getClickHandler: function () {
+    return this.getOptions("clickHandler");
+  },
+
+  setClickHandler: function (func) {
+    this.setOptions("clickHandler", func);
+  },
+
   /**
    * 클러스터 마커를 클릭했을 때 줌 동작 수행 여부를 반환합니다.
    * @return {boolean} 줌 동작 수행 여부
    */
-  getDisableClickZoom: function () {
-    return this.getOptions("disableClickZoom");
+  getDisableClick: function () {
+    return this.getOptions("disableClick");
   },
 
   /**
    * 클러스터 마커를 클릭했을 때 줌 동작 수행 여부를 설정합니다.
    * @param {boolean} flag 줌 동작 수행 여부
    */
-  setDisableClickZoom: function (flag) {
-    this.setOptions("disableClickZoom", flag);
+  setDisableClick: function (flag) {
+    this.setOptions("disableClick", flag);
   },
 
   /**
@@ -269,7 +277,6 @@ naver.maps.Util.ClassExtend(MarkerClustering, naver.maps.OverlayView, {
   // KVO 이벤트 핸들러
   changed: function (key, value) {
     if (!this.getMap()) return;
-
     switch (key) {
       case "marker":
       case "minClusterSize":
@@ -295,11 +302,11 @@ naver.maps.Util.ClassExtend(MarkerClustering, naver.maps.OverlayView, {
           cluster.updateCount();
         });
         break;
-      case "disableClickZoom":
-        var exec = "enableClickZoom";
+      case "disableClick":
+        var exec = "enableClick";
 
         if (value) {
-          exec = "disableClickZoom";
+          exec = "disableClick";
         }
 
         this._clusters.forEach(function (cluster) {
@@ -525,16 +532,18 @@ Cluster.prototype = {
   /**
    * 클러스터 마커 클릭 시 줌 동작을 수행하도록 합니다.
    */
-  enableClickZoom: function () {
+  enableClick: function () {
     if (this._relation) return;
 
-    var map = this._markerClusterer.getMap();
+    // var map = this._markerClusterer.getMap();
+    var clickHandler = this._markerClusterer.getClickHandler();
 
     this._relation = naver.maps.Event.addListener(
       this._clusterMarker,
       "click",
       naver.maps.Util.bind(function (e) {
-        map.morph(e.coord, map.getZoom() + 1);
+        clickHandler(this._clusterMember);
+        // map.morph(e.coord, map.getZoom() + 1);
       }, this),
     );
   },
@@ -542,9 +551,8 @@ Cluster.prototype = {
   /**
    * 클러스터 마커 클릭 시 줌 동작을 수행하지 않도록 합니다.
    */
-  disableClickZoom: function () {
+  disableClick: function () {
     if (!this._relation) return;
-
     naver.maps.Event.removeListener(this._relation);
     this._relation = null;
   },
@@ -570,8 +578,8 @@ Cluster.prototype = {
         map: this._markerClusterer.getMap(),
       });
 
-      if (!this._markerClusterer.getDisableClickZoom()) {
-        this.enableClickZoom();
+      if (!this._markerClusterer.getDisableClick()) {
+        this.enableClick();
       }
     }
 
@@ -606,7 +614,6 @@ Cluster.prototype = {
    */
   updateCount: function () {
     var stylingFunction = this._markerClusterer.getStylingFunction();
-
     stylingFunction && stylingFunction(this._clusterMarker, this.getCount());
   },
 
