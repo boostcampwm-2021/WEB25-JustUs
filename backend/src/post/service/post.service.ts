@@ -20,8 +20,13 @@ export class PostService {
     private albumRepository: AlbumRepository,
   ) {}
 
-  async createPost(userId: number, createPostRequestDto: CreatePostRequestDto): Promise<number> {
-    const { postTitle, postContent, postImages, postDate, postLocation, postLatitude, postLongitude, albumId } =
+  async createPost(
+    userId: number,
+    files: Express.Multer.File[],
+    createPostRequestDto: CreatePostRequestDto,
+  ): Promise<number> {
+    const postImages = this.imageService.getImagesUrl(files);
+    const { postTitle, postContent, postDate, postLocation, postLatitude, postLongitude, albumId } =
       createPostRequestDto;
 
     const user = await this.userRepository.findOne({ userId });

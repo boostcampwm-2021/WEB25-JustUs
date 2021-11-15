@@ -31,16 +31,16 @@ export class PostController {
 
   @Post()
   @HttpCode(200)
-  //@UseInterceptors(FilesInterceptor("upload", 5, multerOption))
+  @UseInterceptors(FilesInterceptor("upload", 5, multerOption))
   @ApiResponse({ type: Number, description: "생성된 게시글 ID", status: 200 })
   CreatePost(
     @Req() { user }: CustomRequest,
     @Body() createPostRequestDto: CreatePostRequestDto,
-    //@UploadedFiles() files: Express.Multer.File[],
+    @UploadedFiles() files: Express.Multer.File[],
   ): Promise<number> {
     const { userId } = user;
-    //console.log(files);
-    return this.postService.createPost(userId, createPostRequestDto);
+
+    return this.postService.createPost(userId, files, createPostRequestDto);
   }
 
   @Get("/:postId")
