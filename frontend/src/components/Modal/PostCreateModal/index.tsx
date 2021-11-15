@@ -4,7 +4,7 @@ import UploadImageModal from "./UploadImageModal";
 import UploadInfoModal from "./UploadInfoModal";
 
 interface FileObject {
-  file: File;
+  file: File | string;
   key: string;
 }
 
@@ -21,7 +21,15 @@ const PostCreateModal = () => {
       {mode === "image" ? (
         <UploadImageModal files={files} setFiles={setFiles} changeMode={changeMode} />
       ) : (
-        <UploadInfoModal files={files} changeMode={changeMode} />
+        <UploadInfoModal
+          mode="create"
+          files={files}
+          changeMode={changeMode}
+          prevTitle=""
+          prevText=""
+          prevLocation={{}}
+          prevDate=""
+        />
       )}
     </Modal>
   );

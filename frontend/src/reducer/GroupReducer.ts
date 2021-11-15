@@ -94,6 +94,20 @@ const groupReducer = (state = initState, action: any) => {
       return {
         ...state,
       };
+    case "UPDATE_POST":
+      const targetPost2 = action.payload;
+      let targetIdx = -1;
+
+      const targetAlbum2 = state.albumList.find((album) => {
+        targetIdx = album.posts.findIndex((innerPost) => innerPost.postID === targetPost2.postID);
+        if (targetIdx !== -1) return true;
+      });
+
+      if (!targetAlbum2) return { ...state };
+      if (targetIdx === -1) return { ...state };
+
+      targetAlbum2.posts[targetIdx] = targetPost2;
+      return { ...state };
     // case GroupAction.SET_ALL_GROUPS:
     //   return {
     //     ...state,

@@ -4,8 +4,9 @@ import COLOR from "@src/styles/Color";
 import { useDispatch } from "react-redux";
 const PostSettingModal = () => {
   const dispatch = useDispatch();
-
-  const onClickUpdatePost = () => {};
+  const onClickUpdatePost = () => {
+    dispatch({ type: "OPEN_MODAL", payload: "PostUpdateModal" });
+  };
 
   const onClickDeletePost = () => {
     dispatch({ type: "OPEN_MODAL", payload: "PostDeleteModal" });
