@@ -7,7 +7,6 @@ import Carousel from "@components/Modal/PostCreateModal/UploadInfoModal/Carousel
 import { RootState } from "@src/reducer";
 import ModalSub from "./ModalSub";
 import dummyPosts from "@components/Map/dummyPosts";
-import { RootState } from "@src/reducer";
 import shortid from "shortid";
 
 interface FileObject {
