@@ -1,11 +1,15 @@
 import styled from "styled-components";
 import { flexRowCenterAlign } from "@src/styles/StyledComponents";
 import COLOR from "@src/styles/Color";
-
+import { useDispatch } from "react-redux";
 const PostSettingModal = () => {
+  const dispatch = useDispatch();
+
   const onClickUpdatePost = () => {};
 
-  const onClickDeletePost = () => {};
+  const onClickDeletePost = () => {
+    dispatch({ type: "OPEN_MODAL", payload: "PostDeleteModal" });
+  };
 
   return (
     <ModalWrapper>
