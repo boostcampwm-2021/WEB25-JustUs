@@ -1,4 +1,5 @@
 import { Body, Controller, Req, Get, HttpCode, Param, Post, Put, Delete, UseGuards } from "@nestjs/common";
+import { ApiTags, ApiOkResponse, ApiParam, ApiResponse, ApiBearerAuth } from "@nestjs/swagger";
 import { CustomRequest } from "src/myRequest/customRequest";
 import { JwtAuthGuard } from "src/auth/guard/jwt-auth-guard";
 import { GroupService } from "../service/group.service";
@@ -8,6 +9,8 @@ import { GetGroupInfoResponseDto } from "src/dto/group/getGroupInfoResponse.dto"
 import { UpdateGroupInfoRequestDto } from "src/dto/group/updateGroupInfoRequest.dto";
 import { GetAlbumsResponseDto } from "src/dto/group/getAlbumsResponse.dto";
 
+@ApiTags("그룹 API")
+@ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
 @Controller("api/groups")
 export class GroupController {
@@ -15,6 +18,7 @@ export class GroupController {
 
   @Post()
   @HttpCode(200)
+  @ApiResponse({ type: Number, description: "생성된 그룹 ID", status: 200 })
   CreateGroup(@Req() { user }: CustomRequest, @Body() createGroupRequestDto: CreateGroupRequestDto): Promise<number> {
     const { userId } = user;
     return this.groupService.createGroup(userId, createGroupRequestDto);
@@ -22,23 +26,30 @@ export class GroupController {
 
   @Post("/join")
   @HttpCode(200)
+  @ApiResponse({ type: Number, description: "참가한 그룹 ID", status: 200 })
   AttendGroup(@Req() { user }: CustomRequest, @Body() attendGroupRequestDto: AttendGroupRequestDto): Promise<number> {
     const { userId } = user;
     return this.groupService.attendGroup(userId, attendGroupRequestDto);
   }
 
   @Get("/:groupId")
+  @ApiParam({ name: "groupId", type: Number })
+  @ApiResponse({ type: GetGroupInfoResponseDto, status: 200 })
   GetGroupInfo(@Param("groupId") groupId: number): Promise<GetGroupInfoResponseDto> {
     return this.groupService.getGroupInfo(groupId);
   }
 
   @Get("/:groupId/albums")
+  @ApiParam({ name: "groupId", type: Number })
+  @ApiResponse({ type: GetAlbumsResponseDto, status: 200 })
   GetAlbums(@Param("groupId") groupId: number): Promise<GetAlbumsResponseDto> {
     return this.groupService.getAlbums(groupId);
   }
 
   @Put("/:groupId")
   @HttpCode(200)
+  @ApiParam({ name: "groupId", type: Number })
+  @ApiOkResponse({ description: "그룹 수정 성공" })
   UpdateGroupInfo(
     @Param("groupId") groupId: number,
     @Body() updateGroupInfoRequestDto: UpdateGroupInfoRequestDto,
@@ -47,6 +58,8 @@ export class GroupController {
   }
 
   @Delete("/:groupId")
+  @ApiParam({ name: "groupId", type: Number })
+  @ApiOkResponse({ description: "그룹 탈퇴 성공" })
   LeaveGroup(@Req() { user }: CustomRequest, @Param("groupId") groupId: number): Promise<string> {
     const { userId } = user;
     return this.groupService.leaveGroup(userId, groupId);

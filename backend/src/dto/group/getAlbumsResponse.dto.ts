@@ -1,39 +1,48 @@
 import { IsArray, IsNotEmpty, IsNumber, IsString } from "class-validator";
+import { ApiProperty } from "@nestjs/swagger";
 
-export class GetAlbumsResponseDto {
-  @IsArray()
+class postList {
+  @IsNumber()
   @IsNotEmpty()
-  albums: albumList[];
+  @ApiProperty()
+  postId: number;
+
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty()
+  postTitle: string;
+
+  @IsNumber()
+  @IsNotEmpty()
+  @ApiProperty()
+  postLatitude: number;
+
+  @IsNumber()
+  @IsNotEmpty()
+  @ApiProperty()
+  postLongitude: number;
 }
 
 class albumList {
   @IsNumber()
   @IsNotEmpty()
+  @ApiProperty()
   albumId: number;
 
   @IsString()
   @IsNotEmpty()
+  @ApiProperty()
   albumName: string;
 
   @IsArray()
   @IsNotEmpty()
+  @ApiProperty({ type: [postList] })
   posts: postList[];
 }
 
-class postList {
-  @IsNumber()
+export class GetAlbumsResponseDto {
+  @IsArray()
   @IsNotEmpty()
-  postId: number;
-
-  @IsString()
-  @IsNotEmpty()
-  postTitle: string;
-
-  @IsNumber()
-  @IsNotEmpty()
-  postLatitude: number;
-
-  @IsNumber()
-  @IsNotEmpty()
-  postLongitude: number;
+  @ApiProperty({ type: [albumList] })
+  albums: albumList[];
 }
