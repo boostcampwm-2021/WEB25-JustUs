@@ -23,8 +23,11 @@ export class AuthController {
   async naverAuthRedirect(@Req() { user }: CustomRequest, @Res() res: Response) {
     const { accessToken, refreshToken } = user;
 
-    res.cookie("accessToken", accessToken);
-    res.cookie("refreshToken", refreshToken);
+    const oneHour = 1000 * 60 * 60;
+    const oneWeek = oneHour * 24 * 7;
+
+    res.cookie("accessToken", accessToken, { maxAge: oneHour });
+    res.cookie("refreshToken", refreshToken, { maxAge: oneWeek });
     res.redirect("/");
   }
 
