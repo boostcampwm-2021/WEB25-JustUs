@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import * as AWS from "aws-sdk";
 import * as multerS3 from "multer-s3";
-import { CustomFile } from "src/myFile/customFile";
+import { CustomFile } from "src/custom/myFile/customFile";
 import { InjectRepository } from "@nestjs/typeorm";
 import { ImageRepository } from "../image.repository";
 import { Post } from "src/post/post.entity";

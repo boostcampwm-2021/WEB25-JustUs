@@ -3,7 +3,7 @@ import { ApiTags, ApiBearerAuth } from "@nestjs/swagger";
 import { Response } from "express";
 import { NaverOauthGuard } from "../guard/naver-auth.guard";
 import { JwtAuthGuard } from "../guard/jwt-auth-guard";
-import { CustomRequest } from "src/myRequest/customRequest";
+import { CustomRequest } from "src/custom/myRequest/customRequest";
 import { UserService } from "src/user/service/user.service";
 
 @ApiTags("auth API")

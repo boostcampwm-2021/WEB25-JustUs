@@ -13,7 +13,7 @@ import {
   UploadedFiles,
 } from "@nestjs/common";
 import { ApiTags, ApiOkResponse, ApiParam, ApiResponse, ApiBearerAuth } from "@nestjs/swagger";
-import { CustomRequest } from "src/myRequest/customRequest";
+import { CustomRequest } from "src/custom//myRequest/customRequest";
 import { JwtAuthGuard } from "src/auth/guard/jwt-auth-guard";
 import { PostService } from "../service/post.service";
 import { CreatePostRequestDto } from "src/dto/post/createPostRequest.dto";

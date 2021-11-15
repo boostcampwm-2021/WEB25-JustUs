@@ -1,6 +1,6 @@
 import { Controller, Req, Get, Put, Body, UseGuards, HttpCode } from "@nestjs/common";
 import { ApiTags, ApiOkResponse, ApiResponse, ApiBearerAuth } from "@nestjs/swagger";
-import { CustomRequest } from "src/myRequest/customRequest";
+import { CustomRequest } from "src/custom/myRequest/customRequest";
 import { JwtAuthGuard } from "src/auth/guard/jwt-auth-guard";
 import { UserService } from "../service/user.service";
 import { UserInfoResponseDto } from "src/dto/user/userInfoResponse.dto";
