@@ -18,6 +18,6 @@ export class Album extends TimeStampEntity {
   @JoinColumn({ name: "group_id" })
   group: Group;
 
-  @OneToMany(() => Post, post => post.album)
+  @OneToMany(() => Post, post => post.album, { cascade: true })
   posts: Post[];
 }
