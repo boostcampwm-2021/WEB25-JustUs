@@ -55,6 +55,7 @@ const ModalReducer = (state = initState, action: any) => {
           postDate: action.payload.postDate,
           userNickname: action.payload.userNickname,
           postImages: action.payload.postImages,
+          postLocation: action.payload.postLocation,
           postLatitude: action.payload.postLatitude,
           postLongitude: action.payload.postLongitude,
         },
