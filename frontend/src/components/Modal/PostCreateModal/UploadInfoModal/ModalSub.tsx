@@ -174,7 +174,7 @@ const ModalSubWrapper = styled.div<{ isToggle: boolean }>`
   display: flex;
   flex-direction: column;
   border-left: 1px solid ${COLOR.BLACK};
-  width: ${(props) => (props.isToggle ? "20vw" : "0")};
+  width: ${(props) => (props.isToggle ? "13rem" : "0")};
   z-index: ${(props) => (props.isToggle ? 4 : 0)};
   animation-name: ${(props) => (props.isToggle ? SidebarOpen : SidebarHide)};
   animation-duration: 1s;

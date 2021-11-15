@@ -280,12 +280,12 @@ const InputText = styled.textarea`
   margin-bottom: 2vh;
   z-index: 2;
   overflow: auto;
-  width: 300px;
+  width: 24rem;
   height: 200px;
   background-color: transparent;
   margin: 0;
   padding: 0;
-  line-height: 1rem;
+  line-height: 1.6rem;
 
   &:focus {
     outline: none;
@@ -305,8 +305,9 @@ const ModalRight = styled.div`
     font-size: 1.2rem;
     line-height: 1rem;
     pointer-events: none;
-    width: 300px;
+    width: 24rem;
     height: 200px;
+    line-height: 1.6rem;
 
     & mark {
       border-radius: 3px;
@@ -314,7 +315,7 @@ const ModalRight = styled.div`
       background-color: ${COLOR.THEME1.SECONDARY};
       letter-spacing: normal;
       font-size: 1.2rem;
-      width: 300px;
+      width: 24rem;
       height: 200px;
       overflow: auto;
     }
@@ -325,7 +326,7 @@ const ModalRight = styled.div`
       color: transparent;
       font-size: 1.2rem;
       resize: none;
-      width: 300px;
+      width: 24rem;
       height: 200px;
       overflow: auto;
     }
