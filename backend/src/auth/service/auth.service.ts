@@ -14,12 +14,12 @@ export class AuthService {
     return user;
   }
 
-  createToken(user: User): string {
+  createToken(userId: number, expire: string): string {
     const payload = {
-      userId: user.userId,
+      userId: userId,
       userToken: "loginToken",
     };
 
-    return this.jwtService.sign(payload, { expiresIn: "60m" });
+    return this.jwtService.sign(payload, { expiresIn: expire });
   }
 }

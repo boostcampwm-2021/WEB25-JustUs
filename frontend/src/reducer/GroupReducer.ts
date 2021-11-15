@@ -108,7 +108,6 @@ const groupReducer = (state = initState, action: any) => {
 
       targetAlbum2.posts[targetIdx] = targetPost2;
       return { ...state };
-
     // case GroupAction.SET_ALL_GROUPS:
     //   return {
     //     ...state,

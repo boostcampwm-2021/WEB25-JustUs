@@ -17,10 +17,10 @@ export class Group extends TimeStampEntity {
   @Column()
   groupCode: string;
 
-  @ManyToMany(() => User)
+  @ManyToMany(() => User, { cascade: true })
   @JoinTable({ name: "users_groups_TB" })
   users: User[];
 
-  @OneToMany(() => Album, album => album.group)
+  @OneToMany(() => Album, album => album.group, { cascade: true })
   albums: Album[];
 }

@@ -3,9 +3,10 @@ import { Post } from "./post.entity";
 
 @EntityRepository(Post)
 export class PostRepository extends Repository<Post> {
-  async readPostQuery(postId: number): Promise<Post> {
+  async getPostQuery(postId: number): Promise<Post> {
     return await this.createQueryBuilder("post")
-      .leftJoin("post.images", "image")
+      .innerJoin("post.images", "image")
+      .innerJoin("post.user", "user")
       .select([
         "post.postTitle",
         "post.postContent",
@@ -13,6 +14,8 @@ export class PostRepository extends Repository<Post> {
         "post.postLocation",
         "image.imageUrl",
         "image.imageId",
+        "user.userId",
+        "user.userNickname",
       ])
       .where("post.postId = :id", { id: postId })
       .getOne();
