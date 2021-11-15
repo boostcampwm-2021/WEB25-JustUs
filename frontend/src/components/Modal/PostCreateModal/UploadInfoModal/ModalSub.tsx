@@ -15,6 +15,7 @@ interface IPagination {
 interface ModalSubProps {
   searchKeyword: string;
   setSearchKeyword: Dispatch<SetStateAction<string>>;
+  isSubOpened: boolean;
   setIsSubOpened: Dispatch<SetStateAction<boolean>>;
   setSelectedLocation: Dispatch<SetStateAction<IData>>;
   searchResult: IData[];
@@ -23,11 +24,14 @@ interface ModalSubProps {
   setPage: Dispatch<SetStateAction<number>>;
   lastPage: number;
   setLastPage: Dispatch<SetStateAction<number>>;
+  gobackClicked: boolean;
+  setGobackClicked: Dispatch<SetStateAction<boolean>>;
 }
 
 const ModalSub = ({
   searchKeyword,
   setSearchKeyword,
+  isSubOpened,
   setIsSubOpened,
   setSelectedLocation,
   searchResult,
@@ -36,6 +40,8 @@ const ModalSub = ({
   setPage,
   lastPage,
   setLastPage,
+  gobackClicked,
+  setGobackClicked,
 }: ModalSubProps) => {
   const [input, setInput] = useState<string>("");
 
@@ -54,6 +60,7 @@ const ModalSub = ({
   const onClickCloseBtn = () => {
     setIsSubOpened(false);
     setSearchKeyword(input);
+    setGobackClicked(true);
   };
 
   const execSearch = (keyword: string, nowPage: number) => {
@@ -96,8 +103,10 @@ const ModalSub = ({
     execSearch(input, page);
   }, [page]);
 
+  if (!isSubOpened && !gobackClicked) return null;
+
   return (
-    <ModalSubWrapper>
+    <ModalSubWrapper isToggle={isSubOpened}>
       <ModalHeader className="header-sub">
         <SearchContainer>
           <img src="/icons/search.svg" height="90%" alt="search" />
@@ -119,20 +128,56 @@ const ModalSub = ({
           lastPage={lastPage}
         />
       )}
-      <CloseBtn onClick={onClickCloseBtn}>
+      <CloseBtn onClick={onClickCloseBtn} isToggle={isSubOpened}>
         <img src="/icons/arrow-left.svg" alt="arrow left icon" />
       </CloseBtn>
     </ModalSubWrapper>
   );
 };
 
-const ModalSubWrapper = styled.div`
+const SidebarOpen = keyframes`
+  0% {
+    opacity: 1;
+    transform: translateX(0);
+    width: 10px;
+    visibility: hidden;
+  }
+  30% {
+    opacity: 1;
+  }
+`;
+const SidebarHide = keyframes`
+  from {
+    visibility: visible;
+    transform: translateX(0);
+    z-index: 4;
+    opacity: 1;
+  }
+  to {
+    z-index: 0;
+    transform: translateX(-20vw);
+    opacity: 0;
+  }
+`;
+const Opening = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`;
+
+const ModalSubWrapper = styled.div<{ isToggle: boolean }>`
+  visibility: ${(props) => (props.isToggle ? "visible" : "hidden")};
   position: relative;
   display: flex;
   flex-direction: column;
   border-left: 1px solid ${COLOR.BLACK};
-  z-index: 3;
-  width: 300px;
+  width: ${(props) => (props.isToggle ? "20vw" : "0")};
+  z-index: ${(props) => (props.isToggle ? 4 : 0)};
+  animation-name: ${(props) => (props.isToggle ? SidebarOpen : SidebarHide)};
+  animation-duration: 1s;
 `;
 const ModalHeader = styled.div`
   display: grid;
@@ -163,7 +208,7 @@ const SearchInput = styled.input`
     outline: none;
   }
 `;
-const CloseBtn = styled.div`
+const CloseBtn = styled.div<{ isToggle: boolean }>`
   ${flexRowCenterAlign}
   position: absolute;
   left: 85%;
@@ -173,6 +218,8 @@ const CloseBtn = styled.div`
   border-radius: 1rem;
   cursor: pointer;
   z-index: 1;
+  animation-name: ${(props) => (props.isToggle ? Opening : "")};
+  animation-duration: 1s;
 `;
 
 export default ModalSub;

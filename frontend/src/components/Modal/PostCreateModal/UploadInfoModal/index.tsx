@@ -46,6 +46,7 @@ const UploadInfoModal = ({
   const [selectedLocation, setSelectedLocation] = useState<IData>(prevLocation);
   const [page, setPage] = useState<number>(1);
   const [lastPage, setLastPage] = useState<number>(1);
+  const [gobackClicked, setGobackClicked] = useState<boolean>(false);
   const highlightsRef = useRef() as React.MutableRefObject<HTMLDivElement>;
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const backdropRef = useRef<HTMLDivElement>(null);
@@ -181,21 +182,21 @@ const UploadInfoModal = ({
           </ModalRight>
         </ModalContent>
       </ModalMain>
-
-      {isSubOpened && (
-        <ModalSub
-          searchKeyword={searchKeyword}
-          setSearchKeyword={setSearchKeyword}
-          setIsSubOpened={setIsSubOpened}
-          setSelectedLocation={setSelectedLocation}
-          searchResult={searchResult}
-          setSearchResult={setSearchResult}
-          page={page}
-          setPage={setPage}
-          lastPage={lastPage}
-          setLastPage={setLastPage}
-        />
-      )}
+      <ModalSub
+        searchKeyword={searchKeyword}
+        setSearchKeyword={setSearchKeyword}
+        isSubOpened={isSubOpened}
+        setIsSubOpened={setIsSubOpened}
+        setSelectedLocation={setSelectedLocation}
+        searchResult={searchResult}
+        setSearchResult={setSearchResult}
+        page={page}
+        setPage={setPage}
+        lastPage={lastPage}
+        setLastPage={setLastPage}
+        gobackClicked={gobackClicked}
+        setGobackClicked={setGobackClicked}
+      />
     </ModalContainer>
   );
 };
@@ -279,7 +280,7 @@ const InputText = styled.textarea`
   margin-bottom: 2vh;
   z-index: 2;
   overflow: auto;
-  width: 400px;
+  width: 300px;
   height: 200px;
   background-color: transparent;
   margin: 0;
@@ -304,7 +305,7 @@ const ModalRight = styled.div`
     font-size: 1.2rem;
     line-height: 1rem;
     pointer-events: none;
-    width: 400px;
+    width: 300px;
     height: 200px;
 
     & mark {
@@ -313,7 +314,7 @@ const ModalRight = styled.div`
       background-color: ${COLOR.THEME1.SECONDARY};
       letter-spacing: normal;
       font-size: 1.2rem;
-      width: 400px;
+      width: 300px;
       height: 200px;
       overflow: auto;
     }
@@ -324,7 +325,7 @@ const ModalRight = styled.div`
       color: transparent;
       font-size: 1.2rem;
       resize: none;
-      width: 400px;
+      width: 300px;
       height: 200px;
       overflow: auto;
     }
