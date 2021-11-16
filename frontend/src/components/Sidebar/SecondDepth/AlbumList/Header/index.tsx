@@ -47,12 +47,14 @@ const Header = ({
       <AlbumNameWrapper>
         <AlbumName>{albumName}</AlbumName>
       </AlbumNameWrapper>
-      <MoreIcon className="modifying-album-btn" onClick={onClickMoreBtn}>
-        {albumName !== "기본 앨범" && <MoreVertSVG fill={nowTheme.MENUTEXT} />}
-        {modalOpenedIdx === albumID && (
-          <AlbumSettingModal albumID={albumID} albumName={albumName} setModalOpenedIdx={setModalOpenedIdx} />
-        )}
-      </MoreIcon>
+      {albumName !== "기본 앨범" && (
+        <MoreIcon className="modifying-album-btn" onClick={onClickMoreBtn}>
+          <MoreVertSVG fill={nowTheme.MENUTEXT} />
+          {modalOpenedIdx === albumID && (
+            <AlbumSettingModal albumID={albumID} albumName={albumName} setModalOpenedIdx={setModalOpenedIdx} />
+          )}
+        </MoreIcon>
+      )}
     </HeaderWrapper>
   );
 };
