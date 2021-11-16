@@ -13,7 +13,7 @@ interface ResponseGenerator {
 }
 
 function getGroupInfoApi(params: any) {
-  const URL = "http://localhost:5000/api";
+  const URL = "/api/groups";
   const option = {
     method: "GET",
     header: {
