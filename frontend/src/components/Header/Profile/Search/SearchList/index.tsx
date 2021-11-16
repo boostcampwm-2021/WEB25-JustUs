@@ -56,7 +56,6 @@ const SearchListContainer = styled.div`
   top: 5.5vh;
   z-index: 6;
   width: 25vw;
-  font-size: 1rem;
   box-sizing: border-box;
   overflow-y: scroll;
   &::-webkit-scrollbar {
@@ -73,7 +72,6 @@ const SearchListContainer = styled.div`
       padding: 1vh 0 1vh 1vh;
       margin: 0 1.5vw 0 0;
       border-bottom: 1px solid ${COLOR.GRAY};
-      font-size: 0.8rem;
       &:hover {
         font-weight: bold;
         cursor: pointer;

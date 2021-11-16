@@ -34,6 +34,19 @@ const GlobalStyle = createGlobalStyle`
   footer, header, hgroup, menu, nav, section {
     display: block;
   }
+  html {
+    @media screen and (max-width: 2000px) {
+      font-size: 10px;
+    }
+
+    @media screen and (max-width: 1440px) {
+      font-size: 8px;
+    }
+
+    @media screen and (max-width: 768px) {
+      font-size: 6px;
+    }
+  }
   body {
     line-height: 1;
   }

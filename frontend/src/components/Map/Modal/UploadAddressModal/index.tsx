@@ -72,7 +72,7 @@ const Header = styled.div`
 `;
 
 const Title = styled.div`
-  font-size: 40px;
+  font-size: 3.5rem;
 `;
 
 const CloseBtn = styled.div`
@@ -99,17 +99,17 @@ const AddressNameInput = styled.input`
   margin-top: 30px;
   min-width: 50vw;
   height: 100px;
-  font-size: 15px;
+  font-size: 1rem;
   border: none;
   background: ${COLOR.GRAY};
   border-radius: 10px;
-  font-size: 50px;
+  font-size: 2rem;
   text-align: center;
 
   &::-webkit-input-placeholder {
     text-align: center;
     font-weight: 800;
-    font-size: 15px;
+    font-size: 1rem;
   }
 `;
 
@@ -121,7 +121,7 @@ const InsertAddressName = styled.div`
   color: ${COLOR.WHITE};
   background-color: ${(props) => props.theme.PRIMARY};
   margin-top: 50px;
-  font-size: 30px;
+  font-size: 2rem;
 `;
 
 export default UploadAddressModal;
