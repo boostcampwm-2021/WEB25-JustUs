@@ -29,9 +29,10 @@ const Group = ({ isToggle, setIsToggle, groupID, groupName, groupImg, DragHandle
           albumID: 0,
           albumName: "기본 앨범",
           posts: [
-            { postID: 0, postTitle: "강남역", postLatitude: 37.497912, postLongitude: 127.027616 },
+            { postID: 0, postTitle: "강남역1", postLatitude: 37.497912, postLongitude: 127.027616 },
             { postID: 1, postTitle: "이수역", postLatitude: 37.48670440494385, postLongitude: 126.98218497576075 },
             { postID: 2, postTitle: "옥수역", postLatitude: 37.54049696552621, postLongitude: 127.01873018465605 },
+            { postID: 7, postTitle: "강남역2", postLatitude: 37.497932, postLongitude: 127.027616 },
           ],
         },
         {

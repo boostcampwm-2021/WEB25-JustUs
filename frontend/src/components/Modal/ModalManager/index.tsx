@@ -12,6 +12,7 @@ import DeleteAlbumModal from "@components/Sidebar/SecondDepth/AlbumList/Header/M
 import AddGroupModal from "@components/Sidebar/FirstDepth/AddGroupButton/Modal/";
 import PostDeleteModal from "@components/Modal/PostDeleteModal";
 import PostUpdateModal from "@components/Modal/PostUpdateModal";
+import PostListModal from "@components/Modal//PostListModal";
 import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
 import CloseModal from "../CloseModal";
@@ -26,6 +27,7 @@ const ModalManager = ({ setIsToggle }: ModalManagerProps) => {
   return (
     <>
       {nowModal === "" && <CloseModal />}
+      {nowModal === "PostListModal" && <PostListModal />}
       {nowModal === "UploadAddressModal" && <UploadAddressModal />}
       {nowModal === "PostCreateModal" && <PostCreateModal />}
       {nowModal === "PostShowModal" && <PostShowModal />}
