@@ -49,7 +49,7 @@ const modalSlideUp = keyframes`
 
 const ModalContainer = styled.div`
   background-color: ${COLOR.WHITE};
-  min-height: 40rem;
+  min-height: 35rem;
   min-width: 30vw;
   border-radius: 2rem;
   display: flex;
@@ -95,17 +95,16 @@ const InviteCodeInputWrapper = styled.input`
   margin-top: 5rem;
   width: 30rem;
   height: 10rem;
-  font-size: 10rem;
+  font-size: 3rem;
   border: none;
   background: ${COLOR.GRAY};
   border-radius: 10px;
-  font-size: 50px;
   text-align: center;
 
   &::-webkit-input-placeholder {
     text-align: center;
     font-weight: 800;
-    font-size: 15px;
+    font-size: 3px;
   }
 `;
 
@@ -118,6 +117,7 @@ const JoinBtnWrapper = styled.div`
   background-color: ${(props) => props.theme.PRIMARY};
   margin-top: 5rem;
   font-size: 2rem;
+  cursor: pointer;
 `;
 
 export default JoinGroupModal;

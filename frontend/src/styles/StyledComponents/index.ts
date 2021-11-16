@@ -14,8 +14,8 @@ const flexColumnCenterAlign = css`
 `;
 
 const yesNoButtonWrapper = css`
-  width: 120px;
-  height: 40px;
+  width: 10rem;
+  height: 4rem;
   border-radius: 10px;
   margin-left: 30px;
   cursor: pointer;

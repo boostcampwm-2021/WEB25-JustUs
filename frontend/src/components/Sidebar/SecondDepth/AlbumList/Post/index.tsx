@@ -46,23 +46,25 @@ const Post = ({
       data-albumidx={albumIdx}
       onDragOver={(e) => e.preventDefault()}
     >
-      {postTitle}
+      <PostTitle>{postTitle}</PostTitle>
     </PostWrapper>
   );
 };
 
 const PostWrapper = styled.div<{ idx: number; postSelected: number; theme: any }>`
-  padding: 0.5rem 0 0.5rem 3rem;
   color: ${({ theme, postSelected, idx }) => (postSelected === idx ? COLOR.WHITE : theme.MENUTEXT)};
   background: ${({ theme, postSelected, idx }) => (postSelected === idx ? theme.SECONDARY : "")};
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  width: 15rem;
+  width: 20rem;
 
   &:hover {
     cursor: pointer;
   }
+`;
+const PostTitle = styled.div`
+  padding: 0.5rem 0 0.5rem 3rem;
 `;
 
 export default Post;

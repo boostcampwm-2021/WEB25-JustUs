@@ -70,7 +70,7 @@ const modalSlideUp = keyframes`
 `;
 const ModalContainer = styled.div`
   background-color: ${COLOR.WHITE};
-  min-height: 40vh;
+  min-height: 35vh;
   min-width: 30vw;
   border-radius: 2rem;
   display: flex;
@@ -130,14 +130,14 @@ const AlbumNameInputWrapper = styled.input`
 
 const SaveBtnWrapper = styled.div`
   ${flexRowCenterAlign}
-  width: 7vw;
-  height: 5vh;
+  width: 10rem;
+  height: 4rem;
   border-radius: 10px;
   color: ${COLOR.WHITE};
   background-color: ${(props) => props.theme.PRIMARY};
   margin-top: 5rem;
   cursor: pointer;
-  font-size: 1.5vw;
+  font-size: 1.6rem;
 `;
 
 export default UpdateAlbumModal;
