@@ -5,6 +5,7 @@ import { ReactComponent as ArrowRightSVG } from "@styles/icons/arrow-right.svg";
 import { ReactComponent as MoreVertSVG } from "@styles/icons/more-vert.svg";
 import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
+import { flexRowCenterAlign } from "@src/styles/StyledComponents";
 
 interface HeaderProps {
   albumID: number;
@@ -43,7 +44,7 @@ const Header = ({
         {postToggle && <ArrowDownSVG fill={nowTheme.MENUTEXT} />}
         {!postToggle && <ArrowRightSVG fill={nowTheme.MENUTEXT} />}
       </ArrowIcon>
-      {albumName}
+      <AlbumName>{albumName}</AlbumName>
       <MoreIcon className="modifying-album-btn" onClick={onClickMoreBtn}>
         {albumName !== "기본 앨범" && <MoreVertSVG fill={nowTheme.MENUTEXT} />}
         {modalOpenedIdx === albumID && (
@@ -62,11 +63,14 @@ const HeaderWrapper = styled.div`
   grid-template-columns: 10% 80% 10%;
   cursor: grab;
 `;
-
 const ArrowIcon = styled.div`
   cursor: pointer;
+  ${flexRowCenterAlign}
 `;
-
+const AlbumName = styled.div`
+  display: flex;
+  align-items: center;
+`;
 const MoreIcon = styled.div`
   cursor: pointer;
 `;
