@@ -53,13 +53,7 @@ export class AlbumService {
 
     if (albumId === baseAlbum.albumId) throw new NotFoundException("It cannot be deleted because it is baseAlbum.");
 
-    const { posts } = await this.getMovePosts(albumId);
-    console.log(posts);
-    posts.forEach(post => {
-      const postId = post.postId;
-      this.postRepository.update(postId, { album: baseAlbum });
-    });
-
+    await this.movePosts(albumId, baseAlbum);
     this.albumRepository.softRemove(album);
 
     return "Album delete success!!";
@@ -70,6 +64,15 @@ export class AlbumService {
     const baseAlbumId = albums[0];
 
     return baseAlbumId;
+  }
+
+  async movePosts(albumId: number, baseAlbum: Album): Promise<void> {
+    const { posts } = await this.getMovePosts(albumId);
+
+    posts.forEach(post => {
+      const postId = post.postId;
+      this.postRepository.update(postId, { album: baseAlbum });
+    });
   }
 
   async getMovePosts(albumId: number): Promise<Album> {
