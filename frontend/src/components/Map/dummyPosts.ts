@@ -3,7 +3,7 @@ import shortid from "shortid";
 const postsInfo = [
   {
     postID: 0,
-    postTitle: "강남역",
+    postTitle: "강남역1",
     postContent: "#스타벅스 #리저브 다녀옴",
     postDate: "2021-01-11",
     userNickname: "그룹원1",
@@ -92,6 +92,21 @@ const postsInfo = [
     postLocation: "후쿠오카",
     postLatitude: 33.560126973098605,
     postLongitude: 130.38719144055108,
+  },
+  {
+    postID: 7,
+    postTitle: "강남역2",
+    postContent: "#스타벅스 #리저브 다녀옴",
+    postDate: "2021-01-11",
+    userNickname: "그룹원1",
+    postImages: [
+      { file: "/img/post1-1.jpeg", key: shortid.generate() },
+      { file: "/img/post1-2.jpeg", key: shortid.generate() },
+      { file: "/img/post1-3.jpeg", key: shortid.generate() },
+    ],
+    postLocation: "스타벅스 강남R점",
+    postLatitude: 37.49793255820145,
+    postLongitude: 127.02852526931332,
   },
 ];
 

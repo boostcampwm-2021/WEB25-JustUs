@@ -1,4 +1,4 @@
-const Marker = (map: naver.maps.Map, pos: naver.maps.LatLng) => {
+const Marker = (map: naver.maps.Map, pos: naver.maps.LatLng, name: string, postId: number) => {
   const markerIcon = `
     <img src="/icons/podo.png" alt="marker">`;
 
@@ -11,6 +11,8 @@ const Marker = (map: naver.maps.Map, pos: naver.maps.LatLng) => {
     size: new naver.maps.Size(22, 22),
     origin: new naver.maps.Point(0, 0),
     draggable: false,
+    title: name,
+    postId: postId,
   };
 };
 

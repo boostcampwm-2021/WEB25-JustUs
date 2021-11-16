@@ -1,3 +1,7 @@
+interface Imarker {
+  postTitle: string;
+  postId: number;
+}
 const initState: {
   nowModal: string;
   nowAddress: string;
@@ -10,6 +14,7 @@ const initState: {
     userNickname: string;
     postImages: Array<{ file: string; key: string }>;
   };
+  clusteredMarker: Imarker[];
 } = {
   nowModal: "",
   nowAddress: "",
@@ -25,6 +30,7 @@ const initState: {
     userNickname: "",
     postImages: [],
   },
+  clusteredMarker: [],
 };
 
 const ModalReducer = (state = initState, action: any) => {
@@ -61,6 +67,11 @@ const ModalReducer = (state = initState, action: any) => {
           postLatitude: action.payload.postLatitude,
           postLongitude: action.payload.postLongitude,
         },
+      };
+    case "SET_CLUSTERED_MARKER":
+      return {
+        ...state,
+        clusteredMarker: action.payload,
       };
     default:
       return state;

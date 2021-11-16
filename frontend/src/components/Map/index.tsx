@@ -35,6 +35,13 @@ interface PointerEvent {
   feature: Feature;
 }
 
+interface PostType {
+  postID: number;
+  postTitle: string;
+  postLatitude: number;
+  postLongitude: number;
+}
+
 interface IDispatch {
   type: string;
   payload: any;
@@ -58,6 +65,23 @@ interface IMarkerClustering {
   setMap: Function;
 }
 
+interface IClustredMember extends naver.maps.MarkerOptions {
+  postId: number;
+}
+
+interface IPostsList {
+  postsList: PostType[];
+}
+
+interface ISelectedPost {
+  postID: number;
+  postTitle: string;
+  postContent: string;
+  postDate: string;
+  userNickname: string;
+  postImages: Array<{ file: string; key: string }>;
+}
+
 const setMap = (
   INIT_X: number,
   INIT_Y: number,
@@ -71,6 +95,8 @@ const setMap = (
   const map = new naver.maps.Map("map", {
     center: pos,
     zoom: ZOOM_SIZE,
+    minZoom: 8,
+    maxZoom: 17,
   });
 
   setNaverMap(map);
@@ -96,7 +122,7 @@ const Map = () => {
   const [naverMap, setNaverMap] = useState<naver.maps.Map>();
   const [currentMarkers, setCurrentMarkers] = useState<Array<naver.maps.Marker>>([]);
   const [currentClustering, setCurrentClustering] = useState<IMarkerClustering | undefined>(undefined);
-  const { postsList }: any = useSelector((state: RootState) => state.groups);
+  const { postsList }: IPostsList = useSelector((state: RootState) => state.groups);
   const { selectedPost }: any = useSelector((state: RootState) => state.modal);
 
   useEffect(() => {
@@ -113,10 +139,6 @@ const Map = () => {
     if (!postsList) return;
 
     const setMarker = () => {
-      const markerItems = postsList.map((post: any) => {
-        return { id: post.postID, name: post.postTitle, position: [post.postLatitude, post.postLongitude] };
-      });
-
       const handleClickMarker = (clickedPostID: number) => {
         // 아래 로직은 나중에 백엔드 API 요청을 통해 클릭한 게시글의 상세 정보를 가져온다.
         const targetPost = dummyPosts.find((post) => post.postID === clickedPostID);
@@ -124,14 +146,22 @@ const Map = () => {
         dispatch({ type: "OPEN_MODAL", payload: "PostShowModal" });
       };
 
-      const markers = markerItems.map((markerItem: any) => {
-        const pos = new naver.maps.LatLng(markerItem.position[0], markerItem.position[1]);
-        const marker = new naver.maps.Marker(Marker(naverMap as naver.maps.Map, pos));
-        naver.maps.Event.addListener(marker, "click", () => handleClickMarker(markerItem.id));
+      const markers = postsList.map((post: PostType) => {
+        const pos = new naver.maps.LatLng(post.postLatitude, post.postLongitude);
+        const marker = new naver.maps.Marker(Marker(naverMap as naver.maps.Map, pos, post.postTitle, post.postID));
+        naver.maps.Event.addListener(marker, "click", () => handleClickMarker(post.postID));
         return marker;
       });
 
-      const markerClustering = new MarkerClustering(SetClustering(naverMap as naver.maps.Map, markers));
+      const clickHandler = (members: IClustredMember[]) => {
+        const clusteredMarker = members.map((member) => {
+          return { postId: member.postId, postTitle: member.title };
+        });
+        dispatch({ type: "SET_CLUSTERED_MARKER", payload: clusteredMarker });
+        dispatch({ type: "OPEN_MODAL", payload: "PostListModal" });
+      };
+
+      const markerClustering = new MarkerClustering(SetClustering(naverMap as naver.maps.Map, markers, clickHandler));
       setCurrentMarkers(markers);
       setCurrentClustering(markerClustering);
     };
