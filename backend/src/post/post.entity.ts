@@ -1,5 +1,5 @@
 import { Album } from "src/album/album.entity";
-import { TimeStampEntity } from "src/myBaseEntity/timestampEntity";
+import { TimeStampEntity } from "src/custom/myBaseEntity/timestampEntity";
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn, OneToMany } from "typeorm";
 import { Image } from "src/image/image.entity";
 import { User } from "src/user/user.entity";
