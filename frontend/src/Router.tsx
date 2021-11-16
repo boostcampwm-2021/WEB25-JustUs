@@ -1,15 +1,24 @@
-import React from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
-
 import Login from "@pages/Login";
 import Main from "@pages/Main";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { userInfoRequestAction } from "@src/reducer/UserReducer";
+import { RootState } from "@src/reducer";
 
-export const Router: React.FC = () => {
+export const Router = () => {
+  const dispatch = useDispatch();
+  const { user } = useSelector((state: RootState) => state.user);
+
+  const getUserInfo = useEffect(() => {
+    dispatch(userInfoRequestAction());
+  }, []);
+
   return (
     <BrowserRouter>
       <Switch>
-        <Route path="/login" exact component={() => <Login />}></Route>
-        <Route path="/" exact component={() => <Main />}></Route>
+        <Route path="/login" exact component={Login}></Route>
+        <Route path="/" exact component={Main}></Route>
       </Switch>
     </BrowserRouter>
   );
