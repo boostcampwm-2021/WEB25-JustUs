@@ -249,7 +249,6 @@ const InputBottom = styled.div`
   align-items: flex-end;
   border-top: 1px solid ${COLOR.LIGHTGRAY1};
   padding-right: 2rem;
-  // background-color: red;
   min-height: 10rem;
 `;
 const InputPlace = styled.div`

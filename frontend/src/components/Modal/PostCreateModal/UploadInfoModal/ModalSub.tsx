@@ -198,7 +198,6 @@ const SearchContainer = styled.div`
   border-radius: 5px;
   padding: 0.5vh 0;
   & > img {
-    // padding: 0 0.5vw;
     padding-right: 1rem;
   }
 `;
