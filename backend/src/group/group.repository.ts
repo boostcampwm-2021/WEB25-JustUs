@@ -35,4 +35,13 @@ export class GroupRepository extends Repository<Group> {
       .where("group.groupId = :id", { id: groupId })
       .getOne();
   }
+
+  async getBaseAlbumQuery(groupId: number): Promise<Group> {
+    const base = true;
+    return await this.createQueryBuilder("group")
+      .innerJoin("group.albums", "album")
+      .select(["group.groupId", "album.albumId"])
+      .where("group.groupId = :id AND album.base = :base", { id: groupId, base: base })
+      .getOne();
+  }
 }

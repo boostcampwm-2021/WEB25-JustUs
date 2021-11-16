@@ -27,7 +27,7 @@ export class Post extends TimeStampEntity {
   @Column({ type: "decimal", precision: 18, scale: 10 })
   postLongitude: number;
 
-  @ManyToOne(() => Album, album => album.posts, { onDelete: "CASCADE" })
+  @ManyToOne(() => Album, album => album.posts)
   @JoinColumn({ name: "album_id" })
   album: Album;
 
