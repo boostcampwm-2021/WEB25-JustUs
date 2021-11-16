@@ -138,25 +138,23 @@ const ModalSub = ({
 const SidebarOpen = keyframes`
   0% {
     opacity: 1;
-    transform: translateX(0);
     width: 10px;
     visibility: hidden;
   }
-  30% {
+  60% {
     opacity: 1;
+    visibility: hidden;
   }
 `;
 const SidebarHide = keyframes`
-  from {
-    visibility: visible;
-    transform: translateX(0);
-    z-index: 4;
+  0% {
     opacity: 1;
+    width: 15vw;
+    overflow: hidden;
   }
-  to {
-    z-index: 0;
-    transform: translateX(-20vw);
+  100% {
     opacity: 0;
+    visibility: hidden;
   }
 `;
 const Opening = keyframes`
@@ -173,8 +171,8 @@ const ModalSubWrapper = styled.div<{ isToggle: boolean }>`
   position: relative;
   display: flex;
   flex-direction: column;
-  border-left: 1px solid ${COLOR.BLACK};
-  width: ${(props) => (props.isToggle ? "22rem" : "0")};
+  border-left: 1px solid ${COLOR.GRAY};
+  width: ${(props) => (props.isToggle ? "15vw" : "0")};
   z-index: ${(props) => (props.isToggle ? 4 : 0)};
   animation-name: ${(props) => (props.isToggle ? SidebarOpen : SidebarHide)};
   animation-duration: 1s;
@@ -185,7 +183,7 @@ const ModalHeader = styled.div`
   padding: 1vw;
   height: 60px;
   box-sizing: border-box;
-  border-bottom: 1px solid ${COLOR.BLACK};
+  border-bottom: 1px solid ${COLOR.GRAY};
   font-size: 1.6rem;
 `;
 const SearchContainer = styled.div`
@@ -205,6 +203,7 @@ const SearchInput = styled.input`
   height: 90%;
   min-width: 14rem;
   border: none;
+  background: transparent;
   &:focus-visible {
     outline: none;
   }
@@ -215,7 +214,7 @@ const SearchInput = styled.input`
 const CloseBtn = styled.div<{ isToggle: boolean }>`
   ${flexRowCenterAlign}
   position: absolute;
-  left: 90%;
+  left: 95%;
   width: 3rem;
   height: 3.71rem;
   background-color: ${COLOR.WHITE};

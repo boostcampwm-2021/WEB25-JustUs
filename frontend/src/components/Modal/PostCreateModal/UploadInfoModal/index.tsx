@@ -129,7 +129,7 @@ const UploadInfoModal = ({
       }}
       isSubOpened={isSubOpened}
     >
-      <ModalMain>
+      <ModalMain isSubOpened={isSubOpened}>
         <ModalHeader>
           <ModalTitle>{title ? "게시물 수정" : "새 게시물 만들기"}</ModalTitle>
           <ModalHeaderRigthBtn onClick={closeModal}>
@@ -347,15 +347,21 @@ const ModalContainer = styled.div<{ isSubOpened: boolean }>`
   display: flex;
   flex-direction: row;
   background-color: ${COLOR.WHITE};
-  width: ${(props) => (props.isSubOpened ? "1000px" : "850px")};
+  min-width: 40vw;
   height: 55rem;
   border-radius: 10px;
   box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
-const ModalMain = styled.div`
+const ModalMain = styled.div<{ isSubOpened: boolean }>`
   display: flex;
   flex-direction: column;
-  width: 100%;
+  min-width: ${(props) => (props.isSubOpened ? "40vw" : "40vw")};
+  height: 100%;
+  z-index: 6;
 `;
 
 const ModalHeaderLeftBtn = styled.button`

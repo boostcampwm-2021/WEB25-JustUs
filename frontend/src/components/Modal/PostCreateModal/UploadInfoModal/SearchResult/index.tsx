@@ -63,7 +63,6 @@ const SearchResultWrapper = styled.div`
 `;
 const PlaceWrapper = styled.div`
   cursor: pointer;
-  border-bottom: 1px solid ${COLOR.BLACK};
   padding: 0.5rem;
   box-sizing: border-box;
 
