@@ -1,5 +1,4 @@
 import { GroupAction } from "@src/action";
-import AlbumList from "@src/components/Sidebar/SecondDepth/AlbumList";
 
 interface GroupType {
   groupID: number;
@@ -18,8 +17,14 @@ interface AlbumListItemType {
   posts: PostType[];
 }
 
-const initState: { selectedGroup: GroupType | null; albumList: AlbumListItemType[]; groups: Array<GroupType> } = {
+const initState: {
+  selectedGroup: GroupType | null;
+  isLoading: Boolean;
+  albumList: AlbumListItemType[];
+  groups: Array<GroupType>;
+} = {
   selectedGroup: null,
+  isLoading: true,
   albumList: [{ albumID: 0, albumName: "", posts: [] }],
   groups: [
     {
@@ -42,6 +47,22 @@ const initState: { selectedGroup: GroupType | null; albumList: AlbumListItemType
 
 const groupReducer = (state = initState, action: any) => {
   switch (action.type) {
+    case "REQUEST_GROUP_INFO":
+      return {
+        ...state,
+        isLoading: true,
+      };
+    case "SUCCESS_GROUP_INFO":
+      return {
+        ...state,
+        isLoading: false,
+      };
+    case "FAILURE_GROUP_INFO":
+      return {
+        ...state,
+        isLoading: false,
+        // error 상태도 넣어줘야함.
+      };
     case GroupAction.ADD_GROUP:
       return {
         ...state,
@@ -108,11 +129,7 @@ const groupReducer = (state = initState, action: any) => {
 
       targetAlbum2.posts[targetIdx] = targetPost2;
       return { ...state };
-    // case GroupAction.SET_ALL_GROUPS:
-    //   return {
-    //     ...state,
-    //     groups: action.payload,
-    //   };
+
     default:
       return state;
   }
