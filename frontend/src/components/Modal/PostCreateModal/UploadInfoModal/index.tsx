@@ -286,7 +286,7 @@ const InputText = styled.textarea`
   background-color: transparent;
   margin: 0;
   padding: 0;
-  line-height: 1.6rem;
+  line-height: 2rem;
   font-size: 1.6rem;
 
   &:focus {
@@ -305,11 +305,10 @@ const ModalRight = styled.div`
     background-color: ${COLOR.WHITE};
     pointer-events: none;
     font-size: 1.6rem;
-    line-height: 1rem;
     pointer-events: none;
     width: 100%;
     height: 20rem;
-    line-height: 1.6rem;
+    line-height: 2rem;
 
     & mark {
       border-radius: 3px;
