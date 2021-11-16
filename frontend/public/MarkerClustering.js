@@ -542,7 +542,7 @@ Cluster.prototype = {
       this._clusterMarker,
       "click",
       naver.maps.Util.bind(function (e) {
-        clickHandler(this._clusterMember);
+        clickHandler(this._clusterMember, e.coord);
         // map.morph(e.coord, map.getZoom() + 1);
       }, this),
     );
