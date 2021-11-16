@@ -109,7 +109,7 @@ const setMap = (
   naver.maps.Event.addListener(map, "zoom_changed", (e: Number) => {
     setIsRightClick(false);
   });
-  naver.maps.Event.addListener(map, "click", (e: PointerEvent) => {
+  naver.maps.Event.addListener(map, "mousedown", (e: PointerEvent) => {
     setIsRightClick(false);
   });
 };
