@@ -55,6 +55,10 @@ const PostWrapper = styled.div<{ idx: number; postSelected: number; theme: any }
   padding: 0.5rem 0 0.5rem 3rem;
   color: ${({ theme, postSelected, idx }) => (postSelected === idx ? COLOR.WHITE : theme.MENUTEXT)};
   background: ${({ theme, postSelected, idx }) => (postSelected === idx ? theme.SECONDARY : "")};
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 15rem;
 
   &:hover {
     cursor: pointer;

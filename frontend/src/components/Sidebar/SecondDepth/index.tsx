@@ -58,8 +58,7 @@ const SidebarHide = keyframes`
   }
 `;
 const SecondDepthWrapper = styled.div<{ isToggle: boolean }>`
-  width: 13vw;
-  min-width: 10rem;
+  width: 20rem;
   height: 95vh;
   background-color: ${(props) => props.theme.PRIMARY};
   display: grid;

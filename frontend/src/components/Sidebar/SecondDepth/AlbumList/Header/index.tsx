@@ -44,7 +44,9 @@ const Header = ({
         {postToggle && <ArrowDownSVG fill={nowTheme.MENUTEXT} />}
         {!postToggle && <ArrowRightSVG fill={nowTheme.MENUTEXT} />}
       </ArrowIcon>
-      <AlbumName>{albumName}</AlbumName>
+      <AlbumNameWrapper>
+        <AlbumName>{albumName}</AlbumName>
+      </AlbumNameWrapper>
       <MoreIcon className="modifying-album-btn" onClick={onClickMoreBtn}>
         {albumName !== "기본 앨범" && <MoreVertSVG fill={nowTheme.MENUTEXT} />}
         {modalOpenedIdx === albumID && (
@@ -67,9 +69,15 @@ const ArrowIcon = styled.div`
   cursor: pointer;
   ${flexRowCenterAlign}
 `;
-const AlbumName = styled.div`
+const AlbumNameWrapper = styled.div`
   display: flex;
   align-items: center;
+`;
+const AlbumName = styled.div`
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 15rem;
 `;
 const MoreIcon = styled.div`
   cursor: pointer;
