@@ -1,5 +1,5 @@
 import styled, { keyframes } from "styled-components";
-import { flexRowCenterAlign } from "@styles/StyledComponents";
+import { flexColumnCenterAlign, flexRowCenterAlign } from "@styles/StyledComponents";
 import Modal from "@components/Modal";
 import { useDispatch } from "react-redux";
 import COLOR from "@styles/Color";
@@ -19,17 +19,19 @@ const JoinGroupModal = () => {
         }}
       >
         <Header>
+          <TitleWrapper>
+            <div>초대 코드를 입력해 주세요.</div>
+          </TitleWrapper>
           <CloseBtn>
             <button type="button" onClick={closeModal}>
               <img src="/icons/clear.svg" alt="clear icon" />
             </button>
           </CloseBtn>
-          <Title>초대 코드를 입력해 주세요.</Title>
-          <Content>
-            <InviteCodeInputWrapper />
-            <JoinBtnWrapper>참여하기</JoinBtnWrapper>
-          </Content>
         </Header>
+        <Content>
+          <InviteCodeInputWrapper />
+          <JoinBtnWrapper>참여하기</JoinBtnWrapper>
+        </Content>
       </ModalContainer>
     </Modal>
   );
@@ -47,9 +49,9 @@ const modalSlideUp = keyframes`
 
 const ModalContainer = styled.div`
   background-color: ${COLOR.WHITE};
-  min-height: 20vw;
-  min-width: 60vw;
-  border-radius: 50px;
+  min-height: 40rem;
+  min-width: 30vw;
+  border-radius: 2rem;
   display: flex;
   flex-direction: column;
   animation-name: ${modalSlideUp};
@@ -57,22 +59,25 @@ const ModalContainer = styled.div`
 `;
 
 const Header = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  display: grid;
+  grid-template-columns: 10% 80% 10%;
+  padding: 2rem;
 `;
 
-const Title = styled.div`
-  font-size: 40px;
+const TitleWrapper = styled.div`
+  grid-column-start: 2;
+  grid-column-end: 3;
+  font-size: 2.5rem;
+  ${flexColumnCenterAlign};
 `;
 
 const CloseBtn = styled.div`
   width: 100%;
   display: flex;
   flex-direction: row;
-  justify-content: flex-end;
-  margin-top: 30px;
-  margin-right: 30px;
+  justify-content: center;
+  grid-column-start: 3;
+  grid-column-end: 4;
 
   & > button {
     background-color: ${COLOR.WHITE};
@@ -87,10 +92,10 @@ const Content = styled.div`
 `;
 
 const InviteCodeInputWrapper = styled.input`
-  margin-top: 30px;
-  min-width: 50vw;
-  height: 100px;
-  font-size: 15px;
+  margin-top: 5rem;
+  width: 30rem;
+  height: 10rem;
+  font-size: 10rem;
   border: none;
   background: ${COLOR.GRAY};
   border-radius: 10px;
@@ -106,13 +111,13 @@ const InviteCodeInputWrapper = styled.input`
 
 const JoinBtnWrapper = styled.div`
   ${flexRowCenterAlign}
-  width: 160px;
-  height: 39px;
+  width: 7vw;
+  height: 5vh;
   border-radius: 10px;
   color: ${COLOR.WHITE};
   background-color: ${(props) => props.theme.PRIMARY};
-  margin-top: 50px;
-  font-size: 30px;
+  margin-top: 5rem;
+  font-size: 2rem;
 `;
 
 export default JoinGroupModal;

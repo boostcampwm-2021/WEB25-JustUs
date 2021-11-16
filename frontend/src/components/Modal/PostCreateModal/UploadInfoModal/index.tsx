@@ -46,6 +46,7 @@ const UploadInfoModal = ({
   const [selectedLocation, setSelectedLocation] = useState<IData>(prevLocation);
   const [page, setPage] = useState<number>(1);
   const [lastPage, setLastPage] = useState<number>(1);
+  const [gobackClicked, setGobackClicked] = useState<boolean>(false);
   const highlightsRef = useRef() as React.MutableRefObject<HTMLDivElement>;
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const backdropRef = useRef<HTMLDivElement>(null);
@@ -181,21 +182,21 @@ const UploadInfoModal = ({
           </ModalRight>
         </ModalContent>
       </ModalMain>
-
-      {isSubOpened && (
-        <ModalSub
-          searchKeyword={searchKeyword}
-          setSearchKeyword={setSearchKeyword}
-          setIsSubOpened={setIsSubOpened}
-          setSelectedLocation={setSelectedLocation}
-          searchResult={searchResult}
-          setSearchResult={setSearchResult}
-          page={page}
-          setPage={setPage}
-          lastPage={lastPage}
-          setLastPage={setLastPage}
-        />
-      )}
+      <ModalSub
+        searchKeyword={searchKeyword}
+        setSearchKeyword={setSearchKeyword}
+        isSubOpened={isSubOpened}
+        setIsSubOpened={setIsSubOpened}
+        setSelectedLocation={setSelectedLocation}
+        searchResult={searchResult}
+        setSearchResult={setSearchResult}
+        page={page}
+        setPage={setPage}
+        lastPage={lastPage}
+        setLastPage={setLastPage}
+        gobackClicked={gobackClicked}
+        setGobackClicked={setGobackClicked}
+      />
     </ModalContainer>
   );
 };
@@ -210,14 +211,14 @@ const UploadButton = styled.button<{ activate: boolean }>`
   flex-basis: 3rem;
   margin-top: 1rem;
   color: ${COLOR.WHITE};
-  font-size: 1rem;
+  font-size: 1.6rem;
   cursor: ${(props) => {
     if (props.activate) return "pointer";
     else return "not-allowed";
   }};
   z-index: 3;
   position: relative;
-  top: -200px;
+  top: -20rem;
 `;
 const LocationButton = styled.button`
   border: none;
@@ -232,14 +233,15 @@ const InputPlaceName = styled.div`
   text-overflow: ellipsis;
   white-space: nowrap;
   border: none;
-  margin-right: 30px;
+  margin-right: 3rem;
   flex-basis: 90%;
   text-align: right;
   color: ${COLOR.DARKGRAY};
+  font-size: 1.6rem;
 `;
 const InputBottom = styled.div`
   position: relative;
-  top: -200px;
+  top: -20rem;
   display: flex;
   flex-direction: column;
   max-height: 5rem;
@@ -247,6 +249,8 @@ const InputBottom = styled.div`
   align-items: flex-end;
   border-top: 1px solid ${COLOR.LIGHTGRAY1};
   padding-right: 2rem;
+  // background-color: red;
+  min-height: 10rem;
 `;
 const InputPlace = styled.div`
   display: flex;
@@ -256,7 +260,7 @@ const InputPlace = styled.div`
 const InputDate = styled.input`
   flex-basis: 20vh;
   border: none;
-  font-size: 1rem;
+  font-size: 1.6rem;
   padding-right: 5px;
   z-index: 3;
 `;
@@ -265,26 +269,26 @@ const InputTitle = styled.input`
   margin-bottom: 2vh;
   border: none;
   border-bottom: 1px solid ${COLOR.LIGHTGRAY1};
-  font-size: 1.2rem;
+  font-size: 1.6rem;
   &:focus {
     outline: none;
   }
 `;
 const InputText = styled.textarea`
   position: relative;
-  top: -200px;
-  font-size: 1.2rem;
+  top: -20rem;
   border: none;
   resize: none;
   margin-bottom: 2vh;
   z-index: 2;
   overflow: auto;
-  width: 400px;
-  height: 200px;
+  width: 100%;
+  height: 20rem;
   background-color: transparent;
   margin: 0;
   padding: 0;
-  line-height: 1rem;
+  line-height: 1.6rem;
+  font-size: 1.6rem;
 
   &:focus {
     outline: none;
@@ -301,20 +305,21 @@ const ModalRight = styled.div`
     z-index: 1;
     background-color: ${COLOR.WHITE};
     pointer-events: none;
-    font-size: 1.2rem;
+    font-size: 1.6rem;
     line-height: 1rem;
     pointer-events: none;
-    width: 400px;
-    height: 200px;
+    width: 100%;
+    height: 20rem;
+    line-height: 1.6rem;
 
     & mark {
       border-radius: 3px;
       color: transparent;
       background-color: ${COLOR.THEME1.SECONDARY};
       letter-spacing: normal;
-      font-size: 1.2rem;
-      width: 400px;
-      height: 200px;
+      font-size: 1.6rem;
+      width: 100%;
+      height: 20rem;
       overflow: auto;
     }
 
@@ -322,10 +327,10 @@ const ModalRight = styled.div`
       white-space: pre-wrap;
       word-wrap: break-word;
       color: transparent;
-      font-size: 1.2rem;
+      font-size: 1.6rem;
       resize: none;
-      width: 400px;
-      height: 200px;
+      width: 100%;
+      height: 20rem;
       overflow: auto;
     }
   }
@@ -345,7 +350,7 @@ const ModalContainer = styled.div<{ isSubOpened: boolean }>`
   flex-direction: row;
   background-color: ${COLOR.WHITE};
   width: ${(props) => (props.isSubOpened ? "1000px" : "850px")};
-  height: 530px;
+  height: 55rem;
   border-radius: 10px;
   box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
 `;
@@ -379,7 +384,6 @@ const ModalHeader = styled.div`
   padding: 1vw;
   height: 60px;
   box-sizing: border-box;
-  border-bottom: 1px solid ${COLOR.BLACK};
   font-size: max(1.2vw, 20px);
 `;
 const ModalTitle = styled.div`
@@ -391,6 +395,7 @@ const ModalTitle = styled.div`
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  font-size: 2.5rem;
 `;
 
 export default UploadInfoModal;

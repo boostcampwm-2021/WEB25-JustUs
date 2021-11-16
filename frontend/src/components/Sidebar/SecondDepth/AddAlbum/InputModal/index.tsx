@@ -1,5 +1,5 @@
 import { useRef, Dispatch, SetStateAction } from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { flexRowCenterAlign } from "@styles/StyledComponents";
 import COLOR from "@styles/Color";
 import { useSelector } from "react-redux";
@@ -46,6 +46,16 @@ const InputModal = ({ addAlbumModalRef, setIsAddAlbumModalOpened }: InputModalPr
   );
 };
 
+const modalSlideUp = keyframes`
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  30% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
 const AddAlbumModalWrapper = styled.div`
   ${flexRowCenterAlign}
   width: 90%;
@@ -56,6 +66,8 @@ const AddAlbumModalWrapper = styled.div`
   bottom: 10vh;
   border-radius: 20px;
   justify-content: space-around;
+  animation-name: ${modalSlideUp};
+  animation-duration: 1s;
 `;
 
 const AlbumCreateInputWrapper = styled.input`
@@ -63,11 +75,10 @@ const AlbumCreateInputWrapper = styled.input`
   border-bottom: 1px solid ${(props) => props.theme.PRIMARY};
   width: 60%;
   text-align: center;
-  font-size: 1rem;
 
   &::-webkit-input-placeholder {
     text-align: center;
-    font-size: 1.2rem;
+    font-size: 1.6rem;
   }
 
   &:focus-visible {

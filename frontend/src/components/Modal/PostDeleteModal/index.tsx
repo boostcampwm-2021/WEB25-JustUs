@@ -37,22 +37,20 @@ const PostDeleteModal = () => {
         }}
       >
         <Header>
+          <Title>삭제 확인</Title>
           <CloseBtn>
             <button type="button" onClick={closeModal}>
               <img src="/icons/clear.svg" alt="clear icon" />
             </button>
           </CloseBtn>
-          <Title>삭제 확인</Title>
-          <Content>
-            <DeleteAlbumGuideWrapper>
-              "{selectedPost.postTitle}" 게시글을 정말 삭제하시겠습니까?
-            </DeleteAlbumGuideWrapper>
-            <BtnWrapper>
-              <CancelBtnWrapper onClick={closeModal}>취소</CancelBtnWrapper>
-              <DeleteBtnWrapper onClick={onClickDeleteBtn}>삭제</DeleteBtnWrapper>
-            </BtnWrapper>
-          </Content>
         </Header>
+        <Content>
+          <DeleteAlbumGuideWrapper>"{selectedPost.postTitle}" 게시글을 정말 삭제하시겠습니까?</DeleteAlbumGuideWrapper>
+          <BtnWrapper>
+            <CancelBtnWrapper onClick={closeModal}>취소</CancelBtnWrapper>
+            <DeleteBtnWrapper onClick={onClickDeleteBtn}>삭제</DeleteBtnWrapper>
+          </BtnWrapper>
+        </Content>
       </ModalContainer>
     </Modal>
   );
@@ -72,24 +70,21 @@ const ModalContainer = styled.div`
   background-color: ${COLOR.WHITE};
   min-height: 35vh;
   min-width: 30vw;
-  border-radius: 50px;
+  border-radius: 5rem;
   display: flex;
   flex-direction: column;
   animation-name: ${modalSlideUp};
   animation-duration: 1s;
 `;
 const Header = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  display: grid;
+  grid-template-columns: 10% 80% 10%;
+  padding: 2rem;
 `;
 const CloseBtn = styled.div`
   width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  margin-top: 30px;
-  margin-right: 30px;
+  grid-column-start: 3;
+  grid-column-end: 4;
 
   & > button {
     background-color: ${COLOR.WHITE};
@@ -97,7 +92,10 @@ const CloseBtn = styled.div`
   }
 `;
 const Title = styled.div`
-  font-size: 40px;
+  font-size: 2.5rem;
+  grid-column-start: 2;
+  grid-column-end: 3;
+  ${flexRowCenterAlign}
 `;
 const Content = styled.div`
   display: flex;
@@ -108,7 +106,7 @@ const Content = styled.div`
 const DeleteAlbumGuideWrapper = styled.div`
   width: 100%;
   margin-top: 30px;
-  font-size: 1.5rem;
+  font-size: 2rem;
   text-align: center;
 `;
 
@@ -118,27 +116,27 @@ const BtnWrapper = styled.div`
 `;
 const CancelBtnWrapper = styled.div`
   ${flexRowCenterAlign}
-  width: 8rem;
-  height: 39px;
+  width: 7vw;
+  height: 5vh;
   border-radius: 10px;
   border: 1px solid ${COLOR.BLUE};
   color: ${COLOR.BLACK};
   background-color: ${COLOR.WHITE};
   margin-top: 50px;
-  font-size: 30px;
+  font-size: 2rem;
   grid-column-start: 1;
   grid-column-end: 2;
   cursor: pointer;
 `;
 const DeleteBtnWrapper = styled.div`
   ${flexRowCenterAlign}
-  width: 8rem;
-  height: 39px;
+  width: 7vw;
+  height: 5vh;
   border-radius: 10px;
   color: ${COLOR.WHITE};
   background-color: ${COLOR.RED};
   margin-top: 50px;
-  font-size: 30px;
+  font-size: 2rem;
   grid-column-start: 3;
   grid-column-end: 4;
   cursor: pointer;
