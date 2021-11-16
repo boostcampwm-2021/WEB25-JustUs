@@ -20,8 +20,13 @@ export class PostService {
     private albumRepository: AlbumRepository,
   ) {}
 
-  async createPost(userId: number, createPostRequestDto: CreatePostRequestDto): Promise<number> {
-    const { postTitle, postContent, postImages, postDate, postLocation, postLatitude, postLongitude, albumId } =
+  async createPost(
+    userId: number,
+    files: Express.Multer.File[],
+    createPostRequestDto: CreatePostRequestDto,
+  ): Promise<number> {
+    const postImages = this.imageService.getImagesUrl(files);
+    const { postTitle, postContent, postDate, postLocation, postLatitude, postLongitude, albumId } =
       createPostRequestDto;
 
     const user = await this.userRepository.findOne({ userId });
@@ -37,8 +42,8 @@ export class PostService {
       postContent: postContent,
       postDate: postDate,
       postLocation: postLocation,
-      postLatitude: postLatitude,
-      postLongitude: postLongitude,
+      postLatitude: Number(postLatitude),
+      postLongitude: Number(postLongitude),
       user: user,
       album: album,
       images: images,
@@ -61,9 +66,11 @@ export class PostService {
   async updatePostInfo(
     userId: number,
     postId: number,
+    files: Express.Multer.File[],
     updatePostInfoRequestDto: UpdatePostInfoRequestDto,
   ): Promise<string> {
-    const { postTitle, postContent, deleteImagesId, addImages, postDate, postLocation, postLatitude, postLongitude } =
+    const addImages = this.imageService.getImagesUrl(files);
+    const { postTitle, postContent, deleteImagesId, postDate, postLocation, postLatitude, postLongitude } =
       updatePostInfoRequestDto;
 
     const post = await this.postRepository.findOne(postId, { relations: ["user"] });

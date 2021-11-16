@@ -1,4 +1,4 @@
-import { TimeStampEntity } from "src/myBaseEntity/timestampEntity";
+import { TimeStampEntity } from "src/custom/myBaseEntity/timestampEntity";
 import { Post } from "src/post/post.entity";
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
