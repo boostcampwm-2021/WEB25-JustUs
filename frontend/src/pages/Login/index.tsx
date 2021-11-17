@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 import COLOR from "@src/styles/Color";
 import { flexColumnCenterAlign, flexRowCenterAlign } from "@src/styles/StyledComponents";
@@ -17,7 +16,9 @@ const Login = () => {
                 </Logo>
                 <LogoInfoText>흩어진 추억을 한 곳에 기록해보세요</LogoInfoText>
               </div>
-              <img src="/img/btnG_완성형.png" alt="naver social login" width="350px" />
+              <a href="http://localhost:5000/api/auth/login">
+                <img src="/img/btnG_완성형.png" alt="naver social login" width="350px" />
+              </a>
             </LeftSide>
             <div id="right-side">
               <Polaroid id="polaroid">
@@ -43,7 +44,7 @@ const Login = () => {
 };
 
 const BackgroundImg = styled.div<{ imgUrl: string }>`
-  background-image: url(${props => props.imgUrl});
+  background-image: url(${(props) => props.imgUrl});
   background-size: cover;
   height: 100vh;
 `;

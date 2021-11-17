@@ -1,7 +1,8 @@
 import { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
 import COLOR from "@src/styles/Color";
-import { useDispatch } from "react-redux";
+import { RootState } from "@src/reducer";
+import { useDispatch, useSelector } from "react-redux";
 
 interface ProfileModalProps {
   isModalOpened: boolean;
@@ -22,6 +23,7 @@ const ProfileModal = ({ isModalOpened, setIsModalOpened }: ProfileModalProps) =>
   ];
 
   const dispatch = useDispatch();
+  const { userNickName } = useSelector((state: RootState) => state.user);
   const onClickProfileItem = ({ payload }: ModalListItem) => {
     const type = "OPEN_MODAL";
     setIsModalOpened((prev) => !prev);
@@ -31,7 +33,7 @@ const ProfileModal = ({ isModalOpened, setIsModalOpened }: ProfileModalProps) =>
   return (
     <ModalWrapper>
       <Container>
-        <div>프로필</div>
+        <div>{userNickName}</div>
         <ul>
           {modalListItem.map((item) => (
             <li onClick={() => onClickProfileItem(item)} key={item.id}>
