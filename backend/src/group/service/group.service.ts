@@ -33,7 +33,6 @@ export class GroupService {
       groupName: groupName,
       groupCode: groupCode,
     });
-
     const { groupId } = group;
 
     const album = await this.albumRepository.save({
@@ -41,16 +40,11 @@ export class GroupService {
       base: true,
       group: group,
     });
+    const { albumId } = album;
 
-    await this.groupRepository.update(groupId, { albumOrder: String(album.albumId) });
+    await this.groupRepository.update(groupId, { albumOrder: String(albumId) });
 
-    const user = await this.userRepository.findOne(userId, { relations: ["groups"] });
-    if (!user) throw new NotFoundException(`Not found user with the id ${userId}`);
-
-    const { groupOrder } = user;
-    user.groupOrder = groupOrder === "" ? `${groupId}` : `${groupOrder},${groupId}`;
-    user.groups.push(group);
-    this.userRepository.save(user);
+    await this.applyUserEntity(userId, groupId, group);
 
     return groupId;
   }
@@ -73,6 +67,12 @@ export class GroupService {
     if (!group) throw new NotFoundException(`Not found group with the code ${code}`);
     const { groupId } = group;
 
+    await this.applyUserEntity(userId, groupId, group);
+
+    return group.groupId;
+  }
+
+  async applyUserEntity(userId: number, groupId: number, group: Group): Promise<void> {
     const user = await this.userRepository.findOne(userId, { relations: ["groups"] });
     if (!user) throw new NotFoundException(`Not found user with the id ${userId}`);
 
@@ -80,8 +80,6 @@ export class GroupService {
     user.groupOrder = groupOrder === "" ? `${groupId}` : `${groupOrder},${groupId}`;
     user.groups.push(group);
     this.userRepository.save(user);
-
-    return group.groupId;
   }
 
   async getGroupInfo(groupId: number): Promise<GetGroupInfoResponseDto> {
