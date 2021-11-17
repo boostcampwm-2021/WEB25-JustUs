@@ -8,5 +8,5 @@ export class CreatePostRequestDto extends PostInfo {
   @IsNotEmpty()
   @Transform(({ value }) => Number(value))
   @ApiProperty()
-  albumId: number;
+  groupId: number;
 }

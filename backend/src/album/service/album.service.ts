@@ -65,6 +65,7 @@ export class AlbumService {
 
   async getBaseAlbumId(groupId: number): Promise<Album> {
     const { albums } = await this.groupRepository.getBaseAlbumQuery(groupId);
+    if (!albums) throw new NotFoundException(`Not found group with the id ${groupId}`);
     const baseAlbumId = albums[0];
 
     return baseAlbumId;
