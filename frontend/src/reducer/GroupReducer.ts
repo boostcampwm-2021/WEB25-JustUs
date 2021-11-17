@@ -19,6 +19,7 @@ interface AlbumListItemType {
 
 export const CREATE_GROUP = "CREATE_GROUP";
 export const GET_ALBUM_LIST = "GET_ALBUM_LIST";
+export const DELETE_GROUP = "DELETE_GROUP";
 
 export const createGroupAction = (payload: any) => ({
   type: CREATE_GROUP,
@@ -30,11 +31,17 @@ export const getAlbumListAction = (payload: any) => ({
   payload,
 });
 
+export const deleteGroupAction = (payload: any) => ({
+  type: DELETE_GROUP,
+  payload,
+});
+
 const initState: {
   selectedGroup: GroupType | null;
   isLoading: Boolean;
   albumList: AlbumListItemType[];
   groups: Array<GroupType>;
+  postsList: PostType[];
 } = {
   selectedGroup: null,
   isLoading: true,
@@ -56,6 +63,7 @@ const initState: {
       groupImg: "/img/dummy-group3.png",
     },
   ],
+  postsList: [{ postID: -1, postTitle: "", postLatitude: 0, postLongitude: 0 }],
 };
 
 const groupReducer = (state = initState, action: any) => {
@@ -93,7 +101,10 @@ const groupReducer = (state = initState, action: any) => {
     case GroupAction.DELETE_GROUP:
       return {
         ...state,
-        selectedGroup: state.groups.filter((group) => group.groupID !== action.payload.groupID),
+        selectedGroup: null,
+        groups: state.groups.filter((group) => group.groupID !== action.payload.groupID),
+        albumList: [],
+        postsList: [],
       };
     case GroupAction.MOVE_POST:
       const beforeIdx = action.payload.beforeIdx;
