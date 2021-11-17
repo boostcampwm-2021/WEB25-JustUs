@@ -1,5 +1,5 @@
 import { Controller, Req, Get, Put, Body, UseGuards, HttpCode, UseInterceptors, UploadedFile } from "@nestjs/common";
-import { ApiTags, ApiOkResponse, ApiResponse, ApiBearerAuth } from "@nestjs/swagger";
+import { ApiTags, ApiOkResponse, ApiResponse, ApiBearerAuth, ApiConsumes, ApiBody } from "@nestjs/swagger";
 import { CustomRequest } from "src/custom/myRequest/customRequest";
 import { CustomFile } from "src/custom/myFile/customFile";
 import { JwtAuthGuard } from "src/auth/guard/jwt-auth-guard";
@@ -28,6 +28,8 @@ export class UserController {
   @Put()
   @HttpCode(200)
   @UseInterceptors(FileInterceptor("profileImage", multerOption))
+  @ApiConsumes("multipart/form-data")
+  @ApiBody({ type: UpdateUserInfoRequestDto })
   @ApiOkResponse({ description: "유저정보 수정 성공" })
   UpdateUserInfo(
     @Req() { user }: CustomRequest,
@@ -35,6 +37,7 @@ export class UserController {
     @UploadedFile() file: CustomFile,
   ): Promise<string> {
     const { userId } = user;
+
     return this.userService.updateUserInfo(userId, file, updateUserInfoRequestDto);
   }
 

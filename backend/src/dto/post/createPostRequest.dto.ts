@@ -9,4 +9,7 @@ export class CreatePostRequestDto extends PostInfo {
   @Transform(({ value }) => Number(value))
   @ApiProperty()
   groupId: number;
+
+  @ApiProperty({ type: ["file"] })
+  postImages: any[];
 }

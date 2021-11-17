@@ -9,4 +9,7 @@ export class UpdatePostInfoRequestDto extends PostInfo {
   @Type(() => Number)
   @ApiProperty({ type: [Number] })
   deleteImagesId: number[];
+
+  @ApiProperty({ type: ["file"] })
+  addImages: any[];
 }

@@ -6,4 +6,7 @@ export class UpdateUserInfoRequestDto {
   @IsNotEmpty()
   @ApiProperty()
   userNickname: string;
+
+  @ApiProperty({ type: "file" })
+  profileImage: any;
 }
