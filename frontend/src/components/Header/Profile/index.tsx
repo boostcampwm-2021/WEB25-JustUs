@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import COLOR from "@styles/Color";
 import ProfileModal from "@components/Header/Profile/Modal/ProfileModal";
-import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
+import { useSelector } from "react-redux";
 
 const Profile = () => {
   const [isModalOpened, setIsModalOpened] = useState<boolean>(false);
+  const { userProfile } = useSelector((state: RootState) => state.user);
   const { clickedTarget } = useSelector((state: RootState) => state.groupModal);
 
   const handleProfileBtnClick = () => {
@@ -20,23 +20,25 @@ const Profile = () => {
 
   return (
     <>
-      <ProfileContainer id="profile" onClick={handleProfileBtnClick}>
-        <img className="pointer" src="/icons/profile.svg" height="90%" alt="profile" />
-      </ProfileContainer>
+      <ProfileContainer id="profile" onClick={handleProfileBtnClick} profile={userProfile}></ProfileContainer>
       {isModalOpened && <ProfileModal isModalOpened={isModalOpened} setIsModalOpened={setIsModalOpened} />}
     </>
   );
 };
 
-const ProfileContainer = styled.button`
+const ProfileContainer = styled.button<{ profile: string }>`
   height: 4vh;
   width: 4vh;
-  background-color: ${COLOR.WHITE};
+  background-image: url(${(props) => props.profile});
+  background-size: cover;
   border-radius: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
   border: none;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 export default Profile;
