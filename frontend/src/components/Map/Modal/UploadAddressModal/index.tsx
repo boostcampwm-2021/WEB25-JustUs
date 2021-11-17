@@ -28,17 +28,17 @@ const UploadAddressModal = () => {
         }}
       >
         <Header>
+          <Title>추가할 장소명을 입력하세요.</Title>
           <CloseBtn>
             <button type="button" onClick={closeModal}>
               <img src="/icons/clear.svg" alt="clear icon" />
             </button>
           </CloseBtn>
-          <Title>추가할 장소명을 입력하세요.</Title>
-          <Content>
-            <AddressNameInput ref={addressInputRef} />
-            <InsertAddressName onClick={nextModal}>입력하기</InsertAddressName>
-          </Content>
         </Header>
+        <Content>
+          <AddressNameInput ref={addressInputRef} />
+          <InsertAddressName onClick={nextModal}>입력하기</InsertAddressName>
+        </Content>
       </ModalContainer>
     </Modal>
   );
@@ -56,9 +56,9 @@ const modalSlideUp = keyframes`
 
 const ModalContainer = styled.div`
   background-color: ${COLOR.WHITE};
-  min-height: 20vw;
-  min-width: 60vw;
-  border-radius: 50px;
+  min-height: 35rem;
+  min-width: 30vw;
+  border-radius: 2rem;
   display: flex;
   flex-direction: column;
   animation-name: ${modalSlideUp};
@@ -66,22 +66,24 @@ const ModalContainer = styled.div`
 `;
 
 const Header = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  display: grid;
+  grid-template-columns: 10% 80% 10%;
+  padding: 2rem;
 `;
 
 const Title = styled.div`
-  font-size: 3.5rem;
+  grid-column-start: 2;
+  grid-column-end: 3;
+  font-size: 2.5rem;
+  ${flexRowCenterAlign};
 `;
 
 const CloseBtn = styled.div`
   width: 100%;
-  display: flex;
   flex-direction: row;
-  justify-content: flex-end;
-  margin-top: 30px;
-  margin-right: 30px;
+  justify-content: center;
+  grid-column-start: 3;
+  grid-column-end: 4;
 
   & > button {
     background-color: ${COLOR.WHITE};
@@ -96,20 +98,19 @@ const Content = styled.div`
 `;
 
 const AddressNameInput = styled.input`
-  margin-top: 30px;
-  min-width: 50vw;
-  height: 100px;
-  font-size: 1rem;
+  width: 30rem;
+  height: 10rem;
+  font-size: 3rem;
   border: none;
   background: ${COLOR.GRAY};
   border-radius: 10px;
-  font-size: 2rem;
   text-align: center;
+  margin-top: 5rem;
 
   &::-webkit-input-placeholder {
     text-align: center;
     font-weight: 800;
-    font-size: 1rem;
+    font-size: 3rem;
   }
 `;
 
@@ -120,8 +121,8 @@ const InsertAddressName = styled.div`
   border-radius: 10px;
   color: ${COLOR.WHITE};
   background-color: ${(props) => props.theme.PRIMARY};
-  margin-top: 50px;
   font-size: 2rem;
+  margin-top: 5rem;
 `;
 
 export default UploadAddressModal;

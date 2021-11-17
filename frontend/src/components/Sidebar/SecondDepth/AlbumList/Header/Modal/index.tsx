@@ -50,7 +50,7 @@ const ModalWrapper = styled.div`
   height: 100px;
   background-color: ${COLOR.WHITE};
   position: absolute;
-  border-radius: 10px;
+  border-radius: 1rem;
   z-index: 5;
   animation-name: ${modalSlideUp};
   animation-duration: 1s;

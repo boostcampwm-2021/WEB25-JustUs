@@ -15,19 +15,18 @@ const PostSettingModal = () => {
   return (
     <ModalWrapper>
       <ModalItem delete={false} onClick={onClickUpdatePost} className="update-post-btn">
-        수정하기
+        <img src="icons/update.svg" alt="update icon" />
       </ModalItem>
-      <Divider />
       <ModalItem delete={true} onClick={onClickDeletePost} className="delete-delete-btn">
-        삭제하기
+        <img src="icons/trash.svg" alt="trash icon" />
       </ModalItem>
     </ModalWrapper>
   );
 };
 
 const ModalWrapper = styled.div`
-  width: 150px;
-  height: 100px;
+  width: 5rem;
+  height: 16rem;
   background-color: ${COLOR.WHITE};
   position: absolute;
   left: 100%;
@@ -37,18 +36,17 @@ const ModalWrapper = styled.div`
 const ModalItem = styled.div<{ delete: boolean }>`
   ${flexRowCenterAlign}
   height: 50%;
-  cursor: pointer;
-  color: ${(props) => (props.delete ? "red" : "black")};
-  font-size: 1.6rem;
 
-  &:hover {
-    opacity: 0.5;
+  & > img {
+    &:hover {
+      cursor: pointer;
+      opacity: 0.5;
+    }
   }
-`;
-const Divider = styled.div`
-  width: 100%;
-  height: 1px;
-  background-color: ${COLOR.BLACK};
+
+  &: first-child {
+    border-bottom: 0.2rem solid ${COLOR.GRAY};
+  }
 `;
 
 export default PostSettingModal;
