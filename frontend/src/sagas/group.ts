@@ -1,4 +1,4 @@
-import { all, fork, put, call, takeLatest } from "redux-saga/effects";
+import { all, fork, put, call, takeLatest, select } from "redux-saga/effects";
 import { GroupAction } from "@src/action";
 import groups from "@src/reducer";
 import axios from "axios";
@@ -14,7 +14,17 @@ interface ResponseGenerator {
   statusText?: string;
   json: Function;
 }
-
+interface PostType {
+  postID: number;
+  postTitle: string;
+  postLatitude: number;
+  postLongitude: number;
+}
+interface IAlbum {
+  albumID: number;
+  albumName: string;
+  posts: PostType[];
+}
 function getGroupInfoApi(params: any) {
   const URL = "/api/groups";
   const option = {
@@ -37,6 +47,12 @@ function createGroupApi(payload: any) {
   );
 }
 
+async function getAlbumListApi(payload: any) {
+  const result = await axios.get(`${SERVER_URL}/api/groups/${payload.groupID}/albums`, { withCredentials: true });
+
+  return result;
+}
+
 function* getGroupInfo(action: any) {
   try {
     const result: ResponseGenerator = yield call(getGroupInfoApi, action.payload);
@@ -55,14 +71,30 @@ function* createGroup({ payload }: any) {
   } catch (err: any) {}
 }
 
+function* getAlbumList(action: any) {
+  try {
+    const result: ResponseGenerator = yield call(getAlbumListApi, action.payload);
+    const { albums, groupId } = result.data;
+    const { groupName, groupImg } = action.payload;
+
+    yield put({ type: "SET_ALBUM_LIST", payload: albums });
+
+    const { albumList }: { albumList: IAlbum[] } = yield select((state) => state.groups);
+    yield put({ type: "SET_SELECTED_GROUP", payload: { groupID: groupId, groupName, groupImg, albumList } });
+  } catch (err: any) {}
+}
+
 function* watchGroupInfo() {
   yield takeLatest("REQUEST_GROUP_INFO", getGroupInfo);
 }
 
-function* watchCreateGroupInfo() {
+function* watchCreateGroup() {
   yield takeLatest("CREATE_GROUP", createGroup);
 }
 
+function* watchGetAlbumList() {
+  yield takeLatest("GET_ALBUM_LIST", getAlbumList);
+}
 export default function* groupSaga() {
-  yield all([fork(watchGroupInfo), fork(watchCreateGroupInfo)]);
+  yield all([fork(watchGroupInfo), fork(watchCreateGroup), fork(watchGetAlbumList)]);
 }

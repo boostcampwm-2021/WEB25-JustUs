@@ -18,9 +18,15 @@ interface AlbumListItemType {
 }
 
 export const CREATE_GROUP = "CREATE_GROUP";
+export const GET_ALBUM_LIST = "GET_ALBUM_LIST";
 
 export const createGroupAction = (payload: any) => ({
   type: CREATE_GROUP,
+  payload,
+});
+
+export const getAlbumListAction = (payload: any) => ({
+  type: GET_ALBUM_LIST,
   payload,
 });
 
@@ -136,7 +142,11 @@ const groupReducer = (state = initState, action: any) => {
 
       targetAlbum2.posts[targetIdx] = targetPost2;
       return { ...state };
-
+    case "SET_ALBUM_LIST":
+      return {
+        ...state,
+        albumList: action.payload,
+      };
     default:
       return state;
   }
