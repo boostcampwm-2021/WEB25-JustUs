@@ -102,12 +102,11 @@ const ModalContainer = styled.div`
   background-color: ${COLOR.WHITE};
   min-height: 55rem;
   min-width: 30vw;
-  border-radius: 5rem;
+  border-radius: 2rem;
   display: flex;
   flex-direction: column;
   animation-name: ${modalSlideUp};
   animation-duration: 1s;
-  border-radius: 5rem;
 `;
 
 const Header = styled.div`

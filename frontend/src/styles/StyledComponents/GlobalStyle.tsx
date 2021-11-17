@@ -1,14 +1,14 @@
 import { createGlobalStyle } from "styled-components";
-import NanumDaCaeSaRang from "../fonts/NanumDaCaeSaRang.ttf";
+import NanumDaCaeSaRang from "../fonts/NanumDaCaeSaRang.woff2";
 
 const GlobalStyle = createGlobalStyle`
   @import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap');
   @font-face {
     font-family: "NanumDaCaeSaRang";
     font-weight: 50;
-    src: url(${NanumDaCaeSaRang}) format("truetype");
+    src: url(${NanumDaCaeSaRang}) format("woff2");
   }
-
+  
   html, body, div, span, applet, object, iframe,
   h1, h2, h3, h4, h5, h6, p, blockquote, pre,
   a, abbr, acronym, address, big, cite, code,

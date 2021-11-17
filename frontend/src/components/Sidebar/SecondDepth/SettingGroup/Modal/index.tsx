@@ -128,7 +128,7 @@ const modalSlideUp = keyframes`
 `;
 const ModalContainer = styled.div`
   background-color: ${COLOR.WHITE};
-  min-height: 65rem;
+  min-height: 70vh;
   min-width: 35vw;
   border-radius: 2rem;
   animation-name: ${modalSlideUp};
@@ -138,6 +138,7 @@ const ModalContainer = styled.div`
 const Header = styled.div`
   display: grid;
   grid-template-columns: 10% 80% 10%;
+  margin-top: 2rem;
 `;
 
 const Title = styled.div`
@@ -180,6 +181,7 @@ const JoinCodeWrapper = styled.div`
 
 const JoinCodeGuide = styled.div`
   width: 25%;
+  font-size: 2.5rem;
 `;
 
 const JoinCode = styled.div`
@@ -189,7 +191,7 @@ const JoinCode = styled.div`
 
 const GroupMemberListWrapper = styled.div`
   width: 100%;
-  margin-top: 3rem;
+  margin-top: 5rem;
   display: flex;
   height: 300px;
   overflow-y: auto;
@@ -199,6 +201,7 @@ const GroupMemberListGuide = styled.div`
   display: flex;
   flex-direction: column;
   width: 25%;
+  font-size: 2.5rem;
 `;
 
 const GroupMemberList = styled.div`
@@ -239,12 +242,13 @@ const GroupDropWrapper = styled.div`
 const DropGuideWrapper = styled.div`
   padding-top: 10px;
   width: 25%;
+  font-size: 2.5rem;
 `;
 
 const DropGroupButtonWrapper = styled.div`
   ${flexRowCenterAlign}
-  width: 120px;
-  height: 40px;
+  width: 10rem;
+  height: 4rem;
   border-radius: 10px;
   border: 2px solid ${COLOR.RED};
   margin-left: 30px;
