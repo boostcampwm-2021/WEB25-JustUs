@@ -18,6 +18,9 @@ export class User extends TimeStampEntity {
   userEmail: string;
 
   @Column({ nullable: true })
+  groupOrder: string;
+
+  @Column({ nullable: true })
   refreshToken: string;
 
   @ManyToMany(() => Group)

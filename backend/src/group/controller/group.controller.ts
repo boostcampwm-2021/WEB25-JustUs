@@ -8,6 +8,7 @@ import { AttendGroupRequestDto } from "src/dto/group/attendGroupRequest.dto";
 import { GetGroupInfoResponseDto } from "src/dto/group/getGroupInfoResponse.dto";
 import { UpdateGroupInfoRequestDto } from "src/dto/group/updateGroupInfoRequest.dto";
 import { GetAlbumsResponseDto } from "src/dto/group/getAlbumsResponse.dto";
+import { UpdateAlbumOrderRequestDto } from "src/dto/group/updateAlbumOrderRequest.dto";
 
 @ApiTags("그룹 API")
 @ApiBearerAuth()
@@ -63,5 +64,16 @@ export class GroupController {
   LeaveGroup(@Req() { user }: CustomRequest, @Param("groupId") groupId: number): Promise<string> {
     const { userId } = user;
     return this.groupService.leaveGroup(userId, groupId);
+  }
+
+  @Put("/:groupId/albumorder")
+  @HttpCode(200)
+  @ApiParam({ name: "groupId", type: Number })
+  @ApiOkResponse({ description: "앨범 순서 수정 성공" })
+  UpdateAlbumOrder(
+    @Param("groupId") groupId: number,
+    @Body() updateAlbumOrderRequestDto: UpdateAlbumOrderRequestDto,
+  ): Promise<string> {
+    return this.groupService.updateAlbumOrder(groupId, updateAlbumOrderRequestDto);
   }
 }

@@ -4,9 +4,20 @@ import { NestFactory } from "@nestjs/core";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import { AppModule } from "./app.module";
 
+const options = {
+  origin: ["http://localhost:3000", "http://localhost:5000", "http://118.67.131.142:5000"],
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  preflightContinue: false,
+  optionsSuccessStatus: 204,
+  credentials: true,
+};
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.use(cookieParser());
+
+  app.enableCors();
+
+  app.use(cookieParser(options));
 
   app.useGlobalPipes(
     new ValidationPipe({
@@ -29,6 +40,7 @@ async function bootstrap() {
       "accessToken",
     )
     .build();
+
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup("api", app, document);
 

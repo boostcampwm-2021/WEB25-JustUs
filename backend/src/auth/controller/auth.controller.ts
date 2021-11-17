@@ -28,7 +28,10 @@ export class AuthController {
 
     res.cookie("accessToken", accessToken, { maxAge: oneHour });
     res.cookie("refreshToken", refreshToken, { maxAge: oneWeek });
-    res.redirect("/");
+
+    const redirectUrl = process.env.NODE_ENV === "dev" ? process.env.DEV_REDIRECT_URL : process.env.PROD_REDIRECT_URL;
+
+    res.redirect(redirectUrl);
   }
 
   @Post("/logout")
