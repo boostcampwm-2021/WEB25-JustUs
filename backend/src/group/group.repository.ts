@@ -31,8 +31,6 @@ export class GroupRepository extends Repository<Group> {
         "album.base",
         "post.postId",
         "post.postTitle",
-        "post.postLatitude",
-        "post.postLongitude",
       ])
       .where("group.groupId = :id", { id: groupId })
       .getOne();

@@ -11,16 +11,6 @@ class postList {
   @IsNotEmpty()
   @ApiProperty()
   postTitle: string;
-
-  @IsNumber()
-  @IsNotEmpty()
-  @ApiProperty()
-  postLatitude: number;
-
-  @IsNumber()
-  @IsNotEmpty()
-  @ApiProperty()
-  postLongitude: number;
 }
 
 class albumList {
