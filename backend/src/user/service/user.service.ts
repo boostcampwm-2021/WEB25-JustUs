@@ -6,11 +6,14 @@ import { UserRepository } from "../user.repository";
 import { UserInfoResponseDto } from "src/dto/user/userInfoResponse.dto";
 import { UpdateUserInfoRequestDto } from "src/dto/user/updateUserInfoRequest.dto";
 import { UpdateGroupOrderRequestDto } from "src/dto/user/updateGroupOrderRequest.dto";
+import { GetGroupsResponseDto } from "src/dto/user/getGroupsResponse.dto";
 import { UpdateResult } from "typeorm";
+import { GroupService } from "src/group/service/group.service";
 
 @Injectable()
 export class UserService {
   constructor(
+    private groupService: GroupService,
     @InjectRepository(UserRepository)
     private userRepository: UserRepository,
   ) {}
@@ -51,5 +54,28 @@ export class UserService {
     this.userRepository.update(userId, { groupOrder });
 
     return "GroupOrder update success!!";
+  }
+
+  async getGroups(userId: number): Promise<GetGroupsResponseDto> {
+    const groupsInfo = await this.userRepository.getGroupsQuery(userId);
+    if (!groupsInfo) throw new NotFoundException(`Not found user with the id ${userId}`);
+
+    const { groupOrder, groups } = groupsInfo;
+
+    const groupsObject = this.groupService.ArrayToObject(groups);
+
+    const reArrangedGroups = this.reArrangeGroups(groupOrder, groupsObject);
+
+    return { groups: reArrangedGroups };
+  }
+
+  reArrangeGroups(groupOrder: string, groupsObejct: object): any[] {
+    const order = groupOrder.split(",");
+
+    const orderGroup = order.map(e => {
+      return groupsObejct[e];
+    });
+
+    return orderGroup;
   }
 }

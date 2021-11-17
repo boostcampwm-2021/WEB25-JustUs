@@ -34,20 +34,25 @@ export class GroupService {
       groupCode: groupCode,
     });
 
+    const { groupId } = group;
+
     const album = await this.albumRepository.save({
       albumName: "기본 앨범",
       base: true,
       group: group,
     });
 
-    await this.groupRepository.update(group.groupId, { albumOrder: String(album.albumId) });
+    await this.groupRepository.update(groupId, { albumOrder: String(album.albumId) });
 
     const user = await this.userRepository.findOne(userId, { relations: ["groups"] });
     if (!user) throw new NotFoundException(`Not found user with the id ${userId}`);
+
+    const { groupOrder } = user;
+    user.groupOrder = groupOrder === "" ? `${groupId}` : `${groupOrder},${groupId}`;
     user.groups.push(group);
     this.userRepository.save(user);
 
-    return group.groupId;
+    return groupId;
   }
 
   async createInvitaionCode(): Promise<string> {
@@ -66,10 +71,13 @@ export class GroupService {
 
     const group = await this.groupRepository.findOne({ groupCode: code });
     if (!group) throw new NotFoundException(`Not found group with the code ${code}`);
+    const { groupId } = group;
 
     const user = await this.userRepository.findOne(userId, { relations: ["groups"] });
     if (!user) throw new NotFoundException(`Not found user with the id ${userId}`);
 
+    const { groupOrder } = user;
+    user.groupOrder = groupOrder === "" ? `${groupId}` : `${groupOrder},${groupId}`;
     user.groups.push(group);
     this.userRepository.save(user);
 
@@ -136,5 +144,14 @@ export class GroupService {
     this.groupRepository.update(groupId, { albumOrder });
 
     return "Album Order update success!!";
+  }
+
+  ArrayToObject(groups: Group[]): object {
+    const result = groups.reduce((target, key) => {
+      target[key.groupId] = key;
+      return target;
+    }, {});
+
+    return result;
   }
 }

@@ -4,9 +4,11 @@ import { UserController } from "./controller/user.controller";
 import { UserService } from "./service/user.service";
 import { UserRepository } from "./user.repository";
 import { JwtModule } from "@nestjs/jwt";
+import { GroupModule } from "src/group/group.module";
 
 @Module({
   imports: [
+    GroupModule,
     TypeOrmModule.forFeature([UserRepository]),
     JwtModule.register({
       secret: process.env.JWT_SECRET,

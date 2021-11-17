@@ -6,6 +6,7 @@ import { UserService } from "../service/user.service";
 import { UserInfoResponseDto } from "src/dto/user/userInfoResponse.dto";
 import { UpdateUserInfoRequestDto } from "src/dto/user/updateUserInfoRequest.dto";
 import { UpdateGroupOrderRequestDto } from "src/dto/user/updateGroupOrderRequest.dto";
+import { GetGroupsResponseDto } from "src/dto/user/getGroupsResponse.dto";
 
 @ApiTags("유저 API")
 @ApiBearerAuth()
@@ -41,5 +42,12 @@ export class UserController {
   ): Promise<string> {
     const { userId } = user;
     return this.userService.updateGroupOrder(userId, updateGroupOrderRequestDto);
+  }
+
+  @Get("groups")
+  @ApiResponse({ type: GetGroupsResponseDto, status: 200 })
+  GetGroups(@Req() { user }: CustomRequest): Promise<GetGroupsResponseDto> {
+    const { userId } = user;
+    return this.userService.getGroups(userId);
   }
 }
