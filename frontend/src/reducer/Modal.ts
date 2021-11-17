@@ -7,14 +7,18 @@ const initState: {
   nowAddress: string;
   selectedAlbum: { albumID: number; albumName: string };
   selectedPost: {
+    userID: number;
+    userNickname: string;
     postID: number;
     postTitle: string;
     postContent: string;
     postDate: string;
-    userNickname: string;
     postImages: Array<{ file: string; key: string }>;
+    postLatitude: number;
+    postLongitude: number;
   };
   clusteredMarker: Imarker[];
+  isPostLoading: boolean;
 } = {
   nowModal: "",
   nowAddress: "",
@@ -23,14 +27,18 @@ const initState: {
     albumName: "",
   },
   selectedPost: {
+    userID: -1,
+    userNickname: "",
     postID: -1,
     postTitle: "",
     postContent: "",
     postDate: "",
-    userNickname: "",
     postImages: [],
+    postLatitude: -1,
+    postLongitude: -1,
   },
   clusteredMarker: [],
+  isPostLoading: false,
 };
 
 const ModalReducer = (state = initState, action: any) => {
@@ -53,17 +61,27 @@ const ModalReducer = (state = initState, action: any) => {
           albumName: action.payload.albumName,
         },
       };
+    case "SELECT_POST_REQUEST":
+      return { ...state, isPostLoading: true };
+    case "SELECT_POST_SUCCEED":
+      return {
+        ...state,
+        selectedPost: action.post,
+        isPostLoading: false,
+      };
+    case "SELECT_POST_FAILED":
+      return { ...state, isPostLoading: false };
     case "SET_SELECTED_POST":
       return {
         ...state,
         selectedPost: {
+          userID: -1,
+          userNickname: action.payload.userNickname,
           postID: action.payload.postID,
           postTitle: action.payload.postTitle,
           postContent: action.payload.postContent,
           postDate: action.payload.postDate,
-          userNickname: action.payload.userNickname,
           postImages: action.payload.postImages,
-          postLocation: action.payload.postLocation,
           postLatitude: action.payload.postLatitude,
           postLongitude: action.payload.postLongitude,
         },

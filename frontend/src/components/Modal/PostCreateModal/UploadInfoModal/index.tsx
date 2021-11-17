@@ -116,7 +116,6 @@ const UploadInfoModal = ({
       target.postImages = files.map((fileObject) => {
         return { file: fileObject.file as string, key: fileObject.file as string };
       });
-      target.postLocation = selectedLocation.place_name;
       target.postLatitude = Number(selectedLocation.x);
       target.postLongitude = Number(selectedLocation.y);
 

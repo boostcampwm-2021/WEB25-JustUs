@@ -128,7 +128,7 @@ const setMap = (
 };
 
 const Map = () => {
-  const dispatch = useDispatch<Dispatch<IDispatch>>();
+  const dispatch = useDispatch();
   const [isRightClick, setIsRightClick] = useState<Boolean>(false);
   const [rightPosition, setRightPosition] = useState<Point>({ x: 0, y: 0 });
   const [clickInfo, setClickInfo] = useState<any>();
@@ -161,8 +161,10 @@ const Map = () => {
         setIsRightClick(false);
         // 아래 로직은 나중에 백엔드 API 요청을 통해 클릭한 게시글의 상세 정보를 가져온다.
         const targetPost = dummyPosts.find((post) => post.postID === clickedPostID);
-        dispatch({ type: "SET_SELECTED_POST", payload: targetPost });
-        dispatch({ type: "OPEN_MODAL", payload: "PostShowModal" });
+        dispatch({ type: "SELECTED_POST_REQUEST", postID: clickedPostID });
+
+        // dispatch({ type: "SET_SELECTED_POST", payload: targetPost });
+        // dispatch({ type: "OPEN_MODAL", payload: "PostShowModal" });
       };
 
       const markers = postsList.map((post: PostType) => {

@@ -27,9 +27,8 @@ interface IPost {
   postImage: FileObject[];
 }
 
-function uploadPostApi(uploadPost: IPost) {
-  const { postTitle, postContent, postDate, postLocation, postLatitude, postLongitude, albumId, postImage } =
-    uploadPost;
+function uploadPostApi(newPost: IPost) {
+  const { postTitle, postContent, postDate, postLocation, postLatitude, postLongitude, albumId, postImage } = newPost;
   const formData = new FormData();
   formData.append("postTitle", postTitle);
   formData.append("postContent", postContent);
@@ -49,7 +48,7 @@ function uploadPostApi(uploadPost: IPost) {
   });
 }
 
-function* postUpload({ post }: { type: string; post: IPost }) {
+function* uploadPost({ post }: { type: string; post: IPost }) {
   try {
     const result: ResponseGenerator = yield call(uploadPostApi, post);
     yield put({ type: "UPLOAD_POST_SUCCEED", post: { ...post, postID: result.data } });
@@ -59,9 +58,32 @@ function* postUpload({ post }: { type: string; post: IPost }) {
 }
 
 function* watchUploadPost() {
-  yield takeEvery("UPLOAD_POST_REQUEST", postUpload);
+  yield takeEvery("UPLOAD_POST_REQUEST", uploadPost);
+}
+
+function getPostApi(postID: number) {
+  console.log(postID);
+  return axios({
+    method: "get",
+    url: `${SERVER_URL}/api/posts/${postID}`,
+    withCredentials: true,
+  });
+}
+
+function* getPost({ postID }: { type: string; postID: number }) {
+  try {
+    const result: ResponseGenerator = yield call(getPostApi, postID);
+    console.log(result);
+    yield put({ type: "SELECT_POST_SUCCEED", post: result.data });
+  } catch (err: unknown) {
+    yield put({ type: "SELECT_POST_FAILED" });
+  }
+}
+
+function* watchSelectPost() {
+  yield takeEvery("SELECT_POST_REQUEST", getPost);
 }
 
 export default function* userSaga() {
-  yield all([fork(watchUploadPost)]);
+  yield all([fork(watchUploadPost), fork(watchSelectPost)]);
 }
