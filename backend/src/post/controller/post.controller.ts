@@ -19,6 +19,7 @@ import { PostService } from "../service/post.service";
 import { CreatePostRequestDto } from "src/dto/post/createPostRequest.dto";
 import { GetPostInfoResponseDto } from "src/dto/post/getPostInfoResponse.dto";
 import { UpdatePostInfoRequestDto } from "src/dto/post/updatePostInfoRequest.dto";
+import { ShiftPostRequestDto } from "src/dto/post/shiftPostRequest.dto";
 import { FilesInterceptor } from "@nestjs/platform-express";
 import { multerOption } from "src/image/service/image.service";
 
@@ -70,5 +71,12 @@ export class PostController {
   @ApiOkResponse({ description: "게시글 삭제 성공" })
   DeletePost(@Param("postId") postId: number): Promise<string> {
     return this.postService.deletePost(postId);
+  }
+
+  @Put("/:postId/shift")
+  @ApiParam({ name: "postId", type: Number })
+  @ApiOkResponse({ description: "게시글 이동 성공" })
+  ShiftPost(@Param("postId") postId: number, @Body() shiftPostRequestDto: ShiftPostRequestDto): Promise<string> {
+    return this.postService.shiftPost(postId, shiftPostRequestDto);
   }
 }

@@ -7,6 +7,7 @@ import { AlbumRepository } from "src/album/album.repository";
 import { CreatePostRequestDto } from "src/dto/post/createPostRequest.dto";
 import { GetPostInfoResponseDto } from "src/dto/post/getPostInfoResponse.dto";
 import { UpdatePostInfoRequestDto } from "src/dto/post/updatePostInfoRequest.dto";
+import { ShiftPostRequestDto } from "src/dto/post/shiftPostRequest.dto";
 
 @Injectable()
 export class PostService {
@@ -93,5 +94,15 @@ export class PostService {
     this.postRepository.softRemove(post);
 
     return "Post delete success!!";
+  }
+
+  async shiftPost(postId: number, shiftPostRequestDto: ShiftPostRequestDto): Promise<string> {
+    const { albumId } = shiftPostRequestDto;
+    const album = await this.albumRepository.findOne(albumId);
+    if (!album) throw new NotFoundException(`Not found album with the id ${albumId}`);
+
+    this.postRepository.update(postId, { album });
+
+    return "Post Shift success!!";
   }
 }

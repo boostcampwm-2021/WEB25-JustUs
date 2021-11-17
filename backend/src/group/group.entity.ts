@@ -17,6 +17,9 @@ export class Group extends TimeStampEntity {
   @Column()
   groupCode: string;
 
+  @Column()
+  albumOrder: string;
+
   @ManyToMany(() => User, { cascade: true })
   @JoinTable({ name: "users_groups_TB" })
   users: User[];

@@ -5,6 +5,7 @@ import { JwtAuthGuard } from "src/auth/guard/jwt-auth-guard";
 import { UserService } from "../service/user.service";
 import { UserInfoResponseDto } from "src/dto/user/userInfoResponse.dto";
 import { UpdateUserInfoRequestDto } from "src/dto/user/updateUserInfoRequest.dto";
+import { UpdateGroupOrderRequestDto } from "src/dto/user/updateGroupOrderRequest.dto";
 
 @ApiTags("유저 API")
 @ApiBearerAuth()
@@ -29,5 +30,16 @@ export class UserController {
   ): Promise<string> {
     const { userId } = user;
     return this.userService.updateUserInfo(userId, updateUserInfoRequestDto);
+  }
+
+  @Put("/grouporder")
+  @HttpCode(200)
+  @ApiOkResponse({ description: "그룹 순서 수정 성공" })
+  UpdateGroupOrder(
+    @Req() { user }: CustomRequest,
+    @Body() updateGroupOrderRequestDto: UpdateGroupOrderRequestDto,
+  ): Promise<string> {
+    const { userId } = user;
+    return this.userService.updateGroupOrder(userId, updateGroupOrderRequestDto);
   }
 }
