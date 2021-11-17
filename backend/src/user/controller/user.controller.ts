@@ -1,12 +1,15 @@
-import { Controller, Req, Get, Put, Body, UseGuards, HttpCode } from "@nestjs/common";
+import { Controller, Req, Get, Put, Body, UseGuards, HttpCode, UseInterceptors, UploadedFile } from "@nestjs/common";
 import { ApiTags, ApiOkResponse, ApiResponse, ApiBearerAuth } from "@nestjs/swagger";
 import { CustomRequest } from "src/custom/myRequest/customRequest";
+import { CustomFile } from "src/custom/myFile/customFile";
 import { JwtAuthGuard } from "src/auth/guard/jwt-auth-guard";
 import { UserService } from "../service/user.service";
 import { UserInfoResponseDto } from "src/dto/user/userInfoResponse.dto";
 import { UpdateUserInfoRequestDto } from "src/dto/user/updateUserInfoRequest.dto";
 import { UpdateGroupOrderRequestDto } from "src/dto/user/updateGroupOrderRequest.dto";
 import { GetGroupsResponseDto } from "src/dto/user/getGroupsResponse.dto";
+import { FileInterceptor } from "@nestjs/platform-express";
+import { multerOption } from "src/image/service/image.service";
 
 @ApiTags("유저 API")
 @ApiBearerAuth()
@@ -24,13 +27,15 @@ export class UserController {
 
   @Put()
   @HttpCode(200)
+  @UseInterceptors(FileInterceptor("profileImage", multerOption))
   @ApiOkResponse({ description: "유저정보 수정 성공" })
   UpdateUserInfo(
     @Req() { user }: CustomRequest,
     @Body() updateUserInfoRequestDto: UpdateUserInfoRequestDto,
+    @UploadedFile() file: CustomFile,
   ): Promise<string> {
     const { userId } = user;
-    return this.userService.updateUserInfo(userId, updateUserInfoRequestDto);
+    return this.userService.updateUserInfo(userId, file, updateUserInfoRequestDto);
   }
 
   @Put("/grouporder")

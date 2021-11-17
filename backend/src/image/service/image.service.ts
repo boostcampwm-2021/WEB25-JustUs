@@ -35,12 +35,16 @@ export class ImageService {
     private imageRepository: ImageRepository,
   ) {}
 
-  getImagesUrl(images: Express.Multer.File[]) {
+  getImagesUrl(images: Express.Multer.File[]): string[] {
     const urls = images.map((e: CustomFile) => {
       return e.location;
     });
 
     return urls;
+  }
+
+  getImageUrl(image: CustomFile): string {
+    return image.location;
   }
 
   saveImage(images: string[]): Image[] {
