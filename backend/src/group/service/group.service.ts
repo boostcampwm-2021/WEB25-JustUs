@@ -4,6 +4,7 @@ import { GroupRepository } from "../group.repository";
 import { UserRepository } from "src/user/user.repository";
 import { AlbumRepository } from "src/album/album.repository";
 import { Group } from "../group.entity";
+import { CustomFile } from "src/custom/myFile/customFile";
 import { CreateGroupRequestDto } from "src/dto/group/createGroupRequest.dto";
 import { AttendGroupRequestDto } from "src/dto/group/attendGroupRequest.dto";
 import { GetGroupInfoResponseDto } from "src/dto/group/getGroupInfoResponse.dto";
@@ -11,11 +12,13 @@ import { UpdateGroupInfoRequestDto } from "src/dto/group/updateGroupInfoRequest.
 import { GetAlbumsResponseDto } from "src/dto/group/getAlbumsResponse.dto";
 import { UpdateAlbumOrderRequestDto } from "src/dto/group/updateAlbumOrderRequest.dto";
 import { AlbumService } from "src/album/service/album.service";
+import { ImageService } from "src/image/service/image.service";
 
 @Injectable()
 export class GroupService {
   constructor(
     private albumService: AlbumService,
+    private imageService: ImageService,
     @InjectRepository(GroupRepository)
     private groupRepository: GroupRepository,
     @InjectRepository(UserRepository)
@@ -24,8 +27,9 @@ export class GroupService {
     private albumRepository: AlbumRepository,
   ) {}
 
-  async createGroup(userId: number, createGroupRequestDto: CreateGroupRequestDto): Promise<number> {
-    const { groupImage, groupName } = createGroupRequestDto;
+  async createGroup(userId: number, file: CustomFile, createGroupRequestDto: CreateGroupRequestDto): Promise<number> {
+    const groupImage = this.imageService.getImageUrl(file);
+    const { groupName } = createGroupRequestDto;
     const groupCode = await this.createInvitaionCode();
 
     const group = await this.groupRepository.save({
@@ -90,8 +94,13 @@ export class GroupService {
     return { groupCode, users };
   }
 
-  async updateGroupInfo(groupId: number, updateGroupInfoRequestDto: UpdateGroupInfoRequestDto): Promise<string> {
-    const { groupImage, groupName } = updateGroupInfoRequestDto;
+  async updateGroupInfo(
+    groupId: number,
+    file: CustomFile,
+    updateGroupInfoRequestDto: UpdateGroupInfoRequestDto,
+  ): Promise<string> {
+    const groupImage = this.imageService.getImageUrl(file);
+    const { groupName } = updateGroupInfoRequestDto;
 
     const group = await this.groupRepository.findOne({ groupId });
     if (!group) throw new NotFoundException(`Not found group with the id ${groupId}`);
