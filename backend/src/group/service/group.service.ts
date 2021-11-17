@@ -32,11 +32,9 @@ export class GroupService {
     const { groupName } = createGroupRequestDto;
     const groupCode = await this.createInvitaionCode();
 
-    const group = await this.groupRepository.save({
-      groupImage: groupImage,
-      groupName: groupName,
-      groupCode: groupCode,
-    });
+    const saveObject = groupImage === undefined ? { groupName, groupCode } : { groupImage, groupName, groupCode };
+
+    const group = await this.groupRepository.save(saveObject);
     const { groupId } = group;
 
     const album = await this.albumRepository.save({
@@ -105,7 +103,9 @@ export class GroupService {
     const group = await this.groupRepository.findOne({ groupId });
     if (!group) throw new NotFoundException(`Not found group with the id ${groupId}`);
 
-    this.groupRepository.update(groupId, { groupImage, groupName });
+    const updateObject = groupImage === undefined ? { groupName } : { groupImage, groupName };
+
+    this.groupRepository.update(groupId, updateObject);
 
     return "GroupInfo update success!!";
   }

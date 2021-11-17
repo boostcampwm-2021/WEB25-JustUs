@@ -75,6 +75,7 @@ export class PostService {
     updatePostInfoRequestDto: UpdatePostInfoRequestDto,
   ): Promise<string> {
     const addImages = this.imageService.getImagesUrl(files);
+
     const { postTitle, postContent, deleteImagesId, postDate, postLocation, postLatitude, postLongitude } =
       updatePostInfoRequestDto;
 

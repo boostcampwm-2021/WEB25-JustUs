@@ -37,14 +37,14 @@ export class ImageService {
 
   getImagesUrl(images: Express.Multer.File[]): string[] {
     const urls = images.map((e: CustomFile) => {
-      return e.location;
+      return e?.location;
     });
 
     return urls;
   }
 
   getImageUrl(image: CustomFile): string {
-    return image.location;
+    return image?.location;
   }
 
   saveImage(images: string[]): Image[] {
@@ -56,9 +56,10 @@ export class ImageService {
   }
 
   async updateImages(post: Post, addImages: string[], deleteImagesId: number[]): Promise<void> {
-    deleteImagesId.forEach(imageId => {
-      this.imageRepository.softRemove({ imageId });
-    });
+    if (deleteImagesId)
+      deleteImagesId.forEach(imageId => {
+        this.imageRepository.softRemove({ imageId });
+      });
     for (const image of addImages) {
       await this.imageRepository.save({
         imageUrl: image,
