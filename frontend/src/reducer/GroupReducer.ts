@@ -23,7 +23,6 @@ const initState: {
   isLoading: Boolean;
   albumList: AlbumListItemType[];
   postsList: PostType[];
-  uploadPost: PostType | null;
   isPostUploading: boolean;
   groups: Array<GroupType>;
 } = {
@@ -31,7 +30,6 @@ const initState: {
   isLoading: true,
   albumList: [{ albumID: 0, albumName: "", posts: [], base: false }],
   postsList: [],
-  uploadPost: null,
   isPostUploading: false,
   groups: [
     {
@@ -113,21 +111,20 @@ const groupReducer = (state = initState, action: any) => {
       return {
         ...state,
         isPostUploading: true,
-        uploadPost: action.post,
       };
     case "UPLOAD_POST_SUCCEED":
       const updateAlbumList = state.albumList.map((album: AlbumListItemType, idx) => {
-        if (!album.base || !state.uploadPost) return album;
+        if (!album.base) return album;
         const updateAlbum: AlbumListItemType = {
           albumID: album.albumID,
           albumName: album.albumName,
           posts: [
             ...album.posts,
             {
-              postID: action.postID,
-              postTitle: state.uploadPost.postTitle,
-              postLatitude: state.uploadPost.postLatitude,
-              postLongitude: state.uploadPost.postLongitude,
+              postID: action.post.postID,
+              postTitle: action.post.postTitle,
+              postLatitude: action.post.postLatitude,
+              postLongitude: action.post.postLongitude,
             },
           ],
           base: album.base,
@@ -140,13 +137,11 @@ const groupReducer = (state = initState, action: any) => {
         albumList: updateAlbumList,
         postList: updatePostsList,
         isPostUploading: false,
-        uploadPost: null,
       };
     case "UPLOAD_POST_FAILED":
       return {
         ...state,
         isPostUploading: false,
-        uploadPost: null,
       };
     case "DELETE_POST":
       const targetPost = action.payload;

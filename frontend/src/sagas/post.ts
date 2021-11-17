@@ -49,12 +49,11 @@ function uploadPostApi(uploadPost: IPost) {
   });
 }
 
-function* postUpload() {
-  const { uploadPost }: { uploadPost: IPost } = yield select((state) => state.groups);
+function* postUpload({ post }: { type: string; post: IPost }) {
   try {
-    const result: ResponseGenerator = yield call(uploadPostApi, uploadPost);
-    yield put({ type: "UPLOAD_POST_SUCCEED", postID: result.data });
-  } catch (err: any) {
+    const result: ResponseGenerator = yield call(uploadPostApi, post);
+    yield put({ type: "UPLOAD_POST_SUCCEED", post: { ...post, postID: result.data } });
+  } catch (err: unknown) {
     yield put({ type: "UPLOAD_POST_FAILED" });
   }
 }
