@@ -1,4 +1,4 @@
-import { IsArray, IsNotEmpty, IsNumber, IsString } from "class-validator";
+import { IsArray, IsBoolean, IsNotEmpty, IsNumber, IsString } from "class-validator";
 import { ApiProperty } from "@nestjs/swagger";
 
 class postList {
@@ -33,6 +33,11 @@ class albumList {
   @IsNotEmpty()
   @ApiProperty()
   albumName: string;
+
+  @IsBoolean()
+  @IsNotEmpty()
+  @ApiProperty()
+  base: boolean;
 
   @IsArray()
   @IsNotEmpty()

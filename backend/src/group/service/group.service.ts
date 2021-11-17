@@ -10,10 +10,12 @@ import { GetGroupInfoResponseDto } from "src/dto/group/getGroupInfoResponse.dto"
 import { UpdateGroupInfoRequestDto } from "src/dto/group/updateGroupInfoRequest.dto";
 import { GetAlbumsResponseDto } from "src/dto/group/getAlbumsResponse.dto";
 import { UpdateAlbumOrderRequestDto } from "src/dto/group/updateAlbumOrderRequest.dto";
+import { AlbumService } from "src/album/service/album.service";
 
 @Injectable()
 export class GroupService {
   constructor(
+    private albumService: AlbumService,
     @InjectRepository(GroupRepository)
     private groupRepository: GroupRepository,
     @InjectRepository(UserRepository)
@@ -32,11 +34,13 @@ export class GroupService {
       groupCode: groupCode,
     });
 
-    this.albumRepository.save({
+    const album = await this.albumRepository.save({
       albumName: "기본 앨범",
       base: true,
       group: group,
     });
+
+    await this.groupRepository.update(group.groupId, { albumOrder: String(album.albumId) });
 
     const user = await this.userRepository.findOne(userId, { relations: ["groups"] });
     if (!user) throw new NotFoundException(`Not found user with the id ${userId}`);
@@ -108,7 +112,23 @@ export class GroupService {
     const albumsInfo = await this.groupRepository.getAlbumsQuery(groupId);
     if (!albumsInfo) throw new NotFoundException(`Not found group with the id ${groupId}`);
 
-    return albumsInfo;
+    const { albumOrder, albums } = albumsInfo;
+
+    const albumsObject = this.albumService.ArrayToObject(albums);
+
+    const reArrangedAlbums = this.reArrangeAlbums(albumOrder, albumsObject);
+
+    return { albums: reArrangedAlbums };
+  }
+
+  reArrangeAlbums(albumOrder: string, albumsObject: object): any[] {
+    const order = albumOrder.split(",");
+
+    const orderAlbum = order.map(e => {
+      return albumsObject[e];
+    });
+
+    return orderAlbum;
   }
 
   async updateAlbumOrder(groupId: number, updateAlbumOrderRequestDto: UpdateAlbumOrderRequestDto): Promise<string> {

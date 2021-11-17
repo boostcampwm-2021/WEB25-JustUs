@@ -30,6 +30,10 @@ export class AlbumService {
       group: group,
     });
 
+    const { albumOrder } = group;
+    const newAlbumOrder = `${albumOrder},${album.albumId}`;
+    await this.groupRepository.update(groupId, { albumOrder: newAlbumOrder });
+
     return album.albumName;
   }
 
@@ -80,5 +84,14 @@ export class AlbumService {
     if (!album) throw new NotFoundException(`Not found album with the id ${albumId}`);
 
     return album;
+  }
+
+  ArrayToObject(albums: Album[]): object {
+    const result = albums.reduce((target, key) => {
+      target[key.albumId] = key;
+      return target;
+    }, {});
+
+    return result;
   }
 }
