@@ -25,6 +25,8 @@ export const userReducer = (state = initState, action: any) => {
         userInfoLoading: true,
         userInfoSucceed: false,
         userInfoError: null,
+        userNickName: null,
+        userProfile: null,
       };
     case USER_INFO_SUCCEED:
       return {
@@ -40,7 +42,9 @@ export const userReducer = (state = initState, action: any) => {
         ...state,
         userInfoLoading: false,
         userInfoSucceed: false,
-        userInfoError: action.error,
+        userInfoError: true,
+        userNickName: null,
+        userProfile: null,
       };
     default:
       return state;

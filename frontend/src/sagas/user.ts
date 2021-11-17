@@ -23,7 +23,7 @@ function* getUserInfo() {
     const result: ResponseGenerator = yield call(getUserInfoApi);
     yield put({ type: USER_INFO_SUCCEED, data: result.data });
   } catch (err: any) {
-    yield put({ type: USER_INFO_FAILED, data: "error" });
+    yield put({ type: USER_INFO_FAILED });
   }
 }
 
