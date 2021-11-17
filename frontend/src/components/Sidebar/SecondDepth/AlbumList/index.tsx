@@ -157,7 +157,7 @@ const AlbumWrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  margin: 20px 0;
+  margin: 1rem 0;
 `;
 
 export default AlbumList;

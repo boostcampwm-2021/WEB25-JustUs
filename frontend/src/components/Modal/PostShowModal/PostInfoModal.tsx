@@ -82,7 +82,7 @@ const ModalContainer = styled.div`
   flex-direction: row;
   background-color: ${COLOR.WHITE};
   width: 500px;
-  height: 70vh;
+  height: 70rem;
 
   &::-webkit-scrollbar {
     display: none;
@@ -92,12 +92,12 @@ const Modal = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
+  height: 100%;
 `;
 const CarouselWrapper = styled.div`
-  padding: 1rem 0;
-  border-bottom: 0.3rem solid ${COLOR.GRAY};
-  border-top: 0.3rem solid ${COLOR.GRAY};
-  height: 40vh;
+  border-bottom: 0.2rem solid ${COLOR.GRAY};
+  height: 40rem;
+  box-sizing: border-box;
 `;
 const ModalHeader = styled.div`
   display: grid;
@@ -105,8 +105,8 @@ const ModalHeader = styled.div`
   font-size: 1.2rem;
   font-weight: bold;
   width: 100%;
-  height: 10vh;
   position: relative;
+  border-bottom: 0.2rem solid ${COLOR.GRAY};
 `;
 const PostTitle = styled.div`
   ${flexRowCenterAlign}
@@ -114,6 +114,7 @@ const PostTitle = styled.div`
   grid-column-end: 3;
   font-family: "NanumDaCaeSaRang";
   font-size: 3rem;
+  height: 8rem;
 `;
 const MoreIconWrapper = styled.div`
   ${flexRowCenterAlign}
@@ -127,7 +128,8 @@ const ModalContent = styled.div`
   overflow-y: auto;
   font-family: "NanumDaCaeSaRang";
   white-space: pre-line;
-  height: 20vh;
+  height: 20rem;
+  box-sizing: border-box;
 
   & mark {
     border-radius: 3px;
@@ -149,6 +151,7 @@ const ModalFooter = styled.div`
   justify-content: flex-end;
   vertical-align: bottom;
   font-family: "NanumDaCaeSaRang";
+  box-sizing: border-box;
 `;
 const FooterItem = styled.div`
   padding-right: 1rem;

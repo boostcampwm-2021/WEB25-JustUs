@@ -27,7 +27,7 @@ const SettingGroup = () => {
 };
 
 const SettingGroupWrapper = styled.div`
-  width: 100%;
+  width: 20rem;
   height: 100%;
   background-color: ${(props) => props.theme.PRIMARY};
   display: flex;
@@ -44,6 +44,11 @@ const SettingIconWrapper = styled.div`
 
 const GroupName = styled.div`
   cursor: default;
+  padding-left: 2rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 15rem;
 `;
 
 export default SettingGroup;

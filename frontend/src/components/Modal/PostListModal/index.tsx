@@ -57,7 +57,7 @@ const ModalContainer = styled.div`
   background-color: ${COLOR.WHITE};
   min-height: 35vh;
   min-width: 30vw;
-  border-radius: 50px;
+  border-radius: 2rem;
   display: flex;
   flex-direction: column;
   animation-name: ${modalSlideUp};

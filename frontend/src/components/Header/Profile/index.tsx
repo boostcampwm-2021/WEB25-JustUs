@@ -1,14 +1,22 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import COLOR from "@styles/Color";
 import ProfileModal from "@components/Header/Profile/Modal/ProfileModal";
+import { useSelector } from "react-redux";
+import { RootState } from "@src/reducer";
 
 const Profile = () => {
   const [isModalOpened, setIsModalOpened] = useState<boolean>(false);
+  const { clickedTarget } = useSelector((state: RootState) => state.groupModal);
 
   const handleProfileBtnClick = () => {
-    setIsModalOpened(prev => !prev);
+    setIsModalOpened((prev) => !prev);
   };
+
+  useEffect(() => {
+    const target = clickedTarget.target.closest("#profile");
+    if (!target) setIsModalOpened(false);
+  }, [clickedTarget]);
 
   return (
     <>
