@@ -3,6 +3,8 @@ import COLOR from "@src/styles/Color";
 import { flexColumnCenterAlign, flexRowCenterAlign } from "@src/styles/StyledComponents";
 
 const Login = () => {
+  const SERVER_URL = process.env.REACT_APP_SERVER_URL;
+  const LOGIN_URL = `${SERVER_URL}/api/auth/login`;
   return (
     <>
       <BackgroundImg imgUrl="/img/sand.jpg">
@@ -16,7 +18,7 @@ const Login = () => {
                 </Logo>
                 <LogoInfoText>흩어진 추억을 한 곳에 기록해보세요</LogoInfoText>
               </div>
-              <a href="http://localhost:5000/api/auth/login">
+              <a href={LOGIN_URL}>
                 <img src="/img/btnG_완성형.png" alt="naver social login" width="350px" />
               </a>
             </LeftSide>
