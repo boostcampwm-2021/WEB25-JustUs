@@ -535,7 +535,6 @@ Cluster.prototype = {
   enableClick: function () {
     if (this._relation) return;
 
-    // var map = this._markerClusterer.getMap();
     var clickHandler = this._markerClusterer.getClickHandler();
 
     this._relation = naver.maps.Event.addListener(
@@ -543,7 +542,6 @@ Cluster.prototype = {
       "click",
       naver.maps.Util.bind(function (e) {
         clickHandler(this._clusterMember, e.coord);
-        // map.morph(e.coord, map.getZoom() + 1);
       }, this),
     );
   },

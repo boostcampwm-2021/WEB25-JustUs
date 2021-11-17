@@ -29,7 +29,7 @@ const Clustering = (map: naver.maps.Map, markers: naver.maps.Marker[], clickHand
     stylingFunction: function (clusterMarker: any, count: number) {
       const pTag = document.createElement("p");
       pTag.innerHTML = count.toString();
-      pTag.style.cssText = `display: inline-block;position:absolute;right:-5px;bottom:-5px;height:20px;line-height:20px;width:20px;background-color:${COLOR.RED};color:${COLOR.WHITE};border-radius: 50%;text-align:center`;
+      pTag.style.cssText = `display: inline-block;position:absolute;right:-0.5rem;bottom:-0.5rem;height:2rem;line-height:2rem;width:2rem;background-color:${COLOR.RED};color:${COLOR.WHITE};border-radius: 50%;text-align:center`;
       clusterMarker.getElement().appendChild(pTag);
     },
     clickHandler: clickHandler,
