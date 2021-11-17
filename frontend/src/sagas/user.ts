@@ -2,6 +2,8 @@ import { all, fork, put, call, takeEvery } from "redux-saga/effects";
 import { USER_INFO_REQUEST, USER_INFO_SUCCEED, USER_INFO_FAILED } from "@src/reducer/UserReducer";
 import axios from "axios";
 
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
+
 interface ResponseGenerator {
   config?: any;
   data?: any;
@@ -13,7 +15,7 @@ interface ResponseGenerator {
 }
 
 function getUserInfoApi() {
-  return axios.get("/api/user");
+  return axios.get(`${SERVER_URL}/api/user`, { withCredentials: true });
 }
 
 function* getUserInfo() {

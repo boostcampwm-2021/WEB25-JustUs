@@ -5,7 +5,7 @@ import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import { AppModule } from "./app.module";
 
 const options = {
-  origin: ["http://localhost:3000", "http://localhost:5000", "http://118.67.131.142:5000"],
+  origin: ["http://localhost:3000"],
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   preflightContinue: false,
   optionsSuccessStatus: 204,
@@ -15,9 +15,9 @@ const options = {
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  app.enableCors();
+  app.enableCors(options);
 
-  app.use(cookieParser(options));
+  app.use(cookieParser());
 
   app.useGlobalPipes(
     new ValidationPipe({
