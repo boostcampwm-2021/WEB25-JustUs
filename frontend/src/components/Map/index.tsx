@@ -8,6 +8,8 @@ import Marker from "@components/Map/Markers";
 import MapLayerPostModal from "./Modal";
 import dummyPosts from "./dummyPosts";
 import SetClustering from "@components/Map/SetClustering";
+import ReactDOM from "react-dom";
+import PostListModal from "@components/Modal/PostListModal";
 
 declare const MarkerClustering: any;
 declare global {
@@ -90,6 +92,7 @@ const setMap = (
   setRightPosition: Dispatch<SetStateAction<Point>>,
   setClickInfo: Dispatch<SetStateAction<PointerEvent>>,
   setNaverMap: Dispatch<SetStateAction<naver.maps.Map | undefined>>,
+  setInfoWindow: Dispatch<SetStateAction<naver.maps.InfoWindow | undefined>>,
 ) => {
   const pos = new naver.maps.LatLng(INIT_X, INIT_Y);
   const map = new naver.maps.Map("map", {
@@ -100,6 +103,14 @@ const setMap = (
   });
 
   setNaverMap(map);
+  const infoWindow = new naver.maps.InfoWindow({
+    content: "",
+    maxWidth: 200,
+    borderColor: COLOR.GRAY,
+    borderWidth: 2,
+    disableAnchor: true,
+  });
+  setInfoWindow(infoWindow);
 
   naver.maps.Event.addListener(map, "rightclick", (e: PointerEvent) => {
     setClickInfo(e);
@@ -108,9 +119,11 @@ const setMap = (
   });
   naver.maps.Event.addListener(map, "zoom_changed", (e: Number) => {
     setIsRightClick(false);
+    infoWindow.close();
   });
-  naver.maps.Event.addListener(map, "click", (e: PointerEvent) => {
+  naver.maps.Event.addListener(map, "mousedown", (e: PointerEvent) => {
     setIsRightClick(false);
+    infoWindow.close();
   });
 };
 
@@ -120,17 +133,19 @@ const Map = () => {
   const [rightPosition, setRightPosition] = useState<Point>({ x: 0, y: 0 });
   const [clickInfo, setClickInfo] = useState<any>();
   const [naverMap, setNaverMap] = useState<naver.maps.Map>();
+  const [infoWindow, setInfoWindow] = useState<naver.maps.InfoWindow>();
   const [currentMarkers, setCurrentMarkers] = useState<Array<naver.maps.Marker>>([]);
   const [currentClustering, setCurrentClustering] = useState<IMarkerClustering | undefined>(undefined);
   const { postsList }: IPostsList = useSelector((state: RootState) => state.groups);
   const { selectedPost }: any = useSelector((state: RootState) => state.modal);
+  const { nowTheme }: any = useSelector((state: RootState) => state.theme);
 
   useEffect(() => {
     const initMap = () => {
       const INIT_X = 37.511337;
       const INIT_Y = 127.012084;
       const ZOOM_SIZE = 13;
-      setMap(INIT_X, INIT_Y, ZOOM_SIZE, setIsRightClick, setRightPosition, setClickInfo, setNaverMap);
+      setMap(INIT_X, INIT_Y, ZOOM_SIZE, setIsRightClick, setRightPosition, setClickInfo, setNaverMap, setInfoWindow);
     };
     initMap();
   }, []);
@@ -140,6 +155,10 @@ const Map = () => {
 
     const setMarker = () => {
       const handleClickMarker = (clickedPostID: number) => {
+        if (infoWindow) {
+          infoWindow.close();
+        }
+        setIsRightClick(false);
         // 아래 로직은 나중에 백엔드 API 요청을 통해 클릭한 게시글의 상세 정보를 가져온다.
         const targetPost = dummyPosts.find((post) => post.postID === clickedPostID);
         dispatch({ type: "SET_SELECTED_POST", payload: targetPost });
@@ -153,15 +172,32 @@ const Map = () => {
         return marker;
       });
 
-      const clickHandler = (members: IClustredMember[]) => {
+      const handleClickClustering = (members: IClustredMember[], LatLng: naver.maps.LatLng) => {
+        setIsRightClick(false);
         const clusteredMarker = members.map((member) => {
           return { postId: member.postId, postTitle: member.title };
         });
-        dispatch({ type: "SET_CLUSTERED_MARKER", payload: clusteredMarker });
-        dispatch({ type: "OPEN_MODAL", payload: "PostListModal" });
+
+        if (!infoWindow) return;
+        infoWindow.setContent(['<div id="clustredMarkerList" style="width:20rem;height:10rem;">'].join(""));
+        if (!naverMap) return;
+        infoWindow.open(naverMap, LatLng);
+
+        ReactDOM.render(
+          <React.StrictMode>
+            <PostListModal
+              clusteredMarker={clusteredMarker}
+              handleClickMarker={handleClickMarker}
+              nowTheme={nowTheme}
+            />
+          </React.StrictMode>,
+          document.getElementById("clustredMarkerList"),
+        );
       };
 
-      const markerClustering = new MarkerClustering(SetClustering(naverMap as naver.maps.Map, markers, clickHandler));
+      const markerClustering = new MarkerClustering(
+        SetClustering(naverMap as naver.maps.Map, markers, handleClickClustering),
+      );
       setCurrentMarkers(markers);
       setCurrentClustering(markerClustering);
     };
