@@ -34,6 +34,7 @@ const Group = ({ isToggle, setIsToggle, groupID, groupName, groupImg, DragHandle
             { postID: 2, postTitle: "옥수역", postLatitude: 37.54049696552621, postLongitude: 127.01873018465605 },
             { postID: 7, postTitle: "강남역2", postLatitude: 37.497932, postLongitude: 127.027616 },
           ],
+          base: true,
         },
         {
           albumID: 1,
@@ -48,6 +49,7 @@ const Group = ({ isToggle, setIsToggle, groupID, groupName, groupImg, DragHandle
               postLongitude: 126.98817295397293,
             },
           ],
+          base: false,
         },
         {
           albumID: 2,
@@ -55,6 +57,7 @@ const Group = ({ isToggle, setIsToggle, groupID, groupName, groupImg, DragHandle
           posts: [
             { postID: 6, postTitle: "후쿠오카", postLatitude: 33.560126973098605, postLongitude: 130.38719144055108 },
           ],
+          base: false,
         },
       ];
       dispatch({ type: GroupAction.SET_SELECTED_GROUP, payload: { groupID, groupName, groupImg, albumList } });

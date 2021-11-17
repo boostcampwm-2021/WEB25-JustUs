@@ -7,7 +7,6 @@ import Carousel from "@components/Modal/PostCreateModal/UploadInfoModal/Carousel
 import { RootState } from "@src/reducer";
 import ModalSub from "./ModalSub";
 import dummyPosts from "@components/Map/dummyPosts";
-import shortid from "shortid";
 
 interface FileObject {
   file: File | string;
@@ -93,7 +92,19 @@ const UploadInfoModal = ({
 
   const handleSaveBtn = () => {
     if (mode === "create") {
-      console.log("새 게시글 등록 로직 아직 구현 안함.");
+      const post = {
+        postTitle: title,
+        postContent: text,
+        postDate: date,
+        postLocation: selectedLocation.address_name,
+        postLatitude: Number(selectedLocation.y),
+        postLongitude: Number(selectedLocation.x),
+        //나중엔 앨범아이디 대신 그룹아이디로 보내야함
+        albumId: "1",
+        postImage: files,
+      };
+
+      dispatch({ type: "UPLOAD_POST_REQUEST", post });
     } else if (mode === "update") {
       // 1. api 요청해 DB 데이터 변경
       const target = dummyPosts.find((post) => post.postID === selectedPost.postID);

@@ -1,7 +1,8 @@
 import { all, call, fork } from "redux-saga/effects";
 import group from "./group";
 import user from "./user";
+import post from "./post";
 
 export default function* rootSaga() {
-  yield all([fork(group), fork(user)]);
+  yield all([fork(group), fork(user), fork(post)]);
 }
