@@ -9,6 +9,7 @@ import { AttendGroupRequestDto } from "src/dto/group/attendGroupRequest.dto";
 import { GetGroupInfoResponseDto } from "src/dto/group/getGroupInfoResponse.dto";
 import { UpdateGroupInfoRequestDto } from "src/dto/group/updateGroupInfoRequest.dto";
 import { GetAlbumsResponseDto } from "src/dto/group/getAlbumsResponse.dto";
+import { UpdateAlbumOrderRequestDto } from "src/dto/group/updateAlbumOrderRequest.dto";
 
 @Injectable()
 export class GroupService {
@@ -108,5 +109,12 @@ export class GroupService {
     if (!albumsInfo) throw new NotFoundException(`Not found group with the id ${groupId}`);
 
     return albumsInfo;
+  }
+
+  async updateAlbumOrder(groupId: number, updateAlbumOrderRequestDto: UpdateAlbumOrderRequestDto): Promise<string> {
+    const { albumOrder } = updateAlbumOrderRequestDto;
+    this.groupRepository.update(groupId, { albumOrder });
+
+    return "Album Order update success!!";
   }
 }

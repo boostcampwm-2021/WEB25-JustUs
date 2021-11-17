@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { userInfoRequestAction } from "@src/reducer/UserReducer";
 import { RootState } from "@src/reducer";
+import NotFound from "@pages/NotFound";
 
 export const Router = () => {
   const dispatch = useDispatch();
@@ -17,8 +18,9 @@ export const Router = () => {
   return (
     <BrowserRouter>
       <Switch>
-        <Route path="/login" exact component={Login}></Route>
-        <Route path="/" exact component={Main}></Route>
+        <Route path="/login" exact component={() => <Login />}></Route>
+        <Route path="/" exact component={() => <Main />}></Route>
+        <Route component={NotFound}></Route>
       </Switch>
     </BrowserRouter>
   );

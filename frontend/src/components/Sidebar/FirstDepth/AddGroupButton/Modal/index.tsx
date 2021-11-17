@@ -42,7 +42,7 @@ const ModalContainer = styled.div`
   background-color: ${COLOR.WHITE};
   width: 240px;
   height: 170px;
-  border-radius: 20px;
+  border-radius: 2rem;
   display: flex;
   flex-direction: column;
   overflow: hidden;

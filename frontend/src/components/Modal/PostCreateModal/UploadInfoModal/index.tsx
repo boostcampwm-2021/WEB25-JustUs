@@ -129,7 +129,7 @@ const UploadInfoModal = ({
       }}
       isSubOpened={isSubOpened}
     >
-      <ModalMain>
+      <ModalMain isSubOpened={isSubOpened}>
         <ModalHeader>
           <ModalTitle>{title ? "게시물 수정" : "새 게시물 만들기"}</ModalTitle>
           <ModalHeaderRigthBtn onClick={closeModal}>
@@ -249,7 +249,6 @@ const InputBottom = styled.div`
   align-items: flex-end;
   border-top: 1px solid ${COLOR.LIGHTGRAY1};
   padding-right: 2rem;
-  // background-color: red;
   min-height: 10rem;
 `;
 const InputPlace = styled.div`
@@ -287,7 +286,7 @@ const InputText = styled.textarea`
   background-color: transparent;
   margin: 0;
   padding: 0;
-  line-height: 1.6rem;
+  line-height: 2rem;
   font-size: 1.6rem;
 
   &:focus {
@@ -306,11 +305,10 @@ const ModalRight = styled.div`
     background-color: ${COLOR.WHITE};
     pointer-events: none;
     font-size: 1.6rem;
-    line-height: 1rem;
     pointer-events: none;
     width: 100%;
     height: 20rem;
-    line-height: 1.6rem;
+    line-height: 2rem;
 
     & mark {
       border-radius: 3px;
@@ -349,15 +347,21 @@ const ModalContainer = styled.div<{ isSubOpened: boolean }>`
   display: flex;
   flex-direction: row;
   background-color: ${COLOR.WHITE};
-  width: ${(props) => (props.isSubOpened ? "1000px" : "850px")};
+  min-width: 40vw;
   height: 55rem;
   border-radius: 10px;
   box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
-const ModalMain = styled.div`
+const ModalMain = styled.div<{ isSubOpened: boolean }>`
   display: flex;
   flex-direction: column;
-  width: 100%;
+  min-width: ${(props) => (props.isSubOpened ? "40vw" : "40vw")};
+  height: 100%;
+  z-index: 6;
 `;
 
 const ModalHeaderLeftBtn = styled.button`

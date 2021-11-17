@@ -8,12 +8,18 @@ import createSagaMiddleware from "redux-saga";
 import rootSaga from "./sagas";
 import logger from "redux-logger";
 import { composeWithDevTools } from "redux-devtools-extension";
+import WebFont from "webfontloader";
 
 const sagaMiddleware = createSagaMiddleware();
 const enhancer = composeWithDevTools(applyMiddleware(sagaMiddleware, logger));
 const store = createStore(rootReducer, enhancer);
 
 sagaMiddleware.run(rootSaga);
+WebFont.load({
+  custom: {
+    families: ["NanumDaCaeSaRang"],
+  },
+});
 
 ReactDOM.render(
   <React.StrictMode>

@@ -23,7 +23,8 @@
   "include": [
     "src",
     "craco.config.js",
-    "fonts.d.ts"
+    "fonts.d.ts",
+    "webfontloader.d.ts"
   ],
   "extends": "./tsconfig.paths.json"
 }

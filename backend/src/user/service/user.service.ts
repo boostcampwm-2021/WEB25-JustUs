@@ -5,6 +5,7 @@ import { User } from "../user.entity";
 import { UserRepository } from "../user.repository";
 import { UserInfoResponseDto } from "src/dto/user/userInfoResponse.dto";
 import { UpdateUserInfoRequestDto } from "src/dto/user/updateUserInfoRequest.dto";
+import { UpdateGroupOrderRequestDto } from "src/dto/user/updateGroupOrderRequest.dto";
 import { UpdateResult } from "typeorm";
 
 @Injectable()
@@ -43,5 +44,12 @@ export class UserService {
 
   async updateToken(userId: number, refreshToken: string): Promise<UpdateResult> {
     return this.userRepository.update(userId, { refreshToken });
+  }
+
+  async updateGroupOrder(userId: number, updateGroupOrderRequestDto: UpdateGroupOrderRequestDto): Promise<string> {
+    const { groupOrder } = updateGroupOrderRequestDto;
+    this.userRepository.update(userId, { groupOrder });
+
+    return "GroupOrder update success!!";
   }
 }

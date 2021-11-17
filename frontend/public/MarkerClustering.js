@@ -535,15 +535,13 @@ Cluster.prototype = {
   enableClick: function () {
     if (this._relation) return;
 
-    // var map = this._markerClusterer.getMap();
     var clickHandler = this._markerClusterer.getClickHandler();
 
     this._relation = naver.maps.Event.addListener(
       this._clusterMarker,
       "click",
       naver.maps.Util.bind(function (e) {
-        clickHandler(this._clusterMember);
-        // map.morph(e.coord, map.getZoom() + 1);
+        clickHandler(this._clusterMember, e.coord);
       }, this),
     );
   },
