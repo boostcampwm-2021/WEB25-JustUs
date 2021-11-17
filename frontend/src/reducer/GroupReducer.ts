@@ -17,6 +17,13 @@ interface AlbumListItemType {
   posts: PostType[];
 }
 
+export const CREATE_GROUP = "CREATE_GROUP";
+
+export const createGroupAction = (payload: any) => ({
+  type: CREATE_GROUP,
+  payload,
+});
+
 const initState: {
   selectedGroup: GroupType | null;
   isLoading: Boolean;

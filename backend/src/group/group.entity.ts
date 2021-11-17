@@ -17,7 +17,7 @@ export class Group extends TimeStampEntity {
   @Column()
   groupCode: string;
 
-  @Column()
+  @Column({ nullable: true })
   albumOrder: string;
 
   @ManyToMany(() => User, { cascade: true })
