@@ -9,9 +9,9 @@ import NotFound from "@pages/NotFound";
 
 export const Router = () => {
   const dispatch = useDispatch();
-  const { user } = useSelector((state: RootState) => state.user);
+  // const { user } = useSelector((state: RootState) => state.user);
 
-  const getUserInfo = useEffect(() => {
+  useEffect(() => {
     dispatch(userInfoRequestAction());
   }, []);
 
