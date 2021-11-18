@@ -9,12 +9,14 @@ import { GetPostInfoResponseDto } from "src/dto/post/getPostInfoResponse.dto";
 import { UpdatePostInfoRequestDto } from "src/dto/post/updatePostInfoRequest.dto";
 import { ShiftPostRequestDto } from "src/dto/post/shiftPostRequest.dto";
 import { AlbumService } from "src/album/service/album.service";
+import { HashTagService } from "src/hashtag/service/hashtag.service";
 
 @Injectable()
 export class PostService {
   constructor(
     private readonly imageService: ImageService,
     private readonly albumService: AlbumService,
+    private readonly hashTagService: HashTagService,
     @InjectRepository(PostRepository)
     private postRepository: PostRepository,
     @InjectRepository(UserRepository)
@@ -42,6 +44,11 @@ export class PostService {
 
     const images = this.imageService.saveImage(postImages);
 
+    const tags = this.getHashTag(postContent);
+    const paring = tags?.join(",");
+    const hashtagCategory = tags === undefined ? "" : paring;
+    const hashtags = tags === undefined ? [] : await this.hashTagService.saveHashTag(groupId, tags);
+
     const post = await this.postRepository.save({
       postTitle: postTitle,
       postContent: postContent,
@@ -49,12 +56,24 @@ export class PostService {
       postLocation: postLocation,
       postLatitude: Number(postLatitude),
       postLongitude: Number(postLongitude),
+      hashtagCategory: hashtagCategory,
       user: user,
       album: album,
       images: images,
+      hashtags: hashtags,
     });
 
     return post.postId;
+  }
+
+  getHashTag(textParam: string): RegExpMatchArray {
+    const hashTagText = textParam.match(/#([\w|ㄱ-ㅎ|가-힣]+)/g);
+
+    const removeTag = hashTagText?.map(e => {
+      return e.substr(1);
+    });
+
+    return removeTag;
   }
 
   async getPostInfo(postId: number): Promise<GetPostInfoResponseDto> {
