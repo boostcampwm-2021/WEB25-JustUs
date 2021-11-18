@@ -8,6 +8,7 @@ import { RootState } from "@src/reducer";
 interface FileObject {
   file: File | string;
   key: string;
+  imageUrl: string;
 }
 
 const PostUpdateModal = () => {

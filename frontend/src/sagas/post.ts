@@ -13,7 +13,7 @@ interface ResponseGenerator {
   json: Function;
 }
 interface FileObject {
-  file: File | string;
+  file: File;
   key: string;
 }
 interface IPost {
@@ -61,20 +61,20 @@ function* watchUploadPost() {
   yield takeEvery("UPLOAD_POST_REQUEST", uploadPost);
 }
 
-function getPostApi(postID: number) {
-  console.log(postID);
+function getPostApi(postId: number) {
   return axios({
     method: "get",
-    url: `${SERVER_URL}/api/posts/${postID}`,
+    url: `${SERVER_URL}/api/posts/${postId}`,
     withCredentials: true,
   });
 }
 
-function* getPost({ postID }: { type: string; postID: number }) {
+function* getPost({ postId }: { type: string; postId: number }) {
   try {
-    const result: ResponseGenerator = yield call(getPostApi, postID);
+    const result: ResponseGenerator = yield call(getPostApi, postId);
     console.log(result);
     yield put({ type: "SELECT_POST_SUCCEED", post: result.data });
+    yield put({ type: "OPEN_MODAL", payload: "PostShowModal" });
   } catch (err: unknown) {
     yield put({ type: "SELECT_POST_FAILED" });
   }

@@ -5,6 +5,7 @@ import COLOR from "@styles/Color";
 interface FileObject {
   file: File | string;
   key: string;
+  imageUrl: string;
 }
 interface CarouselProps {
   files: FileObject[];
@@ -38,9 +39,7 @@ const Carousel = ({ files, carouselWidth }: CarouselProps) => {
         <CarouselImage ref={carouselRef} carouselWidth={carouselWidth}>
           {files.map((fileObject, idx) => (
             <div key={idx}>
-              <img
-                src={typeof fileObject.file === "string" ? fileObject.file : URL.createObjectURL(fileObject.file)}
-              ></img>
+              <img src={fileObject.imageUrl}></img>
             </div>
           ))}
         </CarouselImage>

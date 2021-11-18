@@ -11,6 +11,7 @@ import dummyPosts from "@components/Map/dummyPosts";
 interface FileObject {
   file: File | string;
   key: string;
+  imageUrl: string;
 }
 interface IData {
   [key: string]: string;

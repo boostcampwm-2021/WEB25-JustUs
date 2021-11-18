@@ -114,7 +114,7 @@ const AlbumList = () => {
   }, [clickedTarget]);
 
   useEffect(() => {
-    setPostSelected(selectedPost.postID);
+    setPostSelected(selectedPost.postId);
   }, [selectedPost]);
 
   return (

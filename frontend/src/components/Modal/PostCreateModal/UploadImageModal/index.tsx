@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 interface FileObject {
   file: File | string;
   key: string;
+  imageUrl: string;
 }
 interface UploadImageModalProps {
   changeMode: () => void;
@@ -32,7 +33,7 @@ const UploadImageModal = ({ changeMode, files, setFiles }: UploadImageModalProps
   const changeImage: React.ChangeEventHandler<HTMLInputElement> = (event) => {
     if (!event.target.files) return;
     const file = event.target.files[0];
-    setFiles([...files, { file, key: shortid.generate() }]);
+    setFiles([...files, { file, key: shortid.generate(), imageUrl: URL.createObjectURL(file) }]);
   };
 
   const nextModal = () => {
