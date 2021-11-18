@@ -4,14 +4,15 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
 import { ReactComponent as SettingsSVG } from "@styles/icons/settings.svg";
+import { getGroupMemberListAction } from "@src/reducer/GroupReducer";
 
 const SettingGroup = () => {
   const dispatch = useDispatch();
   const { selectedGroup }: any = useSelector((state: RootState) => state.groups);
   const { nowTheme }: any = useSelector((state: RootState) => state.theme);
 
-  const onClickSettingGroup = () => {
-    dispatch({ type: "OPEN_MODAL", payload: "SettingGroupModal" });
+  const onClickSettingGroup = async () => {
+    dispatch(getGroupMemberListAction({ groupID: selectedGroup.groupID }));
   };
 
   return (

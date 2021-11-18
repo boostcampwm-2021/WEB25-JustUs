@@ -1,14 +1,25 @@
+import { useRef } from "react";
 import styled, { keyframes } from "styled-components";
 import { flexColumnCenterAlign, flexRowCenterAlign } from "@styles/StyledComponents";
 import Modal from "@components/Modal";
 import { useDispatch } from "react-redux";
 import COLOR from "@styles/Color";
+import { requestJoinGroupAction, getGroupListAction } from "@src/reducer/GroupReducer";
 
 const JoinGroupModal = () => {
   const dispatch = useDispatch();
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const closeModal = () => {
     dispatch({ type: "CLOSE_MODAL" });
+  };
+
+  const onClickJoinBtn = () => {
+    if (!inputRef.current) return;
+    const code = inputRef.current.value;
+
+    dispatch(requestJoinGroupAction({ code }));
+    // dispatch(getGroupListAction());
   };
 
   return (
@@ -29,8 +40,8 @@ const JoinGroupModal = () => {
           </CloseBtn>
         </Header>
         <Content>
-          <InviteCodeInputWrapper />
-          <JoinBtnWrapper>참여하기</JoinBtnWrapper>
+          <InviteCodeInputWrapper ref={inputRef} />
+          <JoinBtnWrapper onClick={onClickJoinBtn}>참여하기</JoinBtnWrapper>
         </Content>
       </ModalContainer>
     </Modal>

@@ -12,37 +12,6 @@ interface SettingGroupModalProps {
   setIsToggle: Dispatch<SetStateAction<boolean>>;
 }
 
-const groupMemberList = [
-  {
-    userID: 0,
-    userNickname: "그 김영한 아님",
-  },
-  {
-    userID: 1,
-    userNickname: "집사",
-  },
-  {
-    userID: 2,
-    userNickname: "GPS",
-  },
-  {
-    userID: 3,
-    userNickname: "맹",
-  },
-  {
-    userID: 4,
-    userNickname: "테스트 유저1",
-  },
-  {
-    userID: 5,
-    userNickname: "테스트 유저2",
-  },
-  {
-    userID: 6,
-    userNickname: "테스트 유저3",
-  },
-];
-
 const SettingGroupModal = ({ setIsToggle }: SettingGroupModalProps) => {
   const [clickedDropBtn, setClickedDropclickedDropBtn] = useState(false);
   const { selectedGroup }: any = useSelector((state: RootState) => state.groups);
@@ -87,15 +56,17 @@ const SettingGroupModal = ({ setIsToggle }: SettingGroupModalProps) => {
           <Content>
             <JoinCodeWrapper>
               <JoinCodeGuide>초대 코드</JoinCodeGuide>
-              <JoinCode>D3WFq2GL1</JoinCode>
+              <JoinCode>{selectedGroup.groupCode}</JoinCode>
             </JoinCodeWrapper>
             <GroupMemberListWrapper>
               <GroupMemberListGuide>그룹원</GroupMemberListGuide>
               <GroupMemberList>
-                {groupMemberList.map((groupMember) => (
+                {/* {groupMemberList.map((groupMember) => ( */}
+                {selectedGroup.users.map((groupMember: any) => (
                   <GroupMember key={groupMember.userID}>
                     <GroupImg>
-                      <img src="/icons/person.svg" alt="person icon" />
+                      {/* <img src="/icons/person.svg" alt="person icon" /> */}
+                      <img src={groupMember.profileImage} alt="person icon" />
                     </GroupImg>
                     <MemberNickname>{groupMember.userNickname}</MemberNickname>
                   </GroupMember>
@@ -226,6 +197,7 @@ const GroupImg = styled.div`
   & > img {
     width: 5rem;
     height: 5rem;
+    border-radius: 100%;
   }
 `;
 const MemberNickname = styled.div`

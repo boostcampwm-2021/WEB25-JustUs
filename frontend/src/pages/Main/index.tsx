@@ -8,6 +8,7 @@ import Map from "@components/Map";
 import { GroupModalAction } from "@src/action";
 import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
+import { getGroupListAction } from "@src/reducer/GroupReducer";
 
 const Main = () => {
   const [isToggle, setIsToggle] = useState<boolean>(true);
@@ -21,6 +22,8 @@ const Main = () => {
 
       dispatch({ type: GroupModalAction.SET_CLICKED_TARGET, payload: { target, clientX, clientY } });
     });
+
+    dispatch(getGroupListAction());
   }, []);
 
   return (
