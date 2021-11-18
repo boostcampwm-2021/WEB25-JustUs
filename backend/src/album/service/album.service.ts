@@ -4,7 +4,6 @@ import { AlbumRepository } from "../album.repository";
 import { GroupRepository } from "src/group/group.repository";
 import { CreateAlbumRequestDto } from "src/dto/album/createAlbumRequest.dto";
 import { UpdateAlbumInfoRequestDto } from "src/dto/album/updateAlbumInfoRequest.dto";
-import { DeleteAlbumRequestDto } from "src/dto/album/deleteAlbumRequest.dto";
 import { Album } from "../album.entity";
 import { PostRepository } from "src/post/post.repository";
 
@@ -47,17 +46,17 @@ export class AlbumService {
     return "AlbumInfo update success!!";
   }
 
-  async deleteAlbum(albumId: number, deleteAlbumRequestDto: DeleteAlbumRequestDto): Promise<string> {
-    const { groupId } = deleteAlbumRequestDto;
-
+  async deleteAlbum(albumId: number): Promise<string> {
     const album = await this.albumRepository.findOne({ albumId });
     if (!album) throw new NotFoundException(`Not found album with the id ${albumId}`);
 
+    const { base, group } = album;
+    if (base) throw new NotFoundException("It cannot be deleted because it is baseAlbum.");
+
+    const { groupId } = group;
     const baseAlbum = await this.getBaseAlbumId(groupId);
-
-    if (albumId === baseAlbum.albumId) throw new NotFoundException("It cannot be deleted because it is baseAlbum.");
-
     await this.movePosts(albumId, baseAlbum);
+
     this.albumRepository.softRemove(album);
 
     return "Album delete success!!";
