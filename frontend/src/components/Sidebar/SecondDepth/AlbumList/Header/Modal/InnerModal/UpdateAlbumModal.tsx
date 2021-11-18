@@ -6,17 +6,15 @@ import { useDispatch } from "react-redux";
 import COLOR from "@styles/Color";
 import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
-import { GroupAction } from "@src/action";
 import { updateAlbumRequestAction } from "@src/reducer/AlbumReducer";
 
 const UpdateAlbumModal = () => {
   const dispatch = useDispatch();
   const { selectedAlbum } = useSelector((state: RootState) => state.modal);
   const [updateAlbumName, setUpdateAlbumName] = useState(true);
-  const { groups, selectedGroup }: any = useSelector((state: RootState) => state.groups);
   const originAlbumName = selectedAlbum.albumName;
   const [newAlbumName, setNewAlbumName] = useState(originAlbumName);
-
+  const { selectedGroup }: any = useSelector((state: RootState) => state.groups);
   const closeModal = () => {
     dispatch({ type: "CLOSE_MODAL" });
   };
