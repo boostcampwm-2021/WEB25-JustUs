@@ -79,13 +79,11 @@ function* createGroup({ payload }: any) {
 function* getAlbumList(action: any) {
   try {
     const result: ResponseGenerator = yield call(getAlbumListApi, action.payload);
-    const { albums, groupId } = result.data;
-    const { groupName, groupImg } = action.payload;
-
+    const { albums } = result.data;
+    const { groupID, groupName, groupImg } = action.payload;
     yield put({ type: "SET_ALBUM_LIST", payload: albums });
-
     const { albumList }: { albumList: IAlbum[] } = yield select((state) => state.groups);
-    yield put({ type: "SET_SELECTED_GROUP", payload: { groupID: groupId, groupName, groupImg, albumList } });
+    yield put({ type: "SET_SELECTED_GROUP", payload: { groupID, groupName, groupImg, albumList } });
   } catch (err: any) {}
 }
 

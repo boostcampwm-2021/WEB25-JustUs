@@ -32,11 +32,10 @@ const Album = ({
   DragLeaveHandler,
 }: AlbumProps) => {
   const [postToggle, setPostToggle] = useState(true);
-
   return (
     <div onDrop={DropHandler} onDragLeave={DragLeaveHandler} onDragOver={(e) => e.preventDefault()}>
       <Header
-        albumID={album.albumID}
+        albumID={album.albumId}
         albumName={album.albumName}
         postToggle={postToggle}
         setPostToggle={setPostToggle}
