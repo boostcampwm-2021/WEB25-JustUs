@@ -63,6 +63,11 @@ async function deleteGroupApi(payload: any) {
   return result;
 }
 
+async function getGroupMemberListApi(payload: any) {
+  const result = await axios.get(`${SERVER_URL}/api/groups/${payload.groupID}`, { withCredentials: true });
+  return result;
+}
+
 function* getGroupInfo(action: any) {
   try {
     const result: ResponseGenerator = yield call(getGroupInfoApi, action.payload);
@@ -102,6 +107,15 @@ function* deleteGroup(action: any) {
   } catch (err) {}
 }
 
+function* getGroupMemberList(action: any) {
+  try {
+    const result: ResponseGenerator = yield call(getGroupMemberListApi, action.payload);
+
+    yield put({ type: "GET_GROUP_MEMBER_LIST_SUCCEED", payload: result.data });
+    yield put({ type: "OPEN_MODAL", payload: "SettingGroupModal" });
+  } catch (err) {}
+}
+
 function* watchGroupInfo() {
   yield takeLatest("REQUEST_GROUP_INFO", getGroupInfo);
 }
@@ -118,6 +132,16 @@ function* watchDeleteGroup() {
   yield takeLatest("DELETE_GROUP", deleteGroup);
 }
 
+function* watchGetGroupMemberList() {
+  yield takeLatest("GET_GROUP_MEMBER_LIST", getGroupMemberList);
+}
+
 export default function* groupSaga() {
-  yield all([fork(watchGroupInfo), fork(watchCreateGroup), fork(watchGetAlbumList), fork(watchDeleteGroup)]);
+  yield all([
+    fork(watchGroupInfo),
+    fork(watchCreateGroup),
+    fork(watchGetAlbumList),
+    fork(watchDeleteGroup),
+    fork(watchGetGroupMemberList),
+  ]);
 }

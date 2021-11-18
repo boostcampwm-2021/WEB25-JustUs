@@ -20,6 +20,7 @@ interface AlbumListItemType {
 export const CREATE_GROUP = "CREATE_GROUP";
 export const GET_ALBUM_LIST = "GET_ALBUM_LIST";
 export const DELETE_GROUP = "DELETE_GROUP";
+export const GET_GROUP_MEMBER_LIST = "GET_GROUP_MEMBER_LIST";
 
 export const createGroupAction = (payload: any) => ({
   type: CREATE_GROUP,
@@ -33,6 +34,11 @@ export const getAlbumListAction = (payload: any) => ({
 
 export const deleteGroupAction = (payload: any) => ({
   type: DELETE_GROUP,
+  payload,
+});
+
+export const getGroupMemberListAction = (payload: any) => ({
+  type: GET_GROUP_MEMBER_LIST,
   payload,
 });
 
@@ -159,6 +165,15 @@ const groupReducer = (state = initState, action: any) => {
       return {
         ...state,
         albumList: action.payload,
+      };
+    case "GET_GROUP_MEMBER_LIST_SUCCEED":
+      return {
+        ...state,
+        selectedGroup: {
+          ...state.selectedGroup,
+          groupCode: action.payload.groupCode,
+          users: action.payload.users,
+        },
       };
     default:
       return state;
