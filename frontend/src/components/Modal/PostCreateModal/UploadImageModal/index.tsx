@@ -6,8 +6,8 @@ import COLOR from "@styles/Color";
 import { useDispatch } from "react-redux";
 
 interface FileObject {
-  file: File | string;
-  key: string;
+  imageUrl: File | string;
+  imageId: string;
 }
 interface UploadImageModalProps {
   changeMode: () => void;
@@ -32,15 +32,15 @@ const UploadImageModal = ({ changeMode, files, setFiles }: UploadImageModalProps
   const changeImage: React.ChangeEventHandler<HTMLInputElement> = (event) => {
     if (!event.target.files) return;
     const file = event.target.files[0];
-    setFiles([...files, { file, key: shortid.generate() }]);
+    setFiles([...files, { imageUrl: file, imageId: shortid.generate() + "!" }]);
   };
 
   const nextModal = () => {
     changeMode();
   };
 
-  const deleteImage = (key: string) => {
-    setFiles(files.filter((file) => file.key !== key));
+  const deleteImage = (deleteItem: FileObject) => {
+    setFiles(files.filter((file) => file.imageId !== deleteItem.imageId));
   };
 
   return (
@@ -50,7 +50,7 @@ const UploadImageModal = ({ changeMode, files, setFiles }: UploadImageModalProps
       }}
     >
       <ModalHeader>
-        <ModalTitle>{files.length ? "게시물 수정" : "새 게시물 만들기"}</ModalTitle>
+        <ModalTitle>사진 업로드</ModalTitle>
         {files.length === 0 ? (
           <ModalHeaderRigthBtn onClick={closeModal}>
             <img src="/icons/x.svg" alt="close" height="90%"></img>
@@ -72,11 +72,15 @@ const UploadImageModal = ({ changeMode, files, setFiles }: UploadImageModalProps
         {files.map(
           (fileObject) => (
             <ImagePreview key={shortid.generate()}>
-              <DeleteImageBtn onClick={() => deleteImage(fileObject.key)}>
+              <DeleteImageBtn onClick={() => deleteImage(fileObject)}>
                 <img src="/icons/delete.svg" alt="delete"></img>
               </DeleteImageBtn>
               <img
-                src={typeof fileObject.file === "string" ? fileObject.file : URL.createObjectURL(fileObject.file)}
+                src={
+                  typeof fileObject.imageUrl === "string"
+                    ? fileObject.imageUrl
+                    : URL.createObjectURL(fileObject.imageUrl)
+                }
               ></img>
             </ImagePreview>
           ),

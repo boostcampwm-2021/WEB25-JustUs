@@ -6,7 +6,7 @@ interface GroupType {
   groupImg: string;
 }
 interface PostType {
-  postID: number;
+  postId: number;
   postTitle: string;
   postLatitude: number;
   postLongitude: number;
@@ -43,12 +43,16 @@ const initState: {
   albumList: AlbumListItemType[];
   postsList: PostType[];
   isPostUploading: boolean;
+  isPostUpdateing: boolean;
+  isPostDeleting: boolean;
   groups: Array<GroupType>;
 } = {
   selectedGroup: null,
   isLoading: true,
   albumList: [{ albumID: 0, albumName: "", posts: [], base: false }],
   isPostUploading: false,
+  isPostUpdateing: false,
+  isPostDeleting: false,
   groups: [
     {
       groupID: 0,
@@ -66,7 +70,7 @@ const initState: {
       groupImg: "/img/dummy-group3.png",
     },
   ],
-  postsList: [{ postID: -1, postTitle: "", postLatitude: 0, postLongitude: 0 }],
+  postsList: [{ postId: -1, postTitle: "", postLatitude: 0, postLongitude: 0 }],
 };
 
 const groupReducer = (state = initState, action: any) => {
@@ -121,7 +125,7 @@ const groupReducer = (state = initState, action: any) => {
           posts: [],
           base: album.base,
         };
-        updateAlbum.posts = album.posts.filter((now) => now.postID != post.postID);
+        updateAlbum.posts = album.posts.filter((now) => now.postId != post.postId);
         return updateAlbum;
       });
       newAlbumList[afterIdx].posts.push(post);
@@ -143,7 +147,7 @@ const groupReducer = (state = initState, action: any) => {
           posts: [
             ...album.posts,
             {
-              postID: action.post.postID,
+              postId: action.post.postId,
               postTitle: action.post.postTitle,
               postLatitude: action.post.postLatitude,
               postLongitude: action.post.postLongitude,
@@ -165,34 +169,80 @@ const groupReducer = (state = initState, action: any) => {
         ...state,
         isPostUploading: false,
       };
-    case "DELETE_POST":
-      const targetPost = action.payload;
-      const targetAlbum = state.albumList.find((album) => {
-        const found = album.posts.find((innerPost) => innerPost.postID === targetPost.postID);
-        if (found) return true;
-      });
-
-      if (!targetAlbum) return { ...state };
-
-      targetAlbum.posts = targetAlbum.posts.filter((innerPost) => innerPost.postID !== targetPost.postID);
-
+    case "UPDATE_POST_REQUEST":
       return {
         ...state,
+        isPostUpdateing: true,
       };
-    case "UPDATE_POST":
-      const targetPost2 = action.payload;
-      let targetIdx = -1;
+    case "UPDATE_POST_SUCCEED":
+      const renewAlbumList = state.albumList.map((album: AlbumListItemType, idx) => {
+        if (album.posts.some((item) => item.postId != action.post.postId)) {
+          return album;
+        }
+        const updateAlbum: AlbumListItemType = {
+          albumID: album.albumID,
+          albumName: album.albumName,
+          posts: [],
+          base: album.base,
+        };
 
-      const targetAlbum2 = state.albumList.find((album) => {
-        targetIdx = album.posts.findIndex((innerPost) => innerPost.postID === targetPost2.postID);
-        if (targetIdx !== -1) return true;
+        updateAlbum.posts = album.posts.map((item) =>
+          item.postId !== action.post.postId
+            ? item
+            : {
+                postId: action.post.postId,
+                postTitle: action.post.postTitle,
+                postLatitude: action.post.postLatitude,
+                postLongitude: action.post.postLongitude,
+              },
+        );
+
+        return updateAlbum;
       });
+      const renewPostsList = renewAlbumList.map((album: AlbumListItemType) => [...album.posts]).flat();
+      return {
+        ...state,
+        albumList: renewAlbumList,
+        postList: renewPostsList,
+        isPostUpdateing: false,
+      };
+    case "UPDATE_POST_FAILED":
+      return {
+        ...state,
+        isPostUpdateing: false,
+      };
 
-      if (!targetAlbum2) return { ...state };
-      if (targetIdx === -1) return { ...state };
-
-      targetAlbum2.posts[targetIdx] = targetPost2;
-      return { ...state };
+    case "DELETE_POST_REQUEST":
+      return {
+        ...state,
+        isPostDeleting: true,
+      };
+    case "DELETE_POST_SUCCEED":
+      const afterDeleteAlbumList = state.albumList.map((album: AlbumListItemType, idx) => {
+        if (!album.posts.some((item) => item.postId == action.postId)) {
+          return album;
+        }
+        const updateAlbum: AlbumListItemType = {
+          albumID: album.albumID,
+          albumName: album.albumName,
+          posts: [],
+          base: album.base,
+        };
+        updateAlbum.posts = album.posts.filter((item) => item.postId != action.postId);
+        return updateAlbum;
+      });
+      const afterDeleteList = afterDeleteAlbumList.map((album: AlbumListItemType) => [...album.posts]).flat();
+      return {
+        ...state,
+        albumList: afterDeleteAlbumList,
+        postList: afterDeleteList,
+        isPostDeleting: false,
+      };
+    case "DELETE_POST_FAILED":
+      return {
+        ...state,
+        isPostDeleting: false,
+      };
     case "SET_ALBUM_LIST":
       return {
         ...state,

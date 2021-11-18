@@ -15,7 +15,7 @@ interface ResponseGenerator {
   json: Function;
 }
 interface PostType {
-  postID: number;
+  postId: number;
   postTitle: string;
   postLatitude: number;
   postLongitude: number;
