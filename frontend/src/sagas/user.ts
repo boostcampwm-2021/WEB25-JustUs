@@ -41,11 +41,15 @@ function getLogOutApi() {
 }
 
 async function updateUserInfoApi(user: IUser) {
-  const result = await axios.put(
-    `${SERVER_URL}/api/user`,
-    { userNickname: user.updateUserNickName, profileImage: "temp" },
-    { withCredentials: true },
-  );
+  const formData = new FormData();
+  formData.append("userNickname", user.updateUserNickName);
+  formData.append("profileImage", user.updateUserProfile);
+
+  const result = await axios.put(`${SERVER_URL}/api/user`, formData, {
+    withCredentials: true,
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+
   return result;
 }
 
@@ -71,10 +75,11 @@ function* updateUserInfo() {
   const user: IUser = yield select((state) => state.user);
 
   try {
-    yield call(updateUserInfoApi, user);
+    const result: ResponseGenerator = yield call(updateUserInfoApi, user);
+
     yield put({
       type: SET_UPDATED_USER_INFO,
-      payload: { userNickName: user.updateUserNickName, userProfile: user.updateUserProfile },
+      payload: { userNickName: user.updateUserNickName, userProfile: result.data },
     });
   } catch (err: any) {
     yield put({ type: SET_UPDATE_FAIL });
