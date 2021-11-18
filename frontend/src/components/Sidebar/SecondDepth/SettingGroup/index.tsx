@@ -12,7 +12,7 @@ const SettingGroup = () => {
   const { nowTheme }: any = useSelector((state: RootState) => state.theme);
 
   const onClickSettingGroup = async () => {
-    dispatch(getGroupMemberListAction({ groupID: selectedGroup.groupID }));
+    dispatch(getGroupMemberListAction({ groupId: selectedGroup.groupId }));
   };
 
   return (

@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useState, ChangeEvent } from "react";
 import styled, { keyframes } from "styled-components";
 import { flexRowCenterAlign } from "@styles/StyledComponents";
 import Modal from "@components/Modal";
@@ -6,31 +6,31 @@ import { useDispatch } from "react-redux";
 import COLOR from "@styles/Color";
 import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
-import { GroupAction } from "@src/action";
+import { updateAlbumRequestAction } from "@src/reducer/AlbumReducer";
 
 const UpdateAlbumModal = () => {
   const dispatch = useDispatch();
   const { selectedAlbum } = useSelector((state: RootState) => state.modal);
-  const inputRef = useRef<HTMLInputElement>(null);
-  const { groups, selectedGroup }: any = useSelector((state: RootState) => state.groups);
-
+  const [updateAlbumName, setUpdateAlbumName] = useState(true);
+  const originAlbumName = selectedAlbum.albumName;
+  const [newAlbumName, setNewAlbumName] = useState(originAlbumName);
+  const { selectedGroup }: any = useSelector((state: RootState) => state.groups);
   const closeModal = () => {
     dispatch({ type: "CLOSE_MODAL" });
   };
 
+  const onChangeName = (e: ChangeEvent<HTMLInputElement>) => {
+    setNewAlbumName(e.target.value);
+    setUpdateAlbumName(false);
+  };
+
   const onClickSave = () => {
-    console.log("로직 수정 예정");
-    // if (!inputRef.current) return;
-
-    // const selectedGroupID = selectedGroup.groupID;
-    // const selectedAlbumList = groups[selectedGroupID].albumList;
-    // const albumID = selectedAlbum.albumID;
-    // const albumName = inputRef.current.value;
-    // const targetIdx = selectedAlbumList.findIndex((album: any) => album.albumID === albumID);
-
-    // selectedAlbumList[targetIdx].albumName = albumName;
-
-    // dispatch({ type: GroupAction.SET_ALL_GROUPS, payload: groups });
+    if (newAlbumName === originAlbumName) {
+      closeModal();
+      return;
+    }
+    const albumId = selectedAlbum.albumId;
+    dispatch(updateAlbumRequestAction(newAlbumName, albumId));
     closeModal();
   };
 
@@ -50,7 +50,7 @@ const UpdateAlbumModal = () => {
           </CloseBtn>
         </Header>
         <Content>
-          <AlbumNameInputWrapper ref={inputRef} placeholder={selectedAlbum.albumName} />
+          <AlbumNameInputWrapper onChange={onChangeName} value={newAlbumName} />
           <SaveBtnWrapper onClick={onClickSave}>저장하기</SaveBtnWrapper>
         </Content>
       </ModalContainer>
@@ -120,7 +120,9 @@ const AlbumNameInputWrapper = styled.input`
   border-radius: 10px;
   font-size: 3rem;
   text-align: center;
-
+  &:focus-visible {
+    outline: none;
+  }
   &::-webkit-input-placeholder {
     text-align: center;
     font-weight: 800;
@@ -136,8 +138,11 @@ const SaveBtnWrapper = styled.div`
   color: ${COLOR.WHITE};
   background-color: ${(props) => props.theme.PRIMARY};
   margin-top: 5rem;
-  cursor: pointer;
   font-size: 1.6rem;
+  &:hover {
+    cursor: pointer;
+    font-weight: bold;
+  }
 `;
 
 export default UpdateAlbumModal;

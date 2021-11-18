@@ -48,7 +48,7 @@ const FirstDepth = ({ isToggle, setIsToggle, addGroupBtnRef }: FirstDepthProps) 
               <Group
                 isToggle={isToggle}
                 key={group.groupId}
-                groupID={group.groupId}
+                groupId={group.groupId}
                 groupName={group.groupName}
                 groupImage={group.groupImage}
                 setIsToggle={setIsToggle}

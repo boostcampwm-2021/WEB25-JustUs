@@ -25,9 +25,9 @@ const SettingGroupModal = ({ setIsToggle }: SettingGroupModalProps) => {
     setClickedDropclickedDropBtn(true);
   };
   const onClickConfirmBtn = () => {
-    const { groupID } = selectedGroup;
-    // dispatch({ type: GroupAction.DELETE_GROUP, payload: { groupID } });
-    dispatch(deleteGroupAction({ groupID }));
+    const { groupId } = selectedGroup;
+    // dispatch({ type: GroupAction.DELETE_GROUP, payload: { groupId } });
+    dispatch(deleteGroupAction({ groupId }));
 
     closeModal();
     setIsToggle(false);
@@ -63,7 +63,7 @@ const SettingGroupModal = ({ setIsToggle }: SettingGroupModalProps) => {
               <GroupMemberList>
                 {/* {groupMemberList.map((groupMember) => ( */}
                 {selectedGroup.users.map((groupMember: any) => (
-                  <GroupMember key={groupMember.userID}>
+                  <GroupMember key={groupMember.userId}>
                     <GroupImg>
                       {/* <img src="/icons/person.svg" alt="person icon" /> */}
                       <img src={groupMember.profileImage} alt="person icon" />

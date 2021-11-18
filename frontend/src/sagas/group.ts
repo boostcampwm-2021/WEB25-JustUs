@@ -1,5 +1,4 @@
 import { all, fork, put, call, takeLatest, select, delay } from "redux-saga/effects";
-import { GroupAction } from "@src/action";
 import axios from "axios";
 import { getGroupListApi } from "@src/sagas/user";
 import { SET_GROUPS } from "@src/reducer/GroupReducer";
@@ -22,7 +21,7 @@ interface PostType {
   postLongitude: number;
 }
 interface IAlbum {
-  albumID: number;
+  albumId: number;
   albumName: string;
   posts: PostType[];
 }
@@ -54,18 +53,18 @@ async function createGroupApi(payload: any) {
 }
 
 async function getAlbumListApi(payload: any) {
-  const result = await axios.get(`${SERVER_URL}/api/groups/${payload.groupID}/albums`, { withCredentials: true });
+  const result = await axios.get(`${SERVER_URL}/api/groups/${payload.groupId}/albums`, { withCredentials: true });
 
   return result;
 }
 
 async function deleteGroupApi(payload: any) {
-  const result = await axios.delete(`${SERVER_URL}/api/groups/${payload.groupID}`, { withCredentials: true });
+  const result = await axios.delete(`${SERVER_URL}/api/groups/${payload.groupId}`, { withCredentials: true });
   return result;
 }
 
 async function getGroupMemberListApi(payload: any) {
-  const result = await axios.get(`${SERVER_URL}/api/groups/${payload.groupID}`, { withCredentials: true });
+  const result = await axios.get(`${SERVER_URL}/api/groups/${payload.groupId}`, { withCredentials: true });
   return result;
 }
 
@@ -99,14 +98,11 @@ function* createGroup({ payload }: any) {
 function* getAlbumList(action: any) {
   try {
     const result: ResponseGenerator = yield call(getAlbumListApi, action.payload);
-
     const { albums } = result.data;
-    const { groupID, groupName, groupImg } = action.payload;
-
+    const { groupId, groupName, groupImg } = action.payload;
     yield put({ type: "SET_ALBUM_LIST", payload: albums });
-
     const { albumList }: { albumList: IAlbum[] } = yield select((state) => state.groups);
-    yield put({ type: "SET_SELECTED_GROUP", payload: { groupID, groupName, groupImg, albumList } });
+    yield put({ type: "SET_SELECTED_GROUP", payload: { groupId, groupName, groupImg, albumList } });
   } catch (err: any) {}
 }
 
