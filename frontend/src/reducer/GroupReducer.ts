@@ -44,6 +44,7 @@ const initState: {
   postsList: PostType[];
   isPostUploading: boolean;
   isPostUpdateing: boolean;
+  isPostDeleting: boolean;
   groups: Array<GroupType>;
 } = {
   selectedGroup: null,
@@ -51,6 +52,7 @@ const initState: {
   albumList: [{ albumID: 0, albumName: "", posts: [], base: false }],
   isPostUploading: false,
   isPostUpdateing: false,
+  isPostDeleting: false,
   groups: [
     {
       groupID: 0,
@@ -177,8 +179,6 @@ const groupReducer = (state = initState, action: any) => {
         if (album.posts.some((item) => item.postId != action.post.postId)) {
           return album;
         }
-
-        // const { post } = action;
         const updateAlbum: AlbumListItemType = {
           albumID: album.albumID,
           albumName: album.albumName,
@@ -212,21 +212,37 @@ const groupReducer = (state = initState, action: any) => {
         isPostUpdateing: false,
       };
 
-    case "DELETE_POST":
-      const targetPost = action.payload;
-      const targetAlbum = state.albumList.find((album) => {
-        const found = album.posts.find((innerPost) => innerPost.postId === targetPost.postId);
-        if (found) return true;
-      });
-
-      if (!targetAlbum) return { ...state };
-
-      targetAlbum.posts = targetAlbum.posts.filter((innerPost) => innerPost.postId !== targetPost.postId);
-
+    case "DELETE_POST_REQUEST":
       return {
         ...state,
+        isPostDeleting: true,
       };
-
+    case "DELETE_POST_SUCCEED":
+      const afterDeleteAlbumList = state.albumList.map((album: AlbumListItemType, idx) => {
+        if (!album.posts.some((item) => item.postId == action.postId)) {
+          return album;
+        }
+        const updateAlbum: AlbumListItemType = {
+          albumID: album.albumID,
+          albumName: album.albumName,
+          posts: [],
+          base: album.base,
+        };
+        updateAlbum.posts = album.posts.filter((item) => item.postId != action.postId);
+        return updateAlbum;
+      });
+      const afterDeleteList = afterDeleteAlbumList.map((album: AlbumListItemType) => [...album.posts]).flat();
+      return {
+        ...state,
+        albumList: afterDeleteAlbumList,
+        postList: afterDeleteList,
+        isPostDeleting: false,
+      };
+    case "DELETE_POST_FAILED":
+      return {
+        ...state,
+        isPostDeleting: false,
+      };
     case "SET_ALBUM_LIST":
       return {
         ...state,
