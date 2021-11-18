@@ -159,11 +159,7 @@ const Map = () => {
           infoWindow.close();
         }
         setIsRightClick(false);
-        // 아래 로직은 나중에 백엔드 API 요청을 통해 클릭한 게시글의 상세 정보를 가져온다.
-        // const targetPost = dummyPosts.find((post) => post.postId === clickedPostID);
-        dispatch({ type: "SELECTED_POST_REQUEST", postId: clickedPostID });
-
-        // dispatch({ type: "SET_SELECTED_POST", payload: targetPost });
+        dispatch({ type: "SELECT_POST_REQUEST", postId: clickedPostID });
         // dispatch({ type: "OPEN_MODAL", payload: "PostShowModal" });
       };
 
