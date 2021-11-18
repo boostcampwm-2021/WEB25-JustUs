@@ -25,12 +25,12 @@ export class GroupRepository extends Repository<Group> {
       .leftJoin("album.posts", "post")
       .select([
         "group.groupId",
+        "group.albumOrder",
         "album.albumId",
         "album.albumName",
+        "album.base",
         "post.postId",
         "post.postTitle",
-        "post.postLatitude",
-        "post.postLongitude",
       ])
       .where("group.groupId = :id", { id: groupId })
       .getOne();

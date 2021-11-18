@@ -12,7 +12,7 @@ import {
   UseInterceptors,
   UploadedFiles,
 } from "@nestjs/common";
-import { ApiTags, ApiOkResponse, ApiParam, ApiResponse, ApiBearerAuth } from "@nestjs/swagger";
+import { ApiTags, ApiOkResponse, ApiParam, ApiResponse, ApiBearerAuth, ApiConsumes, ApiBody } from "@nestjs/swagger";
 import { CustomRequest } from "src/custom//myRequest/customRequest";
 import { JwtAuthGuard } from "src/auth/guard/jwt-auth-guard";
 import { PostService } from "../service/post.service";
@@ -32,7 +32,9 @@ export class PostController {
 
   @Post()
   @HttpCode(200)
-  @UseInterceptors(FilesInterceptor("postImage", 5, multerOption))
+  @ApiConsumes("multipart/form-data")
+  @ApiBody({ type: CreatePostRequestDto })
+  @UseInterceptors(FilesInterceptor("postImages", 5, multerOption))
   @ApiResponse({ type: Number, description: "생성된 게시글 ID", status: 200 })
   CreatePost(
     @Req() { user }: CustomRequest,
@@ -52,7 +54,9 @@ export class PostController {
   }
 
   @Put("/:postId")
-  @UseInterceptors(FilesInterceptor("addImage", 5, multerOption))
+  @ApiConsumes("multipart/form-data")
+  @ApiBody({ type: UpdatePostInfoRequestDto })
+  @UseInterceptors(FilesInterceptor("addImages", 5, multerOption))
   @ApiParam({ name: "postId", type: Number })
   @ApiOkResponse({ description: "게시글 수정 성공" })
   UpdatePost(

@@ -6,12 +6,20 @@ export const initState = {
   userInfoError: false,
 
   userLoggingOut: false,
+
+  updateUserNickName: null,
+  updateUserProfile: null,
+  updateSucceed: null,
 };
 
 // action
 export const USER_INFO_REQUEST = "USER_INFO_REQUEST";
 export const USER_INFO_SUCCEED = "USER_INFO_SUCCEED";
 export const USER_INFO_FAILED = "USER_INFO_FAILED";
+export const USER_INFO_UPDATE = "USER_INFO_UPDATE";
+export const SET_UPDATED_USER_INFO = "SET_UPDATED_USER_INFO";
+export const SET_UPDATE_FAIL = "SET_UPDATE_FAIL";
+export const SET_UPDATED_INIT = "SET_UPDATED_INIT";
 
 export const LOG_OUT_REQUEST = "LOG_OUT_REQUEST";
 export const LOG_OUT_SUCCEED = "LOG_OUT_SUCCEED";
@@ -24,6 +32,11 @@ export const userInfoRequestAction = () => ({
 
 export const logoutRequestAction = () => ({
   type: LOG_OUT_REQUEST,
+});
+
+export const userInfoUpdateAction = (payload: any) => ({
+  type: USER_INFO_UPDATE,
+  payload,
 });
 
 // reducer
@@ -73,6 +86,33 @@ export const userReducer = (state = initState, action: any) => {
       return {
         ...state,
         userLoggingOut: false,
+      };
+    case USER_INFO_UPDATE:
+      return {
+        ...state,
+        updateUserNickName: action.payload.updateUserNickName,
+        updateUserProfile: action.payload.updateUserProfile,
+      };
+    case SET_UPDATED_USER_INFO:
+      return {
+        ...state,
+        updateUserNickName: null,
+        updateUserProfile: null,
+        userNickName: action.payload.userNickName,
+        userProfile: action.payload.userProfile,
+        updateSucceed: true,
+      };
+    case SET_UPDATE_FAIL:
+      return {
+        ...state,
+        updateUserNickName: null,
+        updateUserProfile: null,
+        updateSucceed: false,
+      };
+    case SET_UPDATED_INIT:
+      return {
+        ...state,
+        updateSucceed: null,
       };
     default:
       return state;
