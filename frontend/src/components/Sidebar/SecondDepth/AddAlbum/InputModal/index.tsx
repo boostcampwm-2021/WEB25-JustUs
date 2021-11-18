@@ -1,11 +1,11 @@
-import { useRef, Dispatch, SetStateAction } from "react";
+import { useRef, Dispatch, SetStateAction, useState, ChangeEvent, useEffect } from "react";
 import styled, { keyframes } from "styled-components";
 import { flexRowCenterAlign } from "@styles/StyledComponents";
 import COLOR from "@styles/Color";
 import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
 import { useDispatch } from "react-redux";
-import { GroupAction } from "@src/action";
+import { newAlbumRequestAction } from "@src/reducer/AlbumReducer";
 
 interface InputModalProps {
   addAlbumModalRef: React.RefObject<HTMLDivElement>;
@@ -13,34 +13,34 @@ interface InputModalProps {
 }
 
 const InputModal = ({ addAlbumModalRef, setIsAddAlbumModalOpened }: InputModalProps) => {
-  const inputRef = useRef<HTMLInputElement>(null);
-  const { groups, selectedGroup }: any = useSelector((state: RootState) => state.groups);
+  const [albumName, setAlbumName] = useState("");
+  const [addAlbum, setAddAlbum] = useState(true);
+  const { selectedGroup }: any = useSelector((state: RootState) => state.groups);
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    if (addAlbum) {
+      setAlbumName("");
+    }
+  }, [addAlbum]);
+
   const onClickAddAlbum = () => {
-    console.log("로직 수정 예정");
-    // if (!inputRef.current) return;
+    if (!albumName) return;
+    const selectedGroupId = selectedGroup.groupID;
 
-    // const albumName = inputRef.current.value;
-    // const selectedGroupID = selectedGroup.groupID;
-    // const selectedAlbumList = groups[selectedGroupID].albumList;
-    // const albumID = selectedAlbumList[selectedAlbumList.length - 1].albumID + 1;
-
-    // const newAlbum = {
-    //   albumID,
-    //   albumName,
-    //   posts: [],
-    // };
-
-    // selectedAlbumList.push(newAlbum);
-
-    // dispatch({ type: GroupAction.SET_ALL_GROUPS, payload: groups });
+    dispatch(newAlbumRequestAction(albumName, selectedGroupId));
+    setAddAlbum(true);
     setIsAddAlbumModalOpened(false);
+  };
+
+  const onChangeName = (e: ChangeEvent<HTMLInputElement>) => {
+    setAlbumName(e.target.value);
+    setAddAlbum(false);
   };
 
   return (
     <AddAlbumModalWrapper ref={addAlbumModalRef} className="add-album-modal">
-      <AlbumCreateInputWrapper placeholder="새 앨범" ref={inputRef} />
+      <AlbumCreateInputWrapper placeholder="새 앨범" onChange={onChangeName} />
       <AlbumCreateBtnWrapper onClick={onClickAddAlbum}>생성</AlbumCreateBtnWrapper>
     </AddAlbumModalWrapper>
   );
@@ -99,7 +99,13 @@ const AlbumCreateBtnWrapper = styled.div`
   background-color: ${(props) => props.theme.SECONDARY};
   color: ${COLOR.WHITE};
   border-radius: 10px;
-  cursor: pointer;
+  &:hover {
+    cursor: pointer;
+    background-color: ${(props) => props.theme.PRIMARY};
+  }
+  &:active {
+    font-weight: bold;
+  }
 `;
 
 export default InputModal;
