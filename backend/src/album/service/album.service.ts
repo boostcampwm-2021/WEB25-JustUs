@@ -32,7 +32,7 @@ export class AlbumService {
     const { albumId } = album;
 
     const { albumOrder } = group;
-    const newAlbumOrder = `${albumOrder},${albumId}`;
+    const newAlbumOrder = `${albumId},${albumOrder}`;
     await this.groupRepository.update(groupId, { albumOrder: newAlbumOrder });
 
     return { albumId };
