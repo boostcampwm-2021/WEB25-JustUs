@@ -3,6 +3,9 @@ import {
   USER_INFO_REQUEST,
   USER_INFO_SUCCEED,
   USER_INFO_FAILED,
+  LOG_OUT_REQUEST,
+  LOG_OUT_SUCCEED,
+  LOG_OUT_FAILED,
   USER_INFO_UPDATE,
   SET_UPDATED_USER_INFO,
   SET_UPDATE_FAIL,
@@ -33,13 +36,16 @@ function getUserInfoApi() {
   return axios.get(`${SERVER_URL}/api/user`, { withCredentials: true });
 }
 
+function getLogOutApi() {
+  return axios.post(`${SERVER_URL}/api/auth/logout`, {}, { withCredentials: true });
+}
+
 async function updateUserInfoApi(user: IUser) {
   const result = await axios.put(
     `${SERVER_URL}/api/user`,
     { userNickname: user.updateUserNickName, profileImage: "temp" },
     { withCredentials: true },
   );
-
   return result;
 }
 
@@ -48,7 +54,16 @@ function* getUserInfo() {
     const result: ResponseGenerator = yield call(getUserInfoApi);
     yield put({ type: USER_INFO_SUCCEED, data: result.data });
   } catch (err: any) {
-    yield put({ type: USER_INFO_FAILED, data: "error" });
+    yield put({ type: USER_INFO_FAILED });
+  }
+}
+
+function* getLogOut() {
+  try {
+    yield call(getLogOutApi);
+    yield put({ type: LOG_OUT_SUCCEED });
+  } catch (err: any) {
+    yield put({ type: LOG_OUT_FAILED });
   }
 }
 
@@ -70,10 +85,14 @@ function* watchUserInfo() {
   yield takeEvery(USER_INFO_REQUEST, getUserInfo);
 }
 
+function* watchLogOut() {
+  yield takeEvery(LOG_OUT_REQUEST, getLogOut);
+}
+
 function* watchUpdateUserInfo() {
   yield takeEvery(USER_INFO_UPDATE, updateUserInfo);
 }
 
 export default function* userSaga() {
-  yield all([fork(watchUserInfo), fork(watchUpdateUserInfo)]);
+  yield all([fork(watchUserInfo), fork(watchLogOut), fork(watchUpdateUserInfo)]);
 }

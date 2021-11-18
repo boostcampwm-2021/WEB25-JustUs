@@ -1,9 +1,12 @@
 export const initState = {
   userNickName: null,
   userProfile: null,
-  userInfoLoading: null,
-  userInfoSucceed: null,
-  userInfoError: null,
+  userInfoLoading: false,
+  userInfoSucceed: false,
+  userInfoError: false,
+
+  userLoggingOut: false,
+
   updateUserNickName: null,
   updateUserProfile: null,
   updateSucceed: null,
@@ -18,9 +21,17 @@ export const SET_UPDATED_USER_INFO = "SET_UPDATED_USER_INFO";
 export const SET_UPDATE_FAIL = "SET_UPDATE_FAIL";
 export const SET_UPDATED_INIT = "SET_UPDATED_INIT";
 
+export const LOG_OUT_REQUEST = "LOG_OUT_REQUEST";
+export const LOG_OUT_SUCCEED = "LOG_OUT_SUCCEED";
+export const LOG_OUT_FAILED = "LOG_OUT_FAILED";
+
 //action creator
 export const userInfoRequestAction = () => ({
   type: USER_INFO_REQUEST,
+});
+
+export const logoutRequestAction = () => ({
+  type: LOG_OUT_REQUEST,
 });
 
 export const userInfoUpdateAction = (payload: any) => ({
@@ -36,14 +47,16 @@ export const userReducer = (state = initState, action: any) => {
         ...state,
         userInfoLoading: true,
         userInfoSucceed: false,
-        userInfoError: null,
+        userInfoError: false,
+        userNickName: null,
+        userProfile: null,
       };
     case USER_INFO_SUCCEED:
       return {
         ...state,
         userInfoLoading: false,
         userInfoSucceed: true,
-        userInfoError: null,
+        userInfoError: false,
         userNickName: action.data.userNickname,
         userProfile: action.data.profileImage,
       };
@@ -52,7 +65,27 @@ export const userReducer = (state = initState, action: any) => {
         ...state,
         userInfoLoading: false,
         userInfoSucceed: false,
-        userInfoError: action.error,
+        userInfoError: true,
+        userNickName: null,
+        userProfile: null,
+      };
+    case LOG_OUT_REQUEST:
+      return {
+        ...state,
+        userLoggingOut: true,
+      };
+    case LOG_OUT_SUCCEED:
+      return {
+        ...state,
+        userLoggingOut: false,
+        userInfoSucceed: false,
+        userNickName: null,
+        userProfile: null,
+      };
+    case LOG_OUT_FAILED:
+      return {
+        ...state,
+        userLoggingOut: false,
       };
     case USER_INFO_UPDATE:
       return {
