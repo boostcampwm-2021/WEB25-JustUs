@@ -46,4 +46,12 @@ export class GroupRepository extends Repository<Group> {
       .where("group.groupId = :id AND album.base = :base", { id: groupId, base: base })
       .getOne();
   }
+
+  async getHashTagsQuery(groupId: number): Promise<Group> {
+    return await this.createQueryBuilder("group")
+      .leftJoin("group.hashtags", "hashtag")
+      .select(["group.groupId", "hashtag.hashtagId", "hashtag.hashtagContent"])
+      .where("group.groupId=:id", { id: groupId })
+      .getOne();
+  }
 }

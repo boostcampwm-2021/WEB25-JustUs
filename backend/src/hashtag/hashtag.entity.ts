@@ -18,10 +18,4 @@ export class HashTag extends TimeStampEntity {
   @ManyToOne(() => Group, group => group.hashtags, { onDelete: "CASCADE" })
   @JoinColumn({ name: "group_id" })
   group: Group;
-
-  constructor(hashtagContent: string, group: Group) {
-    super();
-    this.hashtagContent = hashtagContent;
-    this.group = group;
-  }
 }
