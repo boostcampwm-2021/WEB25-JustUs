@@ -35,6 +35,18 @@ const GlobalStyle = createGlobalStyle`
     display: block;
   }
   html {
+    @media screen and (max-width: 10000px) {
+      font-size: 30px;
+    }
+    
+    @media screen and (max-width: 6000px) {
+      font-size: 24px;
+    }
+
+    @media screen and (max-width: 3000px) {
+      font-size: 12px;
+    }
+
     @media screen and (max-width: 2000px) {
       font-size: 10px;
     }
@@ -43,8 +55,12 @@ const GlobalStyle = createGlobalStyle`
       font-size: 8px;
     }
 
-    @media screen and (max-width: 768px) {
+    @media screen and (max-width: 1100px) {
       font-size: 6px;
+    }
+
+    @media screen and (max-width: 768px) {
+      font-size: 4px;
     }
   }
   body {

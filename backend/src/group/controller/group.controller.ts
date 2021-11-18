@@ -1,6 +1,20 @@
-import { Body, Controller, Req, Get, HttpCode, Param, Post, Put, Delete, UseGuards } from "@nestjs/common";
-import { ApiTags, ApiOkResponse, ApiParam, ApiResponse, ApiBearerAuth } from "@nestjs/swagger";
+import {
+  Body,
+  Controller,
+  Req,
+  Get,
+  HttpCode,
+  Param,
+  Post,
+  Put,
+  Delete,
+  UseGuards,
+  UseInterceptors,
+  UploadedFile,
+} from "@nestjs/common";
+import { ApiTags, ApiOkResponse, ApiParam, ApiResponse, ApiBearerAuth, ApiBody, ApiConsumes } from "@nestjs/swagger";
 import { CustomRequest } from "src/custom/myRequest/customRequest";
+import { CustomFile } from "src/custom/myFile/customFile";
 import { JwtAuthGuard } from "src/auth/guard/jwt-auth-guard";
 import { GroupService } from "../service/group.service";
 import { CreateGroupRequestDto } from "src/dto/group/createGroupRequest.dto";
@@ -9,6 +23,8 @@ import { GetGroupInfoResponseDto } from "src/dto/group/getGroupInfoResponse.dto"
 import { UpdateGroupInfoRequestDto } from "src/dto/group/updateGroupInfoRequest.dto";
 import { GetAlbumsResponseDto } from "src/dto/group/getAlbumsResponse.dto";
 import { UpdateAlbumOrderRequestDto } from "src/dto/group/updateAlbumOrderRequest.dto";
+import { FileInterceptor } from "@nestjs/platform-express";
+import { multerOption } from "src/image/service/image.service";
 
 @ApiTags("그룹 API")
 @ApiBearerAuth()
@@ -19,10 +35,17 @@ export class GroupController {
 
   @Post()
   @HttpCode(200)
+  @UseInterceptors(FileInterceptor("groupImage", multerOption))
+  @ApiConsumes("multipart/form-data")
+  @ApiBody({ type: CreateGroupRequestDto })
   @ApiResponse({ type: Number, description: "생성된 그룹 ID", status: 200 })
-  CreateGroup(@Req() { user }: CustomRequest, @Body() createGroupRequestDto: CreateGroupRequestDto): Promise<number> {
+  CreateGroup(
+    @Req() { user }: CustomRequest,
+    @Body() createGroupRequestDto: CreateGroupRequestDto,
+    @UploadedFile() file: CustomFile,
+  ): Promise<number> {
     const { userId } = user;
-    return this.groupService.createGroup(userId, createGroupRequestDto);
+    return this.groupService.createGroup(userId, file, createGroupRequestDto);
   }
 
   @Post("/join")
@@ -49,13 +72,17 @@ export class GroupController {
 
   @Put("/:groupId")
   @HttpCode(200)
+  @UseInterceptors(FileInterceptor("groupImage", multerOption))
+  @ApiConsumes("multipart/form-data")
+  @ApiBody({ type: UpdateGroupInfoRequestDto })
   @ApiParam({ name: "groupId", type: Number })
   @ApiOkResponse({ description: "그룹 수정 성공" })
   UpdateGroupInfo(
     @Param("groupId") groupId: number,
     @Body() updateGroupInfoRequestDto: UpdateGroupInfoRequestDto,
+    @UploadedFile() file: CustomFile,
   ): Promise<string> {
-    return this.groupService.updateGroupInfo(groupId, updateGroupInfoRequestDto);
+    return this.groupService.updateGroupInfo(groupId, file, updateGroupInfoRequestDto);
   }
 
   @Delete("/:groupId")
