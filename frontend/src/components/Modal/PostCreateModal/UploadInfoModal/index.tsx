@@ -111,8 +111,7 @@ const UploadInfoModal = ({
         postLocation: selectedLocation.address_name,
         postLatitude: Number(selectedLocation.y),
         postLongitude: Number(selectedLocation.x),
-        // 추후 selectedGroup.groupID 으로 바꿔줘야함
-        groupId: 1,
+        groupId: selectedGroup.groupId,
         postImage: files,
       };
 
