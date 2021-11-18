@@ -122,7 +122,7 @@ const AlbumList = () => {
       {albumList &&
         albumList.map((album: any, idx: number) => {
           return (
-            <AlbumWrapper key={album.albumID} className="albumItem" data-albumidx={idx}>
+            <AlbumWrapper key={album.albumId} className="albumItem" data-albumidx={idx}>
               <Album
                 album={album}
                 postSelected={postSelected}
