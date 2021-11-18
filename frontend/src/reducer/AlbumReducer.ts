@@ -6,6 +6,10 @@ export const initState = {
   updateAlbumLoading: false,
   updateAlbumSucceed: false,
   updateAlbumError: false,
+
+  deleteAlbumLoading: false,
+  deleteAlbumSucceed: false,
+  deleteAlbumError: false,
 };
 
 // action
@@ -16,6 +20,10 @@ export const NEW_ALBUM_FAILED = "NEW_ALBUM_FAILED";
 export const UPDATE_ALBUM_REQUEST = "UPDATE_ALBUM_REQUEST";
 export const UPDATE_ALBUM_SUCCEED = "UPDATE_ALBUM_SUCCEED";
 export const UPDATE_ALBUM_FAILED = "UPDATE_ALBUM_FAILED";
+
+export const DELETE_ALBUM_REQUEST = "UPDATE_ALBUM_REQUEST";
+export const DELETE_ALBUM_SUCCEED = "UPDATE_ALBUM_SUCCEED";
+export const DELETE_ALBUM_FAILED = "UPDATE_ALBUM_FAILED";
 
 //action creator
 export const newAlbumRequestAction = (albumName: string, groupId: number) => ({
@@ -30,6 +38,13 @@ export const updateAlbumRequestAction = (albumName: string, albumId: number) => 
   type: UPDATE_ALBUM_REQUEST,
   payload: {
     albumName,
+    albumId,
+  },
+});
+
+export const deleteAlbumRequestAction = (albumId: number) => ({
+  type: DELETE_ALBUM_REQUEST,
+  payload: {
     albumId,
   },
 });
@@ -75,6 +90,24 @@ export const albumReducer = (state = initState, action: any) => {
         updateAlbumLoading: false,
         updateAlbumSucceed: false,
         updateAlbumError: true,
+      };
+    case DELETE_ALBUM_REQUEST:
+      return {
+        deleteAlbumLoading: true,
+        deleteAlbumSucceed: false,
+        deleteAlbumError: false,
+      };
+    case DELETE_ALBUM_SUCCEED:
+      return {
+        deleteAlbumLoading: false,
+        deleteAlbumSucceed: true,
+        deleteAlbumError: false,
+      };
+    case DELETE_ALBUM_FAILED:
+      return {
+        deleteAlbumLoading: false,
+        deleteAlbumSucceed: false,
+        deleteAlbumError: true,
       };
     default:
       return state;
