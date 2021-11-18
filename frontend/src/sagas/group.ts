@@ -39,12 +39,17 @@ function getGroupInfoApi(params: any) {
   return fetch(URL, option);
 }
 
-function createGroupApi(payload: any) {
-  return axios.post(
-    `${SERVER_URL}/api/groups`,
-    { groupImage: payload.groupImg, groupName: payload.groupName },
-    { withCredentials: true },
-  );
+async function createGroupApi(payload: any) {
+  const formData = new FormData();
+  formData.append("groupImage", payload.groupImg);
+  formData.append("groupName", payload.groupName);
+
+  const result = await axios.post(`${SERVER_URL}/api/groups`, formData, {
+    withCredentials: true,
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+
+  return result;
 }
 
 async function getAlbumListApi(payload: any) {
@@ -70,9 +75,9 @@ function* getGroupInfo(action: any) {
 function* createGroup({ payload }: any) {
   try {
     const result: ResponseGenerator = yield call(createGroupApi, payload);
-    const groupID = result.data;
+    const { groupId, groupName, groupImage } = result.data;
 
-    yield put({ type: "ADD_GROUP", payload: { groupID, groupName: payload.groupName, groupImg: payload.groupImg } });
+    yield put({ type: "ADD_GROUP", payload: { groupID: groupId, groupName, groupImg: groupImage } });
   } catch (err: any) {}
 }
 
