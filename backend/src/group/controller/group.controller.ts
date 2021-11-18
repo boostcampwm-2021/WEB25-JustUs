@@ -23,6 +23,8 @@ import { GetGroupInfoResponseDto } from "src/dto/group/getGroupInfoResponse.dto"
 import { UpdateGroupInfoRequestDto } from "src/dto/group/updateGroupInfoRequest.dto";
 import { GetAlbumsResponseDto } from "src/dto/group/getAlbumsResponse.dto";
 import { UpdateAlbumOrderRequestDto } from "src/dto/group/updateAlbumOrderRequest.dto";
+import { CreateGroupResponseDto } from "src/dto/group/createGroupResponse.dto";
+import { UpdateGroupInfoResponseDto } from "src/dto/group/updateGroupInfoResponse.dto";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { multerOption } from "src/image/service/image.service";
 
@@ -38,12 +40,12 @@ export class GroupController {
   @UseInterceptors(FileInterceptor("groupImage", multerOption))
   @ApiConsumes("multipart/form-data")
   @ApiBody({ type: CreateGroupRequestDto })
-  @ApiResponse({ type: Number, description: "생성된 그룹 ID", status: 200 })
+  @ApiResponse({ type: CreateGroupResponseDto, status: 200 })
   CreateGroup(
     @Req() { user }: CustomRequest,
     @Body() createGroupRequestDto: CreateGroupRequestDto,
     @UploadedFile() file: CustomFile,
-  ): Promise<number> {
+  ): Promise<CreateGroupResponseDto> {
     const { userId } = user;
     return this.groupService.createGroup(userId, file, createGroupRequestDto);
   }
@@ -76,12 +78,12 @@ export class GroupController {
   @ApiConsumes("multipart/form-data")
   @ApiBody({ type: UpdateGroupInfoRequestDto })
   @ApiParam({ name: "groupId", type: Number })
-  @ApiOkResponse({ description: "그룹 수정 성공" })
+  @ApiResponse({ type: UpdateGroupInfoResponseDto, status: 200 })
   UpdateGroupInfo(
     @Param("groupId") groupId: number,
     @Body() updateGroupInfoRequestDto: UpdateGroupInfoRequestDto,
     @UploadedFile() file: CustomFile,
-  ): Promise<string> {
+  ): Promise<UpdateGroupInfoResponseDto> {
     return this.groupService.updateGroupInfo(groupId, file, updateGroupInfoRequestDto);
   }
 

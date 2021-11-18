@@ -11,6 +11,8 @@ import { GetGroupInfoResponseDto } from "src/dto/group/getGroupInfoResponse.dto"
 import { UpdateGroupInfoRequestDto } from "src/dto/group/updateGroupInfoRequest.dto";
 import { GetAlbumsResponseDto } from "src/dto/group/getAlbumsResponse.dto";
 import { UpdateAlbumOrderRequestDto } from "src/dto/group/updateAlbumOrderRequest.dto";
+import { CreateGroupResponseDto } from "src/dto/group/createGroupResponse.dto";
+import { UpdateGroupInfoResponseDto } from "src/dto/group/updateGroupInfoResponse.dto";
 import { AlbumService } from "src/album/service/album.service";
 import { ImageService } from "src/image/service/image.service";
 
@@ -27,7 +29,11 @@ export class GroupService {
     private albumRepository: AlbumRepository,
   ) {}
 
-  async createGroup(userId: number, file: CustomFile, createGroupRequestDto: CreateGroupRequestDto): Promise<number> {
+  async createGroup(
+    userId: number,
+    file: CustomFile,
+    createGroupRequestDto: CreateGroupRequestDto,
+  ): Promise<CreateGroupResponseDto> {
     const groupImage = this.imageService.getImageUrl(file);
     const { groupName } = createGroupRequestDto;
     const groupCode = await this.createInvitaionCode();
@@ -48,7 +54,7 @@ export class GroupService {
 
     await this.applyUserEntity(userId, groupId, group);
 
-    return groupId;
+    return { groupId, groupImage };
   }
 
   async createInvitaionCode(): Promise<string> {
@@ -96,7 +102,7 @@ export class GroupService {
     groupId: number,
     file: CustomFile,
     updateGroupInfoRequestDto: UpdateGroupInfoRequestDto,
-  ): Promise<string> {
+  ): Promise<UpdateGroupInfoResponseDto> {
     const groupImage = this.imageService.getImageUrl(file);
     const { groupName } = updateGroupInfoRequestDto;
 
@@ -107,7 +113,7 @@ export class GroupService {
 
     this.groupRepository.update(groupId, updateObject);
 
-    return "GroupInfo update success!!";
+    return { groupImage };
   }
 
   async leaveGroup(userId: number, groupId: number): Promise<string> {

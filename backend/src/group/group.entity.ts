@@ -2,6 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable, OneToMan
 import { TimeStampEntity } from "src/custom/myBaseEntity/timestampEntity";
 import { User } from "src/user/user.entity";
 import { Album } from "src/album/album.entity";
+import { HashTag } from "src/hashtag/hashtag.entity";
 
 @Entity({ name: "groups_TB" })
 export class Group extends TimeStampEntity {
@@ -26,4 +27,7 @@ export class Group extends TimeStampEntity {
 
   @OneToMany(() => Album, album => album.group, { cascade: true })
   albums: Album[];
+
+  @OneToMany(() => HashTag, hashtag => hashtag.group, { cascade: true })
+  hashtags: HashTag[];
 }
