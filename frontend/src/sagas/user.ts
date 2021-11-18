@@ -11,6 +11,7 @@ import {
   SET_UPDATE_FAIL,
 } from "@src/reducer/UserReducer";
 import axios from "axios";
+import { GET_GROUP_LIST, SET_GROUPS } from "@src/reducer/GroupReducer";
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
@@ -49,6 +50,11 @@ async function updateUserInfoApi(user: IUser) {
   return result;
 }
 
+async function getGroupListApi() {
+  const result = await axios.get(`${SERVER_URL}/api/user/groups`, { withCredentials: true });
+  return result;
+}
+
 function* getUserInfo() {
   try {
     const result: ResponseGenerator = yield call(getUserInfoApi);
@@ -81,6 +87,12 @@ function* updateUserInfo() {
   }
 }
 
+function* getGroupList() {
+  const result: ResponseGenerator = yield call(getGroupListApi);
+  const { groups } = result.data;
+  yield put({ type: SET_GROUPS, payload: groups });
+}
+
 function* watchUserInfo() {
   yield takeEvery(USER_INFO_REQUEST, getUserInfo);
 }
@@ -93,6 +105,9 @@ function* watchUpdateUserInfo() {
   yield takeEvery(USER_INFO_UPDATE, updateUserInfo);
 }
 
+function* watchGetGroupList() {
+  yield takeEvery(GET_GROUP_LIST, getGroupList);
+}
 export default function* userSaga() {
-  yield all([fork(watchUserInfo), fork(watchLogOut), fork(watchUpdateUserInfo)]);
+  yield all([fork(watchUserInfo), fork(watchLogOut), fork(watchUpdateUserInfo), fork(watchGetGroupList)]);
 }

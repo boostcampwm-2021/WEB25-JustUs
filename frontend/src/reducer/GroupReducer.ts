@@ -1,7 +1,7 @@
 import { GroupAction } from "@src/action";
 
 interface GroupType {
-  groupID: number;
+  groupId: number;
   groupName: string;
   groupImg: string;
 }
@@ -19,8 +19,11 @@ interface AlbumListItemType {
 
 export const CREATE_GROUP = "CREATE_GROUP";
 export const GET_ALBUM_LIST = "GET_ALBUM_LIST";
+export const REQUEST_DELETE = "REQUEST_DELETE";
 export const DELETE_GROUP = "DELETE_GROUP";
 export const GET_GROUP_MEMBER_LIST = "GET_GROUP_MEMBER_LIST";
+export const GET_GROUP_LIST = "GET_GROUP_LIST";
+export const SET_GROUPS = "SET_GROUPS";
 
 export const createGroupAction = (payload: any) => ({
   type: CREATE_GROUP,
@@ -33,13 +36,17 @@ export const getAlbumListAction = (payload: any) => ({
 });
 
 export const deleteGroupAction = (payload: any) => ({
-  type: DELETE_GROUP,
+  type: REQUEST_DELETE,
   payload,
 });
 
 export const getGroupMemberListAction = (payload: any) => ({
   type: GET_GROUP_MEMBER_LIST,
   payload,
+});
+
+export const getGroupListAction = () => ({
+  type: GET_GROUP_LIST,
 });
 
 const initState: {
@@ -52,23 +59,7 @@ const initState: {
   selectedGroup: null,
   isLoading: true,
   albumList: [{ albumID: 0, albumName: "", posts: [] }],
-  groups: [
-    {
-      groupID: 0,
-      groupName: "그룹 A",
-      groupImg: "/img/dummy-group1.png",
-    },
-    {
-      groupID: 1,
-      groupName: "그룹 B",
-      groupImg: "/img/dummy-group2.png",
-    },
-    {
-      groupID: 2,
-      groupName: "그룹 C",
-      groupImg: "/img/dummy-group3.png",
-    },
-  ],
+  groups: [],
   postsList: [{ postID: -1, postTitle: "", postLatitude: 0, postLongitude: 0 }],
 };
 
@@ -110,7 +101,10 @@ const groupReducer = (state = initState, action: any) => {
       return {
         ...state,
         selectedGroup: null,
-        groups: state.groups.filter((group) => group.groupID !== action.payload.groupID),
+        groups: state.groups.filter((group) => {
+          if (!group) return false;
+          return group.groupId !== action.payload.groupID;
+        }),
         albumList: [],
         postsList: [],
       };
@@ -174,6 +168,11 @@ const groupReducer = (state = initState, action: any) => {
           groupCode: action.payload.groupCode,
           users: action.payload.users,
         },
+      };
+    case "SET_GROUPS":
+      return {
+        ...state,
+        groups: action.payload,
       };
     default:
       return state;

@@ -11,12 +11,12 @@ interface GroupProps {
   setIsToggle: Dispatch<SetStateAction<boolean>>;
   groupID: number;
   groupName: string;
-  groupImg: string;
+  groupImage: string;
   DragHandler: (ev: React.DragEvent<HTMLDivElement>) => void;
   DragEndHandler: (ev: React.DragEvent<HTMLDivElement>) => void;
 }
 
-const Group = ({ isToggle, setIsToggle, groupID, groupName, groupImg, DragHandler, DragEndHandler }: GroupProps) => {
+const Group = ({ isToggle, setIsToggle, groupID, groupName, groupImage, DragHandler, DragEndHandler }: GroupProps) => {
   const dispatch = useDispatch();
   const { selectedGroup }: any = useSelector((state: RootState) => state.groups);
 
@@ -24,7 +24,7 @@ const Group = ({ isToggle, setIsToggle, groupID, groupName, groupImg, DragHandle
     if (selectedGroup?.groupID === groupID && isToggle) {
       setIsToggle(false);
     } else {
-      dispatch(getAlbumListAction({ groupID, groupName, groupImg }));
+      dispatch(getAlbumListAction({ groupID, groupName, groupImage }));
       setIsToggle(true);
     }
   };
@@ -34,7 +34,7 @@ const Group = ({ isToggle, setIsToggle, groupID, groupName, groupImg, DragHandle
       draggable={true}
       selectedGroupID={selectedGroup ? selectedGroup.groupID : -1}
       groupID={groupID}
-      groupImg={groupImg}
+      groupImage={groupImage}
       onDrag={DragHandler}
       onDragEnd={DragEndHandler}
       onClick={onClickGroup}
@@ -43,7 +43,7 @@ const Group = ({ isToggle, setIsToggle, groupID, groupName, groupImg, DragHandle
   );
 };
 
-const ButtonWrapper = styled.div<{ selectedGroupID: number; groupID: number; groupImg: string }>`
+const ButtonWrapper = styled.div<{ selectedGroupID: number; groupID: number; groupImage: string }>`
   ${flexRowCenterAlign}
   min-width: 3vw;
   min-height: 3vw;
@@ -52,7 +52,7 @@ const ButtonWrapper = styled.div<{ selectedGroupID: number; groupID: number; gro
   border-radius: 1vw;
   border: ${(props) =>
     props.selectedGroupID === props.groupID ? `5px solid ${props.theme.SECONDARY};` : `5px solid ${COLOR.WHITE}`};
-  background-image: url("${(props) => props.groupImg}");
+  background-image: url("${(props) => props.groupImage}");
   background-size: 100%;
   cursor: pointer;
   background-repeat: no-repeat;

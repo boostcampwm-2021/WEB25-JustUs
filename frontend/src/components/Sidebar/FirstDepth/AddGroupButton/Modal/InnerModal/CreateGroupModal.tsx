@@ -79,7 +79,7 @@ const CreateGroupModal = () => {
     };
 
     // dispatch({ type: GroupAction.ADD_GROUP, payload: newGroup });
-    dispatch(createGroupAction({ groupName, groupImg: imageFile }));
+    dispatch(createGroupAction({ groupName, groupImage: imageFile }));
 
     closeModal();
   };

@@ -41,7 +41,7 @@ function getGroupInfoApi(params: any) {
 
 async function createGroupApi(payload: any) {
   const formData = new FormData();
-  formData.append("groupImage", payload.groupImg);
+  formData.append("groupImage", payload.groupImage);
   formData.append("groupName", payload.groupName);
 
   const result = await axios.post(`${SERVER_URL}/api/groups`, formData, {
@@ -80,9 +80,10 @@ function* getGroupInfo(action: any) {
 function* createGroup({ payload }: any) {
   try {
     const result: ResponseGenerator = yield call(createGroupApi, payload);
+
     const { groupId, groupName, groupImage } = result.data;
 
-    yield put({ type: "ADD_GROUP", payload: { groupID: groupId, groupName, groupImg: groupImage } });
+    yield put({ type: "ADD_GROUP", payload: { groupId, groupName, groupImage } });
   } catch (err: any) {}
 }
 
@@ -104,6 +105,7 @@ function* deleteGroup(action: any) {
   try {
     const result: ResponseGenerator = yield call(deleteGroupApi, action.payload);
     yield put({ type: "SET_SELECTED_GROUP", payload: null });
+    yield put({ type: "DELETE_GROUP", payload: action.payload });
   } catch (err) {}
 }
 
@@ -129,7 +131,7 @@ function* watchGetAlbumList() {
 }
 
 function* watchDeleteGroup() {
-  yield takeLatest("DELETE_GROUP", deleteGroup);
+  yield takeLatest("REQUEST_DELETE", deleteGroup);
 }
 
 function* watchGetGroupMemberList() {
