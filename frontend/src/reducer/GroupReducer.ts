@@ -15,6 +15,7 @@ interface AlbumListItemType {
   albumID: number;
   albumName: string;
   posts: PostType[];
+  base: boolean;
 }
 
 export const CREATE_GROUP = "CREATE_GROUP";
@@ -40,12 +41,14 @@ const initState: {
   selectedGroup: GroupType | null;
   isLoading: Boolean;
   albumList: AlbumListItemType[];
-  groups: Array<GroupType>;
   postsList: PostType[];
+  isPostUploading: boolean;
+  groups: Array<GroupType>;
 } = {
   selectedGroup: null,
   isLoading: true,
-  albumList: [{ albumID: 0, albumName: "", posts: [] }],
+  albumList: [{ albumID: 0, albumName: "", posts: [], base: false }],
+  isPostUploading: false,
   groups: [
     {
       groupID: 0,
@@ -116,6 +119,7 @@ const groupReducer = (state = initState, action: any) => {
           albumID: album.albumID,
           albumName: album.albumName,
           posts: [],
+          base: album.base,
         };
         updateAlbum.posts = album.posts.filter((now) => now.postID != post.postID);
         return updateAlbum;
@@ -124,6 +128,42 @@ const groupReducer = (state = initState, action: any) => {
       return {
         ...state,
         albumList: newAlbumList,
+      };
+    case "UPLOAD_POST_REQUEST":
+      return {
+        ...state,
+        isPostUploading: true,
+      };
+    case "UPLOAD_POST_SUCCEED":
+      const updateAlbumList = state.albumList.map((album: AlbumListItemType, idx) => {
+        if (!album.base) return album;
+        const updateAlbum: AlbumListItemType = {
+          albumID: album.albumID,
+          albumName: album.albumName,
+          posts: [
+            ...album.posts,
+            {
+              postID: action.post.postID,
+              postTitle: action.post.postTitle,
+              postLatitude: action.post.postLatitude,
+              postLongitude: action.post.postLongitude,
+            },
+          ],
+          base: album.base,
+        };
+        return updateAlbum;
+      });
+      const updatePostsList = updateAlbumList.map((album: AlbumListItemType) => [...album.posts]).flat();
+      return {
+        ...state,
+        albumList: updateAlbumList,
+        postList: updatePostsList,
+        isPostUploading: false,
+      };
+    case "UPLOAD_POST_FAILED":
+      return {
+        ...state,
+        isPostUploading: false,
       };
     case "DELETE_POST":
       const targetPost = action.payload;
