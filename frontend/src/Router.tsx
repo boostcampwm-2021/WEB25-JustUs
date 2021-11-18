@@ -9,19 +9,26 @@ import NotFound from "@pages/NotFound";
 
 export const Router = () => {
   const dispatch = useDispatch();
-  const { userInfoSucceed } = useSelector((state: RootState) => state.user);
+  const { userInfoSucceed, userInfoLoading } = useSelector((state: RootState) => state.user);
 
   useEffect(() => {
     dispatch(userInfoRequestAction());
   }, []);
+
+  if (userInfoLoading) return <></>;
   return (
     <BrowserRouter>
       <Switch>
         <Route
+          exact
           path="/login"
           render={() => (!userInfoSucceed ? <Login /> : <Redirect to={{ pathname: "/" }} />)}
         ></Route>
-        <Route path="/" render={() => (userInfoSucceed ? <Main /> : <Redirect to={{ pathname: "/login" }} />)}></Route>
+        <Route
+          exact
+          path="/"
+          render={() => (userInfoSucceed ? <Main /> : <Redirect to={{ pathname: "/login" }} />)}
+        ></Route>
         <Route component={NotFound}></Route>
       </Switch>
     </BrowserRouter>
