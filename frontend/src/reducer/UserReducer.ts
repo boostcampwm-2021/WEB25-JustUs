@@ -1,7 +1,7 @@
 export const initState = {
   userNickName: null,
   userProfile: null,
-  userInfoLoading: false,
+  userInfoLoading: true,
   userInfoSucceed: false,
   userInfoError: false,
 
@@ -48,8 +48,6 @@ export const userReducer = (state = initState, action: any) => {
         userInfoLoading: true,
         userInfoSucceed: false,
         userInfoError: false,
-        userNickName: null,
-        userProfile: null,
       };
     case USER_INFO_SUCCEED:
       return {
