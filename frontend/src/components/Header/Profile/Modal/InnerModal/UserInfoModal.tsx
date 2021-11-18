@@ -1,17 +1,22 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled, { keyframes } from "styled-components";
 import Modal from "@components/Modal";
 import { useDispatch } from "react-redux";
 import COLOR from "@styles/Color";
 import { flexColumnCenterAlign, flexRowCenterAlign } from "@src/styles/StyledComponents";
+import { userInfoUpdateAction, SET_UPDATED_INIT } from "@src/reducer/UserReducer";
+import { useSelector } from "react-redux";
+import { RootState } from "@src/reducer";
 
 const UserInfoModal = () => {
   const uploadBtnRef = useRef<HTMLInputElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
   const userNameRef = useRef<HTMLInputElement>(null);
   const [userImg, setUserImg] = useState("/icons/person.svg");
-
+  const [imageFile, setImageFile] = useState<File>();
   const dispatch = useDispatch();
+  const { updateSucceed } = useSelector((state: RootState) => state.user);
+
   const closeUserInfoModal = () => {
     dispatch({ type: "CLOSE_MODAL" });
   };
@@ -32,6 +37,7 @@ const UserInfoModal = () => {
       if (!e.target.result) return;
 
       setUserImg(e.target.result as string);
+      setImageFile(file as File);
     };
 
     reader.readAsDataURL(file);
@@ -41,13 +47,36 @@ const UserInfoModal = () => {
     setUserImg("/icons/person.svg");
   };
 
-  const onClickCreateBtn = () => {
+  const onClickUpdateBtn = () => {
     if (!userNameRef.current) return;
     if (userNameRef.current.value === "") {
       alert("닉네임은 반드시 입력해야 합니다.");
       return;
     }
+
+    dispatch(userInfoUpdateAction({ updateUserNickName: userNameRef.current.value, updateUserProfile: imageFile }));
   };
+
+  useEffect(() => {
+    const updateSucceeded = () => {
+      alert("회원정보가 수정되었습니다.");
+      closeUserInfoModal();
+      dispatch({ type: SET_UPDATED_INIT });
+    };
+
+    const updateFailed = () => {
+      alert("회원정보 수정에 실패했습니다.");
+    };
+
+    if (updateSucceed === null) return;
+
+    if (updateSucceed) {
+      updateSucceeded();
+      return;
+    }
+
+    updateFailed();
+  }, [updateSucceed]);
 
   return (
     <Modal>
@@ -80,7 +109,7 @@ const UserInfoModal = () => {
             </UploadImgBtnWrapper>
             <DeleteImgBtnWrapper onClick={onClickDeleteBtn}>사진 제거</DeleteImgBtnWrapper>
             <UserNameInputWrapper placeholder="기존 닉네임" ref={userNameRef} />
-            <SaveBtnWrapper onClick={onClickCreateBtn}>저장하기</SaveBtnWrapper>
+            <SaveBtnWrapper onClick={onClickUpdateBtn}>저장하기</SaveBtnWrapper>
           </Content>
         </Container>
       </ModalContainer>

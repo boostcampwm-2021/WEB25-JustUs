@@ -1,11 +1,9 @@
-import { IsNotEmpty, IsString, IsOptional } from "class-validator";
+import { IsNotEmpty, IsString } from "class-validator";
 import { ApiProperty } from "@nestjs/swagger";
 
 export class GroupInfo {
-  @IsString()
-  @IsOptional()
-  @ApiProperty()
-  groupImage: string;
+  @ApiProperty({ type: "file" })
+  groupImage: any;
 
   @IsString()
   @IsNotEmpty()

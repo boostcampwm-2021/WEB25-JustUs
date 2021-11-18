@@ -81,7 +81,7 @@ const ModalContainer = styled.div`
   display: flex;
   flex-direction: row;
   background-color: ${COLOR.WHITE};
-  width: 500px;
+  width: 50rem;
   height: 70rem;
 
   &::-webkit-scrollbar {

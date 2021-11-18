@@ -3,6 +3,7 @@ import styled from "styled-components";
 import COLOR from "@src/styles/Color";
 import { RootState } from "@src/reducer";
 import { useDispatch, useSelector } from "react-redux";
+import { logoutRequestAction } from "@src/reducer/UserReducer";
 
 interface ProfileModalProps {
   isModalOpened: boolean;
@@ -24,10 +25,14 @@ const ProfileModal = ({ isModalOpened, setIsModalOpened }: ProfileModalProps) =>
 
   const dispatch = useDispatch();
   const { userNickName } = useSelector((state: RootState) => state.user);
-  const onClickProfileItem = ({ payload }: ModalListItem) => {
-    const type = "OPEN_MODAL";
+  const onClickProfileItem = ({ payload, id }: ModalListItem) => {
     setIsModalOpened((prev) => !prev);
-    dispatch({ type, payload });
+    if (id === 2) {
+      dispatch(logoutRequestAction());
+    } else {
+      const type = "OPEN_MODAL";
+      dispatch({ type, payload });
+    }
   };
 
   return (

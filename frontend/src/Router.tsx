@@ -1,4 +1,4 @@
-import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 import Login from "@pages/Login";
 import Main from "@pages/Main";
 import { useEffect } from "react";
@@ -9,17 +9,19 @@ import NotFound from "@pages/NotFound";
 
 export const Router = () => {
   const dispatch = useDispatch();
-  const { user } = useSelector((state: RootState) => state.user);
+  const { userInfoSucceed } = useSelector((state: RootState) => state.user);
 
-  const getUserInfo = useEffect(() => {
+  useEffect(() => {
     dispatch(userInfoRequestAction());
   }, []);
-
   return (
     <BrowserRouter>
       <Switch>
-        <Route path="/login" exact component={() => <Login />}></Route>
-        <Route path="/" exact component={() => <Main />}></Route>
+        <Route
+          path="/login"
+          render={() => (!userInfoSucceed ? <Login /> : <Redirect to={{ pathname: "/" }} />)}
+        ></Route>
+        <Route path="/" render={() => (userInfoSucceed ? <Main /> : <Redirect to={{ pathname: "/login" }} />)}></Route>
         <Route component={NotFound}></Route>
       </Switch>
     </BrowserRouter>

@@ -8,11 +8,13 @@ import { CreatePostRequestDto } from "src/dto/post/createPostRequest.dto";
 import { GetPostInfoResponseDto } from "src/dto/post/getPostInfoResponse.dto";
 import { UpdatePostInfoRequestDto } from "src/dto/post/updatePostInfoRequest.dto";
 import { ShiftPostRequestDto } from "src/dto/post/shiftPostRequest.dto";
+import { AlbumService } from "src/album/service/album.service";
 
 @Injectable()
 export class PostService {
   constructor(
     private readonly imageService: ImageService,
+    private readonly albumService: AlbumService,
     @InjectRepository(PostRepository)
     private postRepository: PostRepository,
     @InjectRepository(UserRepository)
@@ -27,14 +29,16 @@ export class PostService {
     createPostRequestDto: CreatePostRequestDto,
   ): Promise<number> {
     const postImages = this.imageService.getImagesUrl(files);
-    const { postTitle, postContent, postDate, postLocation, postLatitude, postLongitude, albumId } =
+    const { postTitle, postContent, postDate, postLocation, postLatitude, postLongitude, groupId } =
       createPostRequestDto;
 
     const user = await this.userRepository.findOne({ userId });
     if (!user) throw new NotFoundException(`Not found user with the id ${userId}`);
 
-    const album = await this.albumRepository.findOne(albumId);
-    if (!album) throw new NotFoundException(`Not found album with the id ${albumId}`);
+    const baseAlbumId = await this.albumService.getBaseAlbumId(groupId);
+
+    const album = await this.albumRepository.findOne(baseAlbumId);
+    if (!album) throw new NotFoundException(`Not found album with the id ${baseAlbumId}`);
 
     const images = this.imageService.saveImage(postImages);
 
@@ -57,11 +61,11 @@ export class PostService {
     const post = await this.postRepository.getPostQuery(postId);
     if (!post) throw new NotFoundException(`Not found post with the id ${postId}`);
 
-    const { user, postTitle, postContent, postDate, postLocation, images } = post;
+    const { user, postTitle, postContent, postDate, postLatitude, postLongitude, images } = post;
     const userId = user.userId;
     const userNickname = user.userNickname;
 
-    return { userId, userNickname, postTitle, postContent, postDate, postLocation, images };
+    return { userId, userNickname, postId, postTitle, postContent, postDate, postLatitude, postLongitude, images };
   }
 
   async updatePostInfo(
@@ -71,6 +75,7 @@ export class PostService {
     updatePostInfoRequestDto: UpdatePostInfoRequestDto,
   ): Promise<string> {
     const addImages = this.imageService.getImagesUrl(files);
+
     const { postTitle, postContent, deleteImagesId, postDate, postLocation, postLatitude, postLongitude } =
       updatePostInfoRequestDto;
 

@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import COLOR from "@styles/Color";
 import { GroupAction } from "@src/action";
 import { RootState } from "@src/reducer";
+import { deleteGroupAction } from "@src/reducer/GroupReducer";
 
 interface SettingGroupModalProps {
   setIsToggle: Dispatch<SetStateAction<boolean>>;
@@ -44,7 +45,7 @@ const groupMemberList = [
 
 const SettingGroupModal = ({ setIsToggle }: SettingGroupModalProps) => {
   const [clickedDropBtn, setClickedDropclickedDropBtn] = useState(false);
-  const { selectedGroup, groups }: any = useSelector((state: RootState) => state.groups);
+  const { selectedGroup }: any = useSelector((state: RootState) => state.groups);
   const dispatch = useDispatch();
 
   const closeModal = () => {
@@ -55,8 +56,10 @@ const SettingGroupModal = ({ setIsToggle }: SettingGroupModalProps) => {
     setClickedDropclickedDropBtn(true);
   };
   const onClickConfirmBtn = () => {
-    dispatch({ type: GroupAction.DELETE_GROUP, payload: selectedGroup });
-    dispatch({ type: GroupAction.SET_SELECTED_GROUP, payload: null });
+    const { groupID } = selectedGroup;
+    // dispatch({ type: GroupAction.DELETE_GROUP, payload: { groupID } });
+    dispatch(deleteGroupAction({ groupID }));
+
     closeModal();
     setIsToggle(false);
   };
