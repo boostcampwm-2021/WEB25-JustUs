@@ -7,14 +7,18 @@ const initState: {
   nowAddress: string;
   selectedAlbum: { albumID: number; albumName: string };
   selectedPost: {
-    postID: number;
+    userId: number;
+    userNickname: string;
+    postId: number;
     postTitle: string;
     postContent: string;
     postDate: string;
-    userNickname: string;
-    postImages: Array<{ file: string; key: string }>;
+    images: Array<{ imageUrl: string; imageId: string }>;
+    postLatitude: number;
+    postLongitude: number;
   };
   clusteredMarker: Imarker[];
+  isPostLoading: boolean;
 } = {
   nowModal: "",
   nowAddress: "",
@@ -23,14 +27,18 @@ const initState: {
     albumName: "",
   },
   selectedPost: {
-    postID: -1,
+    userId: -1,
+    userNickname: "",
+    postId: -1,
     postTitle: "",
     postContent: "",
     postDate: "",
-    userNickname: "",
-    postImages: [],
+    images: [],
+    postLatitude: -1,
+    postLongitude: -1,
   },
   clusteredMarker: [],
+  isPostLoading: false,
 };
 
 const ModalReducer = (state = initState, action: any) => {
@@ -53,21 +61,16 @@ const ModalReducer = (state = initState, action: any) => {
           albumName: action.payload.albumName,
         },
       };
-    case "SET_SELECTED_POST":
+    case "SELECT_POST_REQUEST":
+      return { ...state, isPostLoading: true };
+    case "SELECT_POST_SUCCEED":
       return {
         ...state,
-        selectedPost: {
-          postID: action.payload.postID,
-          postTitle: action.payload.postTitle,
-          postContent: action.payload.postContent,
-          postDate: action.payload.postDate,
-          userNickname: action.payload.userNickname,
-          postImages: action.payload.postImages,
-          postLocation: action.payload.postLocation,
-          postLatitude: action.payload.postLatitude,
-          postLongitude: action.payload.postLongitude,
-        },
+        selectedPost: action.post,
+        isPostLoading: false,
       };
+    case "SELECT_POST_FAILED":
+      return { ...state, isPostLoading: false };
     case "SET_CLUSTERED_MARKER":
       return {
         ...state,

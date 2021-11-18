@@ -3,8 +3,8 @@ import styled from "styled-components";
 import COLOR from "@styles/Color";
 
 interface FileObject {
-  file: File | string;
-  key: string;
+  imageUrl: File | string;
+  imageId: string;
 }
 interface CarouselProps {
   files: FileObject[];
@@ -39,7 +39,11 @@ const Carousel = ({ files, carouselWidth }: CarouselProps) => {
           {files.map((fileObject, idx) => (
             <div key={idx}>
               <img
-                src={typeof fileObject.file === "string" ? fileObject.file : URL.createObjectURL(fileObject.file)}
+                src={
+                  typeof fileObject.imageUrl === "string"
+                    ? fileObject.imageUrl
+                    : URL.createObjectURL(fileObject.imageUrl)
+                }
               ></img>
             </div>
           ))}
