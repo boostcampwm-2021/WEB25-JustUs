@@ -8,6 +8,7 @@ import { UserInfoResponseDto } from "src/dto/user/userInfoResponse.dto";
 import { UpdateUserInfoRequestDto } from "src/dto/user/updateUserInfoRequest.dto";
 import { UpdateGroupOrderRequestDto } from "src/dto/user/updateGroupOrderRequest.dto";
 import { GetGroupsResponseDto } from "src/dto/user/getGroupsResponse.dto";
+import { UpdateUserInfoResponseDto } from "src/dto/user/updateUserInfoResponse.dto";
 import { UpdateResult } from "typeorm";
 import { GroupService } from "src/group/service/group.service";
 import { ImageService } from "src/image/service/image.service";
@@ -42,7 +43,7 @@ export class UserService {
     userId: number,
     file: CustomFile,
     updateUserInfoRequestDto: UpdateUserInfoRequestDto,
-  ): Promise<string> {
+  ): Promise<UpdateUserInfoResponseDto> {
     const profileImage = this.imageService.getImageUrl(file);
     const { userNickname } = updateUserInfoRequestDto;
     const user = await this.userRepository.findOne({ userId });
@@ -51,7 +52,7 @@ export class UserService {
     const updateObject = profileImage === undefined ? { userNickname } : { profileImage, userNickname };
     this.userRepository.update(userId, updateObject);
 
-    return "UserInfo update success!!";
+    return { profileImage };
   }
 
   async updateToken(userId: number, refreshToken: string): Promise<UpdateResult> {
