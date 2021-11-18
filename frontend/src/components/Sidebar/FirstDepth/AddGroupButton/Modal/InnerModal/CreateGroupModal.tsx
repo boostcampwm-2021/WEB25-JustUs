@@ -20,6 +20,7 @@ const CreateGroupModal = () => {
   const imageRef = useRef<HTMLImageElement>(null);
   const groupNameRef = useRef<HTMLInputElement>(null);
   const [groupImg, setGroupImg] = useState("/icons/person.svg");
+  const [imageFile, setImageFile] = useState<File>();
   const { groups }: any = useSelector((state: RootState) => state.groups);
   const dispatch = useDispatch();
 
@@ -44,6 +45,7 @@ const CreateGroupModal = () => {
       if (!e.target.result) return;
 
       setGroupImg(e.target.result as string);
+      setImageFile(file as File);
     };
 
     reader.readAsDataURL(file);
@@ -77,7 +79,7 @@ const CreateGroupModal = () => {
     };
 
     // dispatch({ type: GroupAction.ADD_GROUP, payload: newGroup });
-    dispatch(createGroupAction({ groupName, groupImg }));
+    dispatch(createGroupAction({ groupName, groupImage: imageFile }));
 
     closeModal();
   };

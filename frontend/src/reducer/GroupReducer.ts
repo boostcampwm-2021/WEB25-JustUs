@@ -1,7 +1,7 @@
 import { GroupAction } from "@src/action";
 
 interface GroupType {
-  groupID: number;
+  groupId: number;
   groupName: string;
   groupImg: string;
 }
@@ -20,7 +20,12 @@ interface AlbumListItemType {
 
 export const CREATE_GROUP = "CREATE_GROUP";
 export const GET_ALBUM_LIST = "GET_ALBUM_LIST";
+export const REQUEST_DELETE = "REQUEST_DELETE";
 export const DELETE_GROUP = "DELETE_GROUP";
+export const GET_GROUP_MEMBER_LIST = "GET_GROUP_MEMBER_LIST";
+export const GET_GROUP_LIST = "GET_GROUP_LIST";
+export const SET_GROUPS = "SET_GROUPS";
+export const REQUEST_JOIN_GROUP = "REQUEST_JOIN_GROUP";
 
 export const createGroupAction = (payload: any) => ({
   type: CREATE_GROUP,
@@ -33,7 +38,21 @@ export const getAlbumListAction = (payload: any) => ({
 });
 
 export const deleteGroupAction = (payload: any) => ({
-  type: DELETE_GROUP,
+  type: REQUEST_DELETE,
+  payload,
+});
+
+export const getGroupMemberListAction = (payload: any) => ({
+  type: GET_GROUP_MEMBER_LIST,
+  payload,
+});
+
+export const getGroupListAction = () => ({
+  type: GET_GROUP_LIST,
+});
+
+export const requestJoinGroupAction = (payload: any) => ({
+  type: REQUEST_JOIN_GROUP,
   payload,
 });
 
@@ -49,27 +68,11 @@ const initState: {
 } = {
   selectedGroup: null,
   isLoading: true,
+  groups: [],
   albumList: [{ albumID: 0, albumName: "", posts: [], base: false }],
   isPostUploading: false,
   isPostUpdateing: false,
   isPostDeleting: false,
-  groups: [
-    {
-      groupID: 0,
-      groupName: "그룹 A",
-      groupImg: "/img/dummy-group1.png",
-    },
-    {
-      groupID: 1,
-      groupName: "그룹 B",
-      groupImg: "/img/dummy-group2.png",
-    },
-    {
-      groupID: 2,
-      groupName: "그룹 C",
-      groupImg: "/img/dummy-group3.png",
-    },
-  ],
   postsList: [{ postId: -1, postTitle: "", postLatitude: 0, postLongitude: 0 }],
 };
 
@@ -102,14 +105,19 @@ const groupReducer = (state = initState, action: any) => {
         selectedGroup: action.payload
           ? { groupID: action.payload.groupID, groupName: action.payload.groupName, groupImg: action.payload.groupImg }
           : null,
-        albumList: action.payload.albumList,
-        postsList: action.payload.albumList.map((album: AlbumListItemType) => [...album.posts]).flat(),
+        albumList: action.payload ? action.payload.albumList : null,
+        postsList: action.payload
+          ? action.payload.albumList.map((album: AlbumListItemType) => [...album.posts]).flat()
+          : [],
       };
     case GroupAction.DELETE_GROUP:
       return {
         ...state,
         selectedGroup: null,
-        groups: state.groups.filter((group) => group.groupID !== action.payload.groupID),
+        groups: state.groups.filter((group) => {
+          if (!group) return false;
+          return group.groupId !== action.payload.groupID;
+        }),
         albumList: [],
         postsList: [],
       };
@@ -247,6 +255,20 @@ const groupReducer = (state = initState, action: any) => {
       return {
         ...state,
         albumList: action.payload,
+      };
+    case "GET_GROUP_MEMBER_LIST_SUCCEED":
+      return {
+        ...state,
+        selectedGroup: {
+          ...state.selectedGroup,
+          groupCode: action.payload.groupCode,
+          users: action.payload.users,
+        },
+      };
+    case "SET_GROUPS":
+      return {
+        ...state,
+        groups: action.payload,
       };
     default:
       return state;
