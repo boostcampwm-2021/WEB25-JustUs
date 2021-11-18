@@ -4,7 +4,6 @@ import { JwtAuthGuard } from "src/auth/guard/jwt-auth-guard";
 import { AlbumService } from "../service/album.service";
 import { CreateAlbumRequestDto } from "src/dto/album/createAlbumRequest.dto";
 import { UpdateAlbumInfoRequestDto } from "src/dto/album/updateAlbumInfoRequest.dto";
-import { DeleteAlbumRequestDto } from "src/dto/album/deleteAlbumRequest.dto";
 
 @ApiTags("앨범 API")
 @ApiBearerAuth()
@@ -33,11 +32,9 @@ export class AlbumController {
 
   @Delete("/:albumId")
   @HttpCode(200)
+  @ApiParam({ name: "albumId", type: Number })
   @ApiOkResponse({ description: "앨범 삭제 성공" })
-  DeleteAlbum(
-    @Param("albumId") albumId: number,
-    @Body() deleteAlbumRequestDto: DeleteAlbumRequestDto,
-  ): Promise<string> {
-    return this.albumService.deleteAlbum(albumId, deleteAlbumRequestDto);
+  DeleteAlbum(@Param("albumId") albumId: number): Promise<string> {
+    return this.albumService.deleteAlbum(albumId);
   }
 }
