@@ -7,11 +7,10 @@ import Carousel from "@components/Modal/PostCreateModal/UploadInfoModal/Carousel
 import { RootState } from "@src/reducer";
 import ModalSub from "./ModalSub";
 import dummyPosts from "@components/Map/dummyPosts";
-import shortid from "shortid";
 
 interface FileObject {
-  file: File | string;
-  key: string;
+  imageUrl: File | string;
+  imageId: string;
 }
 interface IData {
   [key: string]: string;
@@ -24,6 +23,18 @@ interface UploadInfoModalProps {
   prevText: string | "";
   prevDate: string | "";
   prevLocation: IData | {};
+}
+
+interface IselectedPost {
+  userId: number;
+  userNickname: string;
+  postId: number;
+  postTitle: string;
+  postContent: string;
+  postDate: string;
+  images: Array<{ imageUrl: string; imageId: string }>;
+  postLatitude: number;
+  postLongitude: number;
 }
 
 const UploadInfoModal = ({
@@ -51,7 +62,7 @@ const UploadInfoModal = ({
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const backdropRef = useRef<HTMLDivElement>(null);
   const { address }: any = useSelector((state: RootState) => state.address);
-  const { selectedPost }: any = useSelector((state: RootState) => state.modal);
+  const { selectedPost }: { selectedPost: IselectedPost } = useSelector((state: RootState) => state.modal);
   const { selectedGroup, albumList }: any = useSelector((state: RootState) => state.groups);
 
   useEffect(() => {
@@ -93,25 +104,39 @@ const UploadInfoModal = ({
 
   const handleSaveBtn = () => {
     if (mode === "create") {
-      console.log("새 게시글 등록 로직 아직 구현 안함.");
+      const post = {
+        postTitle: title,
+        postContent: text,
+        postDate: date,
+        postLocation: selectedLocation.address_name,
+        postLatitude: Number(selectedLocation.y),
+        postLongitude: Number(selectedLocation.x),
+        // 추후 selectedGroup.groupID 으로 바꿔줘야함
+        groupId: 1,
+        postImage: files,
+      };
+
+      dispatch({ type: "UPLOAD_POST_REQUEST", post });
     } else if (mode === "update") {
-      // 1. api 요청해 DB 데이터 변경
-      const target = dummyPosts.find((post) => post.postID === selectedPost.postID);
-      if (!target) return;
+      const newFileList = files.filter((file) => typeof file.imageUrl !== "string");
+      const oldFileList = files.filter((file) => typeof file.imageUrl === "string").map((item) => item.imageId);
+      const deleteFileList = selectedPost.images
+        .filter((image) => !oldFileList.includes(image.imageId))
+        .map((item) => item.imageId);
 
-      target.postTitle = title;
-      target.postContent = text;
-      target.postDate = date;
-      target.postImages = files.map((fileObject) => {
-        return { file: fileObject.file as string, key: fileObject.file as string };
-      });
-      target.postLocation = selectedLocation.place_name;
-      target.postLatitude = Number(selectedLocation.x);
-      target.postLongitude = Number(selectedLocation.y);
+      const updatePost = {
+        postId: selectedPost.postId,
+        postTitle: title,
+        postContent: text,
+        postDate: date,
+        postLocation: selectedLocation.address_name,
+        postLatitude: Number(selectedLocation.y),
+        postLongitude: Number(selectedLocation.x),
+        addImages: newFileList,
+        deleteImagesId: deleteFileList,
+      };
 
-      // 2. store 변경
-      dispatch({ type: "SET_SELECTED_POST", payload: target });
-      dispatch({ type: "UPDATE_POST", payload: target });
+      dispatch({ type: "UPDATE_POST_REQUEST", post: updatePost });
     }
 
     closeModal();
@@ -131,7 +156,7 @@ const UploadInfoModal = ({
     >
       <ModalMain isSubOpened={isSubOpened}>
         <ModalHeader>
-          <ModalTitle>{title ? "게시물 수정" : "새 게시물 만들기"}</ModalTitle>
+          <ModalTitle>{mode == "create" ? "새 게시물 만들기" : "게시물 수정"}</ModalTitle>
           <ModalHeaderRigthBtn onClick={closeModal}>
             <img src="/icons/x.svg" alt="close" height="90%"></img>
           </ModalHeaderRigthBtn>
@@ -177,7 +202,7 @@ const UploadInfoModal = ({
               </InputPlace>
             </InputBottom>
             <UploadButton activate={activate} onClick={handleSaveBtn}>
-              게시하기
+              {mode == "create" ? "게시하기" : "수정하기"}
             </UploadButton>
           </ModalRight>
         </ModalContent>

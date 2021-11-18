@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Modal from "../";
 import UploadImageModal from "../PostCreateModal/UploadImageModal";
 import UploadInfoModal from "../PostCreateModal/UploadInfoModal";
@@ -6,14 +6,14 @@ import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
 
 interface FileObject {
-  file: File | string;
-  key: string;
+  imageUrl: File | string;
+  imageId: string;
 }
 
 const PostUpdateModal = () => {
   const [mode, setMode] = useState<string>("image");
   const { selectedPost }: any = useSelector((state: RootState) => state.modal);
-  const [files, setFiles] = useState<FileObject[]>(selectedPost.postImages);
+  const [files, setFiles] = useState<FileObject[]>(selectedPost.images);
   const prevLocation = {
     place_name: selectedPost.postLocation,
   };
