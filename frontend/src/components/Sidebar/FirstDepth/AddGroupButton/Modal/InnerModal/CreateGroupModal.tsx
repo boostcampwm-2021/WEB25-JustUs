@@ -7,6 +7,7 @@ import COLOR from "@styles/Color";
 import { GroupAction } from "@src/action";
 import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
+import { createGroupAction } from "@src/reducer/GroupReducer";
 
 interface Group {
   groupID: number;
@@ -75,7 +76,9 @@ const CreateGroupModal = () => {
       albumList: [{ albumID, albumName: "기본 앨범", posts: [] }],
     };
 
-    dispatch({ type: GroupAction.ADD_GROUP, payload: newGroup });
+    // dispatch({ type: GroupAction.ADD_GROUP, payload: newGroup });
+    dispatch(createGroupAction({ groupName, groupImg }));
+
     closeModal();
   };
 
