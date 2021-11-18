@@ -21,7 +21,7 @@ const DeleteAlbumModal = () => {
   };
 
   const onClickDeleteBtn = () => {
-    const albumId = selectedAlbum.albumID;
+    const albumId = selectedAlbum.albumId;
     dispatch(deleteAlbumRequestAction(albumId));
     closeModal();
   };

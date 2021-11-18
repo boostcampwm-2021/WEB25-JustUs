@@ -10,7 +10,7 @@ import { RootState } from "@src/reducer";
 import { createGroupAction } from "@src/reducer/GroupReducer";
 
 interface Group {
-  groupID: number;
+  groupId: number;
   groupName: string;
   img: string;
 }
@@ -20,6 +20,7 @@ const CreateGroupModal = () => {
   const imageRef = useRef<HTMLImageElement>(null);
   const groupNameRef = useRef<HTMLInputElement>(null);
   const [groupImg, setGroupImg] = useState("/icons/person.svg");
+  const [imageFile, setImageFile] = useState<File>();
   const { groups }: any = useSelector((state: RootState) => state.groups);
   const dispatch = useDispatch();
 
@@ -44,6 +45,7 @@ const CreateGroupModal = () => {
       if (!e.target.result) return;
 
       setGroupImg(e.target.result as string);
+      setImageFile(file as File);
     };
 
     reader.readAsDataURL(file);
@@ -66,18 +68,18 @@ const CreateGroupModal = () => {
   const createGroup = () => {
     if (!groupNameRef.current) return;
 
-    const groupID = Math.floor(Math.random() * (1000 - 1)) + 1;
-    const albumID = Math.floor(Math.random() * (1000 - 1)) + 1;
+    const groupId = Math.floor(Math.random() * (1000 - 1)) + 1;
+    const albumId = Math.floor(Math.random() * (1000 - 1)) + 1;
     const groupName = groupNameRef.current.value;
     const newGroup = {
-      groupID,
+      groupId,
       groupName,
       groupImg,
-      albumList: [{ albumID, albumName: "기본 앨범", posts: [] }],
+      albumList: [{ albumId, albumName: "기본 앨범", posts: [] }],
     };
 
     // dispatch({ type: GroupAction.ADD_GROUP, payload: newGroup });
-    dispatch(createGroupAction({ groupName, groupImg }));
+    dispatch(createGroupAction({ groupName, groupImage: imageFile }));
 
     closeModal();
   };

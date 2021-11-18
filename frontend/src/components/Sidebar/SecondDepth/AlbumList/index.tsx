@@ -64,7 +64,7 @@ const AlbumList = () => {
     const payload = {
       beforeIdx: target.dataset.albumidx,
       afterIdx: nowParent.dataset.albumidx,
-      post: { postID: target.dataset.id, postTitle: target.innerHTML },
+      post: { postId: target.dataset.id, postTitle: target.innerHTML },
     };
     dispatch({
       type: GroupAction.MOVE_POST,
@@ -114,7 +114,7 @@ const AlbumList = () => {
   }, [clickedTarget]);
 
   useEffect(() => {
-    setPostSelected(selectedPost.postID);
+    setPostSelected(selectedPost.postId);
   }, [selectedPost]);
 
   return (

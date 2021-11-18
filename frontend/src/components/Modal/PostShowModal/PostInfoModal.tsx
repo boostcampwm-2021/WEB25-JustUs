@@ -65,7 +65,7 @@ const PostInfoModal = () => {
           {modalOpened && <PostSettingModal />}
         </ModalHeader>
         <CarouselWrapper>
-          <Carousel files={selectedPost.postImages} carouselWidth={250} />
+          <Carousel files={selectedPost.images} carouselWidth={250} />
         </CarouselWrapper>
         <ModalContent>{textSplit(selectedPost.postContent).map((item) => highlights(item))}</ModalContent>
         <ModalFooter>

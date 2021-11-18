@@ -26,7 +26,7 @@ const InputModal = ({ addAlbumModalRef, setIsAddAlbumModalOpened }: InputModalPr
 
   const onClickAddAlbum = () => {
     if (!albumName) return;
-    const selectedGroupId = selectedGroup.groupID;
+    const selectedGroupId = selectedGroup.groupId;
 
     dispatch(newAlbumRequestAction(albumName, selectedGroupId));
     setAddAlbum(true);

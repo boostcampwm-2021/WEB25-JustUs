@@ -29,7 +29,7 @@ const UpdateAlbumModal = () => {
       closeModal();
       return;
     }
-    const albumId = selectedAlbum.albumID;
+    const albumId = selectedAlbum.albumId;
     dispatch(updateAlbumRequestAction(newAlbumName, albumId));
     closeModal();
   };

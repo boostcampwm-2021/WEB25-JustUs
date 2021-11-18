@@ -35,7 +35,7 @@ const Album = ({
   return (
     <div onDrop={DropHandler} onDragLeave={DragLeaveHandler} onDragOver={(e) => e.preventDefault()}>
       <Header
-        albumID={album.albumId}
+        albumId={album.albumId}
         albumName={album.albumName}
         postToggle={postToggle}
         setPostToggle={setPostToggle}
@@ -47,8 +47,8 @@ const Album = ({
       {postToggle &&
         album.posts.map((post: any) => (
           <Post
-            key={post.postID}
-            idx={post.postID}
+            key={post.postId}
+            idx={post.postId}
             postSelected={postSelected}
             postTitle={post.postTitle}
             setPostSelected={setPostSelected}

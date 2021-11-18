@@ -20,7 +20,7 @@ const PostDeleteModal = () => {
     dispatch({
       type: "SET_SELECTED_GROUP",
       payload: {
-        groupID: selectedGroup.groupID,
+        groupId: selectedGroup.groupId,
         groupName: selectedGroup.groupName,
         groupImg: selectedGroup.groupImg,
         albumList: albumList,

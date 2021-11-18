@@ -15,7 +15,7 @@ const UserInfoModal = () => {
   const [userImg, setUserImg] = useState("/icons/person.svg");
   const [imageFile, setImageFile] = useState<File>();
   const dispatch = useDispatch();
-  const { updateSucceed } = useSelector((state: RootState) => state.user);
+  const { userNickName, updateSucceed } = useSelector((state: RootState) => state.user);
 
   const closeUserInfoModal = () => {
     dispatch({ type: "CLOSE_MODAL" });
@@ -76,7 +76,7 @@ const UserInfoModal = () => {
     }
 
     updateFailed();
-  }, [updateSucceed]);
+  }, [userNickName]);
 
   return (
     <Modal>

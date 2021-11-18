@@ -15,6 +15,8 @@ interface FirstDepthProps {
 const FirstDepth = ({ isToggle, setIsToggle, addGroupBtnRef }: FirstDepthProps) => {
   const { groups }: any = useSelector((state: RootState) => state.groups);
 
+  if (!groups.length) return null;
+
   function handleDrag(ev: React.DragEvent<HTMLDivElement>) {
     const selectedItem = ev.target as HTMLElement;
     const list = selectedItem.parentNode;
@@ -41,18 +43,20 @@ const FirstDepth = ({ isToggle, setIsToggle, addGroupBtnRef }: FirstDepthProps) 
     <>
       <FirstDepthWrapper>
         <DraggableWrapper>
-          {groups.map((group: any) => (
-            <Group
-              isToggle={isToggle}
-              key={group.groupID}
-              groupID={group.groupID}
-              groupName={group.groupName}
-              groupImg={group.groupImg}
-              setIsToggle={setIsToggle}
-              DragHandler={handleDrag}
-              DragEndHandler={handleDrop}
-            />
-          ))}
+          {groups.map((group: any) =>
+            group ? (
+              <Group
+                isToggle={isToggle}
+                key={group.groupId}
+                groupId={group.groupId}
+                groupName={group.groupName}
+                groupImage={group.groupImage}
+                setIsToggle={setIsToggle}
+                DragHandler={handleDrag}
+                DragEndHandler={handleDrop}
+              />
+            ) : null,
+          )}
         </DraggableWrapper>
         <AddGroupButton addGroupBtnRef={addGroupBtnRef} />
       </FirstDepthWrapper>

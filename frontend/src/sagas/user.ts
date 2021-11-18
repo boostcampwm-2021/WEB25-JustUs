@@ -11,6 +11,7 @@ import {
   SET_UPDATE_FAIL,
 } from "@src/reducer/UserReducer";
 import axios from "axios";
+import { GET_GROUP_LIST, SET_GROUPS } from "@src/reducer/GroupReducer";
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
@@ -41,11 +42,20 @@ function getLogOutApi() {
 }
 
 async function updateUserInfoApi(user: IUser) {
-  const result = await axios.put(
-    `${SERVER_URL}/api/user`,
-    { userNickname: user.updateUserNickName, profileImage: "temp" },
-    { withCredentials: true },
-  );
+  const formData = new FormData();
+  formData.append("userNickname", user.updateUserNickName);
+  formData.append("profileImage", user.updateUserProfile);
+
+  const result = await axios.put(`${SERVER_URL}/api/user`, formData, {
+    withCredentials: true,
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+
+  return result;
+}
+
+export async function getGroupListApi() {
+  const result = await axios.get(`${SERVER_URL}/api/user/groups`, { withCredentials: true });
   return result;
 }
 
@@ -71,14 +81,21 @@ function* updateUserInfo() {
   const user: IUser = yield select((state) => state.user);
 
   try {
-    yield call(updateUserInfoApi, user);
+    const result: ResponseGenerator = yield call(updateUserInfoApi, user);
+
     yield put({
       type: SET_UPDATED_USER_INFO,
-      payload: { userNickName: user.updateUserNickName, userProfile: user.updateUserProfile },
+      payload: { userNickName: user.updateUserNickName, userProfile: result.data },
     });
   } catch (err: any) {
     yield put({ type: SET_UPDATE_FAIL });
   }
+}
+
+function* getGroupList() {
+  const result: ResponseGenerator = yield call(getGroupListApi);
+  const { groups } = result.data;
+  yield put({ type: SET_GROUPS, payload: groups });
 }
 
 function* watchUserInfo() {
@@ -93,6 +110,9 @@ function* watchUpdateUserInfo() {
   yield takeEvery(USER_INFO_UPDATE, updateUserInfo);
 }
 
+function* watchGetGroupList() {
+  yield takeEvery(GET_GROUP_LIST, getGroupList);
+}
 export default function* userSaga() {
-  yield all([fork(watchUserInfo), fork(watchLogOut), fork(watchUpdateUserInfo)]);
+  yield all([fork(watchUserInfo), fork(watchLogOut), fork(watchUpdateUserInfo), fork(watchGetGroupList)]);
 }

@@ -8,7 +8,7 @@ import { RootState } from "@src/reducer";
 import { flexRowCenterAlign } from "@src/styles/StyledComponents";
 
 interface HeaderProps {
-  albumID: number;
+  albumId: number;
   albumName: string;
   postToggle: boolean;
   setPostToggle: React.Dispatch<React.SetStateAction<boolean>>;
@@ -19,7 +19,7 @@ interface HeaderProps {
 }
 
 const Header = ({
-  albumID,
+  albumId,
   albumName,
   postToggle,
   setPostToggle,
@@ -35,7 +35,7 @@ const Header = ({
   };
 
   const onClickMoreBtn = () => {
-    setModalOpenedIdx(albumID);
+    setModalOpenedIdx(albumId);
   };
 
   return (
@@ -50,8 +50,8 @@ const Header = ({
       {albumName !== "기본 앨범" && (
         <MoreIcon className="modifying-album-btn" onClick={onClickMoreBtn}>
           <MoreVertSVG fill={nowTheme.MENUTEXT} />
-          {modalOpenedIdx === albumID && (
-            <AlbumSettingModal albumID={albumID} albumName={albumName} setModalOpenedIdx={setModalOpenedIdx} />
+          {modalOpenedIdx === albumId && (
+            <AlbumSettingModal albumId={albumId} albumName={albumName} setModalOpenedIdx={setModalOpenedIdx} />
           )}
         </MoreIcon>
       )}
