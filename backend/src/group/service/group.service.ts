@@ -126,7 +126,19 @@ export class GroupService {
 
     if (!users.length) this.groupRepository.softRemove(group);
 
+    const user = await this.userRepository.findOne(userId);
+    const { groupOrder } = user;
+    const reArrangedOrder = this.reArrangeGroups(groupOrder, groupId);
+
+    await this.userRepository.update(userId, { groupOrder: reArrangedOrder });
+
     return "Group leave success!!";
+  }
+
+  reArrangeGroups(groupOrder: string, groupId: number): string {
+    const order = groupOrder.split(",");
+
+    return order.filter(e => +e !== groupId).join(",");
   }
 
   async getAlbums(groupId: number): Promise<GetAlbumsResponseDto> {

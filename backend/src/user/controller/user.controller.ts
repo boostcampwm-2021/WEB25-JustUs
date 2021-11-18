@@ -8,6 +8,7 @@ import { UserInfoResponseDto } from "src/dto/user/userInfoResponse.dto";
 import { UpdateUserInfoRequestDto } from "src/dto/user/updateUserInfoRequest.dto";
 import { UpdateGroupOrderRequestDto } from "src/dto/user/updateGroupOrderRequest.dto";
 import { GetGroupsResponseDto } from "src/dto/user/getGroupsResponse.dto";
+import { UpdateUserInfoResponseDto } from "src/dto/user/updateUserInfoResponse.dto";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { multerOption } from "src/image/service/image.service";
 
@@ -30,12 +31,12 @@ export class UserController {
   @UseInterceptors(FileInterceptor("profileImage", multerOption))
   @ApiConsumes("multipart/form-data")
   @ApiBody({ type: UpdateUserInfoRequestDto })
-  @ApiOkResponse({ description: "유저정보 수정 성공" })
+  @ApiResponse({ type: UpdateUserInfoResponseDto, status: 200 })
   UpdateUserInfo(
     @Req() { user }: CustomRequest,
     @Body() updateUserInfoRequestDto: UpdateUserInfoRequestDto,
     @UploadedFile() file: CustomFile,
-  ): Promise<string> {
+  ): Promise<UpdateUserInfoResponseDto> {
     const { userId } = user;
 
     return this.userService.updateUserInfo(userId, file, updateUserInfoRequestDto);
