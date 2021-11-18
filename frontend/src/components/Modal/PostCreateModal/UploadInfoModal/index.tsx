@@ -9,9 +9,8 @@ import ModalSub from "./ModalSub";
 import dummyPosts from "@components/Map/dummyPosts";
 
 interface FileObject {
-  file: File | string;
-  key: string;
-  imageUrl: string;
+  imageUrl: File | string;
+  imageId: string;
 }
 interface IData {
   [key: string]: string;
@@ -115,7 +114,7 @@ const UploadInfoModal = ({
       target.postContent = text;
       target.postDate = date;
       target.postImages = files.map((fileObject) => {
-        return { file: fileObject.file as string, key: fileObject.file as string };
+        return { file: fileObject.imageUrl as string, key: fileObject.imageUrl as string };
       });
       target.postLatitude = Number(selectedLocation.x);
       target.postLongitude = Number(selectedLocation.y);

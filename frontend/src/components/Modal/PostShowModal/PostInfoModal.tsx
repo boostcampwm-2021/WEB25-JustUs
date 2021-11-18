@@ -42,8 +42,6 @@ const PostInfoModal = () => {
   const [modalOpened, setModalOpened] = useState(false);
   const { selectedPost } = useSelector((state: RootState) => state.modal);
 
-  console.log(selectedPost);
-
   return (
     <ModalContainer
       onClick={(event) => {

@@ -6,9 +6,8 @@ import COLOR from "@styles/Color";
 import { useDispatch } from "react-redux";
 
 interface FileObject {
-  file: File | string;
-  key: string;
-  imageUrl: string;
+  imageUrl: File | string;
+  imageId: string;
 }
 interface UploadImageModalProps {
   changeMode: () => void;
@@ -24,6 +23,8 @@ const UploadImageModal = ({ changeMode, files, setFiles }: UploadImageModalProps
     dispatch({ type: "CLOSE_MODAL" });
   };
 
+  console.log(files);
+
   const clickInputTag = () => {
     if (!inputImagaRef.current || files.length === MAX_IMAGE) return;
     inputImagaRef.current.value = "";
@@ -33,7 +34,7 @@ const UploadImageModal = ({ changeMode, files, setFiles }: UploadImageModalProps
   const changeImage: React.ChangeEventHandler<HTMLInputElement> = (event) => {
     if (!event.target.files) return;
     const file = event.target.files[0];
-    setFiles([...files, { file, key: shortid.generate(), imageUrl: URL.createObjectURL(file) }]);
+    setFiles([...files, { imageUrl: file, imageId: shortid.generate() }]);
   };
 
   const nextModal = () => {
@@ -41,7 +42,7 @@ const UploadImageModal = ({ changeMode, files, setFiles }: UploadImageModalProps
   };
 
   const deleteImage = (key: string) => {
-    setFiles(files.filter((file) => file.key !== key));
+    setFiles(files.filter((file) => file.imageId !== key));
   };
 
   return (
@@ -73,11 +74,15 @@ const UploadImageModal = ({ changeMode, files, setFiles }: UploadImageModalProps
         {files.map(
           (fileObject) => (
             <ImagePreview key={shortid.generate()}>
-              <DeleteImageBtn onClick={() => deleteImage(fileObject.key)}>
+              <DeleteImageBtn onClick={() => deleteImage(fileObject.imageId)}>
                 <img src="/icons/delete.svg" alt="delete"></img>
               </DeleteImageBtn>
               <img
-                src={typeof fileObject.file === "string" ? fileObject.file : URL.createObjectURL(fileObject.file)}
+                src={
+                  typeof fileObject.imageUrl === "string"
+                    ? fileObject.imageUrl
+                    : URL.createObjectURL(fileObject.imageUrl)
+                }
               ></img>
             </ImagePreview>
           ),

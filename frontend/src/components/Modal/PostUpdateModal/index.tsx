@@ -6,9 +6,8 @@ import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
 
 interface FileObject {
-  file: File | string;
-  key: string;
-  imageUrl: string;
+  imageUrl: File | string;
+  imageId: string;
 }
 
 const PostUpdateModal = () => {

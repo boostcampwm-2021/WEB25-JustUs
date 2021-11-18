@@ -13,8 +13,8 @@ interface ResponseGenerator {
   json: Function;
 }
 interface FileObject {
-  file: File;
-  key: string;
+  imageUrl: File;
+  imageId: string;
 }
 interface IPost {
   postTitle: string;
@@ -37,7 +37,7 @@ function uploadPostApi(newPost: IPost) {
   formData.append("postLatitude", postLatitude);
   formData.append("postLongitude", postLongitude);
   formData.append("groupId", groupId);
-  postImage.forEach((image) => formData.append("postImages", image.file));
+  postImage.forEach((image) => formData.append("postImages", image.imageUrl));
 
   return axios({
     method: "post",
@@ -72,7 +72,6 @@ function getPostApi(postId: number) {
 function* getPost({ postId }: { type: string; postId: number }) {
   try {
     const result: ResponseGenerator = yield call(getPostApi, postId);
-    console.log(result);
     yield put({ type: "SELECT_POST_SUCCEED", post: result.data });
     yield put({ type: "OPEN_MODAL", payload: "PostShowModal" });
   } catch (err: unknown) {
