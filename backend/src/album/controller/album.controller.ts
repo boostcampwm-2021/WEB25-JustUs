@@ -4,6 +4,7 @@ import { JwtAuthGuard } from "src/auth/guard/jwt-auth-guard";
 import { AlbumService } from "../service/album.service";
 import { CreateAlbumRequestDto } from "src/dto/album/createAlbumRequest.dto";
 import { UpdateAlbumInfoRequestDto } from "src/dto/album/updateAlbumInfoRequest.dto";
+import { CreateAlbumResponseDto } from "src/dto/album/createAlbumResponse.dto";
 
 @ApiTags("앨범 API")
 @ApiBearerAuth()
@@ -14,8 +15,8 @@ export class AlbumController {
 
   @Post()
   @HttpCode(200)
-  @ApiResponse({ type: String, description: "앨범 이름" })
-  CreateAlbum(@Body() createAlbumRequestDto: CreateAlbumRequestDto): Promise<string> {
+  @ApiResponse({ type: CreateAlbumResponseDto, status: 200 })
+  CreateAlbum(@Body() createAlbumRequestDto: CreateAlbumRequestDto): Promise<CreateAlbumResponseDto> {
     return this.albumService.createAlbum(createAlbumRequestDto);
   }
 
