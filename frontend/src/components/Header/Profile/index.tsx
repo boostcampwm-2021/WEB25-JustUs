@@ -10,7 +10,9 @@ const Profile = () => {
   const { userProfile } = useSelector((state: RootState) => state.user);
   const { clickedTarget } = useSelector((state: RootState) => state.groupModal);
   const history = useHistory();
-  if (!userProfile) history.push("/login");
+  useEffect(() => {
+    if (!userProfile) history.push("/login");
+  }, [userProfile]);
 
   const handleProfileBtnClick = () => {
     setIsModalOpened((prev) => !prev);
