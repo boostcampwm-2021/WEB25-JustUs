@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Modal from "../";
 import UploadImageModal from "../PostCreateModal/UploadImageModal";
 import UploadInfoModal from "../PostCreateModal/UploadInfoModal";
@@ -13,7 +13,7 @@ interface FileObject {
 const PostUpdateModal = () => {
   const [mode, setMode] = useState<string>("image");
   const { selectedPost }: any = useSelector((state: RootState) => state.modal);
-  const [files, setFiles] = useState<FileObject[]>(selectedPost.postImages);
+  const [files, setFiles] = useState<FileObject[]>(selectedPost.images);
   const prevLocation = {
     place_name: selectedPost.postLocation,
   };

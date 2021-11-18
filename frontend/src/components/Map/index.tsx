@@ -38,7 +38,7 @@ interface PointerEvent {
 }
 
 interface PostType {
-  postID: number;
+  postId: number;
   postTitle: string;
   postLatitude: number;
   postLongitude: number;
@@ -76,7 +76,7 @@ interface IPostsList {
 }
 
 interface ISelectedPost {
-  postID: number;
+  postId: number;
   postTitle: string;
   postContent: string;
   postDate: string;
@@ -160,8 +160,8 @@ const Map = () => {
         }
         setIsRightClick(false);
         // 아래 로직은 나중에 백엔드 API 요청을 통해 클릭한 게시글의 상세 정보를 가져온다.
-        const targetPost = dummyPosts.find((post) => post.postID === clickedPostID);
-        dispatch({ type: "SELECTED_POST_REQUEST", postID: clickedPostID });
+        // const targetPost = dummyPosts.find((post) => post.postId === clickedPostID);
+        dispatch({ type: "SELECTED_POST_REQUEST", postId: clickedPostID });
 
         // dispatch({ type: "SET_SELECTED_POST", payload: targetPost });
         // dispatch({ type: "OPEN_MODAL", payload: "PostShowModal" });
@@ -169,8 +169,8 @@ const Map = () => {
 
       const markers = postsList.map((post: PostType) => {
         const pos = new naver.maps.LatLng(post.postLatitude, post.postLongitude);
-        const marker = new naver.maps.Marker(Marker(naverMap as naver.maps.Map, pos, post.postTitle, post.postID));
-        naver.maps.Event.addListener(marker, "click", () => handleClickMarker(post.postID));
+        const marker = new naver.maps.Marker(Marker(naverMap as naver.maps.Map, pos, post.postTitle, post.postId));
+        naver.maps.Event.addListener(marker, "click", () => handleClickMarker(post.postId));
         return marker;
       });
 

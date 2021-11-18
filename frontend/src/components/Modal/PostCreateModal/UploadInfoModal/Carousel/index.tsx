@@ -12,7 +12,6 @@ interface CarouselProps {
 }
 
 const Carousel = ({ files, carouselWidth }: CarouselProps) => {
-  console.log(files);
   const carouselRef = useRef<HTMLDivElement>(null);
   const [imageIndex, setImageIndex] = useState(0);
   const showNextImage = () => {

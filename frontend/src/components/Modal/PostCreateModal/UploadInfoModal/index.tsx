@@ -25,6 +25,18 @@ interface UploadInfoModalProps {
   prevLocation: IData | {};
 }
 
+interface IselectedPost {
+  userId: number;
+  userNickname: string;
+  postId: number;
+  postTitle: string;
+  postContent: string;
+  postDate: string;
+  images: Array<{ imageUrl: string; imageId: string }>;
+  postLatitude: number;
+  postLongitude: number;
+}
+
 const UploadInfoModal = ({
   mode,
   changeMode,
@@ -50,7 +62,7 @@ const UploadInfoModal = ({
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const backdropRef = useRef<HTMLDivElement>(null);
   const { address }: any = useSelector((state: RootState) => state.address);
-  const { selectedPost }: any = useSelector((state: RootState) => state.modal);
+  const { selectedPost }: { selectedPost: IselectedPost } = useSelector((state: RootState) => state.modal);
   const { selectedGroup, albumList }: any = useSelector((state: RootState) => state.groups);
 
   useEffect(() => {
@@ -106,22 +118,25 @@ const UploadInfoModal = ({
 
       dispatch({ type: "UPLOAD_POST_REQUEST", post });
     } else if (mode === "update") {
-      // 1. api 요청해 DB 데이터 변경
-      const target = dummyPosts.find((post) => post.postID === selectedPost.postID);
-      if (!target) return;
+      const newFileList = files.filter((file) => typeof file.imageUrl !== "string");
+      const oldFileList = files.filter((file) => typeof file.imageUrl === "string").map((item) => item.imageId);
+      const deleteFileList = selectedPost.images
+        .filter((image) => !oldFileList.includes(image.imageId))
+        .map((item) => item.imageId);
 
-      target.postTitle = title;
-      target.postContent = text;
-      target.postDate = date;
-      target.postImages = files.map((fileObject) => {
-        return { file: fileObject.imageUrl as string, key: fileObject.imageUrl as string };
-      });
-      target.postLatitude = Number(selectedLocation.x);
-      target.postLongitude = Number(selectedLocation.y);
+      const updatePost = {
+        postId: selectedPost.postId,
+        postTitle: title,
+        postContent: text,
+        postDate: date,
+        postLocation: selectedLocation.address_name,
+        postLatitude: Number(selectedLocation.y),
+        postLongitude: Number(selectedLocation.x),
+        addImages: newFileList,
+        deleteImagesId: deleteFileList,
+      };
 
-      // 2. store 변경
-      dispatch({ type: "SET_SELECTED_POST", payload: target });
-      dispatch({ type: "UPDATE_POST", payload: target });
+      dispatch({ type: "UPDATE_POST_REQUEST", post: updatePost });
     }
 
     closeModal();
@@ -187,7 +202,7 @@ const UploadInfoModal = ({
               </InputPlace>
             </InputBottom>
             <UploadButton activate={activate} onClick={handleSaveBtn}>
-              게시하기
+              {mode == "create" ? "게시하기" : "수정하기"}
             </UploadButton>
           </ModalRight>
         </ModalContent>

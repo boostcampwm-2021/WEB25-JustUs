@@ -7,13 +7,13 @@ const initState: {
   nowAddress: string;
   selectedAlbum: { albumID: number; albumName: string };
   selectedPost: {
-    userID: number;
+    userId: number;
     userNickname: string;
-    postID: number;
+    postId: number;
     postTitle: string;
     postContent: string;
     postDate: string;
-    postImages: Array<{ file: string; key: string }>;
+    images: Array<{ imageUrl: string; imageId: string }>;
     postLatitude: number;
     postLongitude: number;
   };
@@ -27,13 +27,13 @@ const initState: {
     albumName: "",
   },
   selectedPost: {
-    userID: -1,
+    userId: -1,
     userNickname: "",
-    postID: -1,
+    postId: -1,
     postTitle: "",
     postContent: "",
     postDate: "",
-    postImages: [],
+    images: [],
     postLatitude: -1,
     postLongitude: -1,
   },
@@ -64,7 +64,6 @@ const ModalReducer = (state = initState, action: any) => {
     case "SELECT_POST_REQUEST":
       return { ...state, isPostLoading: true };
     case "SELECT_POST_SUCCEED":
-      console.log(action.post);
       return {
         ...state,
         selectedPost: action.post,
@@ -72,21 +71,6 @@ const ModalReducer = (state = initState, action: any) => {
       };
     case "SELECT_POST_FAILED":
       return { ...state, isPostLoading: false };
-    case "SET_SELECTED_POST":
-      return {
-        ...state,
-        selectedPost: {
-          userID: -1,
-          userNickname: action.payload.userNickname,
-          postID: action.payload.postID,
-          postTitle: action.payload.postTitle,
-          postContent: action.payload.postContent,
-          postDate: action.payload.postDate,
-          postImages: action.payload.postImages,
-          postLatitude: action.payload.postLatitude,
-          postLongitude: action.payload.postLongitude,
-        },
-      };
     case "SET_CLUSTERED_MARKER":
       return {
         ...state,
