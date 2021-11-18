@@ -19,16 +19,8 @@ export const Router = () => {
   return (
     <BrowserRouter>
       <Switch>
-        <Route
-          exact
-          path="/login"
-          render={() => (!userInfoSucceed ? <Login /> : <Redirect to={{ pathname: "/" }} />)}
-        ></Route>
-        <Route
-          exact
-          path="/"
-          render={() => (userInfoSucceed ? <Main /> : <Redirect to={{ pathname: "/login" }} />)}
-        ></Route>
+        <Route exact path="/login" component={Login}></Route>
+        <Route exact path="/" component={Main}></Route>
         <Route component={NotFound}></Route>
       </Switch>
     </BrowserRouter>
