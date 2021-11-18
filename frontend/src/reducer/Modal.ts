@@ -5,7 +5,7 @@ interface Imarker {
 const initState: {
   nowModal: string;
   nowAddress: string;
-  selectedAlbum: { albumID: number; albumName: string };
+  selectedAlbum: { albumId: number; albumName: string };
   selectedPost: {
     userId: number;
     userNickname: string;
@@ -23,7 +23,7 @@ const initState: {
   nowModal: "",
   nowAddress: "",
   selectedAlbum: {
-    albumID: -1,
+    albumId: -1,
     albumName: "",
   },
   selectedPost: {
@@ -57,7 +57,7 @@ const ModalReducer = (state = initState, action: any) => {
       return {
         ...state,
         selectedAlbum: {
-          albumID: action.payload.albumID,
+          albumId: action.payload.albumId,
           albumName: action.payload.albumName,
         },
       };

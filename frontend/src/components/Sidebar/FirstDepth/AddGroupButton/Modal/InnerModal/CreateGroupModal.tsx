@@ -10,7 +10,7 @@ import { RootState } from "@src/reducer";
 import { createGroupAction } from "@src/reducer/GroupReducer";
 
 interface Group {
-  groupID: number;
+  groupId: number;
   groupName: string;
   img: string;
 }
@@ -68,14 +68,14 @@ const CreateGroupModal = () => {
   const createGroup = () => {
     if (!groupNameRef.current) return;
 
-    const groupID = Math.floor(Math.random() * (1000 - 1)) + 1;
-    const albumID = Math.floor(Math.random() * (1000 - 1)) + 1;
+    const groupId = Math.floor(Math.random() * (1000 - 1)) + 1;
+    const albumId = Math.floor(Math.random() * (1000 - 1)) + 1;
     const groupName = groupNameRef.current.value;
     const newGroup = {
-      groupID,
+      groupId,
       groupName,
       groupImg,
-      albumList: [{ albumID, albumName: "기본 앨범", posts: [] }],
+      albumList: [{ albumId, albumName: "기본 앨범", posts: [] }],
     };
 
     // dispatch({ type: GroupAction.ADD_GROUP, payload: newGroup });

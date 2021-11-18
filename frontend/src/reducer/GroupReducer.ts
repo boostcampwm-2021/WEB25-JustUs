@@ -12,7 +12,7 @@ interface PostType {
   postLongitude: number;
 }
 interface AlbumListItemType {
-  albumID: number;
+  albumId: number;
   albumName: string;
   posts: PostType[];
   base: boolean;
@@ -69,7 +69,7 @@ const initState: {
   selectedGroup: null,
   isLoading: true,
   groups: [],
-  albumList: [{ albumID: 0, albumName: "", posts: [], base: false }],
+  albumList: [{ albumId: 0, albumName: "", posts: [], base: false }],
   isPostUploading: false,
   isPostUpdateing: false,
   isPostDeleting: false,
@@ -103,7 +103,7 @@ const groupReducer = (state = initState, action: any) => {
       return {
         ...state,
         selectedGroup: action.payload
-          ? { groupID: action.payload.groupID, groupName: action.payload.groupName, groupImg: action.payload.groupImg }
+          ? { groupId: action.payload.groupId, groupName: action.payload.groupName, groupImg: action.payload.groupImg }
           : null,
         albumList: action.payload ? action.payload.albumList : null,
         postsList: action.payload
@@ -116,7 +116,7 @@ const groupReducer = (state = initState, action: any) => {
         selectedGroup: null,
         groups: state.groups.filter((group) => {
           if (!group) return false;
-          return group.groupId !== action.payload.groupID;
+          return group.groupId !== action.payload.groupId;
         }),
         albumList: [],
         postsList: [],
@@ -128,7 +128,7 @@ const groupReducer = (state = initState, action: any) => {
       const newAlbumList = state.albumList.map((album: AlbumListItemType, idx) => {
         if (idx != beforeIdx) return album;
         const updateAlbum: AlbumListItemType = {
-          albumID: album.albumID,
+          albumId: album.albumId,
           albumName: album.albumName,
           posts: [],
           base: album.base,
@@ -150,7 +150,7 @@ const groupReducer = (state = initState, action: any) => {
       const updateAlbumList = state.albumList.map((album: AlbumListItemType, idx) => {
         if (!album.base) return album;
         const updateAlbum: AlbumListItemType = {
-          albumID: album.albumID,
+          albumId: album.albumId,
           albumName: album.albumName,
           posts: [
             ...album.posts,
@@ -188,7 +188,7 @@ const groupReducer = (state = initState, action: any) => {
           return album;
         }
         const updateAlbum: AlbumListItemType = {
-          albumID: album.albumID,
+          albumId: album.albumId,
           albumName: album.albumName,
           posts: [],
           base: album.base,
@@ -231,7 +231,7 @@ const groupReducer = (state = initState, action: any) => {
           return album;
         }
         const updateAlbum: AlbumListItemType = {
-          albumID: album.albumID,
+          albumId: album.albumId,
           albumName: album.albumName,
           posts: [],
           base: album.base,

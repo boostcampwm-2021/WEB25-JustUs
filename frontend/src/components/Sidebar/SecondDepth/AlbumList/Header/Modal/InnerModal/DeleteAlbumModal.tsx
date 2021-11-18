@@ -5,12 +5,12 @@ import { useDispatch } from "react-redux";
 import COLOR from "@styles/Color";
 import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
-import { GroupAction } from "@src/action";
+import { deleteAlbumRequestAction } from "@src/reducer/AlbumReducer";
 
 const DeleteAlbumModal = () => {
   const dispatch = useDispatch();
   const { selectedAlbum } = useSelector((state: RootState) => state.modal);
-  const { groups, selectedGroup }: any = useSelector((state: RootState) => state.groups);
+  const { selectedGroup, albumList }: any = useSelector((state: RootState) => state.groups);
 
   const closeModal = () => {
     dispatch({ type: "CLOSE_MODAL" });
@@ -21,22 +21,9 @@ const DeleteAlbumModal = () => {
   };
 
   const onClickDeleteBtn = () => {
-    console.log("로직 변경 예정");
-    //   const { groupID, groupName, groupImg } = selectedGroup;
-    //   const selectedAlbumList = groups[groupID].albumList;
-
-    //   groups[groupID].albumList = selectedAlbumList.filter((album: any) => album.albumID !== selectedAlbum.albumID);
-
-    //   const newGroup = {
-    //     groupID,
-    //     groupName,
-    //     groupImg,
-    //     albumList: groups[groupID].albumList,
-    //   };
-
-    //   dispatch({ type: GroupAction.SET_ALL_GROUPS, payload: groups });
-    //   dispatch({ type: GroupAction.SET_SELECTED_GROUP, payload: newGroup });
-    //   closeModal();
+    const albumId = selectedAlbum.albumId;
+    dispatch(deleteAlbumRequestAction(albumId));
+    closeModal();
   };
 
   return (
