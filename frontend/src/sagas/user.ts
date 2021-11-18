@@ -50,7 +50,7 @@ async function updateUserInfoApi(user: IUser) {
   return result;
 }
 
-async function getGroupListApi() {
+export async function getGroupListApi() {
   const result = await axios.get(`${SERVER_URL}/api/user/groups`, { withCredentials: true });
   return result;
 }

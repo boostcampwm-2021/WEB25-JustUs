@@ -1,7 +1,8 @@
-import { all, fork, put, call, takeLatest, select } from "redux-saga/effects";
+import { all, fork, put, call, takeLatest, select, delay } from "redux-saga/effects";
 import { GroupAction } from "@src/action";
-import groups from "@src/reducer";
 import axios from "axios";
+import { getGroupListApi } from "@src/sagas/user";
+import { SET_GROUPS } from "@src/reducer/GroupReducer";
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
@@ -68,6 +69,14 @@ async function getGroupMemberListApi(payload: any) {
   return result;
 }
 
+async function requestJoinGroupApi(payload: any) {
+  const { code } = payload;
+
+  const result = await axios.post(`${SERVER_URL}/api/groups/join`, { code }, { withCredentials: true });
+
+  return result;
+}
+
 function* getGroupInfo(action: any) {
   try {
     const result: ResponseGenerator = yield call(getGroupInfoApi, action.payload);
@@ -118,6 +127,19 @@ function* getGroupMemberList(action: any) {
   } catch (err) {}
 }
 
+function* requestJoinGroup(action: any) {
+  try {
+    yield call(requestJoinGroupApi, action.payload);
+    yield delay(1000);
+
+    const result: ResponseGenerator = yield call(getGroupListApi);
+    const { groups } = result.data;
+
+    yield put({ type: SET_GROUPS, payload: groups });
+    yield put({ type: "CLOSE_MODAL" });
+  } catch (err) {}
+}
+
 function* watchGroupInfo() {
   yield takeLatest("REQUEST_GROUP_INFO", getGroupInfo);
 }
@@ -138,6 +160,10 @@ function* watchGetGroupMemberList() {
   yield takeLatest("GET_GROUP_MEMBER_LIST", getGroupMemberList);
 }
 
+function* watchRequestJoinGroup() {
+  yield takeLatest("REQUEST_JOIN_GROUP", requestJoinGroup);
+}
+
 export default function* groupSaga() {
   yield all([
     fork(watchGroupInfo),
@@ -145,5 +171,6 @@ export default function* groupSaga() {
     fork(watchGetAlbumList),
     fork(watchDeleteGroup),
     fork(watchGetGroupMemberList),
+    fork(watchRequestJoinGroup),
   ]);
 }

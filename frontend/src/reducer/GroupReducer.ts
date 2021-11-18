@@ -24,6 +24,7 @@ export const DELETE_GROUP = "DELETE_GROUP";
 export const GET_GROUP_MEMBER_LIST = "GET_GROUP_MEMBER_LIST";
 export const GET_GROUP_LIST = "GET_GROUP_LIST";
 export const SET_GROUPS = "SET_GROUPS";
+export const REQUEST_JOIN_GROUP = "REQUEST_JOIN_GROUP";
 
 export const createGroupAction = (payload: any) => ({
   type: CREATE_GROUP,
@@ -47,6 +48,11 @@ export const getGroupMemberListAction = (payload: any) => ({
 
 export const getGroupListAction = () => ({
   type: GET_GROUP_LIST,
+});
+
+export const requestJoinGroupAction = (payload: any) => ({
+  type: REQUEST_JOIN_GROUP,
+  payload,
 });
 
 const initState: {
