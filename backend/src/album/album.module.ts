@@ -16,5 +16,6 @@ import { PostRepository } from "src/post/post.repository";
   ],
   controllers: [AlbumController],
   providers: [AlbumService],
+  exports: [AlbumService],
 })
 export class AlbumModule {}

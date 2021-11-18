@@ -17,7 +17,7 @@ export class User extends TimeStampEntity {
   @Column()
   userEmail: string;
 
-  @Column({ nullable: true })
+  @Column({ default: "" })
   groupOrder: string;
 
   @Column({ nullable: true })
