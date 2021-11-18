@@ -99,8 +99,8 @@ const UploadInfoModal = ({
         postLocation: selectedLocation.address_name,
         postLatitude: Number(selectedLocation.y),
         postLongitude: Number(selectedLocation.x),
-        //나중엔 앨범아이디 대신 그룹아이디로 보내야함
-        albumId: "1",
+        // 추후 selectedGroup.groupID 으로 바꿔줘야함
+        groupId: 1,
         postImage: files,
       };
 
@@ -141,7 +141,7 @@ const UploadInfoModal = ({
     >
       <ModalMain isSubOpened={isSubOpened}>
         <ModalHeader>
-          <ModalTitle>{title ? "게시물 수정" : "새 게시물 만들기"}</ModalTitle>
+          <ModalTitle>{mode == "create" ? "새 게시물 만들기" : "게시물 수정"}</ModalTitle>
           <ModalHeaderRigthBtn onClick={closeModal}>
             <img src="/icons/x.svg" alt="close" height="90%"></img>
           </ModalHeaderRigthBtn>

@@ -23,12 +23,12 @@ interface IPost {
   postLocation: string;
   postLatitude: string;
   postLongitude: string;
-  albumId: string;
+  groupId: string;
   postImage: FileObject[];
 }
 
 function uploadPostApi(newPost: IPost) {
-  const { postTitle, postContent, postDate, postLocation, postLatitude, postLongitude, albumId, postImage } = newPost;
+  const { postTitle, postContent, postDate, postLocation, postLatitude, postLongitude, groupId, postImage } = newPost;
   const formData = new FormData();
   formData.append("postTitle", postTitle);
   formData.append("postContent", postContent);
@@ -36,8 +36,8 @@ function uploadPostApi(newPost: IPost) {
   formData.append("postLocation", postLocation);
   formData.append("postLatitude", postLatitude);
   formData.append("postLongitude", postLongitude);
-  formData.append("albumId", albumId);
-  postImage.forEach((image) => formData.append("postImage", image.file));
+  formData.append("groupId", groupId);
+  postImage.forEach((image) => formData.append("postImages", image.file));
 
   return axios({
     method: "post",

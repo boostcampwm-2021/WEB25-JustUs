@@ -50,7 +50,7 @@ const UploadImageModal = ({ changeMode, files, setFiles }: UploadImageModalProps
       }}
     >
       <ModalHeader>
-        <ModalTitle>{files.length ? "게시물 수정" : "새 게시물 만들기"}</ModalTitle>
+        <ModalTitle>사진 업로드</ModalTitle>
         {files.length === 0 ? (
           <ModalHeaderRigthBtn onClick={closeModal}>
             <img src="/icons/x.svg" alt="close" height="90%"></img>
