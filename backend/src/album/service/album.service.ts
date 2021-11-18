@@ -4,6 +4,7 @@ import { AlbumRepository } from "../album.repository";
 import { GroupRepository } from "src/group/group.repository";
 import { CreateAlbumRequestDto } from "src/dto/album/createAlbumRequest.dto";
 import { UpdateAlbumInfoRequestDto } from "src/dto/album/updateAlbumInfoRequest.dto";
+import { CreateAlbumResponseDto } from "src/dto/album/createAlbumResponse.dto";
 import { Album } from "../album.entity";
 import { PostRepository } from "src/post/post.repository";
 
@@ -18,7 +19,7 @@ export class AlbumService {
     private postRepository: PostRepository,
   ) {}
 
-  async createAlbum(createAlbumRequestDto: CreateAlbumRequestDto): Promise<string> {
+  async createAlbum(createAlbumRequestDto: CreateAlbumRequestDto): Promise<CreateAlbumResponseDto> {
     const { groupId, albumName } = createAlbumRequestDto;
     const group = await this.groupRepository.findOne({ groupId });
     if (!group) throw new NotFoundException(`Not found group with the id ${groupId}`);
@@ -28,12 +29,13 @@ export class AlbumService {
       base: false,
       group: group,
     });
+    const { albumId } = album;
 
     const { albumOrder } = group;
-    const newAlbumOrder = `${albumOrder},${album.albumId}`;
+    const newAlbumOrder = `${albumOrder},${albumId}`;
     await this.groupRepository.update(groupId, { albumOrder: newAlbumOrder });
 
-    return album.albumName;
+    return { albumId };
   }
 
   async updateAlbumInfo(albumId: number, updateAlbumInfoRequestDto: UpdateAlbumInfoRequestDto): Promise<string> {

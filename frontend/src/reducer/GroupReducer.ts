@@ -169,7 +169,7 @@ const groupReducer = (state = initState, action: any) => {
       return {
         ...state,
         albumList: updateAlbumList,
-        postList: updatePostsList,
+        postsList: updatePostsList,
         isPostUploading: false,
       };
     case "UPLOAD_POST_FAILED":
@@ -211,7 +211,7 @@ const groupReducer = (state = initState, action: any) => {
       return {
         ...state,
         albumList: renewAlbumList,
-        postList: renewPostsList,
+        postsList: renewPostsList,
         isPostUpdateing: false,
       };
     case "UPDATE_POST_FAILED":
@@ -243,7 +243,7 @@ const groupReducer = (state = initState, action: any) => {
       return {
         ...state,
         albumList: afterDeleteAlbumList,
-        postList: afterDeleteList,
+        postsList: afterDeleteList,
         isPostDeleting: false,
       };
     case "DELETE_POST_FAILED":
