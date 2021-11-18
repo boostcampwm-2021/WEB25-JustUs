@@ -6,6 +6,11 @@ export class GetPostInfoResponseDto {
   @IsNumber()
   @IsNotEmpty()
   @ApiProperty()
+  postId: number;
+
+  @IsNumber()
+  @IsNotEmpty()
+  @ApiProperty()
   userId: number;
 
   @IsString()
@@ -33,8 +38,13 @@ export class GetPostInfoResponseDto {
   @ApiProperty()
   postDate: Date;
 
-  @IsString()
+  @IsNumber()
   @IsNotEmpty()
   @ApiProperty()
-  postLocation: string;
+  postLatitude: number;
+
+  @IsNumber()
+  @IsNotEmpty()
+  @ApiProperty()
+  postLongitude: number;
 }

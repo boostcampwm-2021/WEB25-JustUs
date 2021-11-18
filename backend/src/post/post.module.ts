@@ -7,10 +7,12 @@ import { PostRepository } from "./post.repository";
 import { UserRepository } from "src/user/user.repository";
 import { AlbumRepository } from "src/album/album.repository";
 import { ImageModule } from "src/image/image.module";
+import { AlbumModule } from "src/album/album.module";
 
 @Module({
   imports: [
     ImageModule,
+    AlbumModule,
     TypeOrmModule.forFeature([PostRepository, UserRepository, AlbumRepository]),
     JwtModule.register({
       secret: process.env.JWT_SECRET,

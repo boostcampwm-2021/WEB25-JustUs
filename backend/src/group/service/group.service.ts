@@ -4,16 +4,21 @@ import { GroupRepository } from "../group.repository";
 import { UserRepository } from "src/user/user.repository";
 import { AlbumRepository } from "src/album/album.repository";
 import { Group } from "../group.entity";
+import { CustomFile } from "src/custom/myFile/customFile";
 import { CreateGroupRequestDto } from "src/dto/group/createGroupRequest.dto";
 import { AttendGroupRequestDto } from "src/dto/group/attendGroupRequest.dto";
 import { GetGroupInfoResponseDto } from "src/dto/group/getGroupInfoResponse.dto";
 import { UpdateGroupInfoRequestDto } from "src/dto/group/updateGroupInfoRequest.dto";
 import { GetAlbumsResponseDto } from "src/dto/group/getAlbumsResponse.dto";
 import { UpdateAlbumOrderRequestDto } from "src/dto/group/updateAlbumOrderRequest.dto";
+import { AlbumService } from "src/album/service/album.service";
+import { ImageService } from "src/image/service/image.service";
 
 @Injectable()
 export class GroupService {
   constructor(
+    private albumService: AlbumService,
+    private imageService: ImageService,
     @InjectRepository(GroupRepository)
     private groupRepository: GroupRepository,
     @InjectRepository(UserRepository)
@@ -22,28 +27,28 @@ export class GroupService {
     private albumRepository: AlbumRepository,
   ) {}
 
-  async createGroup(userId: number, createGroupRequestDto: CreateGroupRequestDto): Promise<number> {
-    const { groupImage, groupName } = createGroupRequestDto;
+  async createGroup(userId: number, file: CustomFile, createGroupRequestDto: CreateGroupRequestDto): Promise<number> {
+    const groupImage = this.imageService.getImageUrl(file);
+    const { groupName } = createGroupRequestDto;
     const groupCode = await this.createInvitaionCode();
 
-    const group = await this.groupRepository.save({
-      groupImage: groupImage,
-      groupName: groupName,
-      groupCode: groupCode,
-    });
+    const saveObject = groupImage === undefined ? { groupName, groupCode } : { groupImage, groupName, groupCode };
 
-    this.albumRepository.save({
+    const group = await this.groupRepository.save(saveObject);
+    const { groupId } = group;
+
+    const album = await this.albumRepository.save({
       albumName: "기본 앨범",
       base: true,
       group: group,
     });
+    const { albumId } = album;
 
-    const user = await this.userRepository.findOne(userId, { relations: ["groups"] });
-    if (!user) throw new NotFoundException(`Not found user with the id ${userId}`);
-    user.groups.push(group);
-    this.userRepository.save(user);
+    await this.groupRepository.update(groupId, { albumOrder: String(albumId) });
 
-    return group.groupId;
+    await this.applyUserEntity(userId, groupId, group);
+
+    return groupId;
   }
 
   async createInvitaionCode(): Promise<string> {
@@ -62,14 +67,21 @@ export class GroupService {
 
     const group = await this.groupRepository.findOne({ groupCode: code });
     if (!group) throw new NotFoundException(`Not found group with the code ${code}`);
+    const { groupId } = group;
 
+    await this.applyUserEntity(userId, groupId, group);
+
+    return group.groupId;
+  }
+
+  async applyUserEntity(userId: number, groupId: number, group: Group): Promise<void> {
     const user = await this.userRepository.findOne(userId, { relations: ["groups"] });
     if (!user) throw new NotFoundException(`Not found user with the id ${userId}`);
 
+    const { groupOrder } = user;
+    user.groupOrder = groupOrder === "" ? `${groupId}` : `${groupOrder},${groupId}`;
     user.groups.push(group);
     this.userRepository.save(user);
-
-    return group.groupId;
   }
 
   async getGroupInfo(groupId: number): Promise<GetGroupInfoResponseDto> {
@@ -80,13 +92,20 @@ export class GroupService {
     return { groupCode, users };
   }
 
-  async updateGroupInfo(groupId: number, updateGroupInfoRequestDto: UpdateGroupInfoRequestDto): Promise<string> {
-    const { groupImage, groupName } = updateGroupInfoRequestDto;
+  async updateGroupInfo(
+    groupId: number,
+    file: CustomFile,
+    updateGroupInfoRequestDto: UpdateGroupInfoRequestDto,
+  ): Promise<string> {
+    const groupImage = this.imageService.getImageUrl(file);
+    const { groupName } = updateGroupInfoRequestDto;
 
     const group = await this.groupRepository.findOne({ groupId });
     if (!group) throw new NotFoundException(`Not found group with the id ${groupId}`);
 
-    this.groupRepository.update(groupId, { groupImage, groupName });
+    const updateObject = groupImage === undefined ? { groupName } : { groupImage, groupName };
+
+    this.groupRepository.update(groupId, updateObject);
 
     return "GroupInfo update success!!";
   }
@@ -108,7 +127,23 @@ export class GroupService {
     const albumsInfo = await this.groupRepository.getAlbumsQuery(groupId);
     if (!albumsInfo) throw new NotFoundException(`Not found group with the id ${groupId}`);
 
-    return albumsInfo;
+    const { albumOrder, albums } = albumsInfo;
+
+    const albumsObject = this.albumService.ArrayToObject(albums);
+
+    const reArrangedAlbums = this.reArrangeAlbums(albumOrder, albumsObject);
+
+    return { albums: reArrangedAlbums };
+  }
+
+  reArrangeAlbums(albumOrder: string, albumsObject: object): any[] {
+    const order = albumOrder.split(",");
+
+    const orderAlbum = order.map(e => {
+      return albumsObject[e];
+    });
+
+    return orderAlbum;
   }
 
   async updateAlbumOrder(groupId: number, updateAlbumOrderRequestDto: UpdateAlbumOrderRequestDto): Promise<string> {
@@ -116,5 +151,14 @@ export class GroupService {
     this.groupRepository.update(groupId, { albumOrder });
 
     return "Album Order update success!!";
+  }
+
+  ArrayToObject(groups: Group[]): object {
+    const result = groups.reduce((target, key) => {
+      target[key.groupId] = key;
+      return target;
+    }, {});
+
+    return result;
   }
 }
