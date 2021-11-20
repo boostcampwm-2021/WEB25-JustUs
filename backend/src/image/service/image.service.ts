@@ -57,9 +57,11 @@ export class ImageService {
 
   async updateImages(post: Post, addImages: string[], deleteImagesId: number[]): Promise<void> {
     if (deleteImagesId)
-      deleteImagesId.forEach(imageId => {
-        this.imageRepository.softRemove({ imageId });
-      });
+      typeof deleteImagesId === "number"
+        ? this.imageRepository.softRemove({ imageId: deleteImagesId })
+        : deleteImagesId.forEach(imageId => {
+            this.imageRepository.softRemove({ imageId });
+          });
     for (const image of addImages) {
       await this.imageRepository.save({
         imageUrl: image,

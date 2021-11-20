@@ -13,6 +13,7 @@ import { GetAlbumsResponseDto } from "src/dto/group/getAlbumsResponse.dto";
 import { UpdateAlbumOrderRequestDto } from "src/dto/group/updateAlbumOrderRequest.dto";
 import { CreateGroupResponseDto } from "src/dto/group/createGroupResponse.dto";
 import { UpdateGroupInfoResponseDto } from "src/dto/group/updateGroupInfoResponse.dto";
+import { GetHashTagsResponseDto } from "src/dto/group/getHashTagsResponse.dto";
 import { AlbumService } from "src/album/service/album.service";
 import { ImageService } from "src/image/service/image.service";
 
@@ -178,5 +179,12 @@ export class GroupService {
     }, {});
 
     return result;
+  }
+
+  async getHashTags(groupId: number): Promise<GetHashTagsResponseDto> {
+    const group = await this.groupRepository.getHashTagsQuery(groupId);
+    console.log(group);
+
+    return new GetHashTagsResponseDto();
   }
 }
