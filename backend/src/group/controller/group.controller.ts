@@ -25,6 +25,7 @@ import { GetAlbumsResponseDto } from "src/dto/group/getAlbumsResponse.dto";
 import { UpdateAlbumOrderRequestDto } from "src/dto/group/updateAlbumOrderRequest.dto";
 import { CreateGroupResponseDto } from "src/dto/group/createGroupResponse.dto";
 import { UpdateGroupInfoResponseDto } from "src/dto/group/updateGroupInfoResponse.dto";
+import { GetHashTagsResponseDto } from "src/dto/group/getHashTagsResponse.dto";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { multerOption } from "src/image/service/image.service";
 
@@ -104,5 +105,12 @@ export class GroupController {
     @Body() updateAlbumOrderRequestDto: UpdateAlbumOrderRequestDto,
   ): Promise<string> {
     return this.groupService.updateAlbumOrder(groupId, updateAlbumOrderRequestDto);
+  }
+
+  @Get("/:groupId/hashtags")
+  @ApiParam({ name: "groupId", type: Number })
+  @ApiResponse({ type: GetHashTagsResponseDto, status: 200 })
+  GetHashTags(@Param("groupId") groupId: number): Promise<GetHashTagsResponseDto> {
+    return this.groupService.getHashTags(groupId);
   }
 }

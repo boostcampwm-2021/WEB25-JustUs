@@ -45,9 +45,10 @@ export class PostService {
     const images = this.imageService.saveImage(postImages);
 
     const tags = this.getHashTag(postContent);
+
     const paring = tags?.join(",");
     const hashtagCategory = tags === undefined ? "" : paring;
-    const hashtags = tags === undefined ? [] : await this.hashTagService.saveHashTag(groupId, tags);
+    const hashtags = tags === undefined ? [] : await this.hashTagService.makeHashTag(groupId, tags);
 
     const post = await this.postRepository.save({
       postTitle: postTitle,
@@ -66,7 +67,7 @@ export class PostService {
     return post.postId;
   }
 
-  getHashTag(textParam: string): RegExpMatchArray {
+  getHashTag(textParam: string): string[] {
     const hashTagText = textParam.match(/#([\w|ㄱ-ㅎ|가-힣]+)/g);
 
     const removeTag = hashTagText?.map(e => {
@@ -95,7 +96,7 @@ export class PostService {
   ): Promise<string> {
     const addImages = this.imageService.getImagesUrl(files);
 
-    const { postTitle, postContent, deleteImagesId, postDate, postLocation, postLatitude, postLongitude } =
+    const { postTitle, postContent, deleteImagesId, postDate, postLocation, postLatitude, postLongitude, groupId } =
       updatePostInfoRequestDto;
 
     const post = await this.postRepository.findOne(postId, { relations: ["user"] });
@@ -104,7 +105,27 @@ export class PostService {
     const postUserId = post.user.userId;
     if (postUserId !== userId) throw new NotFoundException("It cannot be updated because it is not the author.");
 
-    this.postRepository.update(postId, { postTitle, postContent, postDate, postLocation, postLatitude, postLongitude });
+    const newTags = this.getHashTag(postContent);
+
+    await this.postRepository.deleteHashTagsQuery(postId);
+
+    const hashtags = newTags === undefined ? [] : await this.hashTagService.makeHashTag(groupId, newTags);
+
+    const paring = newTags?.join(",");
+    const newHashtagCategory = newTags === undefined ? "" : paring;
+
+    post.hashtags = hashtags;
+    this.postRepository.save(post);
+
+    await this.postRepository.update(postId, {
+      postTitle,
+      postContent,
+      postDate,
+      postLocation,
+      postLatitude,
+      postLongitude,
+      hashtagCategory: newHashtagCategory,
+    });
 
     this.imageService.updateImages(post, addImages, deleteImagesId);
 

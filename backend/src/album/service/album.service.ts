@@ -32,7 +32,7 @@ export class AlbumService {
     const { albumId } = album;
 
     const { albumOrder } = group;
-    const newAlbumOrder = `${albumOrder},${albumId}`;
+    const newAlbumOrder = `${albumId},${albumOrder}`;
     await this.groupRepository.update(groupId, { albumOrder: newAlbumOrder });
 
     return { albumId };
@@ -61,7 +61,18 @@ export class AlbumService {
 
     this.albumRepository.softRemove(album);
 
+    const { albumOrder } = group;
+    const reArrangedOrder = this.reArrangeAlbums(albumOrder, albumId);
+
+    await this.groupRepository.update(groupId, { albumOrder: reArrangedOrder });
+
     return "Album delete success!!";
+  }
+
+  reArrangeAlbums(albumOrder: string, albumId: number): string {
+    const order = albumOrder.split(",");
+
+    return order.filter(e => +e !== albumId).join(",");
   }
 
   async getBaseAlbumId(groupId: number): Promise<Album> {
