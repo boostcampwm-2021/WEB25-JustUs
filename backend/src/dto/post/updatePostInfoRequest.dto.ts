@@ -1,7 +1,7 @@
 import { PostInfo } from "./postInfo";
 import { ApiProperty } from "@nestjs/swagger";
-import { Type } from "class-transformer";
-import { IsOptional } from "class-validator";
+import { Type, Transform } from "class-transformer";
+import { IsNotEmpty, IsNumber, IsOptional } from "class-validator";
 
 export class UpdatePostInfoRequestDto extends PostInfo {
   @IsOptional()
@@ -12,4 +12,10 @@ export class UpdatePostInfoRequestDto extends PostInfo {
   @IsOptional()
   @ApiProperty({ type: ["file"] })
   addImages: any[];
+
+  @IsNumber()
+  @IsNotEmpty()
+  @Transform(({ value }) => Number(value))
+  @ApiProperty()
+  groupId: number;
 }

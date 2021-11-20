@@ -11,7 +11,7 @@ export class HashTag extends TimeStampEntity {
   @Column()
   hashtagContent: string;
 
-  @ManyToMany(() => Post)
+  @ManyToMany(() => Post, { onUpdate: "CASCADE" })
   @JoinTable({ name: "posts_hashtags" })
   posts: Post[];
 

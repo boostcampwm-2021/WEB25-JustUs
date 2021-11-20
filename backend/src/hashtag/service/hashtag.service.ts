@@ -13,7 +13,7 @@ export class HashTagService {
     private groupRepository: GroupRepository,
   ) {}
 
-  async saveHashTag(groupId: number, hashTags: RegExpMatchArray): Promise<HashTag[]> {
+  async makeHashTag(groupId: number, hashTags: string[]): Promise<HashTag[]> {
     const group = await this.groupRepository.findOne(groupId);
 
     return await Promise.all(
