@@ -78,7 +78,7 @@ const AlbumList = () => {
     const payload = {
       beforeIdx: target.dataset.albumidx,
       afterIdx: nowParent.dataset.albumidx,
-      post: { postId: target.dataset.id, postTitle: target.innerHTML },
+      post: { postId: target.dataset.id, postTitle: target.innerText },
     };
     dispatch({
       type: GroupAction.MOVE_POST,
