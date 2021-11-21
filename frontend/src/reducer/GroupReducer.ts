@@ -36,6 +36,9 @@ interface IInitState {
   deleteAlbumLoading: boolean;
   deleteAlbumSucceed: boolean;
   deleteAlbumError: boolean;
+  postShiftAlbumLoading: boolean;
+  postShiftAlbumSucceed: boolean;
+  postShiftAlbumError: boolean;
 }
 
 const initState: IInitState = {
@@ -56,6 +59,9 @@ const initState: IInitState = {
   deleteAlbumLoading: false,
   deleteAlbumSucceed: false,
   deleteAlbumError: false,
+  postShiftAlbumLoading: false,
+  postShiftAlbumSucceed: false,
+  postShiftAlbumError: false,
 };
 
 export const CREATE_GROUP = "CREATE_GROUP";
@@ -79,6 +85,9 @@ export const DELETE_ALBUM_FAILED = "DELETE_ALBUM_FAILED";
 export const UPDATE_ALBUM_ORDER_REQUEST = "UPDATE_ALBUM_ORDER_REQUEST";
 export const UPDATE_ALBUM_ORDER_SUCCEED = "UPDATE_ALBUM_ORDER_SUCCEED";
 export const UPDATE_ALBUM_ORDER_FAILED = "UPDATE_ALBUM_ORDER_FAILED";
+export const POST_SHIFT_ALBUM_REQUEST = "POST_SHIFT_ALBUM_REQUEST";
+export const POST_SHIFT_ALBUM_SUCCEED = "POST_SHIFT_ALBUM_SUCCEED";
+export const POST_SHIFT_ALBUM_FAILED = "POST_SHIFT_ALBUM_FAILED";
 
 export const createGroupAction = (payload: any) => ({
   type: CREATE_GROUP,
@@ -142,6 +151,19 @@ export const updateAlbumOrderAction = (groupId: number, albumOrder: string) => {
     payload: {
       groupId,
       albumOrder,
+    },
+  };
+};
+
+export const postShiftAlbumAction = (
+  postInfo: { postId: number; postTitle: string; albumId: number },
+  albumId: number,
+) => {
+  return {
+    type: POST_SHIFT_ALBUM_REQUEST,
+    payload: {
+      postInfo,
+      albumId,
     },
   };
 };
@@ -434,25 +456,46 @@ const groupReducer = (state = initState, action: any) => {
         updateAlbumOrderSucceed: false,
         updateAlbumOrderError: true,
       };
-    case GroupAction.MOVE_POST:
-      const beforeIdx = action.payload.beforeIdx;
-      const afterIdx = action.payload.afterIdx;
-      const post = action.payload.post;
-      const newAlbumList = state.albumList.map((album: AlbumListItemType, idx) => {
-        if (idx != beforeIdx) return album;
-        const updateAlbum: AlbumListItemType = {
-          albumId: album.albumId,
-          albumName: album.albumName,
-          posts: [],
-          base: album.base,
-        };
-        updateAlbum.posts = album.posts.filter((now) => now.postId != post.postId);
-        return updateAlbum;
-      });
-      newAlbumList[afterIdx].posts.push(post);
+    case POST_SHIFT_ALBUM_REQUEST:
       return {
         ...state,
+        postShiftAlbumLoading: true,
+        postShiftAlbumSucceed: false,
+        postShiftAlbumError: false,
+      };
+    case POST_SHIFT_ALBUM_SUCCEED:
+      const { postInfo, albumId } = action.payload;
+      const newAlbumList = state.albumList.map((album: AlbumListItemType) => {
+        if (album.albumId !== postInfo.albumId && album.albumId !== albumId) return album;
+        const updateAlbum =
+          album.albumId === postInfo.albumId
+            ? {
+                albumId: album.albumId,
+                albumName: album.albumName,
+                posts: album.posts.filter((now) => now.postId !== postInfo.postId),
+                base: album.base,
+              }
+            : {
+                albumId: album.albumId,
+                albumName: album.albumName,
+                posts: [...album.posts, { postId: postInfo.postId, postTitle: postInfo.postTitle }],
+                base: album.base,
+              };
+        return updateAlbum;
+      });
+      return {
+        ...state,
+        postShiftAlbumLoading: false,
+        postShiftAlbumSucceed: true,
+        postShiftAlbumError: false,
         albumList: newAlbumList,
+      };
+    case POST_SHIFT_ALBUM_FAILED:
+      return {
+        ...state,
+        postShiftAlbumLoading: false,
+        postShiftAlbumSucceed: false,
+        postShiftAlbumError: true,
       };
     default:
       return state;

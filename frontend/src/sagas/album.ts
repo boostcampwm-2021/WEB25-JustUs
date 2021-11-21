@@ -12,6 +12,9 @@ import {
   UPDATE_ALBUM_ORDER_REQUEST,
   UPDATE_ALBUM_ORDER_SUCCEED,
   UPDATE_ALBUM_ORDER_FAILED,
+  POST_SHIFT_ALBUM_REQUEST,
+  POST_SHIFT_ALBUM_SUCCEED,
+  POST_SHIFT_ALBUM_FAILED,
 } from "@src/reducer/GroupReducer";
 import axios from "axios";
 
@@ -41,6 +44,10 @@ function deleteAlbumApi(albumId: number) {
 
 function updateAlbumOrderApi(groupId: number, albumOrder: string) {
   return axios.put(`${SERVER_URL}/api/groups/${groupId}/albumorder`, { albumOrder }, { withCredentials: true });
+}
+
+function postShiftAlbumApi(postId: number, albumId: number) {
+  return axios.put(`${SERVER_URL}/api/posts/${postId}/shift`, { albumId }, { withCredentials: true });
 }
 
 function* createAlbum({ payload }: any) {
@@ -83,6 +90,17 @@ function* updateAlbumOrder({ payload }: any) {
   }
 }
 
+function* postShiftAlbum({ payload }: any) {
+  try {
+    const { postInfo, albumId } = payload;
+    const postId = postInfo.postId;
+    yield call(postShiftAlbumApi, postId, albumId);
+    yield put({ type: POST_SHIFT_ALBUM_SUCCEED, payload: { postInfo, albumId } });
+  } catch (err: any) {
+    yield put({ type: POST_SHIFT_ALBUM_FAILED });
+  }
+}
+
 function* watchAlbumCreate() {
   yield takeLatest(NEW_ALBUM_REQUEST, createAlbum);
 }
@@ -99,6 +117,16 @@ function* watchAlbumOrderUpdate() {
   yield takeLatest(UPDATE_ALBUM_ORDER_REQUEST, updateAlbumOrder);
 }
 
+function* watchPostShiftAlbum() {
+  yield takeLatest(POST_SHIFT_ALBUM_REQUEST, postShiftAlbum);
+}
+
 export default function* albumSaga() {
-  yield all([fork(watchAlbumCreate), fork(watchAlbumUpdate), fork(watchAlbumDelete), fork(watchAlbumOrderUpdate)]);
+  yield all([
+    fork(watchAlbumCreate),
+    fork(watchAlbumUpdate),
+    fork(watchAlbumDelete),
+    fork(watchAlbumOrderUpdate),
+    fork(watchPostShiftAlbum),
+  ]);
 }

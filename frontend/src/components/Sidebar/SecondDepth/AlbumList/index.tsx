@@ -3,9 +3,8 @@ import styled from "styled-components";
 import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
 import Album from "./Album";
-import { GroupAction } from "@src/action";
 import { useDispatch } from "react-redux";
-import { updateAlbumOrderAction } from "@src/reducer/GroupReducer";
+import { updateAlbumOrderAction, postShiftAlbumAction } from "@src/reducer/GroupReducer";
 
 const AlbumList = () => {
   const dispatch = useDispatch();
@@ -75,15 +74,12 @@ const AlbumList = () => {
     const nowParent = nowElement?.closest(".albumItem") as HTMLElement;
     if (!nowParent) return;
     if (parent === nowParent) return;
-    const payload = {
-      beforeIdx: target.dataset.albumidx,
-      afterIdx: nowParent.dataset.albumidx,
-      post: { postId: target.dataset.id, postTitle: target.innerText },
-    };
-    dispatch({
-      type: GroupAction.MOVE_POST,
-      payload: payload,
-    });
+    const postId: number = Number(target.dataset.id);
+    const postTitle: string = target.innerText;
+    const postAlbumId: number = Number(target.dataset.albumId);
+    const postInfo = { postId, postTitle, albumId: postAlbumId };
+    const albumId: number = Number(nowParent.dataset.albumId);
+    dispatch(postShiftAlbumAction(postInfo, albumId));
   }
 
   function onPostDragHandler(ev: React.DragEvent<HTMLDivElement>) {
