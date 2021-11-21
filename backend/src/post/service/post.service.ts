@@ -8,10 +8,12 @@ import { CreatePostRequestDto } from "src/dto/post/createPostRequest.dto";
 import { GetPostInfoResponseDto } from "src/dto/post/getPostInfoResponse.dto";
 import { UpdatePostInfoRequestDto } from "src/dto/post/updatePostInfoRequest.dto";
 import { ShiftPostRequestDto } from "src/dto/post/shiftPostRequest.dto";
+import { GetSearchPostResponse } from "src/dto/post/getSearchPostResponse.dto";
 import { AlbumService } from "src/album/service/album.service";
 import { HashTagService } from "src/hashtag/service/hashtag.service";
 import { HashTag } from "src/hashtag/hashtag.entity";
 import { Post } from "src/post/post.entity";
+import { HashTagRepository } from "src/hashtag/hashtag.repository";
 
 @Injectable()
 export class PostService {
@@ -25,6 +27,8 @@ export class PostService {
     private userRepository: UserRepository,
     @InjectRepository(AlbumRepository)
     private albumRepository: AlbumRepository,
+    @InjectRepository(HashTagRepository)
+    private hashTagRepository: HashTagRepository,
   ) {}
 
   async createPost(
@@ -153,5 +157,11 @@ export class PostService {
     this.postRepository.update(postId, { album });
 
     return "Post Shift success!!";
+  }
+
+  async getSearchPost(hashtagId: number): Promise<GetSearchPostResponse> {
+    const { posts } = await this.hashTagRepository.getSearchPosts(hashtagId);
+
+    return { posts };
   }
 }
