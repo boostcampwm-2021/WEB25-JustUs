@@ -9,6 +9,9 @@ import {
   DELETE_ALBUM_REQUEST,
   DELETE_ALBUM_SUCCEED,
   DELETE_ALBUM_FAILED,
+  UPDATE_ALBUM_ORDER_REQUEST,
+  UPDATE_ALBUM_ORDER_SUCCEED,
+  UPDATE_ALBUM_ORDER_FAILED,
 } from "@src/reducer/GroupReducer";
 import axios from "axios";
 
@@ -34,6 +37,10 @@ function updateAlbumApi(albumName: string, albumId: number) {
 
 function deleteAlbumApi(albumId: number) {
   return axios.delete(`${SERVER_URL}/api/albums/${albumId}`, { withCredentials: true });
+}
+
+function updateAlbumOrderApi(groupId: number, albumOrder: string) {
+  return axios.put(`${SERVER_URL}/api/groups/${groupId}/albumorder`, { albumOrder }, { withCredentials: true });
 }
 
 function* createAlbum({ payload }: any) {
@@ -66,6 +73,16 @@ function* deleteAlbum({ payload }: any) {
   }
 }
 
+function* updateAlbumOrder({ payload }: any) {
+  try {
+    const { groupId, albumOrder } = payload;
+    yield call(updateAlbumOrderApi, groupId, albumOrder);
+    yield put({ type: UPDATE_ALBUM_ORDER_SUCCEED, payload: { groupId, albumOrder } });
+  } catch (err: any) {
+    yield put({ type: UPDATE_ALBUM_ORDER_FAILED });
+  }
+}
+
 function* watchAlbumCreate() {
   yield takeLatest(NEW_ALBUM_REQUEST, createAlbum);
 }
@@ -78,6 +95,10 @@ function* watchAlbumDelete() {
   yield takeLatest(DELETE_ALBUM_REQUEST, deleteAlbum);
 }
 
+function* watchAlbumOrderUpdate() {
+  yield takeLatest(UPDATE_ALBUM_ORDER_REQUEST, updateAlbumOrder);
+}
+
 export default function* albumSaga() {
-  yield all([fork(watchAlbumCreate), fork(watchAlbumUpdate), fork(watchAlbumDelete)]);
+  yield all([fork(watchAlbumCreate), fork(watchAlbumUpdate), fork(watchAlbumDelete), fork(watchAlbumOrderUpdate)]);
 }

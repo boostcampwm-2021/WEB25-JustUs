@@ -76,6 +76,9 @@ export const UPDATE_ALBUM_FAILED = "UPDATE_ALBUM_FAILED";
 export const DELETE_ALBUM_REQUEST = "DELETE_ALBUM_REQUEST";
 export const DELETE_ALBUM_SUCCEED = "DELETE_ALBUM_SUCCEED";
 export const DELETE_ALBUM_FAILED = "DELETE_ALBUM_FAILED";
+export const UPDATE_ALBUM_ORDER_REQUEST = "UPDATE_ALBUM_ORDER_REQUEST";
+export const UPDATE_ALBUM_ORDER_SUCCEED = "UPDATE_ALBUM_ORDER_SUCCEED";
+export const UPDATE_ALBUM_ORDER_FAILED = "UPDATE_ALBUM_ORDER_FAILED";
 
 export const createGroupAction = (payload: any) => ({
   type: CREATE_GROUP,
@@ -133,6 +136,16 @@ export const deleteAlbumRequestAction = (albumId: number) => {
   };
 };
 
+export const updateAlbumOrderAction = (groupId: number, albumOrder: string) => {
+  return {
+    type: UPDATE_ALBUM_ORDER_REQUEST,
+    payload: {
+      groupId,
+      albumOrder,
+    },
+  };
+};
+
 const groupReducer = (state = initState, action: any) => {
   switch (action.type) {
     case "REQUEST_GROUP_INFO":
@@ -177,26 +190,6 @@ const groupReducer = (state = initState, action: any) => {
         }),
         albumList: [],
         postsList: [],
-      };
-    case GroupAction.MOVE_POST:
-      const beforeIdx = action.payload.beforeIdx;
-      const afterIdx = action.payload.afterIdx;
-      const post = action.payload.post;
-      const newAlbumList = state.albumList.map((album: AlbumListItemType, idx) => {
-        if (idx != beforeIdx) return album;
-        const updateAlbum: AlbumListItemType = {
-          albumId: album.albumId,
-          albumName: album.albumName,
-          posts: [],
-          base: album.base,
-        };
-        updateAlbum.posts = album.posts.filter((now) => now.postId != post.postId);
-        return updateAlbum;
-      });
-      newAlbumList[afterIdx].posts.push(post);
-      return {
-        ...state,
-        albumList: newAlbumList,
       };
     case "UPLOAD_POST_REQUEST":
       return {
@@ -419,6 +412,47 @@ const groupReducer = (state = initState, action: any) => {
         deleteAlbumLoading: false,
         deleteAlbumSucceed: false,
         deleteAlbumError: true,
+      };
+    case UPDATE_ALBUM_ORDER_REQUEST:
+      return {
+        ...state,
+        updateAlbumOrderLoading: true,
+        updateAlbumOrderSucceed: false,
+        updateAlbumOrderError: false,
+      };
+    case UPDATE_ALBUM_ORDER_SUCCEED:
+      return {
+        ...state,
+        updateAlbumOrderLoading: false,
+        updateAlbumOrderSucceed: true,
+        updateAlbumOrderError: false,
+      };
+    case UPDATE_ALBUM_ORDER_FAILED:
+      return {
+        ...state,
+        updateAlbumOrderLoading: false,
+        updateAlbumOrderSucceed: false,
+        updateAlbumOrderError: true,
+      };
+    case GroupAction.MOVE_POST:
+      const beforeIdx = action.payload.beforeIdx;
+      const afterIdx = action.payload.afterIdx;
+      const post = action.payload.post;
+      const newAlbumList = state.albumList.map((album: AlbumListItemType, idx) => {
+        if (idx != beforeIdx) return album;
+        const updateAlbum: AlbumListItemType = {
+          albumId: album.albumId,
+          albumName: album.albumName,
+          posts: [],
+          base: album.base,
+        };
+        updateAlbum.posts = album.posts.filter((now) => now.postId != post.postId);
+        return updateAlbum;
+      });
+      newAlbumList[afterIdx].posts.push(post);
+      return {
+        ...state,
+        albumList: newAlbumList,
       };
     default:
       return state;
