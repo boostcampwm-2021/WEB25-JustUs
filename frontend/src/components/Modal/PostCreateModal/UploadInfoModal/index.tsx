@@ -61,7 +61,7 @@ const UploadInfoModal = ({
   const highlightsRef = useRef() as React.MutableRefObject<HTMLDivElement>;
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const backdropRef = useRef<HTMLDivElement>(null);
-  const { address }: any = useSelector((state: RootState) => state.address);
+  const { address, position }: any = useSelector((state: RootState) => state.address);
   const { selectedPost }: { selectedPost: IselectedPost } = useSelector((state: RootState) => state.modal);
   const { selectedGroup, albumList }: any = useSelector((state: RootState) => state.groups);
 
@@ -108,9 +108,9 @@ const UploadInfoModal = ({
         postTitle: title,
         postContent: text,
         postDate: date,
-        postLocation: selectedLocation.address_name,
-        postLatitude: Number(selectedLocation.y),
-        postLongitude: Number(selectedLocation.x),
+        postLocation: address === "" ? selectedLocation.address_name : address,
+        postLatitude: address === "" ? Number(selectedLocation.y) : position.y,
+        postLongitude: address === "" ? Number(selectedLocation.x) : position.x,
         groupId: selectedGroup.groupId,
         postImage: files,
       };
@@ -195,7 +195,7 @@ const UploadInfoModal = ({
                 ) : (
                   <InputPlaceName>{address}</InputPlaceName>
                 )}
-                <LocationButton onClick={onClickLocationBtn}>
+                <LocationButton onClick={address === "" ? onClickLocationBtn : () => null}>
                   <img src="/icons/location.svg" width="100%" />
                 </LocationButton>
               </InputPlace>
