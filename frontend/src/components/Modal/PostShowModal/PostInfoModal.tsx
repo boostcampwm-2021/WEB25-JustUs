@@ -40,7 +40,7 @@ const highlights = (text: string) => {
 const PostInfoModal = () => {
   const [modalOpened, setModalOpened] = useState(false);
   const { selectedPost } = useSelector((state: RootState) => state.modal);
-  const { userNickName } = useSelector((state: RootState) => state.user);
+  const { userId } = useSelector((state: RootState) => state.user);
 
   return (
     <ModalContainer
@@ -53,7 +53,7 @@ const PostInfoModal = () => {
       <Modal>
         <ModalHeader>
           <PostTitle>{selectedPost.postTitle}</PostTitle>
-          {selectedPost.userNickname === userNickName ? (
+          {selectedPost.userId === userId ? (
             <MoreIconWrapper
               className="more-icon"
               onClick={() => {

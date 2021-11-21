@@ -148,7 +148,6 @@ const UploadInfoModal = ({
   };
 
   useEffect(() => {
-    console.log(selectedLocation);
     if (title.length === 0 || date.length == 0 || selectedLocation.y === -1) setActivate(false);
     else setActivate(true);
   }, [title, date, selectedLocation]);

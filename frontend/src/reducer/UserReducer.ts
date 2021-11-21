@@ -1,6 +1,7 @@
 export const initState = {
   userNickName: null,
   userProfile: null,
+  userId: null,
   userInfoLoading: true,
   userInfoSucceed: false,
   userInfoError: false,
@@ -57,6 +58,7 @@ export const userReducer = (state = initState, action: any) => {
         userInfoError: false,
         userNickName: action.data.userNickname,
         userProfile: action.data.profileImage,
+        userId: action.data.userId,
       };
     case USER_INFO_FAILED:
       return {
@@ -66,6 +68,7 @@ export const userReducer = (state = initState, action: any) => {
         userInfoError: true,
         userNickName: null,
         userProfile: null,
+        userId: null,
       };
     case LOG_OUT_REQUEST:
       return {
@@ -79,6 +82,7 @@ export const userReducer = (state = initState, action: any) => {
         userInfoSucceed: false,
         userNickName: null,
         userProfile: null,
+        userId: null,
       };
     case LOG_OUT_FAILED:
       return {
