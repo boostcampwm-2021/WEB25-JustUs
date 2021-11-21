@@ -50,7 +50,7 @@ function* updateAlbum({ payload }: any) {
   try {
     const { albumName, albumId } = payload;
     yield call(updateAlbumApi, albumName, albumId);
-    yield put({ type: UPDATE_ALBUM_SUCCEED });
+    yield put({ type: UPDATE_ALBUM_SUCCEED, payload: { albumName, albumId } });
   } catch (err: any) {
     yield put({ type: UPDATE_ALBUM_FAILED });
   }

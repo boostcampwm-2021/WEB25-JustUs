@@ -114,13 +114,15 @@ export const newAlbumRequestAction = (albumName: string, groupId: number) => ({
   },
 });
 
-export const updateAlbumRequestAction = (albumName: string, albumId: number) => ({
-  type: UPDATE_ALBUM_REQUEST,
-  payload: {
-    albumName,
-    albumId,
-  },
-});
+export const updateAlbumRequestAction = (albumName: string, albumId: number) => {
+  return {
+    type: UPDATE_ALBUM_REQUEST,
+    payload: {
+      albumName,
+      albumId,
+    },
+  };
+};
 
 export const deleteAlbumRequestAction = (albumId: number) => ({
   type: DELETE_ALBUM_REQUEST,
@@ -353,21 +355,36 @@ const groupReducer = (state = initState, action: any) => {
       };
     case UPDATE_ALBUM_REQUEST:
       return {
+        ...state,
         updateAlbumLoading: true,
         updateAlbumSucceed: false,
         updateAlbumError: false,
       };
     case UPDATE_ALBUM_SUCCEED:
+      const updateAlbumListWhenSucceed = state.albumList.map((album: AlbumListItemType) => {
+        if (album.albumId !== action.payload.albumId) return album;
+        const updateAlbumName: AlbumListItemType = {
+          albumId: action.payload.albumId,
+          albumName: action.payload.albumName,
+          posts: album.posts,
+          base: album.base,
+        };
+        return updateAlbumName;
+      });
       return {
+        ...state,
         updateAlbumLoading: false,
         updateAlbumSucceed: true,
         updateAlbumError: false,
+        albumList: updateAlbumListWhenSucceed,
       };
     case UPDATE_ALBUM_FAILED:
       return {
+        ...state,
         updateAlbumLoading: false,
         updateAlbumSucceed: false,
         updateAlbumError: true,
+        groups: state.groups,
       };
     case DELETE_ALBUM_REQUEST:
       return {
