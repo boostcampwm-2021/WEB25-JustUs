@@ -105,8 +105,8 @@ function* getGroupInfo(action: any) {
 function* createGroup({ payload }: any) {
   try {
     const result: ResponseGenerator = yield call(createGroupApi, payload);
-
-    const { groupId, groupName, groupImage } = result.data;
+    const { groupId, groupImage } = result.data;
+    const { groupName } = payload;
 
     yield put({ type: "ADD_GROUP", payload: { groupId, groupName, groupImage } });
   } catch (err: any) {}

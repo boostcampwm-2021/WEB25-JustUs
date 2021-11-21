@@ -156,7 +156,7 @@ const ImageBackground = styled.div<{ groupImage: string }>`
   width: 10rem;
   height: 10rem;
   background-color: ${(props) => props.theme.SECONDARY};
-  opacity: ${(props) => (props.groupImage === "/icons/person.svg" ? "0.4" : "")};
+  opacity: ${(props) => (props.groupImage.match(/base-person-image$/) ? "0.4" : "")};
   border-radius: 100%;
 
   & > img {
