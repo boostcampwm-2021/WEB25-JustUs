@@ -60,7 +60,7 @@ function* deleteAlbum({ payload }: any) {
   try {
     const { albumId } = payload;
     yield call(deleteAlbumApi, albumId);
-    yield put({ type: DELETE_ALBUM_SUCCEED });
+    yield put({ type: DELETE_ALBUM_SUCCEED, payload: { albumId } });
   } catch (err: any) {
     yield put({ type: DELETE_ALBUM_FAILED });
   }

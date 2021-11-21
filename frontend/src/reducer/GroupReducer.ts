@@ -73,9 +73,9 @@ export const NEW_ALBUM_FAILED = "NEW_ALBUM_FAILED";
 export const UPDATE_ALBUM_REQUEST = "UPDATE_ALBUM_REQUEST";
 export const UPDATE_ALBUM_SUCCEED = "UPDATE_ALBUM_SUCCEED";
 export const UPDATE_ALBUM_FAILED = "UPDATE_ALBUM_FAILED";
-export const DELETE_ALBUM_REQUEST = "UPDATE_ALBUM_REQUEST";
-export const DELETE_ALBUM_SUCCEED = "UPDATE_ALBUM_SUCCEED";
-export const DELETE_ALBUM_FAILED = "UPDATE_ALBUM_FAILED";
+export const DELETE_ALBUM_REQUEST = "DELETE_ALBUM_REQUEST";
+export const DELETE_ALBUM_SUCCEED = "DELETE_ALBUM_SUCCEED";
+export const DELETE_ALBUM_FAILED = "DELETE_ALBUM_FAILED";
 
 export const createGroupAction = (payload: any) => ({
   type: CREATE_GROUP,
@@ -124,12 +124,14 @@ export const updateAlbumRequestAction = (albumName: string, albumId: number) => 
   };
 };
 
-export const deleteAlbumRequestAction = (albumId: number) => ({
-  type: DELETE_ALBUM_REQUEST,
-  payload: {
-    albumId,
-  },
-});
+export const deleteAlbumRequestAction = (albumId: number) => {
+  return {
+    type: DELETE_ALBUM_REQUEST,
+    payload: {
+      albumId,
+    },
+  };
+};
 
 const groupReducer = (state = initState, action: any) => {
   switch (action.type) {
@@ -388,18 +390,32 @@ const groupReducer = (state = initState, action: any) => {
       };
     case DELETE_ALBUM_REQUEST:
       return {
+        ...state,
         deleteAlbumLoading: true,
         deleteAlbumSucceed: false,
         deleteAlbumError: false,
       };
     case DELETE_ALBUM_SUCCEED:
+      const afterDeleteAlbum = state.albumList.filter(
+        (album: AlbumListItemType) => album.albumId !== action.payload.albumId,
+      );
+      const deleteAlbumIdx = state.albumList.findIndex(
+        (album: AlbumListItemType) => album.albumId === action.payload.albumId,
+      );
+      const originDeleteAlbumPosts = state.albumList[deleteAlbumIdx].posts;
+      const baseAlbumIdx = afterDeleteAlbum.findIndex((album: AlbumListItemType) => album.base);
+      const baseAlbumPosts = afterDeleteAlbum[baseAlbumIdx].posts;
+      afterDeleteAlbum[baseAlbumIdx].posts = [...baseAlbumPosts, ...originDeleteAlbumPosts];
       return {
+        ...state,
         deleteAlbumLoading: false,
         deleteAlbumSucceed: true,
         deleteAlbumError: false,
+        albumList: afterDeleteAlbum,
       };
     case DELETE_ALBUM_FAILED:
       return {
+        ...state,
         deleteAlbumLoading: false,
         deleteAlbumSucceed: false,
         deleteAlbumError: true,
