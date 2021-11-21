@@ -9,10 +9,20 @@ import {
   DELETE_ALBUM_REQUEST,
   DELETE_ALBUM_SUCCEED,
   DELETE_ALBUM_FAILED,
-} from "@src/reducer/AlbumReducer";
+} from "@src/reducer/GroupReducer";
 import axios from "axios";
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
+
+interface ResponseGenerator {
+  config?: any;
+  data?: any;
+  headers?: any;
+  request?: any;
+  status?: number;
+  statusText?: string;
+  json: Function;
+}
 
 function createAlbumApi(albumName: string, groupId: number) {
   return axios.post(`${SERVER_URL}/api/albums`, { albumName, groupId }, { withCredentials: true });
@@ -29,8 +39,8 @@ function deleteAlbumApi(albumId: number) {
 function* createAlbum({ payload }: any) {
   try {
     const { albumName, groupId } = payload;
-    yield call(createAlbumApi, albumName, groupId);
-    yield put({ type: NEW_ALBUM_SUCCEED });
+    const result: ResponseGenerator = yield call(createAlbumApi, albumName, groupId);
+    yield put({ type: NEW_ALBUM_SUCCEED, payload: { albumName, groupId, albumId: result.data.albumId } });
   } catch (err: any) {
     yield put({ type: NEW_ALBUM_FAILED });
   }

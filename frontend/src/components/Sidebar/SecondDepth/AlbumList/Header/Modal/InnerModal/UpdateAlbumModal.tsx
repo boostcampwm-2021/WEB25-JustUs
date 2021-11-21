@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import COLOR from "@styles/Color";
 import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
-import { updateAlbumRequestAction } from "@src/reducer/AlbumReducer";
+import { updateAlbumRequestAction } from "@src/reducer/GroupReducer";
 
 const UpdateAlbumModal = () => {
   const dispatch = useDispatch();

@@ -18,6 +18,46 @@ interface AlbumListItemType {
   base: boolean;
 }
 
+interface IInitState {
+  selectedGroup: GroupType | null;
+  isLoading: Boolean;
+  albumList: AlbumListItemType[];
+  postsList: PostType[];
+  isPostUploading: boolean;
+  isPostUpdateing: boolean;
+  isPostDeleting: boolean;
+  groups: Array<GroupType>;
+  newAlbumLoading: boolean;
+  newAlbumSucceed: boolean;
+  newAlbumError: boolean;
+  updateAlbumLoading: boolean;
+  updateAlbumSucceed: boolean;
+  updateAlbumError: boolean;
+  deleteAlbumLoading: boolean;
+  deleteAlbumSucceed: boolean;
+  deleteAlbumError: boolean;
+}
+
+const initState: IInitState = {
+  selectedGroup: null,
+  isLoading: true,
+  groups: [],
+  albumList: [{ albumId: 0, albumName: "", posts: [], base: false }],
+  isPostUploading: false,
+  isPostUpdateing: false,
+  isPostDeleting: false,
+  postsList: [{ postId: -1, postTitle: "", postLatitude: 0, postLongitude: 0 }],
+  newAlbumLoading: false,
+  newAlbumSucceed: false,
+  newAlbumError: false,
+  updateAlbumLoading: false,
+  updateAlbumSucceed: false,
+  updateAlbumError: false,
+  deleteAlbumLoading: false,
+  deleteAlbumSucceed: false,
+  deleteAlbumError: false,
+};
+
 export const CREATE_GROUP = "CREATE_GROUP";
 export const GET_ALBUM_LIST = "GET_ALBUM_LIST";
 export const REQUEST_DELETE = "REQUEST_DELETE";
@@ -26,6 +66,16 @@ export const GET_GROUP_MEMBER_LIST = "GET_GROUP_MEMBER_LIST";
 export const GET_GROUP_LIST = "GET_GROUP_LIST";
 export const SET_GROUPS = "SET_GROUPS";
 export const REQUEST_JOIN_GROUP = "REQUEST_JOIN_GROUP";
+
+export const NEW_ALBUM_REQUEST = "NEW_ALBUM_REQUEST";
+export const NEW_ALBUM_SUCCEED = "NEW_ALBUM_SUCCEED";
+export const NEW_ALBUM_FAILED = "NEW_ALBUM_FAILED";
+export const UPDATE_ALBUM_REQUEST = "UPDATE_ALBUM_REQUEST";
+export const UPDATE_ALBUM_SUCCEED = "UPDATE_ALBUM_SUCCEED";
+export const UPDATE_ALBUM_FAILED = "UPDATE_ALBUM_FAILED";
+export const DELETE_ALBUM_REQUEST = "UPDATE_ALBUM_REQUEST";
+export const DELETE_ALBUM_SUCCEED = "UPDATE_ALBUM_SUCCEED";
+export const DELETE_ALBUM_FAILED = "UPDATE_ALBUM_FAILED";
 
 export const createGroupAction = (payload: any) => ({
   type: CREATE_GROUP,
@@ -56,25 +106,28 @@ export const requestJoinGroupAction = (payload: any) => ({
   payload,
 });
 
-const initState: {
-  selectedGroup: GroupType | null;
-  isLoading: Boolean;
-  albumList: AlbumListItemType[];
-  postsList: PostType[];
-  isPostUploading: boolean;
-  isPostUpdateing: boolean;
-  isPostDeleting: boolean;
-  groups: Array<GroupType>;
-} = {
-  selectedGroup: null,
-  isLoading: true,
-  groups: [],
-  albumList: [{ albumId: 0, albumName: "", posts: [], base: false }],
-  isPostUploading: false,
-  isPostUpdateing: false,
-  isPostDeleting: false,
-  postsList: [{ postId: -1, postTitle: "", postLatitude: 0, postLongitude: 0 }],
-};
+export const newAlbumRequestAction = (albumName: string, groupId: number) => ({
+  type: NEW_ALBUM_REQUEST,
+  payload: {
+    albumName,
+    groupId,
+  },
+});
+
+export const updateAlbumRequestAction = (albumName: string, albumId: number) => ({
+  type: UPDATE_ALBUM_REQUEST,
+  payload: {
+    albumName,
+    albumId,
+  },
+});
+
+export const deleteAlbumRequestAction = (albumId: number) => ({
+  type: DELETE_ALBUM_REQUEST,
+  payload: {
+    albumId,
+  },
+});
 
 const groupReducer = (state = initState, action: any) => {
   switch (action.type) {
@@ -269,6 +322,70 @@ const groupReducer = (state = initState, action: any) => {
       return {
         ...state,
         groups: action.payload,
+      };
+    case NEW_ALBUM_REQUEST:
+      return {
+        ...state,
+        newAlbumLoading: true,
+        newAlbumSucceed: false,
+        newAlbumError: false,
+      };
+    case NEW_ALBUM_SUCCEED:
+      const newAlbum: AlbumListItemType = {
+        albumId: action.payload.albumId,
+        albumName: action.payload.albumName,
+        posts: [],
+        base: false,
+      };
+      return {
+        ...state,
+        newAlbumLoading: false,
+        newAlbumSucceed: true,
+        newAlbumError: false,
+        albumList: [newAlbum, ...state.albumList],
+      };
+    case NEW_ALBUM_FAILED:
+      return {
+        ...state,
+        newAlbumLoading: false,
+        newAlbumSucceed: false,
+        newAlbumError: true,
+      };
+    case UPDATE_ALBUM_REQUEST:
+      return {
+        updateAlbumLoading: true,
+        updateAlbumSucceed: false,
+        updateAlbumError: false,
+      };
+    case UPDATE_ALBUM_SUCCEED:
+      return {
+        updateAlbumLoading: false,
+        updateAlbumSucceed: true,
+        updateAlbumError: false,
+      };
+    case UPDATE_ALBUM_FAILED:
+      return {
+        updateAlbumLoading: false,
+        updateAlbumSucceed: false,
+        updateAlbumError: true,
+      };
+    case DELETE_ALBUM_REQUEST:
+      return {
+        deleteAlbumLoading: true,
+        deleteAlbumSucceed: false,
+        deleteAlbumError: false,
+      };
+    case DELETE_ALBUM_SUCCEED:
+      return {
+        deleteAlbumLoading: false,
+        deleteAlbumSucceed: true,
+        deleteAlbumError: false,
+      };
+    case DELETE_ALBUM_FAILED:
+      return {
+        deleteAlbumLoading: false,
+        deleteAlbumSucceed: false,
+        deleteAlbumError: true,
       };
     default:
       return state;
