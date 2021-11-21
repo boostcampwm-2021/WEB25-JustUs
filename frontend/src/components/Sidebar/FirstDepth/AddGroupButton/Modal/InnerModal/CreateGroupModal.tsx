@@ -1,10 +1,9 @@
-import React, { ChangeEventHandler, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import styled, { keyframes } from "styled-components";
 import { flexRowCenterAlign } from "@styles/StyledComponents";
 import Modal from "@components/Modal";
 import { useDispatch } from "react-redux";
 import COLOR from "@styles/Color";
-import { GroupAction } from "@src/action";
 import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
 import { createGroupAction } from "@src/reducer/GroupReducer";
@@ -78,7 +77,6 @@ const CreateGroupModal = () => {
       albumList: [{ albumId, albumName: "기본 앨범", posts: [] }],
     };
 
-    // dispatch({ type: GroupAction.ADD_GROUP, payload: newGroup });
     dispatch(createGroupAction({ groupName, groupImage: imageFile }));
 
     closeModal();

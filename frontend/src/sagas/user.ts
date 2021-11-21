@@ -44,8 +44,12 @@ function getLogOutApi() {
 
 async function updateUserInfoApi(user: IUser) {
   const formData = new FormData();
+  const res = await fetch("http://localhost:3000/img/person.png");
+  const blob = await res.blob();
+  const baseImage = new File([blob], "base-person-image", { type: "image/png" });
+
   formData.append("userNickname", user.updateUserNickName);
-  formData.append("profileImage", user.updateUserProfile);
+  formData.append("profileImage", user.updateUserProfile ? user.updateUserProfile : baseImage);
 
   const result = await axios.put(`${SERVER_URL}/api/user`, formData, {
     withCredentials: true,
@@ -92,7 +96,7 @@ function* updateUserInfo() {
 
     yield put({
       type: SET_UPDATED_USER_INFO,
-      payload: { userNickName: user.updateUserNickName, userProfile: result.data },
+      payload: { userNickName: user.updateUserNickName, userProfile: result.data.profileImage },
     });
   } catch (err: any) {
     yield put({ type: SET_UPDATE_FAIL });
