@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from "react-redux";
 import Carousel from "@components/Modal/PostCreateModal/UploadInfoModal/Carousel";
 import { RootState } from "@src/reducer";
 import ModalSub from "./ModalSub";
-import dummyPosts from "@components/Map/dummyPosts";
 
 interface FileObject {
   imageUrl: File | string;

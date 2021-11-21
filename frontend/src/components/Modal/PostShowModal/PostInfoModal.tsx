@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import COLOR from "@src/styles/Color";
 import Carousel from "@components/Modal/PostCreateModal/UploadInfoModal/Carousel";
-import shortid from "shortid";
 import { flexRowCenterAlign } from "@styles/StyledComponents";
 import { ReactComponent as MoreVertSVG } from "@styles/icons/more-vert.svg";
 import PostSettingModal from "./Modal";
@@ -41,27 +40,29 @@ const highlights = (text: string) => {
 const PostInfoModal = () => {
   const [modalOpened, setModalOpened] = useState(false);
   const { selectedPost } = useSelector((state: RootState) => state.modal);
+  const { userNickName } = useSelector((state: RootState) => state.user);
 
   return (
     <ModalContainer
       onClick={(event) => {
         const target = event.target as HTMLElement;
         if (!target.closest(".more-icon")) setModalOpened(false);
-
         event.nativeEvent.stopImmediatePropagation();
       }}
     >
       <Modal>
         <ModalHeader>
           <PostTitle>{selectedPost.postTitle}</PostTitle>
-          <MoreIconWrapper
-            className="more-icon"
-            onClick={() => {
-              setModalOpened((prev) => !prev);
-            }}
-          >
-            <MoreVertSVG fill={COLOR.BLACK} />
-          </MoreIconWrapper>
+          {selectedPost.userNickname === userNickName ? (
+            <MoreIconWrapper
+              className="more-icon"
+              onClick={() => {
+                setModalOpened((prev) => !prev);
+              }}
+            >
+              <MoreVertSVG fill={COLOR.BLACK} />
+            </MoreIconWrapper>
+          ) : null}
           {modalOpened && <PostSettingModal />}
         </ModalHeader>
         <CarouselWrapper>
