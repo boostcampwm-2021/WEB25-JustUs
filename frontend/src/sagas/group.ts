@@ -76,6 +76,19 @@ async function requestJoinGroupApi(payload: any) {
   return result;
 }
 
+async function requestUpdateGroupApi(payload: any) {
+  const formData = new FormData();
+  formData.append("groupName", payload.groupName);
+  formData.append("groupImage", payload.groupImage);
+
+  const result = await axios.put(`${SERVER_URL}/api/groups/${payload.groupId}`, formData, {
+    withCredentials: true,
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+
+  return result;
+}
+
 function* getGroupInfo(action: any) {
   try {
     const result: ResponseGenerator = yield call(getGroupInfoApi, action.payload);
@@ -99,10 +112,10 @@ function* getAlbumList(action: any) {
   try {
     const result: ResponseGenerator = yield call(getAlbumListApi, action.payload);
     const { albums } = result.data;
-    const { groupId, groupName, groupImg } = action.payload;
+    const { groupId, groupName, groupImage } = action.payload;
     yield put({ type: "SET_ALBUM_LIST", payload: albums });
     const { albumList }: { albumList: IAlbum[] } = yield select((state) => state.groups);
-    yield put({ type: "SET_SELECTED_GROUP", payload: { groupId, groupName, groupImg, albumList } });
+    yield put({ type: "SET_SELECTED_GROUP", payload: { groupId, groupName, groupImage, albumList } });
   } catch (err: any) {}
 }
 
@@ -119,7 +132,7 @@ function* getGroupMemberList(action: any) {
     const result: ResponseGenerator = yield call(getGroupMemberListApi, action.payload);
 
     yield put({ type: "GET_GROUP_MEMBER_LIST_SUCCEED", payload: result.data });
-    yield put({ type: "OPEN_MODAL", payload: "SettingGroupModal" });
+    yield put({ type: "OPEN_MODAL", payload: "GroupInfoModal" });
   } catch (err) {}
 }
 
@@ -133,6 +146,20 @@ function* requestJoinGroup(action: any) {
 
     yield put({ type: SET_GROUPS, payload: groups });
     yield put({ type: "CLOSE_MODAL" });
+  } catch (err) {}
+}
+
+function* requestUpdateGroup(action: any) {
+  try {
+    const result: ResponseGenerator = yield call(requestUpdateGroupApi, action.payload);
+    const { groupId, groupName } = action.payload;
+    const { groupImage } = result.data;
+    const { albumList } = action.payload;
+    const result2: ResponseGenerator = yield call(getGroupListApi);
+    const { groups } = result2.data;
+
+    yield put({ type: SET_GROUPS, payload: groups });
+    yield put({ type: "SET_SELECTED_GROUP", payload: { groupId, groupName, groupImage, albumList } });
   } catch (err) {}
 }
 
@@ -160,6 +187,10 @@ function* watchRequestJoinGroup() {
   yield takeLatest("REQUEST_JOIN_GROUP", requestJoinGroup);
 }
 
+function* watchRequestUpdateGroup() {
+  yield takeLatest("REQUEST_UPDATE_GROUP", requestUpdateGroup);
+}
+
 export default function* groupSaga() {
   yield all([
     fork(watchGroupInfo),
@@ -168,5 +199,6 @@ export default function* groupSaga() {
     fork(watchDeleteGroup),
     fork(watchGetGroupMemberList),
     fork(watchRequestJoinGroup),
+    fork(watchRequestUpdateGroup),
   ]);
 }

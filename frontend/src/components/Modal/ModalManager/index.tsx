@@ -4,7 +4,8 @@ import PostCreateModal from "../PostCreateModal";
 import PostShowModal from "../PostShowModal";
 import CreateGroupModal from "@components/Sidebar/FirstDepth/AddGroupButton/Modal/InnerModal/CreateGroupModal";
 import JoinGroupModal from "@components/Sidebar/FirstDepth/AddGroupButton/Modal/InnerModal/JoinGroupModal";
-import SettingGroupModal from "@components/Sidebar/SecondDepth/SettingGroup/Modal";
+import GroupInfoModal from "@components/Sidebar/SecondDepth/SettingGroup/Modal/GroupInfoModal";
+import GroupSettingModal from "@components/Sidebar/SecondDepth/SettingGroup/Modal/GroupSettingModal";
 import ProfileModal from "@components/Header/Profile/Modal/InnerModal/UserInfoModal";
 import ThemeModal from "@components/Header/Profile/Modal/InnerModal/ThemeModal";
 import UpdateAlbumModal from "@components/Sidebar/SecondDepth/AlbumList/Header/Modal/InnerModal/UpdateAlbumModal";
@@ -31,7 +32,8 @@ const ModalManager = ({ setIsToggle }: ModalManagerProps) => {
       {nowModal === "PostShowModal" && <PostShowModal />}
       {nowModal === "CreateGroupModal" && <CreateGroupModal />}
       {nowModal === "JoinGroupModal" && <JoinGroupModal />}
-      {nowModal === "SettingGroupModal" && <SettingGroupModal setIsToggle={setIsToggle} />}
+      {nowModal === "GroupInfoModal" && <GroupInfoModal setIsToggle={setIsToggle} />}
+      {nowModal === "GroupSettingModal" && <GroupSettingModal />}
       {nowModal === "ProfileModal" && <ProfileModal />}
       {nowModal === "ThemeModal" && <ThemeModal />}
       {nowModal === "UpdateAlbumModal" && <UpdateAlbumModal />}
