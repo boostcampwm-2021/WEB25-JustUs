@@ -10,6 +10,7 @@ import { UpdatePostInfoRequestDto } from "src/dto/post/updatePostInfoRequest.dto
 import { ShiftPostRequestDto } from "src/dto/post/shiftPostRequest.dto";
 import { AlbumService } from "src/album/service/album.service";
 import { HashTagService } from "src/hashtag/service/hashtag.service";
+import { HashTag } from "src/hashtag/hashtag.entity";
 
 @Injectable()
 export class PostService {
@@ -44,11 +45,7 @@ export class PostService {
 
     const images = this.imageService.saveImage(postImages);
 
-    const tags = this.getHashTag(postContent);
-
-    const paring = tags?.join(",");
-    const hashtagCategory = tags === undefined ? "" : paring;
-    const hashtags = tags === undefined ? [] : await this.hashTagService.makeHashTag(groupId, tags);
+    const hashtags = await this.getHashTag(postContent, groupId);
 
     const post = await this.postRepository.save({
       postTitle: postTitle,
@@ -57,7 +54,6 @@ export class PostService {
       postLocation: postLocation,
       postLatitude: Number(postLatitude),
       postLongitude: Number(postLongitude),
-      hashtagCategory: hashtagCategory,
       user: user,
       album: album,
       images: images,
@@ -67,7 +63,13 @@ export class PostService {
     return post.postId;
   }
 
-  getHashTag(textParam: string): string[] {
+  async getHashTag(textParam: string, groupId: number): Promise<HashTag[]> {
+    const tagsContent = this.removeTags(textParam);
+
+    return tagsContent === undefined ? [] : await this.hashTagService.makeHashTag(groupId, tagsContent);
+  }
+
+  removeTags(textParam: string): string[] {
     const hashTagText = textParam.match(/#([\w|ㄱ-ㅎ|가-힣]+)/g);
 
     const removeTag = hashTagText?.map(e => {
@@ -105,14 +107,9 @@ export class PostService {
     const postUserId = post.user.userId;
     if (postUserId !== userId) throw new NotFoundException("It cannot be updated because it is not the author.");
 
-    const newTags = this.getHashTag(postContent);
-
     await this.postRepository.deleteHashTagsQuery(postId);
 
-    const hashtags = newTags === undefined ? [] : await this.hashTagService.makeHashTag(groupId, newTags);
-
-    const paring = newTags?.join(",");
-    const newHashtagCategory = newTags === undefined ? "" : paring;
+    const hashtags = await this.getHashTag(postContent, groupId);
 
     post.hashtags = hashtags;
     this.postRepository.save(post);
@@ -124,7 +121,6 @@ export class PostService {
       postLocation,
       postLatitude,
       postLongitude,
-      hashtagCategory: newHashtagCategory,
     });
 
     this.imageService.updateImages(post, addImages, deleteImagesId);
