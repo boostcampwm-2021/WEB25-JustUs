@@ -37,7 +37,7 @@ import { multerOption } from "src/image/service/image.service";
 @ApiTags("게시글 API")
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
-@Controller("api/posts")
+@Controller("posts")
 export class PostController {
   constructor(private readonly postService: PostService) {}
 

@@ -8,7 +8,7 @@ import { UserService } from "src/user/service/user.service";
 
 @ApiTags("auth API")
 @ApiBearerAuth()
-@Controller("/api/auth")
+@Controller("/auth")
 export class AuthController {
   constructor(private readonly userService: UserService) {}
 
