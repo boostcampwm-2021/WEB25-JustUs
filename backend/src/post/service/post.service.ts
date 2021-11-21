@@ -11,6 +11,7 @@ import { ShiftPostRequestDto } from "src/dto/post/shiftPostRequest.dto";
 import { AlbumService } from "src/album/service/album.service";
 import { HashTagService } from "src/hashtag/service/hashtag.service";
 import { HashTag } from "src/hashtag/hashtag.entity";
+import { Post } from "src/post/post.entity";
 
 @Injectable()
 export class PostService {
@@ -101,11 +102,8 @@ export class PostService {
     const { postTitle, postContent, deleteImagesId, postDate, postLocation, postLatitude, postLongitude, groupId } =
       updatePostInfoRequestDto;
 
-    const post = await this.postRepository.findOne(postId, { relations: ["user"] });
-    if (!post) throw new NotFoundException(`Not found post with the id ${postId}`);
-
-    const postUserId = post.user.userId;
-    if (postUserId !== userId) throw new NotFoundException("It cannot be updated because it is not the author.");
+    const relations = ["user"];
+    const post = await this.validatedUserAuthor(userId, postId, relations);
 
     await this.postRepository.deleteHashTagsQuery(postId);
 
@@ -128,13 +126,23 @@ export class PostService {
     return "PostInfo update success!!";
   }
 
-  async deletePost(postId: number): Promise<string> {
-    const post = await this.postRepository.findOne(postId, { relations: ["images"] });
-    if (!post) throw new NotFoundException(`Not found post with the id ${postId}`);
+  async deletePost(userId: number, postId: number): Promise<string> {
+    const relations = ["user", "images"];
+    const post = await this.validatedUserAuthor(userId, postId, relations);
 
     this.postRepository.softRemove(post);
 
     return "Post delete success!!";
+  }
+
+  async validatedUserAuthor(userId: number, postId: number, relations: Array<string>): Promise<Post> {
+    const post = await this.postRepository.findOne(postId, { relations: relations });
+    if (!post) throw new NotFoundException(`Not found post with the id ${postId}`);
+
+    const postUserId = post.user.userId;
+    if (postUserId !== userId) throw new NotFoundException("It cannot be updated because it is not the author.");
+
+    return post;
   }
 
   async shiftPost(postId: number, shiftPostRequestDto: ShiftPostRequestDto): Promise<string> {

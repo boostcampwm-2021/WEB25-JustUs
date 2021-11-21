@@ -54,9 +54,9 @@ export class PostController {
   }
 
   @Put("/:postId")
+  @UseInterceptors(FilesInterceptor("addImages", 5, multerOption))
   @ApiConsumes("multipart/form-data")
   @ApiBody({ type: UpdatePostInfoRequestDto })
-  @UseInterceptors(FilesInterceptor("addImages", 5, multerOption))
   @ApiParam({ name: "postId", type: Number })
   @ApiOkResponse({ description: "게시글 수정 성공" })
   UpdatePost(
@@ -73,8 +73,9 @@ export class PostController {
   @Delete("/:postId")
   @ApiParam({ name: "postId", type: Number })
   @ApiOkResponse({ description: "게시글 삭제 성공" })
-  DeletePost(@Param("postId") postId: number): Promise<string> {
-    return this.postService.deletePost(postId);
+  DeletePost(@Req() { user }: CustomRequest, @Param("postId") postId: number): Promise<string> {
+    const { userId } = user;
+    return this.postService.deletePost(userId, postId);
   }
 
   @Put("/:postId/shift")
