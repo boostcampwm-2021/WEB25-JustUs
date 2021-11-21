@@ -176,6 +176,7 @@ const UploadInfoModal = ({
               ref={inputRef}
               placeholder="내용"
               value={text}
+              spellCheck={false}
               onChange={handelTextInput}
               onScroll={handleScroll}
             />
@@ -312,7 +313,6 @@ const InputText = styled.textarea`
   padding: 0;
   line-height: 2rem;
   font-size: 1.6rem;
-  spellcheck: false;
 
   &:focus {
     outline: none;
