@@ -9,6 +9,7 @@ import {
   USER_INFO_UPDATE,
   SET_UPDATED_USER_INFO,
   SET_UPDATE_FAIL,
+  REQUEST_UPDATE_GROUP_ORDER,
 } from "@src/reducer/UserReducer";
 import axios from "axios";
 import { GET_GROUP_LIST, SET_GROUPS } from "@src/reducer/GroupReducer";
@@ -59,6 +60,12 @@ export async function getGroupListApi() {
   return result;
 }
 
+async function updateGroupOrderApi(payload: any) {
+  const { groupOrder } = payload;
+  const result = axios.put(`${SERVER_URL}/api/user/grouporder`, { groupOrder }, { withCredentials: true });
+  return result;
+}
+
 function* getUserInfo() {
   try {
     const result: ResponseGenerator = yield call(getUserInfoApi);
@@ -98,6 +105,12 @@ function* getGroupList() {
   yield put({ type: SET_GROUPS, payload: groups });
 }
 
+function* updateGroupOrder(action: any) {
+  const groupOrder = action.payload.groupOrder.join(",");
+
+  yield call(updateGroupOrderApi, { groupOrder });
+}
+
 function* watchUserInfo() {
   yield takeEvery(USER_INFO_REQUEST, getUserInfo);
 }
@@ -113,6 +126,17 @@ function* watchUpdateUserInfo() {
 function* watchGetGroupList() {
   yield takeEvery(GET_GROUP_LIST, getGroupList);
 }
+
+function* watchUpdateGroupOrder() {
+  yield takeEvery(REQUEST_UPDATE_GROUP_ORDER, updateGroupOrder);
+}
+
 export default function* userSaga() {
-  yield all([fork(watchUserInfo), fork(watchLogOut), fork(watchUpdateUserInfo), fork(watchGetGroupList)]);
+  yield all([
+    fork(watchUserInfo),
+    fork(watchLogOut),
+    fork(watchUpdateUserInfo),
+    fork(watchGetGroupList),
+    fork(watchUpdateGroupOrder),
+  ]);
 }
