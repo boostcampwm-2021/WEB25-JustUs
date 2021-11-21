@@ -184,7 +184,7 @@ const groupReducer = (state = initState, action: any) => {
       };
     case "UPDATE_POST_SUCCEED":
       const renewAlbumList = state.albumList.map((album: AlbumListItemType, idx) => {
-        if (album.posts.some((item) => item.postId != action.post.postId)) {
+        if (!album.posts.some((item) => item.postId === action.post.postId)) {
           return album;
         }
         const updateAlbum: AlbumListItemType = {
@@ -207,6 +207,7 @@ const groupReducer = (state = initState, action: any) => {
 
         return updateAlbum;
       });
+      console.log(renewAlbumList);
       const renewPostsList = renewAlbumList.map((album: AlbumListItemType) => [...album.posts]).flat();
       return {
         ...state,
@@ -227,7 +228,7 @@ const groupReducer = (state = initState, action: any) => {
       };
     case "DELETE_POST_SUCCEED":
       const afterDeleteAlbumList = state.albumList.map((album: AlbumListItemType, idx) => {
-        if (!album.posts.some((item) => item.postId == action.postId)) {
+        if (!album.posts.some((item) => item.postId === action.postId)) {
           return album;
         }
         const updateAlbum: AlbumListItemType = {
