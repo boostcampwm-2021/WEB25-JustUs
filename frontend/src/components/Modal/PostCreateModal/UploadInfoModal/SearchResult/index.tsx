@@ -5,10 +5,14 @@ import React, { Dispatch, SetStateAction, UIEvent, useEffect, useRef } from "rea
 interface IData {
   [key: string]: string;
 }
-
+interface ILocation {
+  place_name: string;
+  x: number;
+  y: number;
+}
 interface SearchResultProps {
   searchResult: IData[];
-  setSelectedLocation: Dispatch<SetStateAction<IData>>;
+  setSelectedLocation: Dispatch<SetStateAction<ILocation>>;
   page: number;
   setPage: Dispatch<SetStateAction<number>>;
   lastPage: number;
@@ -19,7 +23,7 @@ const SearchResult = ({ searchResult, setSelectedLocation, page, setPage, lastPa
   const searchResultWrapperRef = useRef() as React.MutableRefObject<HTMLDivElement>;
 
   const handleClickPlaceWrapper = (location: IData) => {
-    setSelectedLocation(location);
+    setSelectedLocation({ place_name: location.place_name, x: Number(location.x), y: Number(location.y) });
   };
 
   const handleScroll = (e: UIEvent<HTMLElement>) => {

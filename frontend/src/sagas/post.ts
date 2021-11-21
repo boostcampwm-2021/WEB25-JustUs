@@ -37,6 +37,7 @@ interface IUpdatePost {
   postLongitude: string;
   addImages: FileObject[];
   deleteImagesId: string[];
+  groupId: string;
 }
 
 function uploadPostApi(newPost: IPost) {
@@ -79,6 +80,7 @@ function updatePostApi(newPost: IUpdatePost) {
     postLongitude,
     addImages,
     deleteImagesId,
+    groupId,
   } = newPost;
 
   const formData = new FormData();
@@ -88,6 +90,7 @@ function updatePostApi(newPost: IUpdatePost) {
   formData.append("postLocation", postLocation);
   formData.append("postLatitude", postLatitude);
   formData.append("postLongitude", postLongitude);
+  formData.append("groupId", groupId);
   addImages.forEach((image) => formData.append("addImages", image.imageUrl));
   deleteImagesId.forEach((id) => formData.append("deleteImagesId", id));
 

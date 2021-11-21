@@ -47,4 +47,9 @@ export class GetPostInfoResponseDto {
   @IsNotEmpty()
   @ApiProperty()
   postLongitude: number;
+
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty()
+  postLocation: string;
 }

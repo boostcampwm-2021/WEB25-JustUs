@@ -15,6 +15,12 @@ interface FileObject {
 interface IData {
   [key: string]: string;
 }
+
+interface ILocation {
+  place_name: string;
+  x: number;
+  y: number;
+}
 interface UploadInfoModalProps {
   mode: string;
   changeMode: () => void;
@@ -22,7 +28,7 @@ interface UploadInfoModalProps {
   prevTitle: string | "";
   prevText: string | "";
   prevDate: string | "";
-  prevLocation: IData | {};
+  prevLocation: ILocation;
 }
 
 interface IselectedPost {
@@ -53,17 +59,17 @@ const UploadInfoModal = ({
   const [isSubOpened, setIsSubOpened] = useState(false);
   const [searchKeyword, setSearchKeyword] = useState<string>("");
   const [searchResult, setSearchResult] = useState<IData[]>([]);
-  const [date, setDate] = useState<string>(prevDate);
-  const [selectedLocation, setSelectedLocation] = useState<IData>(prevLocation);
+  const [date, setDate] = useState<string>(prevDate.substring(0, 10));
+  const [selectedLocation, setSelectedLocation] = useState<ILocation>(prevLocation);
   const [page, setPage] = useState<number>(1);
   const [lastPage, setLastPage] = useState<number>(1);
   const [gobackClicked, setGobackClicked] = useState<boolean>(false);
   const highlightsRef = useRef() as React.MutableRefObject<HTMLDivElement>;
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const backdropRef = useRef<HTMLDivElement>(null);
-  const { address, position }: any = useSelector((state: RootState) => state.address);
+  const { address }: any = useSelector((state: RootState) => state.address);
   const { selectedPost }: { selectedPost: IselectedPost } = useSelector((state: RootState) => state.modal);
-  const { selectedGroup, albumList }: any = useSelector((state: RootState) => state.groups);
+  const { selectedGroup }: any = useSelector((state: RootState) => state.groups);
 
   useEffect(() => {
     handelTextInput(null);
@@ -108,9 +114,9 @@ const UploadInfoModal = ({
         postTitle: title,
         postContent: text,
         postDate: date,
-        postLocation: address === "" ? selectedLocation.address_name : address,
-        postLatitude: address === "" ? Number(selectedLocation.y) : position.y,
-        postLongitude: address === "" ? Number(selectedLocation.x) : position.x,
+        postLocation: selectedLocation.place_name,
+        postLatitude: Number(selectedLocation.y),
+        postLongitude: Number(selectedLocation.x),
         groupId: selectedGroup.groupId,
         postImage: files,
       };
@@ -128,11 +134,12 @@ const UploadInfoModal = ({
         postTitle: title,
         postContent: text,
         postDate: date,
-        postLocation: selectedLocation.address_name,
+        postLocation: selectedLocation.place_name,
         postLatitude: Number(selectedLocation.y),
         postLongitude: Number(selectedLocation.x),
         addImages: newFileList,
         deleteImagesId: deleteFileList,
+        groupId: selectedGroup.groupId,
       };
 
       dispatch({ type: "UPDATE_POST_REQUEST", post: updatePost });
@@ -142,9 +149,10 @@ const UploadInfoModal = ({
   };
 
   useEffect(() => {
-    if (title.length === 0) setActivate(false);
+    console.log(selectedLocation);
+    if (title.length === 0 || date.length == 0 || selectedLocation.y === -1) setActivate(false);
     else setActivate(true);
-  }, [title]);
+  }, [title, date, selectedLocation]);
 
   return (
     <ModalContainer
@@ -190,7 +198,7 @@ const UploadInfoModal = ({
               <InputPlace>
                 {address === "" ? (
                   <InputPlaceName>
-                    {Object.keys(selectedLocation).length === 0 ? "장소를 선택하세요." : selectedLocation.place_name}
+                    {selectedLocation.place_name === "" ? "장소를 선택하세요." : selectedLocation.place_name}
                   </InputPlaceName>
                 ) : (
                   <InputPlaceName>{address}</InputPlaceName>
@@ -230,7 +238,7 @@ const UploadButton = styled.button<{ activate: boolean }>`
     if (props.activate) return props.theme.PRIMARY;
     else return props.theme.SECONDARY;
   }};
-  border: 1px solid ${(props) => props.theme.PRIMARY};
+  border: none;
   border-radius: 10px;
   flex-basis: 3rem;
   margin-top: 1rem;

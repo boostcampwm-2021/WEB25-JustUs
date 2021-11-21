@@ -69,7 +69,7 @@ const PostInfoModal = () => {
         </CarouselWrapper>
         <ModalContent>{textSplit(selectedPost.postContent).map((item) => highlights(item))}</ModalContent>
         <ModalFooter>
-          <FooterItem>{selectedPost.postDate}</FooterItem>
+          <FooterItem>{selectedPost.postDate.substring(0, 10)}</FooterItem>
           <FooterItem>{selectedPost.userNickname}</FooterItem>
         </ModalFooter>
       </Modal>
