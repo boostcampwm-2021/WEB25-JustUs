@@ -8,12 +8,17 @@ import Map from "@components/Map";
 import { GroupModalAction } from "@src/action";
 import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
+import { useHistory } from "react-router-dom";
 import { getGroupListAction } from "@src/reducer/GroupReducer";
+import { userInfoRequestAction } from "@src/reducer/UserReducer";
 
 const Main = () => {
   const [isToggle, setIsToggle] = useState<boolean>(true);
   const dispatch = useDispatch();
   const { groups }: any = useSelector((state: RootState) => state.groups);
+  const { userInfoLoading } = useSelector((state: RootState) => state.user);
+  const { userProfile } = useSelector((state: RootState) => state.user);
+  const history = useHistory();
 
   useEffect(() => {
     document.addEventListener("click", (event) => {
@@ -26,6 +31,19 @@ const Main = () => {
     dispatch(getGroupListAction());
   }, []);
 
+  useEffect(() => {
+    dispatch(userInfoRequestAction());
+  }, []);
+
+  useEffect(() => {
+    if (!userInfoLoading && !userProfile) {
+      history.push("/login");
+    }
+  }, [userProfile, userInfoLoading]);
+
+  if (!userInfoLoading && !userProfile) {
+    return <></>;
+  }
   return (
     <>
       <Header isToggle={isToggle} setIsToggle={setIsToggle} />
