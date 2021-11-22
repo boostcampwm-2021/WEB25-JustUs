@@ -3,8 +3,8 @@ import { flexRowCenterAlign } from "@src/styles/StyledComponents";
 import COLOR from "@styles/Color";
 const Logo = () => {
   return (
-    <LogoContainer href={"/"}>
-      <TextLogo>
+    <LogoContainer>
+      <TextLogo href={"/"}>
         <div>우</div>
         <div>리</div>
         <div>끼</div>
@@ -17,7 +17,7 @@ const Logo = () => {
 
 export default Logo;
 
-const LogoContainer = styled.a`
+const LogoContainer = styled.div`
   ${flexRowCenterAlign}
   justify-content: flex-start;
   align-items: center;
@@ -32,7 +32,7 @@ const fadeIn = keyframes`
 from{opacity:0};
 to{opacity:1};`;
 
-const TextLogo = styled.div`
+const TextLogo = styled.a`
   font-size: 2.1rem;
   color: ${COLOR.WHITE};
   margin-left: 2rem;
