@@ -24,8 +24,8 @@ export class JwtAuthGuard extends AuthGuard("jwt") {
     if (!validationRefreshToken) throw new UnauthorizedException("토큰이 존재하지 않습니다.");
 
     const { userId } = validationRefreshToken;
-    const oneHour = "1h";
-    const newAccessToken = this.createToken(userId, oneHour);
+    const accessTokenExpireTime = "1h";
+    const newAccessToken = this.createToken(userId, accessTokenExpireTime);
     response.cookie("accessToken", newAccessToken);
     request.user = validationRefreshToken;
 

@@ -107,7 +107,7 @@ export class PostService {
       updatePostInfoRequestDto;
 
     const relations = ["user"];
-    const post = await this.validatedUserAuthor(userId, postId, relations);
+    const post = await this.validateUserAuthor(userId, postId, relations);
 
     await this.postRepository.deleteHashTagsQuery(postId);
 
@@ -132,14 +132,14 @@ export class PostService {
 
   async deletePost(userId: number, postId: number): Promise<string> {
     const relations = ["user", "images"];
-    const post = await this.validatedUserAuthor(userId, postId, relations);
+    const post = await this.validateUserAuthor(userId, postId, relations);
 
     this.postRepository.softRemove(post);
 
     return "Post delete success!!";
   }
 
-  async validatedUserAuthor(userId: number, postId: number, relations: Array<string>): Promise<Post> {
+  async validateUserAuthor(userId: number, postId: number, relations: Array<string>): Promise<Post> {
     const post = await this.postRepository.findOne(postId, { relations: relations });
     if (!post) throw new NotFoundException(`Not found post with the id ${postId}`);
 
