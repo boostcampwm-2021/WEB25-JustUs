@@ -46,7 +46,7 @@ const Main = () => {
   }
   return (
     <>
-      <Header isToggle={isToggle} setIsToggle={setIsToggle} />
+      <Header />
       <Content>
         <Sidebar isToggle={isToggle} setIsToggle={setIsToggle} />
         {groups.length > 0 ? (
