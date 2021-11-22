@@ -55,6 +55,7 @@ const Album = ({
             PostDragHandler={PostDragHandler}
             PostDragEndHandler={PostDragEndHandler}
             albumIdx={albumIdx}
+            album={album}
           />
         ))}
     </div>

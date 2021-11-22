@@ -9,10 +9,26 @@ import {
   DELETE_ALBUM_REQUEST,
   DELETE_ALBUM_SUCCEED,
   DELETE_ALBUM_FAILED,
-} from "@src/reducer/AlbumReducer";
+  UPDATE_ALBUM_ORDER_REQUEST,
+  UPDATE_ALBUM_ORDER_SUCCEED,
+  UPDATE_ALBUM_ORDER_FAILED,
+  POST_SHIFT_ALBUM_REQUEST,
+  POST_SHIFT_ALBUM_SUCCEED,
+  POST_SHIFT_ALBUM_FAILED,
+} from "@src/reducer/GroupReducer";
 import axios from "axios";
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
+
+interface ResponseGenerator {
+  config?: any;
+  data?: any;
+  headers?: any;
+  request?: any;
+  status?: number;
+  statusText?: string;
+  json: Function;
+}
 
 function createAlbumApi(albumName: string, groupId: number) {
   return axios.post(`${SERVER_URL}/api/albums`, { albumName, groupId }, { withCredentials: true });
@@ -26,11 +42,19 @@ function deleteAlbumApi(albumId: number) {
   return axios.delete(`${SERVER_URL}/api/albums/${albumId}`, { withCredentials: true });
 }
 
+function updateAlbumOrderApi(groupId: number, albumOrder: string) {
+  return axios.put(`${SERVER_URL}/api/groups/${groupId}/albumorder`, { albumOrder }, { withCredentials: true });
+}
+
+function postShiftAlbumApi(postId: number, albumId: number) {
+  return axios.put(`${SERVER_URL}/api/posts/${postId}/shift`, { albumId }, { withCredentials: true });
+}
+
 function* createAlbum({ payload }: any) {
   try {
     const { albumName, groupId } = payload;
-    yield call(createAlbumApi, albumName, groupId);
-    yield put({ type: NEW_ALBUM_SUCCEED });
+    const result: ResponseGenerator = yield call(createAlbumApi, albumName, groupId);
+    yield put({ type: NEW_ALBUM_SUCCEED, payload: { albumName, groupId, albumId: result.data.albumId } });
   } catch (err: any) {
     yield put({ type: NEW_ALBUM_FAILED });
   }
@@ -40,7 +64,7 @@ function* updateAlbum({ payload }: any) {
   try {
     const { albumName, albumId } = payload;
     yield call(updateAlbumApi, albumName, albumId);
-    yield put({ type: UPDATE_ALBUM_SUCCEED });
+    yield put({ type: UPDATE_ALBUM_SUCCEED, payload: { albumName, albumId } });
   } catch (err: any) {
     yield put({ type: UPDATE_ALBUM_FAILED });
   }
@@ -50,9 +74,30 @@ function* deleteAlbum({ payload }: any) {
   try {
     const { albumId } = payload;
     yield call(deleteAlbumApi, albumId);
-    yield put({ type: DELETE_ALBUM_SUCCEED });
+    yield put({ type: DELETE_ALBUM_SUCCEED, payload: { albumId } });
   } catch (err: any) {
     yield put({ type: DELETE_ALBUM_FAILED });
+  }
+}
+
+function* updateAlbumOrder({ payload }: any) {
+  try {
+    const { groupId, albumOrder } = payload;
+    yield call(updateAlbumOrderApi, groupId, albumOrder);
+    yield put({ type: UPDATE_ALBUM_ORDER_SUCCEED, payload: { groupId, albumOrder } });
+  } catch (err: any) {
+    yield put({ type: UPDATE_ALBUM_ORDER_FAILED });
+  }
+}
+
+function* postShiftAlbum({ payload }: any) {
+  try {
+    const { postInfo, albumId } = payload;
+    const postId = postInfo.postId;
+    yield call(postShiftAlbumApi, postId, albumId);
+    yield put({ type: POST_SHIFT_ALBUM_SUCCEED, payload: { postInfo, albumId } });
+  } catch (err: any) {
+    yield put({ type: POST_SHIFT_ALBUM_FAILED });
   }
 }
 
@@ -68,6 +113,20 @@ function* watchAlbumDelete() {
   yield takeLatest(DELETE_ALBUM_REQUEST, deleteAlbum);
 }
 
+function* watchAlbumOrderUpdate() {
+  yield takeLatest(UPDATE_ALBUM_ORDER_REQUEST, updateAlbumOrder);
+}
+
+function* watchPostShiftAlbum() {
+  yield takeLatest(POST_SHIFT_ALBUM_REQUEST, postShiftAlbum);
+}
+
 export default function* albumSaga() {
-  yield all([fork(watchAlbumCreate), fork(watchAlbumUpdate), fork(watchAlbumDelete)]);
+  yield all([
+    fork(watchAlbumCreate),
+    fork(watchAlbumUpdate),
+    fork(watchAlbumDelete),
+    fork(watchAlbumOrderUpdate),
+    fork(watchPostShiftAlbum),
+  ]);
 }

@@ -49,12 +49,11 @@ export class AlbumService {
   }
 
   async deleteAlbum(albumId: number): Promise<string> {
-    const album = await this.albumRepository.findOne({ albumId });
+    const album = await this.albumRepository.findOne(albumId, { relations: ["group"] });
     if (!album) throw new NotFoundException(`Not found album with the id ${albumId}`);
 
     const { base, group } = album;
     if (base) throw new NotFoundException("It cannot be deleted because it is baseAlbum.");
-
     const { groupId } = group;
     const baseAlbum = await this.getBaseAlbumId(groupId);
     await this.movePosts(albumId, baseAlbum);

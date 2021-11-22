@@ -5,7 +5,7 @@ import COLOR from "@styles/Color";
 import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
 import { useDispatch } from "react-redux";
-import { newAlbumRequestAction } from "@src/reducer/AlbumReducer";
+import { newAlbumRequestAction } from "@src/reducer/GroupReducer";
 
 interface InputModalProps {
   addAlbumModalRef: React.RefObject<HTMLDivElement>;

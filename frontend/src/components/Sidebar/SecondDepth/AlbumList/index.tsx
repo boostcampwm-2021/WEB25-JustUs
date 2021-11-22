@@ -1,18 +1,19 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
 import Album from "./Album";
-import { GroupAction } from "@src/action";
 import { useDispatch } from "react-redux";
+import { updateAlbumOrderAction, postShiftAlbumAction } from "@src/reducer/GroupReducer";
 
 const AlbumList = () => {
   const dispatch = useDispatch();
   const [postSelected, setPostSelected] = useState<number>(-1);
   const [modalOpenedIdx, setModalOpenedIdx] = useState<number>(-1);
-  const { albumList }: any = useSelector((state: RootState) => state.groups);
+  const { albumList, selectedGroup }: any = useSelector((state: RootState) => state.groups);
   const clickedTarget = useSelector((state: RootState) => state.groupModal.clickedTarget);
   const { selectedPost }: any = useSelector((state: RootState) => state.modal);
+  const draggableRef = useRef<HTMLDivElement>(null);
 
   function onDragLeaveHandler(ev: React.DragEvent<HTMLDivElement>) {
     ev.preventDefault();
@@ -49,6 +50,18 @@ const AlbumList = () => {
       const referenceNode = swapItem !== parent.nextSibling ? swapItem : swapItem.nextSibling;
       list.insertBefore(parent, referenceNode);
     }
+
+    const draggableWrapper = draggableRef.current;
+    if (!draggableWrapper) return;
+    const children = draggableWrapper.children;
+
+    const albumOrder: string = Array.from(children)
+      .map((child) => {
+        const albumId = child.getAttribute("data-album-id");
+        return Number(albumId);
+      })
+      .join(",");
+    dispatch(updateAlbumOrderAction(selectedGroup.groupId, albumOrder));
   }
 
   function onPostDragEndHandler(ev: React.DragEvent<HTMLDivElement>) {
@@ -61,15 +74,12 @@ const AlbumList = () => {
     const nowParent = nowElement?.closest(".albumItem") as HTMLElement;
     if (!nowParent) return;
     if (parent === nowParent) return;
-    const payload = {
-      beforeIdx: target.dataset.albumidx,
-      afterIdx: nowParent.dataset.albumidx,
-      post: { postId: target.dataset.id, postTitle: target.innerHTML },
-    };
-    dispatch({
-      type: GroupAction.MOVE_POST,
-      payload: payload,
-    });
+    const postId: number = Number(target.dataset.id);
+    const postTitle: string = target.innerText;
+    const postAlbumId: number = Number(target.dataset.albumId);
+    const postInfo = { postId, postTitle, albumId: postAlbumId };
+    const albumId: number = Number(nowParent.dataset.albumId);
+    dispatch(postShiftAlbumAction(postInfo, albumId));
   }
 
   function onPostDragHandler(ev: React.DragEvent<HTMLDivElement>) {
@@ -118,11 +128,11 @@ const AlbumList = () => {
   }, [selectedPost]);
 
   return (
-    <DraggableWrapper>
+    <DraggableWrapper ref={draggableRef}>
       {albumList &&
         albumList.map((album: any, idx: number) => {
           return (
-            <AlbumWrapper key={album.albumId} className="albumItem" data-albumidx={idx}>
+            <AlbumWrapper key={album.albumId} className="albumItem" data-albumidx={idx} data-album-id={album.albumId}>
               <Album
                 album={album}
                 postSelected={postSelected}
