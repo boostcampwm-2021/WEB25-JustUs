@@ -41,11 +41,9 @@ function getGroupInfoApi(params: any) {
 
 async function createGroupApi(payload: any) {
   const formData = new FormData();
-  const res = await fetch("http://localhost:3000/img/person.png");
-  const blob = await res.blob();
-  const baseImage = new File([blob], "base-person-image", { type: "image/png" });
-
-  formData.append("groupImage", payload.groupImage ? payload.groupImage : baseImage);
+  if (payload.groupImage) {
+    formData.append("groupImage", payload.groupImage);
+  }
   formData.append("groupName", payload.groupName);
 
   const result = await axios.post(`${SERVER_URL}/api/groups`, formData, {
