@@ -3,7 +3,7 @@ import AlbumSettingModal from "./Modal";
 import { ReactComponent as ArrowDownSVG } from "@styles/icons/arrow-down.svg";
 import { ReactComponent as ArrowRightSVG } from "@styles/icons/arrow-right.svg";
 import { ReactComponent as MoreVertSVG } from "@styles/icons/more-vert.svg";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
 import { flexRowCenterAlign } from "@src/styles/StyledComponents";
 
@@ -12,30 +12,21 @@ interface HeaderProps {
   albumName: string;
   postToggle: boolean;
   setPostToggle: React.Dispatch<React.SetStateAction<boolean>>;
-  modalOpenedIdx: number;
-  setModalOpenedIdx: React.Dispatch<React.SetStateAction<number>>;
   AlbumDragHandler: (ev: React.DragEvent<HTMLDivElement>) => void;
   DragEndHandler: (ev: React.DragEvent<HTMLDivElement>) => void;
 }
 
-const Header = ({
-  albumId,
-  albumName,
-  postToggle,
-  setPostToggle,
-  modalOpenedIdx,
-  setModalOpenedIdx,
-  AlbumDragHandler,
-  DragEndHandler,
-}: HeaderProps) => {
+const Header = ({ albumId, albumName, postToggle, setPostToggle, AlbumDragHandler, DragEndHandler }: HeaderProps) => {
   const { nowTheme }: any = useSelector((state: RootState) => state.theme);
+  const { albumSettingWrapperModalIdx } = useSelector((state: RootState) => state.modal);
+  const dispatch = useDispatch();
 
   const onClickArrowDown = () => {
     setPostToggle((prev) => !prev);
   };
 
   const onClickMoreBtn = () => {
-    setModalOpenedIdx(albumId);
+    dispatch({ type: "SET_ALBUM_SETTING_WRAPPER_MODAL_IDX", payload: albumId });
   };
 
   return (
@@ -50,9 +41,7 @@ const Header = ({
       {albumName !== "기본 앨범" && (
         <MoreIcon className="modifying-album-btn" onClick={onClickMoreBtn}>
           <MoreVertSVG fill={nowTheme.MENUTEXT} />
-          {modalOpenedIdx === albumId && (
-            <AlbumSettingModal albumId={albumId} albumName={albumName} setModalOpenedIdx={setModalOpenedIdx} />
-          )}
+          {albumSettingWrapperModalIdx === albumId && <AlbumSettingModal albumId={albumId} albumName={albumName} />}
         </MoreIcon>
       )}
     </HeaderWrapper>

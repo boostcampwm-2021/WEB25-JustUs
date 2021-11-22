@@ -16,7 +16,7 @@ interface ModalListItem {
   payload: string;
 }
 
-const ProfileModal = ({ isModalOpened, setIsModalOpened }: ProfileModalProps) => {
+const ProfileModal = () => {
   const modalListItem: ModalListItem[] = [
     { id: 0, name: "회원정보", payload: "ProfileModal" },
     { id: 1, name: "테마설정", payload: "ThemeModal" },
@@ -25,8 +25,9 @@ const ProfileModal = ({ isModalOpened, setIsModalOpened }: ProfileModalProps) =>
 
   const dispatch = useDispatch();
   const { userNickName } = useSelector((state: RootState) => state.user);
+  const { isProfileWrapperModalOpened } = useSelector((state: RootState) => state.modal);
   const onClickProfileItem = ({ payload, id }: ModalListItem) => {
-    setIsModalOpened((prev) => !prev);
+    dispatch({ type: "SET_PROFILE_WRAPPER_MODAL_OPENED", payload: !isProfileWrapperModalOpened });
     if (id === 2) {
       dispatch(logoutRequestAction());
     } else {

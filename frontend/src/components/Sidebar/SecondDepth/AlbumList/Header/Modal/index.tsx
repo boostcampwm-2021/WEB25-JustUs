@@ -6,10 +6,9 @@ import { useDispatch } from "react-redux";
 interface AlbumSettingModalProps {
   albumId: number;
   albumName: string;
-  setModalOpenedIdx: React.Dispatch<React.SetStateAction<number>>;
 }
 
-const AlbumSettingModal = ({ albumId, albumName, setModalOpenedIdx }: AlbumSettingModalProps) => {
+const AlbumSettingModal = ({ albumId, albumName }: AlbumSettingModalProps) => {
   const dispatch = useDispatch();
 
   const onClickUpdateAlbum = () => {
