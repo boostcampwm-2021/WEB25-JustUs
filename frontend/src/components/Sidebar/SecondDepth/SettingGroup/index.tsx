@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
 import { ReactComponent as SettingsSVG } from "@styles/icons/settings.svg";
-import { ReactComponent as VisibilitySVG } from "@styles/icons/visibility.svg";
+import { ReactComponent as InfoSVG } from "@styles/icons/info.svg";
 import { getGroupMemberListAction } from "@src/reducer/GroupReducer";
 import { flexRowCenterAlign } from "@src/styles/StyledComponents";
 
@@ -24,9 +24,9 @@ const SettingGroup = () => {
     <SettingGroupWrapper>
       <GroupName>{selectedGroup.groupName}</GroupName>
 
-      <VisibilityIconWrapper onClick={onClickShowGroupInfo}>
-        <VisibilitySVG fill={nowTheme.MENUTEXT} />
-      </VisibilityIconWrapper>
+      <InfoIconWrapper onClick={onClickShowGroupInfo}>
+        <InfoSVG fill={nowTheme.MENUTEXT} />
+      </InfoIconWrapper>
 
       <SettingIconWrapper onClick={onClickSettingGroup}>
         <SettingsSVG fill={nowTheme.MENUTEXT} />
@@ -55,7 +55,7 @@ const GroupName = styled.div`
   display: flex;
   align-items: center;
 `;
-const VisibilityIconWrapper = styled.div`
+const InfoIconWrapper = styled.div`
   cursor: pointer;
   grid-column-start: 2;
   grid-column-end: 3;
