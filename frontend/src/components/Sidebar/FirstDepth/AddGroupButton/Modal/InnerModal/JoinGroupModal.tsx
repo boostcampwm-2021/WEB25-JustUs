@@ -40,7 +40,7 @@ const JoinGroupModal = () => {
           </CloseBtn>
         </Header>
         <Content>
-          <InviteCodeInputWrapper ref={inputRef} />
+          <InviteCodeInputWrapper ref={inputRef} spellCheck={false} />
           <JoinBtnWrapper onClick={onClickJoinBtn}>참여하기</JoinBtnWrapper>
         </Content>
       </ModalContainer>

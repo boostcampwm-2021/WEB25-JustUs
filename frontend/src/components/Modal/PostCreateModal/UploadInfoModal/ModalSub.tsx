@@ -120,6 +120,7 @@ const ModalSub = ({
             onKeyDown={handleKeyPress}
             value={input}
             onChange={handleInputChange}
+            spellCheck={false}
           />
         </SearchContainer>
       </ModalHeader>

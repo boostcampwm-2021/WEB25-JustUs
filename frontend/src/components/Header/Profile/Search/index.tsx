@@ -48,6 +48,7 @@ const Search = () => {
           onChange={handleSearchInputChange}
           value={searchKeyword}
           onFocus={onFocusInput}
+          spellCheck={false}
         />
         {isSearchListOpened && (
           <SearchList setSearchKeyword={setSearchKeyword} setIsSearchListOpened={setIsSearchListOpened} />

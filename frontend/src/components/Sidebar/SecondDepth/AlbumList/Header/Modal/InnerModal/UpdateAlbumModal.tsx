@@ -50,7 +50,7 @@ const UpdateAlbumModal = () => {
           </CloseBtn>
         </Header>
         <Content>
-          <AlbumNameInputWrapper onChange={onChangeName} value={newAlbumName} />
+          <AlbumNameInputWrapper onChange={onChangeName} value={newAlbumName} spellCheck={false} />
           <SaveBtnWrapper onClick={onClickSave}>저장하기</SaveBtnWrapper>
         </Content>
       </ModalContainer>

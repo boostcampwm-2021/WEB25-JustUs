@@ -108,7 +108,7 @@ const CreateGroupModal = () => {
             이미지 업로드
           </UploadImgBtnWrapper>
           <DeleteImgBtnWrapper onClick={onClickDeleteBtn}>사진 제거</DeleteImgBtnWrapper>
-          <GroupNameInputWrapper placeholder="그룹 이름을 입력해주세요" ref={groupNameRef} />
+          <GroupNameInputWrapper placeholder="그룹 이름을 입력해주세요" ref={groupNameRef} spellCheck={false} />
           <CreateBtnWrapper onClick={onClickCreateBtn}>생성하기</CreateBtnWrapper>
         </Content>
       </ModalContainer>

@@ -108,7 +108,7 @@ const UserInfoModal = () => {
               이미지 업로드
             </UploadImgBtnWrapper>
             <DeleteImgBtnWrapper onClick={onClickDeleteBtn}>사진 제거</DeleteImgBtnWrapper>
-            <UserNameInputWrapper placeholder="기존 닉네임" ref={userNameRef} />
+            <UserNameInputWrapper placeholder="기존 닉네임" ref={userNameRef} spellCheck={false} />
             <SaveBtnWrapper onClick={onClickUpdateBtn}>저장하기</SaveBtnWrapper>
           </Content>
         </Container>

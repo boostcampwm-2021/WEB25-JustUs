@@ -180,7 +180,7 @@ const UploadInfoModal = ({
             <Carousel files={files} carouselWidth={250} />
           </ModalLeft>
           <ModalRight>
-            <InputTitle type="text" placeholder="제목" value={title} onChange={handelTitleInput} />
+            <InputTitle type="text" placeholder="제목" value={title} onChange={handelTitleInput} spellCheck={false} />
             <div className="backdrop" ref={backdropRef}>
               <div ref={highlightsRef} className="highlights"></div>
             </div>
