@@ -111,6 +111,11 @@ function updatePostApi(newPost: IUpdatePost) {
   });
 }
 
+async function getPostsByHashtagApi(hashtagId: number) {
+  const result = await axios.get(`${SERVER_URL}/api/posts/search?hashtagId=${hashtagId}`, { withCredentials: true });
+  return result;
+}
+
 function* uploadPost({ post }: { type: string; post: IPost }) {
   try {
     const result: ResponseGenerator = yield call(uploadPostApi, post);
@@ -149,6 +154,16 @@ function* updatePost({ post }: { type: string; post: IUpdatePost }) {
   }
 }
 
+function* getPostsByHashtag({ type, payload }: { type: string; payload: { hashtagId: number } }) {
+  const { hashtagId } = payload;
+
+  try {
+    const result: ResponseGenerator = yield call(getPostsByHashtagApi, hashtagId);
+    const { posts } = result.data;
+    yield put({ type: "SET_SEARCHLIST", payload: { searchList: posts } });
+  } catch (err) {}
+}
+
 function* watchUploadPost() {
   yield takeEvery("UPLOAD_POST_REQUEST", uploadPost);
 }
@@ -161,7 +176,16 @@ function* watchSelectPost() {
 function* watchUpdatePost() {
   yield takeEvery("UPDATE_POST_REQUEST", updatePost);
 }
+function* watchRequestPostsByHashtag() {
+  yield takeEvery("REQUEST_POSTS_BY_HASHTAG", getPostsByHashtag);
+}
 
 export default function* userSaga() {
-  yield all([fork(watchUploadPost), fork(watchSelectPost), fork(watchUpdatePost), fork(watchDeletePost)]);
+  yield all([
+    fork(watchUploadPost),
+    fork(watchSelectPost),
+    fork(watchUpdatePost),
+    fork(watchDeletePost),
+    fork(watchRequestPostsByHashtag),
+  ]);
 }

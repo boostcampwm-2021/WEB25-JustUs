@@ -5,7 +5,7 @@ export interface GroupType {
   groupName: string;
   groupImg: string;
 }
-interface PostType {
+export interface PostType {
   postId: number;
   postTitle: string;
   postLatitude: number;
@@ -44,6 +44,7 @@ interface IInitState {
   postShiftAlbumSucceed: boolean;
   postShiftAlbumError: boolean;
   hashTags: IHashtag[];
+  searchList: PostType[];
 }
 
 const initState: IInitState = {
@@ -68,6 +69,7 @@ const initState: IInitState = {
   postShiftAlbumSucceed: false,
   postShiftAlbumError: false,
   hashTags: [],
+  searchList: [],
 };
 
 export const CREATE_GROUP = "CREATE_GROUP";
@@ -96,6 +98,7 @@ export const POST_SHIFT_ALBUM_SUCCEED = "POST_SHIFT_ALBUM_SUCCEED";
 export const POST_SHIFT_ALBUM_FAILED = "POST_SHIFT_ALBUM_FAILED";
 export const REQUEST_HASHTAGS = "REQUEST_HASHTAGS";
 export const SET_HASHTAGS = "SET_HASHTAGS";
+export const REQUEST_POSTS_BY_HASHTAG = "REQUEST_POSTS_BY_HASHTAG";
 
 export const createGroupAction = (payload: any) => ({
   type: CREATE_GROUP,
@@ -183,6 +186,11 @@ export const updateGroupAction = (payload: any) => ({
 
 export const requestHashtagsAction = (payload: any) => ({
   type: REQUEST_HASHTAGS,
+  payload,
+});
+
+export const requestPostsByHashtag = (payload: any) => ({
+  type: REQUEST_POSTS_BY_HASHTAG,
   payload,
 });
 
@@ -523,6 +531,11 @@ const groupReducer = (state = initState, action: any) => {
       return {
         ...state,
         hashTags: action.payload,
+      };
+    case "SET_SEARCHLIST":
+      return {
+        ...state,
+        searchList: action.payload.searchList,
       };
     default:
       return state;

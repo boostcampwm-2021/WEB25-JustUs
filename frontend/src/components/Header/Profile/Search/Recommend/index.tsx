@@ -24,9 +24,11 @@ const Recommend = ({ inputKeyword, setSearchKeyword, doSearch }: RecommendProps)
   };
 
   const onClickHashTag = (e: React.MouseEvent<HTMLSpanElement>) => {
-    const selectedTag = (e.target as HTMLElement).innerHTML;
-    setSearchKeyword(selectedTag);
-    doSearch(selectedTag);
+    const clicked = (e.target as HTMLElement).closest(".hashtag-wrapper");
+    if (!clicked) return;
+
+    const hashtagId = Number(clicked.getAttribute("data-id"));
+    doSearch(hashtagId);
   };
 
   useEffect(() => {
@@ -43,8 +45,8 @@ const Recommend = ({ inputKeyword, setSearchKeyword, doSearch }: RecommendProps)
         <>
           <ul>
             {recommendArray.map(({ hashtagId, hashtagContent }) => (
-              <li key={hashtagId}>
-                #<span onClick={onClickHashTag}>{hashtagContent}</span>
+              <li className="hashtag-wrapper" data-id={hashtagId} key={hashtagId} onClick={onClickHashTag}>
+                #<span>{hashtagContent}</span>
               </li>
             ))}
           </ul>
