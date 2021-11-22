@@ -12,10 +12,10 @@ const UserInfoModal = () => {
   const uploadBtnRef = useRef<HTMLInputElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
   const userNameRef = useRef<HTMLInputElement>(null);
-  const [userImg, setUserImg] = useState("/icons/person.svg");
   const [imageFile, setImageFile] = useState<File>();
   const dispatch = useDispatch();
-  const { userNickName, updateSucceed } = useSelector((state: RootState) => state.user);
+  const { userNickName, userProfile, updateSucceed } = useSelector((state: RootState) => state.user);
+  const [userImg, setUserImg] = useState(userProfile ? userProfile : "/icons/person.svg");
 
   const closeUserInfoModal = () => {
     dispatch({ type: "CLOSE_MODAL" });
@@ -108,7 +108,7 @@ const UserInfoModal = () => {
               이미지 업로드
             </UploadImgBtnWrapper>
             <DeleteImgBtnWrapper onClick={onClickDeleteBtn}>사진 제거</DeleteImgBtnWrapper>
-            <UserNameInputWrapper placeholder="기존 닉네임" ref={userNameRef} spellCheck={false} />
+            <UserNameInputWrapper placeholder={userNickName} ref={userNameRef} spellCheck={false} />
             <SaveBtnWrapper onClick={onClickUpdateBtn}>저장하기</SaveBtnWrapper>
           </Content>
         </Container>
