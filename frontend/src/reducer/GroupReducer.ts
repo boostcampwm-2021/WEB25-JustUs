@@ -1,6 +1,6 @@
 import { GroupAction } from "@src/action";
 
-interface GroupType {
+export interface GroupType {
   groupId: number;
   groupName: string;
   groupImg: string;
@@ -16,6 +16,10 @@ interface AlbumListItemType {
   albumName: string;
   posts: PostType[];
   base: boolean;
+}
+export interface IHashtag {
+  hashtagId: number;
+  hashtagContent: string;
 }
 
 interface IInitState {
@@ -39,6 +43,7 @@ interface IInitState {
   postShiftAlbumLoading: boolean;
   postShiftAlbumSucceed: boolean;
   postShiftAlbumError: boolean;
+  hashTags: IHashtag[];
 }
 
 const initState: IInitState = {
@@ -62,6 +67,7 @@ const initState: IInitState = {
   postShiftAlbumLoading: false,
   postShiftAlbumSucceed: false,
   postShiftAlbumError: false,
+  hashTags: [],
 };
 
 export const CREATE_GROUP = "CREATE_GROUP";
@@ -73,7 +79,6 @@ export const GET_GROUP_LIST = "GET_GROUP_LIST";
 export const SET_GROUPS = "SET_GROUPS";
 export const REQUEST_JOIN_GROUP = "REQUEST_JOIN_GROUP";
 export const REQUEST_UPDATE_GROUP = "REQUEST_UPDATE_GROUP";
-
 export const NEW_ALBUM_REQUEST = "NEW_ALBUM_REQUEST";
 export const NEW_ALBUM_SUCCEED = "NEW_ALBUM_SUCCEED";
 export const NEW_ALBUM_FAILED = "NEW_ALBUM_FAILED";
@@ -89,6 +94,8 @@ export const UPDATE_ALBUM_ORDER_FAILED = "UPDATE_ALBUM_ORDER_FAILED";
 export const POST_SHIFT_ALBUM_REQUEST = "POST_SHIFT_ALBUM_REQUEST";
 export const POST_SHIFT_ALBUM_SUCCEED = "POST_SHIFT_ALBUM_SUCCEED";
 export const POST_SHIFT_ALBUM_FAILED = "POST_SHIFT_ALBUM_FAILED";
+export const REQUEST_HASHTAGS = "REQUEST_HASHTAGS";
+export const SET_HASHTAGS = "SET_HASHTAGS";
 
 export const createGroupAction = (payload: any) => ({
   type: CREATE_GROUP,
@@ -171,6 +178,11 @@ export const postShiftAlbumAction = (
 
 export const updateGroupAction = (payload: any) => ({
   type: REQUEST_UPDATE_GROUP,
+  payload,
+});
+
+export const requestHashtagsAction = (payload: any) => ({
+  type: REQUEST_HASHTAGS,
   payload,
 });
 
@@ -506,6 +518,11 @@ const groupReducer = (state = initState, action: any) => {
         postShiftAlbumLoading: false,
         postShiftAlbumSucceed: false,
         postShiftAlbumError: true,
+      };
+    case SET_HASHTAGS:
+      return {
+        ...state,
+        hashTags: action.payload,
       };
     default:
       return state;

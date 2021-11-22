@@ -1,7 +1,7 @@
 import { all, fork, put, call, takeLatest, select, delay } from "redux-saga/effects";
 import axios from "axios";
 import { getGroupListApi } from "@src/sagas/user";
-import { SET_GROUPS } from "@src/reducer/GroupReducer";
+import { SET_GROUPS, SET_HASHTAGS } from "@src/reducer/GroupReducer";
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
@@ -93,6 +93,11 @@ async function requestUpdateGroupApi(payload: any) {
   return result;
 }
 
+async function requestHashtagsApi(payload: any) {
+  const result = await axios.get(`${SERVER_URL}/api/groups/${payload.groupId}/hashtags`, { withCredentials: true });
+  return result;
+}
+
 function* getGroupInfo(action: any) {
   try {
     const result: ResponseGenerator = yield call(getGroupInfoApi, action.payload);
@@ -167,6 +172,13 @@ function* requestUpdateGroup(action: any) {
   } catch (err) {}
 }
 
+function* requestHashtags(action: any) {
+  try {
+    const result: ResponseGenerator = yield call(requestHashtagsApi, action.payload);
+    yield put({ type: SET_HASHTAGS, payload: result.data.hashtags });
+  } catch (err) {}
+}
+
 function* watchGroupInfo() {
   yield takeLatest("REQUEST_GROUP_INFO", getGroupInfo);
 }
@@ -195,6 +207,10 @@ function* watchRequestUpdateGroup() {
   yield takeLatest("REQUEST_UPDATE_GROUP", requestUpdateGroup);
 }
 
+function* watchRequestHashtags() {
+  yield takeLatest("REQUEST_HASHTAGS", requestHashtags);
+}
+
 export default function* groupSaga() {
   yield all([
     fork(watchGroupInfo),
@@ -204,5 +220,6 @@ export default function* groupSaga() {
     fork(watchGetGroupMemberList),
     fork(watchRequestJoinGroup),
     fork(watchRequestUpdateGroup),
+    fork(watchRequestHashtags),
   ]);
 }
