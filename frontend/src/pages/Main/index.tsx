@@ -16,30 +16,32 @@ const Main = () => {
   const [isToggle, setIsToggle] = useState<boolean>(true);
   const dispatch = useDispatch();
   const { groups }: any = useSelector((state: RootState) => state.groups);
-  const { userInfoLoading } = useSelector((state: RootState) => state.user);
-  const { userProfile } = useSelector((state: RootState) => state.user);
+  const { userInfoLoading, userProfile, userInfoError, userInfoSucceed, userLoggedOut } = useSelector(
+    (state: RootState) => state.user,
+  );
   const history = useHistory();
 
   useEffect(() => {
     document.addEventListener("click", (event) => {
       const { target, clientX, clientY } = event;
       if (!(event.target instanceof HTMLElement)) return;
-
       dispatch({ type: GroupModalAction.SET_CLICKED_TARGET, payload: { target, clientX, clientY } });
     });
-
-    dispatch(getGroupListAction());
-  }, []);
-
-  useEffect(() => {
     dispatch(userInfoRequestAction());
   }, []);
 
   useEffect(() => {
-    if (!userInfoLoading && !userProfile) {
+    if (userInfoError) {
       history.push("/login");
     }
-  }, [userProfile, userInfoLoading]);
+    if (userInfoSucceed) {
+      dispatch(getGroupListAction());
+      dispatch({ type: "USER_INFO_INIT" });
+    }
+    if (userLoggedOut) {
+      history.push("/login");
+    }
+  }, [userInfoLoading, userLoggedOut]);
 
   if (!userInfoLoading && !userProfile) {
     return <></>;
