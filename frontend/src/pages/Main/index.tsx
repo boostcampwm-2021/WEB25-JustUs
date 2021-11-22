@@ -49,8 +49,9 @@ const Main = () => {
       <Header isToggle={isToggle} setIsToggle={setIsToggle} />
       <Content>
         <Sidebar isToggle={isToggle} setIsToggle={setIsToggle} />
-        {!!groups.length && <Map />}
-        {!groups.length && (
+        {groups.length > 0 ? (
+          <Map />
+        ) : (
           <CryingGrapeWrapper>
             <Guide>그룹을 생성/참가 해주세요 ㅠㅠ</Guide>
           </CryingGrapeWrapper>
