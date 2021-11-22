@@ -88,7 +88,7 @@ const GroupSettingModal = () => {
         <Content>
           <ImageBackground>
             <img
-              src={groupImg ? groupImg : "/icons/podo-many.png"}
+              src={groupImg ? groupImg : "/icons/podo-many.jpeg"}
               alt="default icon"
               ref={imageRef}
               width="100%"
