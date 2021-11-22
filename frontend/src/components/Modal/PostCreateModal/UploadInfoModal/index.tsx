@@ -366,14 +366,13 @@ const ModalRight = styled.div`
   display: flex;
   flex-direction: column;
   height: 100%;
-    & mark {
-      border-radius: 3px;
-      color: transparent;
-      background-color: ${COLOR.THEME1.SECONDARY};
-      letter-spacing: normal;
-      font-size: 1.6rem;
-      overflow: auto;
-    }
+  & mark {
+    border-radius: 3px;
+    color: transparent;
+    background-color: ${COLOR.THEME1.SECONDARY};
+    letter-spacing: normal;
+    font-size: 1.6rem;
+    overflow: auto;
   }
 `;
 const ModalLeft = styled.div`
