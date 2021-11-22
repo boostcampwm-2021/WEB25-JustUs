@@ -12,6 +12,7 @@ interface PostProps {
   setPostSelected: Dispatch<SetStateAction<number>>;
   PostDragHandler: (ev: React.DragEvent<HTMLDivElement>) => void;
   PostDragEndHandler: (ev: React.DragEvent<HTMLDivElement>) => void;
+  album: any;
 }
 
 const Post = ({
@@ -22,6 +23,7 @@ const Post = ({
   PostDragHandler,
   PostDragEndHandler,
   albumIdx,
+  album,
 }: PostProps) => {
   const dispatch = useDispatch();
 
@@ -43,6 +45,7 @@ const Post = ({
       data-id={idx}
       data-albumidx={albumIdx}
       onDragOver={(e) => e.preventDefault()}
+      data-album-id={album.albumId}
     >
       <PostTitle>{postTitle}</PostTitle>
     </PostWrapper>
