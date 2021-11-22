@@ -23,9 +23,12 @@ const Main = () => {
   useEffect(() => {
     document.addEventListener("click", (event) => {
       const { target, clientX, clientY } = event;
-      if (!(event.target instanceof HTMLElement)) return;
 
       dispatch({ type: GroupModalAction.SET_CLICKED_TARGET, payload: { target, clientX, clientY } });
+      dispatch({ type: "SET_RIGHT_CLICK_MODAL", payload: false });
+
+      const isClusteringClicked = (target as HTMLElement).getAttribute("src")?.match(/\/icons\/podo-(three|many).png/);
+      !isClusteringClicked && dispatch({ type: "CLOSE_INFO_WINDOW" });
     });
 
     dispatch(getGroupListAction());

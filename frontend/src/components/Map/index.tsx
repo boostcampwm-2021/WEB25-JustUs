@@ -10,6 +10,7 @@ import dummyPosts from "./dummyPosts";
 import SetClustering from "@components/Map/SetClustering";
 import ReactDOM from "react-dom";
 import PostListModal from "@components/Modal/PostListModal";
+import { SET_RIGHT_CLICK_MODAL, SET_INFO_WINDOW, SET_INFO_WINDOW_OPENED } from "@src/reducer/MapReducer";
 
 declare const MarkerClustering: any;
 declare global {
@@ -89,12 +90,11 @@ const setMap = (
   INIT_X: number,
   INIT_Y: number,
   ZOOM_SIZE: number,
-  setIsRightClick: Dispatch<SetStateAction<Boolean>>,
   setRightPosition: Dispatch<SetStateAction<Point>>,
   setLatLng: Dispatch<SetStateAction<naver.maps.LatLng | undefined>>,
   setClickInfo: Dispatch<SetStateAction<PointerEvent>>,
   setNaverMap: Dispatch<SetStateAction<naver.maps.Map | undefined>>,
-  setInfoWindow: Dispatch<SetStateAction<naver.maps.InfoWindow | undefined>>,
+  dispatch: Dispatch<{ type: string; payload: boolean | naver.maps.InfoWindow }>,
 ) => {
   const pos = new naver.maps.LatLng(INIT_X, INIT_Y);
   const map = new naver.maps.Map("map", {
@@ -105,38 +105,44 @@ const setMap = (
   });
 
   setNaverMap(map);
-  const infoWindow = new naver.maps.InfoWindow({
+  const newInfoWindow = new naver.maps.InfoWindow({
     content: "",
     maxWidth: 200,
     borderColor: COLOR.GRAY,
     borderWidth: 2,
     disableAnchor: true,
   });
-  setInfoWindow(infoWindow);
+  dispatch({ type: SET_INFO_WINDOW, payload: newInfoWindow });
 
   naver.maps.Event.addListener(map, "rightclick", (e: PointerEvent) => {
     setClickInfo(e);
     setLatLng(e.latlng);
     setRightPosition({ x: e.pointerEvent.pageX, y: e.pointerEvent.pageY });
-    setIsRightClick(true);
+    dispatch({ type: SET_RIGHT_CLICK_MODAL, payload: true });
   });
   naver.maps.Event.addListener(map, "zoom_changed", (e: Number) => {
-    setIsRightClick(false);
-    infoWindow.close();
+    dispatch({ type: SET_RIGHT_CLICK_MODAL, payload: false });
+    newInfoWindow.close();
+    dispatch({ type: SET_INFO_WINDOW_OPENED, payload: false });
   });
   naver.maps.Event.addListener(map, "mousedown", (e: PointerEvent) => {
-    setIsRightClick(false);
-    infoWindow.close();
+    dispatch({ type: SET_RIGHT_CLICK_MODAL, payload: false });
+    newInfoWindow.close();
+    dispatch({ type: SET_INFO_WINDOW_OPENED, payload: false });
   });
 };
 
 const Map = () => {
   const dispatch = useDispatch();
-  const [isRightClick, setIsRightClick] = useState<Boolean>(false);
+  const {
+    isRightClickModalOpened,
+    infoWindow,
+  }: { isRightClickModalOpened: boolean; infoWindow: naver.maps.InfoWindow | null } = useSelector(
+    (state: RootState) => state.map,
+  );
   const [rightPosition, setRightPosition] = useState<Point>({ x: 0, y: 0 });
   const [clickInfo, setClickInfo] = useState<any>();
   const [naverMap, setNaverMap] = useState<naver.maps.Map>();
-  const [infoWindow, setInfoWindow] = useState<naver.maps.InfoWindow>();
   const [latLng, setLatLng] = useState<naver.maps.LatLng>();
   const [currentMarkers, setCurrentMarkers] = useState<Array<naver.maps.Marker>>([]);
   const [currentClustering, setCurrentClustering] = useState<IMarkerClustering | undefined>(undefined);
@@ -149,17 +155,7 @@ const Map = () => {
       const INIT_X = 37.511337;
       const INIT_Y = 127.012084;
       const ZOOM_SIZE = 13;
-      setMap(
-        INIT_X,
-        INIT_Y,
-        ZOOM_SIZE,
-        setIsRightClick,
-        setRightPosition,
-        setLatLng,
-        setClickInfo,
-        setNaverMap,
-        setInfoWindow,
-      );
+      setMap(INIT_X, INIT_Y, ZOOM_SIZE, setRightPosition, setLatLng, setClickInfo, setNaverMap, dispatch);
     };
     initMap();
   }, []);
@@ -172,9 +168,8 @@ const Map = () => {
         if (infoWindow) {
           infoWindow.close();
         }
-        setIsRightClick(false);
+        dispatch({ type: SET_RIGHT_CLICK_MODAL, payload: false });
         dispatch({ type: "SELECT_POST_REQUEST", postId: clickedPostID });
-        // dispatch({ type: "OPEN_MODAL", payload: "PostShowModal" });
       };
 
       const markers = postsList.map((post: PostType) => {
@@ -185,7 +180,7 @@ const Map = () => {
       });
 
       const handleClickClustering = (members: IClustredMember[], LatLng: naver.maps.LatLng) => {
-        setIsRightClick(false);
+        dispatch({ type: SET_RIGHT_CLICK_MODAL, payload: false });
         const clusteredMarker = members.map((member) => {
           return { postId: member.postId, postTitle: member.title };
         });
@@ -194,6 +189,7 @@ const Map = () => {
         infoWindow.setContent(['<div id="clustredMarkerList" style="width:20rem;height:10rem;">'].join(""));
         if (!naverMap) return;
         infoWindow.open(naverMap, LatLng);
+        dispatch({ type: SET_INFO_WINDOW_OPENED, payload: true });
 
         ReactDOM.render(
           <React.StrictMode>
@@ -247,13 +243,8 @@ const Map = () => {
   return (
     <React.Fragment>
       <Maps id="map" />
-      {isRightClick && (
-        <MapLayerPostModal
-          latLng={latLng}
-          clickInfo={clickInfo}
-          rightPosition={rightPosition}
-          setIsRightClick={setIsRightClick}
-        />
+      {isRightClickModalOpened && (
+        <MapLayerPostModal latLng={latLng} clickInfo={clickInfo} rightPosition={rightPosition} />
       )}
       <FloatActionBtn onClick={modalOpen}>+</FloatActionBtn>
     </React.Fragment>
