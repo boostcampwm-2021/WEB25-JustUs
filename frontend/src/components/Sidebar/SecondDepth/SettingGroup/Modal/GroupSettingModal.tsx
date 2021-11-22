@@ -1,36 +1,50 @@
-import React, { useRef, useState } from "react";
+import { useState, useRef } from "react";
 import styled, { keyframes } from "styled-components";
-import { flexRowCenterAlign } from "@styles/StyledComponents";
+import { flexRowCenterAlign } from "@src/styles/StyledComponents";
 import Modal from "@components/Modal";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import COLOR from "@styles/Color";
-import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
-import { createGroupAction } from "@src/reducer/GroupReducer";
+import { updateGroupAction } from "@src/reducer/GroupReducer";
 
-interface Group {
-  groupId: number;
-  groupName: string;
-  img: string;
-}
-
-const CreateGroupModal = () => {
+const GroupSettingModal = () => {
+  const { selectedGroup, albumList }: any = useSelector((state: RootState) => state.groups);
+  const [groupImg, setGroupImg] = useState(selectedGroup.groupImage);
+  const [imageFile, setImageFile] = useState<File>();
+  const groupNameRef = useRef<HTMLInputElement>(null);
   const uploadBtnRef = useRef<HTMLInputElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
-  const groupNameRef = useRef<HTMLInputElement>(null);
-  const [groupImg, setGroupImg] = useState("/icons/person.svg");
-  const [imageFile, setImageFile] = useState<File>();
-  const { groups }: any = useSelector((state: RootState) => state.groups);
   const dispatch = useDispatch();
 
   const closeModal = () => {
     dispatch({ type: "CLOSE_MODAL" });
   };
 
+  const onClickUpdateBtn = () => {
+    if (!groupNameRef.current) return;
+    if (groupNameRef.current.value === "") {
+      alert("그룹 이름은 반드시 입력해야 합니다.");
+      return;
+    }
+
+    updateGroup();
+  };
+
+  const updateGroup = () => {
+    if (!groupNameRef.current) return;
+
+    const groupName = groupNameRef.current.value;
+    const groupImage = imageFile;
+
+    dispatch(updateGroupAction({ groupId: selectedGroup.groupId, groupName, groupImage, albumList }));
+    closeModal();
+  };
+
   const onClickUploadBtn = () => {
     if (uploadBtnRef.current === null) return;
     uploadBtnRef.current.click();
   };
+
   const loadImage = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
     if (!files) return;
@@ -54,34 +68,6 @@ const CreateGroupModal = () => {
     setGroupImg("/icons/person.svg");
   };
 
-  const onClickCreateBtn = () => {
-    if (!groupNameRef.current) return;
-    if (groupNameRef.current.value === "") {
-      alert("그룹 이름은 반드시 입력해야 합니다.");
-      return;
-    }
-
-    createGroup();
-  };
-
-  const createGroup = () => {
-    if (!groupNameRef.current) return;
-
-    const groupId = Math.floor(Math.random() * (1000 - 1)) + 1;
-    const albumId = Math.floor(Math.random() * (1000 - 1)) + 1;
-    const groupName = groupNameRef.current.value;
-    const newGroup = {
-      groupId,
-      groupName,
-      groupImg,
-      albumList: [{ albumId, albumName: "기본 앨범", posts: [] }],
-    };
-
-    dispatch(createGroupAction({ groupName, groupImage: imageFile }));
-
-    closeModal();
-  };
-
   return (
     <Modal>
       <ModalContainer
@@ -91,7 +77,7 @@ const CreateGroupModal = () => {
       >
         <Header>
           <TitleWrapper>
-            <div>새 그룹 생성</div>
+            <div>그룹 정보 수정</div>
           </TitleWrapper>
           <CloseBtn>
             <button type="button" onClick={closeModal}>
@@ -100,7 +86,7 @@ const CreateGroupModal = () => {
           </CloseBtn>
         </Header>
         <Content>
-          <ImageBackground groupImg={groupImg}>
+          <ImageBackground groupImage={selectedGroup.groupImage}>
             <img src={groupImg} alt="person icon" ref={imageRef} width="100%" height="100%" />
           </ImageBackground>
           <UploadImgBtnWrapper onClick={onClickUploadBtn}>
@@ -109,7 +95,7 @@ const CreateGroupModal = () => {
           </UploadImgBtnWrapper>
           <DeleteImgBtnWrapper onClick={onClickDeleteBtn}>사진 제거</DeleteImgBtnWrapper>
           <GroupNameInputWrapper placeholder="그룹 이름을 입력해주세요" ref={groupNameRef} />
-          <CreateBtnWrapper onClick={onClickCreateBtn}>생성하기</CreateBtnWrapper>
+          <CreateBtnWrapper onClick={onClickUpdateBtn}>수정하기</CreateBtnWrapper>
         </Content>
       </ModalContainer>
     </Modal>
@@ -126,7 +112,6 @@ const modalSlideUp = keyframes`
     transform: translateY(0);
   }
 `;
-
 const ModalContainer = styled.div`
   background-color: ${COLOR.WHITE};
   min-height: 55rem;
@@ -137,13 +122,11 @@ const ModalContainer = styled.div`
   animation-name: ${modalSlideUp};
   animation-duration: 1s;
 `;
-
 const Header = styled.div`
   display: grid;
   grid-template-columns: 10% 80% 10%;
   padding: 2rem;
 `;
-
 const TitleWrapper = styled.div`
   text-align: center;
   font-size: 2.5rem;
@@ -151,7 +134,6 @@ const TitleWrapper = styled.div`
   grid-column-end: 3;
   ${flexRowCenterAlign}
 `;
-
 const CloseBtn = styled.div`
   grid-column-start: 3;
   grid-column-end: 4;
@@ -163,23 +145,26 @@ const CloseBtn = styled.div`
     border: none;
   }
 `;
-
 const Content = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
 `;
-
-const ImageBackground = styled.div<{ groupImg: string }>`
+const ImageBackground = styled.div<{ groupImage: string }>`
   ${flexRowCenterAlign}
   margin-top: 4rem;
   width: 10rem;
   height: 10rem;
   background-color: ${(props) => props.theme.SECONDARY};
-  opacity: ${(props) => (props.groupImg === "/icons/person.svg" ? "0.4" : "")};
+  opacity: ${(props) => (props.groupImage.match(/base-person-image$/) ? "0.4" : "")};
   border-radius: 100%;
-`;
 
+  & > img {
+    width: 10rem;
+    height: 10rem;
+    border-radius: 100%;
+  }
+`;
 const UploadImgBtnWrapper = styled.div`
   ${flexRowCenterAlign}
   cursor: pointer;
@@ -192,7 +177,6 @@ const UploadImgBtnWrapper = styled.div`
   width: 150px;
   height: 33px;
 `;
-
 const DeleteImgBtnWrapper = styled.div`
   cursor: pointer;
   margin-top: 4rem;
@@ -200,7 +184,6 @@ const DeleteImgBtnWrapper = styled.div`
   font-weight: bold;
   font-size: 1.6rem;
 `;
-
 const GroupNameInputWrapper = styled.input`
   margin-top: 4rem;
   border: none;
@@ -213,7 +196,6 @@ const GroupNameInputWrapper = styled.input`
     font-size: 1.6rem;
   }
 `;
-
 const CreateBtnWrapper = styled.div`
   ${flexRowCenterAlign}
   cursor: pointer;
@@ -226,4 +208,4 @@ const CreateBtnWrapper = styled.div`
   font-size: 2rem;
 `;
 
-export default CreateGroupModal;
+export default GroupSettingModal;

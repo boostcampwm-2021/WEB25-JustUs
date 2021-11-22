@@ -22,7 +22,7 @@ const PostDeleteModal = () => {
       payload: {
         groupId: selectedGroup.groupId,
         groupName: selectedGroup.groupName,
-        groupImg: selectedGroup.groupImg,
+        groupImage: selectedGroup.groupImage,
         albumList: albumList,
       },
     });

@@ -176,6 +176,7 @@ const UploadInfoModal = ({
               ref={inputRef}
               placeholder="내용"
               value={text}
+              spellCheck={false}
               onChange={handelTextInput}
               onScroll={handleScroll}
             />
@@ -305,7 +306,7 @@ const InputText = styled.textarea`
   margin-bottom: 2vh;
   z-index: 2;
   overflow: auto;
-  width: 100%;
+  width: 35rem;
   height: 20rem;
   background-color: transparent;
   margin: 0;
@@ -330,7 +331,7 @@ const ModalRight = styled.div`
     pointer-events: none;
     font-size: 1.6rem;
     pointer-events: none;
-    width: 100%;
+    width: 35rem;
     height: 20rem;
     line-height: 2rem;
 
@@ -340,7 +341,7 @@ const ModalRight = styled.div`
       background-color: ${COLOR.THEME1.SECONDARY};
       letter-spacing: normal;
       font-size: 1.6rem;
-      width: 100%;
+      width: 35rem;
       height: 20rem;
       overflow: auto;
     }
@@ -351,7 +352,7 @@ const ModalRight = styled.div`
       color: transparent;
       font-size: 1.6rem;
       resize: none;
-      width: 100%;
+      width: 35rem;
       height: 20rem;
       overflow: auto;
     }
