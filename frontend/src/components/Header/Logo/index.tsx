@@ -20,6 +20,7 @@ export default Logo;
 const LogoContainer = styled.a`
   ${flexRowCenterAlign}
   justify-content: flex-start;
+  align-items: center;
   width: 100%;
 `;
 
@@ -32,13 +33,13 @@ from{opacity:0};
 to{opacity:1};`;
 
 const TextLogo = styled.div`
-  font-size: 20px;
+  font-size: 2.1rem;
   color: ${COLOR.WHITE};
   margin-left: 2rem;
   & div {
     display: inline-block;
-    width: 20px;
-    height: 20px;
+    width: 2.1rem;
+    height: 2.1rem;
     &:nth-child(1) {
       animation: ${flipper} 1s cubic-bezier(0.68, -0.55, 0.26, 1.55) both, ${fadeIn} 1s both;
     }
@@ -53,7 +54,8 @@ const TextLogo = styled.div`
     }
     &:nth-child(5) {
       background-image: url("/icons/podo-many.png");
-      background-size: 20px;
+      background-size: 2.1rem;
+      background-repeat: no-repeat;
       animation: ${flipper} 1s cubic-bezier(0.68, -0.55, 0.26, 1.55) 0.8s both, ${fadeIn} 1s both;
     }
   }
