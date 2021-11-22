@@ -26,6 +26,7 @@ export const GET_GROUP_MEMBER_LIST = "GET_GROUP_MEMBER_LIST";
 export const GET_GROUP_LIST = "GET_GROUP_LIST";
 export const SET_GROUPS = "SET_GROUPS";
 export const REQUEST_JOIN_GROUP = "REQUEST_JOIN_GROUP";
+export const REQUEST_UPDATE_GROUP = "REQUEST_UPDATE_GROUP";
 
 export const createGroupAction = (payload: any) => ({
   type: CREATE_GROUP,
@@ -53,6 +54,11 @@ export const getGroupListAction = () => ({
 
 export const requestJoinGroupAction = (payload: any) => ({
   type: REQUEST_JOIN_GROUP,
+  payload,
+});
+
+export const updateGroupAction = (payload: any) => ({
+  type: REQUEST_UPDATE_GROUP,
   payload,
 });
 
@@ -103,7 +109,11 @@ const groupReducer = (state = initState, action: any) => {
       return {
         ...state,
         selectedGroup: action.payload
-          ? { groupId: action.payload.groupId, groupName: action.payload.groupName, groupImg: action.payload.groupImg }
+          ? {
+              groupId: action.payload.groupId,
+              groupName: action.payload.groupName,
+              groupImage: action.payload.groupImage,
+            }
           : null,
         albumList: action.payload ? action.payload.albumList : null,
         postsList: action.payload
@@ -207,7 +217,6 @@ const groupReducer = (state = initState, action: any) => {
 
         return updateAlbum;
       });
-      console.log(renewAlbumList);
       const renewPostsList = renewAlbumList.map((album: AlbumListItemType) => [...album.posts]).flat();
       return {
         ...state,

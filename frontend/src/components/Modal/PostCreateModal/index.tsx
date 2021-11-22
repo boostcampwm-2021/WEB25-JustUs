@@ -33,7 +33,7 @@ const PostCreateModal = () => {
           prevTitle=""
           prevText=""
           prevLocation={{
-            place_name: address ? address : "",
+            placeName: address ? address : "",
             x: position ? position.x : -1,
             y: position ? position.y : -1,
           }}

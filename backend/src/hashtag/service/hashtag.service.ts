@@ -20,7 +20,7 @@ export class HashTagService {
       hashTags?.map(async e => {
         const hashtagContent = e;
 
-        const exits = await this.hashTagRepository.findOne({ hashtagContent });
+        const exits = await this.hashTagRepository.findOne({ hashtagContent, group });
 
         if (!exits) {
           const hashtag = new HashTag();

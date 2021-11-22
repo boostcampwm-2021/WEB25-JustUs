@@ -36,6 +36,11 @@ const highlights = (text: string) => {
     ),
   );
 };
+const exportDateTime = (date: string) => {
+  const dateStart = 0;
+  const dateEnd = 10;
+  return date.substring(dateStart, dateEnd);
+};
 
 const PostInfoModal = () => {
   const [modalOpened, setModalOpened] = useState(false);
@@ -70,7 +75,7 @@ const PostInfoModal = () => {
         </CarouselWrapper>
         <ModalContent>{textSplit(selectedPost.postContent).map((item) => highlights(item))}</ModalContent>
         <ModalFooter>
-          <FooterItem>{selectedPost.postDate.substring(0, 10)}</FooterItem>
+          <FooterItem>{exportDateTime(selectedPost.postDate)}</FooterItem>
           <FooterItem>{selectedPost.userNickname}</FooterItem>
         </ModalFooter>
       </Modal>

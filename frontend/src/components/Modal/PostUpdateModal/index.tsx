@@ -27,7 +27,7 @@ const PostUpdateModal = () => {
   const { selectedPost }: { selectedPost: IPost } = useSelector((state: RootState) => state.modal);
   const [files, setFiles] = useState<FileObject[]>(selectedPost.images);
   const prevLocation = {
-    place_name: selectedPost.postLocation,
+    placeName: selectedPost.postLocation,
     x: selectedPost.postLongitude,
     y: selectedPost.postLatitude,
   };

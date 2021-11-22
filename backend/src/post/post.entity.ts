@@ -37,9 +37,6 @@ export class Post extends TimeStampEntity {
   @Column({ type: "decimal", precision: 18, scale: 10 })
   postLongitude: number;
 
-  @Column({ nullable: true })
-  hashtagCategory: string;
-
   @ManyToOne(() => Album, album => album.posts)
   @JoinColumn({ name: "album_id" })
   album: Album;

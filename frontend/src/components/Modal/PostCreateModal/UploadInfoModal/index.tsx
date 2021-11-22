@@ -16,7 +16,7 @@ interface IData {
 }
 
 interface ILocation {
-  place_name: string;
+  placeName: string;
   x: number;
   y: number;
 }
@@ -42,6 +42,12 @@ interface IselectedPost {
   postLongitude: number;
 }
 
+const exportDateTime = (date: string) => {
+  const dateStart = 0;
+  const dateEnd = 10;
+  return date.substring(dateStart, dateEnd);
+};
+
 const UploadInfoModal = ({
   mode,
   changeMode,
@@ -58,7 +64,7 @@ const UploadInfoModal = ({
   const [isSubOpened, setIsSubOpened] = useState(false);
   const [searchKeyword, setSearchKeyword] = useState<string>("");
   const [searchResult, setSearchResult] = useState<IData[]>([]);
-  const [date, setDate] = useState<string>(prevDate.substring(0, 10));
+  const [date, setDate] = useState<string>(exportDateTime(prevDate));
   const [selectedLocation, setSelectedLocation] = useState<ILocation>(prevLocation);
   const [page, setPage] = useState<number>(1);
   const [lastPage, setLastPage] = useState<number>(1);
@@ -113,7 +119,7 @@ const UploadInfoModal = ({
         postTitle: title,
         postContent: text,
         postDate: date,
-        postLocation: selectedLocation.place_name,
+        postLocation: selectedLocation.placeName,
         postLatitude: Number(selectedLocation.y),
         postLongitude: Number(selectedLocation.x),
         groupId: selectedGroup.groupId,
@@ -133,7 +139,7 @@ const UploadInfoModal = ({
         postTitle: title,
         postContent: text,
         postDate: date,
-        postLocation: selectedLocation.place_name,
+        postLocation: selectedLocation.placeName,
         postLatitude: Number(selectedLocation.y),
         postLongitude: Number(selectedLocation.x),
         addImages: newFileList,
@@ -148,7 +154,7 @@ const UploadInfoModal = ({
   };
 
   useEffect(() => {
-    if (title.length === 0 || date.length == 0 || selectedLocation.y === -1) setActivate(false);
+    if (!title.length || !date.length || selectedLocation.y === -1) setActivate(false);
     else setActivate(true);
   }, [title, date, selectedLocation]);
 
@@ -182,6 +188,7 @@ const UploadInfoModal = ({
               ref={inputRef}
               placeholder="내용"
               value={text}
+              spellCheck={false}
               onChange={handelTextInput}
               onScroll={handleScroll}
             />
@@ -196,7 +203,7 @@ const UploadInfoModal = ({
               <InputPlace>
                 {address === "" ? (
                   <InputPlaceName>
-                    {selectedLocation.place_name === "" ? "장소를 선택하세요." : selectedLocation.place_name}
+                    {selectedLocation.placeName === "" ? "장소를 선택하세요." : selectedLocation.placeName}
                   </InputPlaceName>
                 ) : (
                   <InputPlaceName>{address}</InputPlaceName>
@@ -311,7 +318,7 @@ const InputText = styled.textarea`
   margin-bottom: 2vh;
   z-index: 2;
   overflow: auto;
-  width: 100%;
+  width: 35rem;
   height: 20rem;
   background-color: transparent;
   margin: 0;
@@ -336,7 +343,7 @@ const ModalRight = styled.div`
     pointer-events: none;
     font-size: 1.6rem;
     pointer-events: none;
-    width: 100%;
+    width: 35rem;
     height: 20rem;
     line-height: 2rem;
 
@@ -346,7 +353,7 @@ const ModalRight = styled.div`
       background-color: ${COLOR.THEME1.SECONDARY};
       letter-spacing: normal;
       font-size: 1.6rem;
-      width: 100%;
+      width: 35rem;
       height: 20rem;
       overflow: auto;
     }
@@ -357,7 +364,7 @@ const ModalRight = styled.div`
       color: transparent;
       font-size: 1.6rem;
       resize: none;
-      width: 100%;
+      width: 35rem;
       height: 20rem;
       overflow: auto;
     }

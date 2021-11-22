@@ -12,7 +12,7 @@ interface IPagination {
   [key: string]: string;
 }
 interface ILocation {
-  place_name: string;
+  placeName: string;
   x: number;
   y: number;
 }
