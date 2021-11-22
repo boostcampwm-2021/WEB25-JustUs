@@ -2,21 +2,14 @@ import { useEffect } from "react";
 import styled from "styled-components";
 import COLOR from "@src/styles/Color";
 import { flexColumnCenterAlign, flexRowCenterAlign } from "@src/styles/StyledComponents";
-import { useDispatch } from "react-redux";
-import { userInfoRequestAction } from "@src/reducer/UserReducer";
 import { RootState } from "@src/reducer";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 const Login = () => {
   const SERVER_URL = process.env.REACT_APP_SERVER_URL;
   const LOGIN_URL = `${SERVER_URL}/api/auth/login`;
-  const dispatch = useDispatch();
-  const { userProfile } = useSelector((state: RootState) => state.user);
+  const { userProfile, userInfoLoading } = useSelector((state: RootState) => state.user);
   const history = useHistory();
-  useEffect(() => {
-    dispatch({ type: "USER_INFO_INIT" });
-    dispatch(userInfoRequestAction());
-  }, []);
 
   useEffect(() => {
     if (userProfile) {
@@ -24,6 +17,7 @@ const Login = () => {
     }
   }, [userProfile]);
 
+  if (userInfoLoading) return <></>;
   return (
     <>
       <BackgroundImg imgUrl="/img/sand.jpg">

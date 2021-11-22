@@ -10,7 +10,6 @@ import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
 import { useHistory } from "react-router-dom";
 import { getGroupListAction } from "@src/reducer/GroupReducer";
-import { userInfoRequestAction } from "@src/reducer/UserReducer";
 
 const Main = () => {
   const [isToggle, setIsToggle] = useState<boolean>(true);
@@ -27,25 +26,21 @@ const Main = () => {
       if (!(event.target instanceof HTMLElement)) return;
       dispatch({ type: GroupModalAction.SET_CLICKED_TARGET, payload: { target, clientX, clientY } });
     });
-    dispatch(userInfoRequestAction());
   }, []);
 
   useEffect(() => {
-    if (userInfoError) {
-      history.push("/login");
-    }
-    if (userInfoSucceed) {
+    if (userProfile) {
       dispatch(getGroupListAction());
-      dispatch({ type: "USER_INFO_INIT" });
     }
-    if (userLoggedOut) {
+  }, [userProfile]);
+
+  useEffect(() => {
+    if (userLoggedOut | userInfoError) {
       history.push("/login");
     }
-  }, [userInfoLoading, userLoggedOut]);
+  }, [userLoggedOut, userInfoError]);
 
-  if (!userInfoLoading && !userProfile) {
-    return <></>;
-  }
+  if (userInfoLoading) return <></>;
   return (
     <>
       <Header isToggle={isToggle} setIsToggle={setIsToggle} />
