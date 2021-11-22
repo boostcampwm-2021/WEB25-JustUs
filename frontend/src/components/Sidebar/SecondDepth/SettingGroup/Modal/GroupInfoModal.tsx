@@ -4,7 +4,6 @@ import { flexColumnCenterAlign, flexRowCenterAlign, yesNoButtonWrapper } from "@
 import Modal from "@components/Modal";
 import { useDispatch, useSelector } from "react-redux";
 import COLOR from "@styles/Color";
-import { GroupAction } from "@src/action";
 import { RootState } from "@src/reducer";
 import { deleteGroupAction } from "@src/reducer/GroupReducer";
 
@@ -12,7 +11,7 @@ interface SettingGroupModalProps {
   setIsToggle: Dispatch<SetStateAction<boolean>>;
 }
 
-const SettingGroupModal = ({ setIsToggle }: SettingGroupModalProps) => {
+const GroupInfoModal = ({ setIsToggle }: SettingGroupModalProps) => {
   const [clickedDropBtn, setClickedDropclickedDropBtn] = useState(false);
   const { selectedGroup }: any = useSelector((state: RootState) => state.groups);
   const dispatch = useDispatch();
@@ -26,9 +25,8 @@ const SettingGroupModal = ({ setIsToggle }: SettingGroupModalProps) => {
   };
   const onClickConfirmBtn = () => {
     const { groupId } = selectedGroup;
-    // dispatch({ type: GroupAction.DELETE_GROUP, payload: { groupId } });
-    dispatch(deleteGroupAction({ groupId }));
 
+    dispatch(deleteGroupAction({ groupId }));
     closeModal();
     setIsToggle(false);
   };
@@ -45,7 +43,9 @@ const SettingGroupModal = ({ setIsToggle }: SettingGroupModalProps) => {
         }}
       >
         <Header>
-          <Title>그룹 설정</Title>
+          <TitleWrapper>
+            <div>그룹 정보</div>
+          </TitleWrapper>
           <CloseBtn>
             <button type="button" onClick={closeModal}>
               <img src="/icons/clear.svg" alt="clear icon" />
@@ -61,11 +61,9 @@ const SettingGroupModal = ({ setIsToggle }: SettingGroupModalProps) => {
             <GroupMemberListWrapper>
               <GroupMemberListGuide>그룹원</GroupMemberListGuide>
               <GroupMemberList>
-                {/* {groupMemberList.map((groupMember) => ( */}
                 {selectedGroup.users.map((groupMember: any) => (
                   <GroupMember key={groupMember.userId}>
                     <GroupImg>
-                      {/* <img src="/icons/person.svg" alt="person icon" /> */}
                       <img src={groupMember.profileImage} alt="person icon" />
                     </GroupImg>
                     <MemberNickname>{groupMember.userNickname}</MemberNickname>
@@ -102,27 +100,24 @@ const modalSlideUp = keyframes`
 `;
 const ModalContainer = styled.div`
   background-color: ${COLOR.WHITE};
-  min-height: 70vh;
+  min-height: 50vh;
   min-width: 35vw;
   border-radius: 2rem;
   animation-name: ${modalSlideUp};
   animation-duration: 1s;
 `;
-
 const Header = styled.div`
   display: grid;
   grid-template-columns: 10% 80% 10%;
   margin-top: 2rem;
 `;
-
-const Title = styled.div`
-  font-size: 3.5rem;
+const TitleWrapper = styled.div`
+  text-align: center;
+  font-size: 2.5rem;
   grid-column-start: 2;
   grid-column-end: 3;
   ${flexRowCenterAlign}
-  padding: 2rem;
 `;
-
 const CloseBtn = styled.div`
   width: 100%;
   ${flexRowCenterAlign}
@@ -135,7 +130,6 @@ const CloseBtn = styled.div`
     cursor: pointer;
   }
 `;
-
 const ContentWrapper = styled.div`
   ${flexColumnCenterAlign}
 `;
@@ -157,27 +151,23 @@ const JoinCodeGuide = styled.div`
   width: 25%;
   font-size: 2.5rem;
 `;
-
 const JoinCode = styled.div`
   font-size: 18px;
   margin-left: 30px;
 `;
-
 const GroupMemberListWrapper = styled.div`
   width: 100%;
   margin-top: 5rem;
   display: flex;
-  height: 300px;
+  height: 20vh;
   overflow-y: auto;
 `;
-
 const GroupMemberListGuide = styled.div`
   display: flex;
   flex-direction: column;
   width: 25%;
   font-size: 2.5rem;
 `;
-
 const GroupMemberList = styled.div`
   display: flex;
   flex-direction: column;
@@ -213,13 +203,11 @@ const GroupDropWrapper = styled.div`
     font-size: 20px;
   }
 `;
-
 const DropGuideWrapper = styled.div`
   padding-top: 10px;
   width: 25%;
   font-size: 2.5rem;
 `;
-
 const DropGroupButtonWrapper = styled.div`
   ${flexRowCenterAlign}
   width: 10rem;
@@ -230,17 +218,15 @@ const DropGroupButtonWrapper = styled.div`
   cursor: pointer;
   font-size: 2.2rem;
 `;
-
 const YesButtonWrapper = styled.div`
   ${flexRowCenterAlign}
   ${yesNoButtonWrapper}
   border: 2px solid ${COLOR.RED};
 `;
-
 const NoButtonWrapper = styled.div`
   ${flexRowCenterAlign}
   ${yesNoButtonWrapper}
   border: 2px solid ${COLOR.BLUE};
 `;
 
-export default SettingGroupModal;
+export default GroupInfoModal;

@@ -9,6 +9,7 @@ import {
   USER_INFO_UPDATE,
   SET_UPDATED_USER_INFO,
   SET_UPDATE_FAIL,
+  REQUEST_UPDATE_GROUP_ORDER,
 } from "@src/reducer/UserReducer";
 import axios from "axios";
 import { GET_GROUP_LIST, SET_GROUPS } from "@src/reducer/GroupReducer";
@@ -43,8 +44,12 @@ function getLogOutApi() {
 
 async function updateUserInfoApi(user: IUser) {
   const formData = new FormData();
+  const res = await fetch("http://localhost:3000/img/person.png");
+  const blob = await res.blob();
+  const baseImage = new File([blob], "base-person-image", { type: "image/png" });
+
   formData.append("userNickname", user.updateUserNickName);
-  formData.append("profileImage", user.updateUserProfile);
+  formData.append("profileImage", user.updateUserProfile ? user.updateUserProfile : baseImage);
 
   const result = await axios.put(`${SERVER_URL}/api/user`, formData, {
     withCredentials: true,
@@ -56,6 +61,12 @@ async function updateUserInfoApi(user: IUser) {
 
 export async function getGroupListApi() {
   const result = await axios.get(`${SERVER_URL}/api/user/groups`, { withCredentials: true });
+  return result;
+}
+
+async function updateGroupOrderApi(payload: any) {
+  const { groupOrder } = payload;
+  const result = axios.put(`${SERVER_URL}/api/user/grouporder`, { groupOrder }, { withCredentials: true });
   return result;
 }
 
@@ -85,7 +96,7 @@ function* updateUserInfo() {
 
     yield put({
       type: SET_UPDATED_USER_INFO,
-      payload: { userNickName: user.updateUserNickName, userProfile: result.data },
+      payload: { userNickName: user.updateUserNickName, userProfile: result.data.profileImage },
     });
   } catch (err: any) {
     yield put({ type: SET_UPDATE_FAIL });
@@ -96,6 +107,12 @@ function* getGroupList() {
   const result: ResponseGenerator = yield call(getGroupListApi);
   const { groups } = result.data;
   yield put({ type: SET_GROUPS, payload: groups });
+}
+
+function* updateGroupOrder(action: any) {
+  const groupOrder = action.payload.groupOrder.join(",");
+
+  yield call(updateGroupOrderApi, { groupOrder });
 }
 
 function* watchUserInfo() {
@@ -113,6 +130,17 @@ function* watchUpdateUserInfo() {
 function* watchGetGroupList() {
   yield takeEvery(GET_GROUP_LIST, getGroupList);
 }
+
+function* watchUpdateGroupOrder() {
+  yield takeEvery(REQUEST_UPDATE_GROUP_ORDER, updateGroupOrder);
+}
+
 export default function* userSaga() {
-  yield all([fork(watchUserInfo), fork(watchLogOut), fork(watchUpdateUserInfo), fork(watchGetGroupList)]);
+  yield all([
+    fork(watchUserInfo),
+    fork(watchLogOut),
+    fork(watchUpdateUserInfo),
+    fork(watchGetGroupList),
+    fork(watchUpdateGroupOrder),
+  ]);
 }

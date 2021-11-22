@@ -39,6 +39,7 @@ const Group = ({ isToggle, setIsToggle, groupId, groupName, groupImage, DragHand
       onDragEnd={DragEndHandler}
       onClick={onClickGroup}
       onDragOver={(e) => e.preventDefault()}
+      data-id={groupId}
     ></ButtonWrapper>
   );
 };
