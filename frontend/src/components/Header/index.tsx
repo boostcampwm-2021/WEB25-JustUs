@@ -6,7 +6,7 @@ import { RootState } from "@src/reducer";
 
 import Profile from "@components/Header/Profile";
 import Search from "@components/Header/Profile/Search";
-
+import Logo from "@components/Header/Logo";
 interface SidebarProps {
   isToggle: boolean;
   setIsToggle: Dispatch<SetStateAction<boolean>>;
@@ -21,7 +21,7 @@ const Header = ({ isToggle, setIsToggle }: SidebarProps) => {
   };
   return (
     <HeaderContainer groups={groups}>
-      <img src="/icons/menu.svg" className="pointer" onClick={onClickMenu} alt="menu" />
+      <Logo />
       <Search />
       <Profile />
     </HeaderContainer>
@@ -34,9 +34,10 @@ const HeaderContainer = styled.div<{ groups: any }>`
   box-sizing: border-box;
   border-bottom: 1px solid ${COLOR.WHITE};
   padding: 0 1vw;
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  justify-items: center;
   align-items: center;
+  grid-template-columns: 30rem 1fr 30rem;
   & img.pointer {
     &:hover {
       cursor: ${({ groups }) => (groups.length ? "pointer" : "not-allowed")};

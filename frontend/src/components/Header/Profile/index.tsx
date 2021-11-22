@@ -19,25 +19,29 @@ const Profile = () => {
 
   return (
     <>
-      <ProfileContainer id="profile" onClick={handleProfileBtnClick} profile={userProfile}></ProfileContainer>
+      <ProfileContainer>
+        <ProfileImage id="profile" onClick={handleProfileBtnClick} profile={userProfile}></ProfileImage>
+      </ProfileContainer>
       {isModalOpened && <ProfileModal isModalOpened={isModalOpened} setIsModalOpened={setIsModalOpened} />}
     </>
   );
 };
 
-const ProfileContainer = styled.button<{ profile: string }>`
+const ProfileContainer = styled.div`
   height: 4vh;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+`;
+const ProfileImage = styled.button<{ profile: string }>`
   width: 4vh;
   background-image: url(${(props) => props.profile});
   background-size: cover;
   border-radius: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   border: none;
+  margin-right: 2rem;
   &:hover {
     cursor: pointer;
   }
 `;
-
 export default Profile;
