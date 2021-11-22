@@ -16,17 +16,7 @@ const PostDeleteModal = () => {
   };
 
   const onClickDeleteBtn = () => {
-    dispatch({ type: "DELETE_POST", payload: selectedPost });
-    dispatch({
-      type: "SET_SELECTED_GROUP",
-      payload: {
-        groupId: selectedGroup.groupId,
-        groupName: selectedGroup.groupName,
-        groupImage: selectedGroup.groupImage,
-        albumList: albumList,
-      },
-    });
-    closeModal();
+    dispatch({ type: "DELETE_POST_REQUEST", postId: selectedPost.postId });
   };
 
   return (

@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from "react-redux";
 import Carousel from "@components/Modal/PostCreateModal/UploadInfoModal/Carousel";
 import { RootState } from "@src/reducer";
 import ModalSub from "./ModalSub";
-import dummyPosts from "@components/Map/dummyPosts";
 
 interface FileObject {
   imageUrl: File | string;
@@ -15,6 +14,12 @@ interface FileObject {
 interface IData {
   [key: string]: string;
 }
+
+interface ILocation {
+  placeName: string;
+  x: number;
+  y: number;
+}
 interface UploadInfoModalProps {
   mode: string;
   changeMode: () => void;
@@ -22,7 +27,7 @@ interface UploadInfoModalProps {
   prevTitle: string | "";
   prevText: string | "";
   prevDate: string | "";
-  prevLocation: IData | {};
+  prevLocation: ILocation;
 }
 
 interface IselectedPost {
@@ -36,6 +41,12 @@ interface IselectedPost {
   postLatitude: number;
   postLongitude: number;
 }
+
+const exportDateTime = (date: string) => {
+  const dateStart = 0;
+  const dateEnd = 10;
+  return date.substring(dateStart, dateEnd);
+};
 
 const UploadInfoModal = ({
   mode,
@@ -53,8 +64,8 @@ const UploadInfoModal = ({
   const [isSubOpened, setIsSubOpened] = useState(false);
   const [searchKeyword, setSearchKeyword] = useState<string>("");
   const [searchResult, setSearchResult] = useState<IData[]>([]);
-  const [date, setDate] = useState<string>(prevDate);
-  const [selectedLocation, setSelectedLocation] = useState<IData>(prevLocation);
+  const [date, setDate] = useState<string>(exportDateTime(prevDate));
+  const [selectedLocation, setSelectedLocation] = useState<ILocation>(prevLocation);
   const [page, setPage] = useState<number>(1);
   const [lastPage, setLastPage] = useState<number>(1);
   const [gobackClicked, setGobackClicked] = useState<boolean>(false);
@@ -63,7 +74,7 @@ const UploadInfoModal = ({
   const backdropRef = useRef<HTMLDivElement>(null);
   const { address }: any = useSelector((state: RootState) => state.address);
   const { selectedPost }: { selectedPost: IselectedPost } = useSelector((state: RootState) => state.modal);
-  const { selectedGroup, albumList }: any = useSelector((state: RootState) => state.groups);
+  const { selectedGroup }: any = useSelector((state: RootState) => state.groups);
 
   useEffect(() => {
     handelTextInput(null);
@@ -108,7 +119,7 @@ const UploadInfoModal = ({
         postTitle: title,
         postContent: text,
         postDate: date,
-        postLocation: selectedLocation.address_name,
+        postLocation: selectedLocation.placeName,
         postLatitude: Number(selectedLocation.y),
         postLongitude: Number(selectedLocation.x),
         groupId: selectedGroup.groupId,
@@ -128,11 +139,12 @@ const UploadInfoModal = ({
         postTitle: title,
         postContent: text,
         postDate: date,
-        postLocation: selectedLocation.address_name,
+        postLocation: selectedLocation.placeName,
         postLatitude: Number(selectedLocation.y),
         postLongitude: Number(selectedLocation.x),
         addImages: newFileList,
         deleteImagesId: deleteFileList,
+        groupId: selectedGroup.groupId,
       };
 
       dispatch({ type: "UPDATE_POST_REQUEST", post: updatePost });
@@ -142,9 +154,9 @@ const UploadInfoModal = ({
   };
 
   useEffect(() => {
-    if (title.length === 0) setActivate(false);
+    if (!title.length || !date.length || selectedLocation.y === -1) setActivate(false);
     else setActivate(true);
-  }, [title]);
+  }, [title, date, selectedLocation]);
 
   return (
     <ModalContainer
@@ -191,12 +203,12 @@ const UploadInfoModal = ({
               <InputPlace>
                 {address === "" ? (
                   <InputPlaceName>
-                    {Object.keys(selectedLocation).length === 0 ? "장소를 선택하세요." : selectedLocation.place_name}
+                    {selectedLocation.placeName === "" ? "장소를 선택하세요." : selectedLocation.placeName}
                   </InputPlaceName>
                 ) : (
                   <InputPlaceName>{address}</InputPlaceName>
                 )}
-                <LocationButton onClick={onClickLocationBtn}>
+                <LocationButton onClick={address === "" ? onClickLocationBtn : () => null}>
                   <img src="/icons/location.svg" width="100%" />
                 </LocationButton>
               </InputPlace>
@@ -231,7 +243,7 @@ const UploadButton = styled.button<{ activate: boolean }>`
     if (props.activate) return props.theme.PRIMARY;
     else return props.theme.SECONDARY;
   }};
-  border: 1px solid ${(props) => props.theme.PRIMARY};
+  border: none;
   border-radius: 10px;
   flex-basis: 3rem;
   margin-top: 1rem;

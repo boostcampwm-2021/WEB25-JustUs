@@ -37,6 +37,7 @@ interface IUpdatePost {
   postLongitude: string;
   addImages: FileObject[];
   deleteImagesId: string[];
+  groupId: string;
 }
 
 function uploadPostApi(newPost: IPost) {
@@ -68,6 +69,14 @@ function getPostApi(postId: number) {
   });
 }
 
+function deletePostApi(postId: number) {
+  return axios({
+    method: "delete",
+    url: `${SERVER_URL}/api/posts/${postId}`,
+    withCredentials: true,
+  });
+}
+
 function updatePostApi(newPost: IUpdatePost) {
   const {
     postId,
@@ -79,6 +88,7 @@ function updatePostApi(newPost: IUpdatePost) {
     postLongitude,
     addImages,
     deleteImagesId,
+    groupId,
   } = newPost;
 
   const formData = new FormData();
@@ -88,6 +98,7 @@ function updatePostApi(newPost: IUpdatePost) {
   formData.append("postLocation", postLocation);
   formData.append("postLatitude", postLatitude);
   formData.append("postLongitude", postLongitude);
+  formData.append("groupId", groupId);
   addImages.forEach((image) => formData.append("addImages", image.imageUrl));
   deleteImagesId.forEach((id) => formData.append("deleteImagesId", id));
 
@@ -119,6 +130,16 @@ function* getPost({ postId }: { type: string; postId: number }) {
   }
 }
 
+function* deletePost({ postId }: { type: string; postId: number }) {
+  try {
+    const result: ResponseGenerator = yield call(deletePostApi, postId);
+    yield put({ type: "DELETE_POST_SUCCEED", postId: postId });
+    yield put({ type: "CLOSE_MODAL" });
+  } catch (err: unknown) {
+    yield put({ type: "SELECT_POST_FAILED" });
+  }
+}
+
 function* updatePost({ post }: { type: string; post: IUpdatePost }) {
   try {
     const result: ResponseGenerator = yield call(updatePostApi, post);
@@ -131,7 +152,9 @@ function* updatePost({ post }: { type: string; post: IUpdatePost }) {
 function* watchUploadPost() {
   yield takeEvery("UPLOAD_POST_REQUEST", uploadPost);
 }
-
+function* watchDeletePost() {
+  yield takeEvery("DELETE_POST_REQUEST", deletePost);
+}
 function* watchSelectPost() {
   yield takeEvery("SELECT_POST_REQUEST", getPost);
 }
@@ -140,5 +163,5 @@ function* watchUpdatePost() {
 }
 
 export default function* userSaga() {
-  yield all([fork(watchUploadPost), fork(watchSelectPost), fork(watchUpdatePost)]);
+  yield all([fork(watchUploadPost), fork(watchSelectPost), fork(watchUpdatePost), fork(watchDeletePost)]);
 }

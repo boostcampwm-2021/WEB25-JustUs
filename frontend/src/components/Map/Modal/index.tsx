@@ -6,15 +6,16 @@ import { flexRowCenterAlign } from "@src/styles/StyledComponents";
 const MapLayerPostModal = (e: any) => {
   const dispatch = useDispatch();
 
-  const modalOpen = () => {
+  const modalOpen = (x: number, y: number) => {
     e.setIsRightClick(false);
     dispatch({ type: "SET_ADDRESS", payload: "" });
+    dispatch({ type: "SET_POSITION", payload: { x, y } });
     dispatch({ type: "OPEN_MODAL", payload: "UploadAddressModal" });
   };
 
   return (
     <MapLayerModalContainer x={e.rightPosition.x} y={e.rightPosition.y}>
-      <MapLayerModal onClick={modalOpen}>
+      <MapLayerModal onClick={() => modalOpen(e.latLng.x, e.latLng.y)}>
         <Content>
           <div>포스트 추가</div>
         </Content>

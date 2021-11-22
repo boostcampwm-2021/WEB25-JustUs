@@ -36,7 +36,7 @@ export class UserService {
     if (!user) throw new NotFoundException(`Not found user with the id ${userId}`);
 
     const { profileImage, userNickname } = user;
-    return { profileImage, userNickname };
+    return { profileImage, userNickname, userId };
   }
 
   async updateUserInfo(

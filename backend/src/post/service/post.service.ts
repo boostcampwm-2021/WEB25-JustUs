@@ -88,11 +88,22 @@ export class PostService {
     const post = await this.postRepository.getPostQuery(postId);
     if (!post) throw new NotFoundException(`Not found post with the id ${postId}`);
 
-    const { user, postTitle, postContent, postDate, postLatitude, postLongitude, images } = post;
+    const { user, postTitle, postContent, postDate, postLatitude, postLongitude, images, postLocation } = post;
     const userId = user.userId;
     const userNickname = user.userNickname;
 
-    return { userId, userNickname, postId, postTitle, postContent, postDate, postLatitude, postLongitude, images };
+    return {
+      userId,
+      userNickname,
+      postId,
+      postTitle,
+      postContent,
+      postDate,
+      postLatitude,
+      postLongitude,
+      postLocation,
+      images,
+    };
   }
 
   async updatePostInfo(
@@ -114,7 +125,7 @@ export class PostService {
     const hashtags = await this.getHashTag(postContent, groupId);
 
     post.hashtags = hashtags;
-    this.postRepository.save(post);
+    await this.postRepository.save(post);
 
     await this.postRepository.update(postId, {
       postTitle,

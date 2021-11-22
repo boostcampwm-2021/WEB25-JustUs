@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty } from "class-validator";
+import { IsString, IsNotEmpty, IsNumber } from "class-validator";
 import { ApiProperty } from "@nestjs/swagger";
 
 export class UserInfoResponseDto {
@@ -11,4 +11,9 @@ export class UserInfoResponseDto {
   @IsNotEmpty()
   @ApiProperty()
   profileImage: string;
+
+  @IsNumber()
+  @IsNotEmpty()
+  @ApiProperty()
+  userId: number;
 }

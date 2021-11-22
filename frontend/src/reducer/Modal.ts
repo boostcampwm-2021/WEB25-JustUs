@@ -2,21 +2,25 @@ interface Imarker {
   postTitle: string;
   postId: number;
 }
+
+interface IPost {
+  userId: number;
+  userNickname: string;
+  postId: number;
+  postTitle: string;
+  postContent: string;
+  postDate: string;
+  images: Array<{ imageUrl: string; imageId: string }>;
+  postLatitude: number;
+  postLongitude: number;
+  postLocation: string;
+}
+
 const initState: {
   nowModal: string;
   nowAddress: string;
   selectedAlbum: { albumId: number; albumName: string };
-  selectedPost: {
-    userId: number;
-    userNickname: string;
-    postId: number;
-    postTitle: string;
-    postContent: string;
-    postDate: string;
-    images: Array<{ imageUrl: string; imageId: string }>;
-    postLatitude: number;
-    postLongitude: number;
-  };
+  selectedPost: IPost;
   clusteredMarker: Imarker[];
   isPostLoading: boolean;
 } = {
@@ -36,6 +40,7 @@ const initState: {
     images: [],
     postLatitude: -1,
     postLongitude: -1,
+    postLocation: "",
   },
   clusteredMarker: [],
   isPostLoading: false,
