@@ -1,15 +1,12 @@
-import { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
 import COLOR from "@styles/Color";
 import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
-
 import Profile from "@components/Header/Profile";
 import Search from "@components/Header/Profile/Search";
 import Logo from "@components/Header/Logo";
 const Header = () => {
   const { groups }: any = useSelector((state: RootState) => state.groups);
-
   return (
     <HeaderContainer groups={groups}>
       <Logo />

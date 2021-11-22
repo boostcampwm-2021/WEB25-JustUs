@@ -348,7 +348,7 @@ const groupReducer = (state = initState, action: any) => {
         },
       };
     case "SET_GROUPS":
-      if (!action.payload.length[0]) return { ...state };
+      if (!action.payload[0]) return { ...state };
       return {
         ...state,
         groups: action.payload,
