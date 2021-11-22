@@ -92,13 +92,15 @@ const UploadInfoModal = ({
   const handelTextInput = (event: React.FormEvent<HTMLTextAreaElement> | null) => {
     const value = event ? (event.target as HTMLTextAreaElement).value : text;
     const highlightedText = applyHighlights(value);
-
     setText(value);
     highlightsRef.current.innerHTML = highlightedText;
   };
 
   const applyHighlights = (textParam: string) => {
-    const highlightedText = textParam.replace(/\n$/g, "\n\n").replace(/#([\w|ㄱ-ㅎ|가-힣]+)/g, "<mark>$&</mark>");
+    const highlightedText = textParam
+      .replace(/ /g, "<span>&nbsp;<span>")
+      .replace(/\n/g, "<br/>")
+      .replace(/#([\w|ㄱ-ㅎ|가-힣]+)/g, "<mark>$&</mark>");
     return highlightedText;
   };
 
@@ -107,6 +109,7 @@ const UploadInfoModal = ({
 
     if (!backdropRef.current) return;
     highlightsRef.current.scrollTop = scrollTop;
+    backdropRef.current.scrollTop = scrollTop;
   };
 
   const onClickLocationBtn = () => {
@@ -169,30 +172,31 @@ const UploadInfoModal = ({
         <ModalHeader>
           <ModalTitle>{mode == "create" ? "새 게시물 만들기" : "게시물 수정"}</ModalTitle>
           <ModalHeaderRigthBtn onClick={closeModal}>
-            <img src="/icons/x.svg" alt="close" height="90%"></img>
+            <img src="/icons/x.svg" alt="close"></img>
           </ModalHeaderRigthBtn>
           <ModalHeaderLeftBtn onClick={changeMode}>
-            <img src="/icons/prev.svg" alt="prev modal" height="90%"></img>
+            <img src="/icons/prev.svg" alt="prev modal"></img>
           </ModalHeaderLeftBtn>
         </ModalHeader>
         <ModalContent>
-          <ModalLeft>
+          <ModalLeft className="modalLeft">
             <Carousel files={files} carouselWidth={250} />
           </ModalLeft>
-          <ModalRight>
+          <ModalRight className="modalRight">
             <InputTitle type="text" placeholder="제목" value={title} onChange={handelTitleInput} />
-            <div className="backdrop" ref={backdropRef}>
-              <div ref={highlightsRef} className="highlights"></div>
-            </div>
-            <InputText
-              ref={inputRef}
-              placeholder="내용"
-              value={text}
-              spellCheck={false}
-              onChange={handelTextInput}
-              onScroll={handleScroll}
-            />
-            <InputBottom>
+            <ContentWrap className="contentWrap">
+              <BackDrop className="backdrop" ref={backdropRef}></BackDrop>
+              <HighLights ref={highlightsRef} className="highlights"></HighLights>
+              <InputText
+                ref={inputRef}
+                placeholder="내용"
+                value={text}
+                spellCheck={false}
+                onChange={handelTextInput}
+                onScroll={handleScroll}
+              />
+            </ContentWrap>
+            <InputBottom className="inputBottom">
               <InputDate
                 type="date"
                 value={date}
@@ -244,18 +248,14 @@ const UploadButton = styled.button<{ activate: boolean }>`
     else return props.theme.SECONDARY;
   }};
   border: none;
-  border-radius: 10px;
+  border-radius: 1rem;
   flex-basis: 3rem;
-  margin-top: 1rem;
   color: ${COLOR.WHITE};
   font-size: 1.6rem;
   cursor: ${(props) => {
     if (props.activate) return "pointer";
     else return "not-allowed";
   }};
-  z-index: 3;
-  position: relative;
-  top: -20rem;
 `;
 const LocationButton = styled.button`
   border: none;
@@ -278,14 +278,12 @@ const InputPlaceName = styled.div`
 `;
 const InputBottom = styled.div`
   position: relative;
-  top: -20rem;
   display: flex;
   flex-direction: column;
   max-height: 5rem;
   justify-content: space-between;
   align-items: flex-end;
   border-top: 1px solid ${COLOR.LIGHTGRAY1};
-  padding-right: 2rem;
   min-height: 10rem;
 `;
 const InputPlace = styled.div`
@@ -297,12 +295,10 @@ const InputDate = styled.input`
   flex-basis: 20vh;
   border: none;
   font-size: 1.6rem;
-  padding-right: 5px;
   z-index: 3;
 `;
 const InputTitle = styled.input`
   flex-basis: 5vh;
-  margin-bottom: 2vh;
   border: none;
   border-bottom: 1px solid ${COLOR.LIGHTGRAY1};
   font-size: 1.6rem;
@@ -310,22 +306,58 @@ const InputTitle = styled.input`
     outline: none;
   }
 `;
-const InputText = styled.textarea`
+const ContentWrap = styled.div`
   position: relative;
-  top: -20rem;
-  border: none;
-  resize: none;
-  margin-bottom: 2vh;
-  z-index: 2;
-  overflow: auto;
-  width: 35rem;
+  width: 100%;
+`;
+const BackDrop = styled.div`
   height: 20rem;
-  background-color: transparent;
-  margin: 0;
-  padding: 0;
-  line-height: 2rem;
+  position: absolute;
+  width: 100%;
+  word-break: break-all;
+  overflow-y: scroll;
   font-size: 1.6rem;
-
+  line-height: 2rem;
+  &::-webkit-scrollbar {
+    width: 0.8rem;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: ${(props) => props.theme.SECONDARY};
+    border-radius: 1rem;
+  }
+`;
+const HighLights = styled.div`
+  height: 20rem;
+  position: absolute;
+  width: 100%;
+  word-break: break-all;
+  overflow-y: scroll;
+  font-size: 1.6rem;
+  line-height: 2rem;
+  &::-webkit-scrollbar {
+    width: 0.8rem;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: ${(props) => props.theme.SECONDARY};
+    border-radius: 1rem;
+  }
+`;
+const InputText = styled.textarea`
+  height: 20rem;
+  position: relative;
+  width: 100%;
+  word-break: break-all;
+  overflow-y: scroll;
+  font-size: 1.6rem;
+  line-height: 2rem;
+  &::-webkit-scrollbar {
+    width: 0.8rem;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: ${(props) => props.theme.SECONDARY};
+    border-radius: 1rem;
+  }
+  background-color: transparent;
   &:focus {
     outline: none;
   }
@@ -333,39 +365,13 @@ const InputText = styled.textarea`
 const ModalRight = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 1vh;
-  padding-top: 2vh;
   height: 100%;
-
-  & > .backdrop {
-    z-index: 1;
-    background-color: ${COLOR.WHITE};
-    pointer-events: none;
-    font-size: 1.6rem;
-    pointer-events: none;
-    width: 35rem;
-    height: 20rem;
-    line-height: 2rem;
-
     & mark {
       border-radius: 3px;
       color: transparent;
       background-color: ${COLOR.THEME1.SECONDARY};
       letter-spacing: normal;
       font-size: 1.6rem;
-      width: 35rem;
-      height: 20rem;
-      overflow: auto;
-    }
-
-    & > .highlights {
-      white-space: pre-wrap;
-      word-wrap: break-word;
-      color: transparent;
-      font-size: 1.6rem;
-      resize: none;
-      width: 35rem;
-      height: 20rem;
       overflow: auto;
     }
   }
@@ -386,7 +392,7 @@ const ModalContainer = styled.div<{ isSubOpened: boolean }>`
   background-color: ${COLOR.WHITE};
   min-width: 40vw;
   height: 55rem;
-  border-radius: 10px;
+  border-radius: 1rem;
   box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
 
   &::-webkit-scrollbar {
@@ -422,7 +428,6 @@ const ModalHeaderRigthBtn = styled.button`
 const ModalHeader = styled.div`
   display: grid;
   grid-template-columns: 10% 80% 10%;
-  padding: 1vw;
   height: 60px;
   box-sizing: border-box;
   font-size: max(1.2vw, 20px);
