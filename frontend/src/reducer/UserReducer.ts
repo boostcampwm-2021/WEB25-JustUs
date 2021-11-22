@@ -1,6 +1,7 @@
 export const initState = {
   userNickName: null,
   userProfile: null,
+  userId: null,
   userInfoLoading: true,
   userInfoSucceed: false,
   userInfoError: false,
@@ -24,6 +25,7 @@ export const SET_UPDATED_INIT = "SET_UPDATED_INIT";
 export const LOG_OUT_REQUEST = "LOG_OUT_REQUEST";
 export const LOG_OUT_SUCCEED = "LOG_OUT_SUCCEED";
 export const LOG_OUT_FAILED = "LOG_OUT_FAILED";
+export const REQUEST_UPDATE_GROUP_ORDER = "REQUEST_UPDATE_GROUP_ORDER";
 
 //action creator
 export const userInfoRequestAction = () => ({
@@ -36,6 +38,11 @@ export const logoutRequestAction = () => ({
 
 export const userInfoUpdateAction = (payload: any) => ({
   type: USER_INFO_UPDATE,
+  payload,
+});
+
+export const updateGroupOrderAction = (payload: any) => ({
+  type: REQUEST_UPDATE_GROUP_ORDER,
   payload,
 });
 
@@ -57,6 +64,7 @@ export const userReducer = (state = initState, action: any) => {
         userInfoError: false,
         userNickName: action.data.userNickname,
         userProfile: action.data.profileImage,
+        userId: action.data.userId,
       };
     case USER_INFO_FAILED:
       return {
@@ -66,6 +74,7 @@ export const userReducer = (state = initState, action: any) => {
         userInfoError: true,
         userNickName: null,
         userProfile: null,
+        userId: null,
       };
     case LOG_OUT_REQUEST:
       return {
@@ -79,6 +88,7 @@ export const userReducer = (state = initState, action: any) => {
         userInfoSucceed: false,
         userNickName: null,
         userProfile: null,
+        userId: null,
       };
     case LOG_OUT_FAILED:
       return {

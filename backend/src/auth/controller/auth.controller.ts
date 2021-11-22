@@ -8,7 +8,7 @@ import { UserService } from "src/user/service/user.service";
 
 @ApiTags("auth API")
 @ApiBearerAuth()
-@Controller("/api/auth")
+@Controller("/auth")
 export class AuthController {
   constructor(private readonly userService: UserService) {}
 
@@ -23,11 +23,11 @@ export class AuthController {
   async naverAuthRedirect(@Req() { user }: CustomRequest, @Res() res: Response) {
     const { accessToken, refreshToken } = user;
 
-    const oneHour = 1000 * 60 * 60;
-    const oneWeek = oneHour * 24 * 7;
+    const accessTokenTokenExpireTime = 1000 * 60 * 60;
+    const refreshTokenExpireTime = accessTokenTokenExpireTime * 24 * 7;
 
-    res.cookie("accessToken", accessToken, { maxAge: oneHour });
-    res.cookie("refreshToken", refreshToken, { maxAge: oneWeek });
+    res.cookie("accessToken", accessToken, { maxAge: accessTokenTokenExpireTime });
+    res.cookie("refreshToken", refreshToken, { maxAge: refreshTokenExpireTime });
 
     const redirectUrl = process.env.NODE_ENV === "dev" ? process.env.DEV_REDIRECT_URL : process.env.PROD_REDIRECT_URL;
 

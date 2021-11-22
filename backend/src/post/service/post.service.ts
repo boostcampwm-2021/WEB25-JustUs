@@ -8,8 +8,12 @@ import { CreatePostRequestDto } from "src/dto/post/createPostRequest.dto";
 import { GetPostInfoResponseDto } from "src/dto/post/getPostInfoResponse.dto";
 import { UpdatePostInfoRequestDto } from "src/dto/post/updatePostInfoRequest.dto";
 import { ShiftPostRequestDto } from "src/dto/post/shiftPostRequest.dto";
+import { GetSearchPostResponse } from "src/dto/post/getSearchPostResponse.dto";
 import { AlbumService } from "src/album/service/album.service";
 import { HashTagService } from "src/hashtag/service/hashtag.service";
+import { HashTag } from "src/hashtag/hashtag.entity";
+import { Post } from "src/post/post.entity";
+import { HashTagRepository } from "src/hashtag/hashtag.repository";
 
 @Injectable()
 export class PostService {
@@ -23,6 +27,8 @@ export class PostService {
     private userRepository: UserRepository,
     @InjectRepository(AlbumRepository)
     private albumRepository: AlbumRepository,
+    @InjectRepository(HashTagRepository)
+    private hashTagRepository: HashTagRepository,
   ) {}
 
   async createPost(
@@ -44,11 +50,7 @@ export class PostService {
 
     const images = this.imageService.saveImage(postImages);
 
-    const tags = this.getHashTag(postContent);
-
-    const paring = tags?.join(",");
-    const hashtagCategory = tags === undefined ? "" : paring;
-    const hashtags = tags === undefined ? [] : await this.hashTagService.makeHashTag(groupId, tags);
+    const hashtags = await this.getHashTag(postContent, groupId);
 
     const post = await this.postRepository.save({
       postTitle: postTitle,
@@ -57,7 +59,6 @@ export class PostService {
       postLocation: postLocation,
       postLatitude: Number(postLatitude),
       postLongitude: Number(postLongitude),
-      hashtagCategory: hashtagCategory,
       user: user,
       album: album,
       images: images,
@@ -67,7 +68,13 @@ export class PostService {
     return post.postId;
   }
 
-  getHashTag(textParam: string): string[] {
+  async getHashTag(textParam: string, groupId: number): Promise<HashTag[]> {
+    const tagsContent = this.removeTags(textParam);
+
+    return tagsContent === undefined ? [] : await this.hashTagService.makeHashTag(groupId, tagsContent);
+  }
+
+  removeTags(textParam: string): string[] {
     const hashTagText = textParam.match(/#([\w|ㄱ-ㅎ|가-힣]+)/g);
 
     const removeTag = hashTagText?.map(e => {
@@ -81,11 +88,22 @@ export class PostService {
     const post = await this.postRepository.getPostQuery(postId);
     if (!post) throw new NotFoundException(`Not found post with the id ${postId}`);
 
-    const { user, postTitle, postContent, postDate, postLatitude, postLongitude, images } = post;
+    const { user, postTitle, postContent, postDate, postLatitude, postLongitude, images, postLocation } = post;
     const userId = user.userId;
     const userNickname = user.userNickname;
 
-    return { userId, userNickname, postId, postTitle, postContent, postDate, postLatitude, postLongitude, images };
+    return {
+      userId,
+      userNickname,
+      postId,
+      postTitle,
+      postContent,
+      postDate,
+      postLatitude,
+      postLongitude,
+      postLocation,
+      images,
+    };
   }
 
   async updatePostInfo(
@@ -99,23 +117,15 @@ export class PostService {
     const { postTitle, postContent, deleteImagesId, postDate, postLocation, postLatitude, postLongitude, groupId } =
       updatePostInfoRequestDto;
 
-    const post = await this.postRepository.findOne(postId, { relations: ["user"] });
-    if (!post) throw new NotFoundException(`Not found post with the id ${postId}`);
-
-    const postUserId = post.user.userId;
-    if (postUserId !== userId) throw new NotFoundException("It cannot be updated because it is not the author.");
-
-    const newTags = this.getHashTag(postContent);
+    const relations = ["user"];
+    const post = await this.validateUserAuthor(userId, postId, relations);
 
     await this.postRepository.deleteHashTagsQuery(postId);
 
-    const hashtags = newTags === undefined ? [] : await this.hashTagService.makeHashTag(groupId, newTags);
-
-    const paring = newTags?.join(",");
-    const newHashtagCategory = newTags === undefined ? "" : paring;
+    const hashtags = await this.getHashTag(postContent, groupId);
 
     post.hashtags = hashtags;
-    this.postRepository.save(post);
+    await this.postRepository.save(post);
 
     await this.postRepository.update(postId, {
       postTitle,
@@ -124,7 +134,6 @@ export class PostService {
       postLocation,
       postLatitude,
       postLongitude,
-      hashtagCategory: newHashtagCategory,
     });
 
     this.imageService.updateImages(post, addImages, deleteImagesId);
@@ -132,13 +141,23 @@ export class PostService {
     return "PostInfo update success!!";
   }
 
-  async deletePost(postId: number): Promise<string> {
-    const post = await this.postRepository.findOne(postId, { relations: ["images"] });
-    if (!post) throw new NotFoundException(`Not found post with the id ${postId}`);
+  async deletePost(userId: number, postId: number): Promise<string> {
+    const relations = ["user", "images"];
+    const post = await this.validateUserAuthor(userId, postId, relations);
 
     this.postRepository.softRemove(post);
 
     return "Post delete success!!";
+  }
+
+  async validateUserAuthor(userId: number, postId: number, relations: Array<string>): Promise<Post> {
+    const post = await this.postRepository.findOne(postId, { relations: relations });
+    if (!post) throw new NotFoundException(`Not found post with the id ${postId}`);
+
+    const postUserId = post.user.userId;
+    if (postUserId !== userId) throw new NotFoundException("It cannot be updated because it is not the author.");
+
+    return post;
   }
 
   async shiftPost(postId: number, shiftPostRequestDto: ShiftPostRequestDto): Promise<string> {
@@ -149,5 +168,11 @@ export class PostService {
     this.postRepository.update(postId, { album });
 
     return "Post Shift success!!";
+  }
+
+  async getSearchPost(hashtagId: number): Promise<GetSearchPostResponse> {
+    const { posts } = await this.hashTagRepository.getSearchPosts(hashtagId);
+
+    return { posts };
   }
 }

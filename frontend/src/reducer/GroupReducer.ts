@@ -72,6 +72,7 @@ export const GET_GROUP_MEMBER_LIST = "GET_GROUP_MEMBER_LIST";
 export const GET_GROUP_LIST = "GET_GROUP_LIST";
 export const SET_GROUPS = "SET_GROUPS";
 export const REQUEST_JOIN_GROUP = "REQUEST_JOIN_GROUP";
+export const REQUEST_UPDATE_GROUP = "REQUEST_UPDATE_GROUP";
 
 export const NEW_ALBUM_REQUEST = "NEW_ALBUM_REQUEST";
 export const NEW_ALBUM_SUCCEED = "NEW_ALBUM_SUCCEED";
@@ -168,6 +169,11 @@ export const postShiftAlbumAction = (
   };
 };
 
+export const updateGroupAction = (payload: any) => ({
+  type: REQUEST_UPDATE_GROUP,
+  payload,
+});
+
 const groupReducer = (state = initState, action: any) => {
   switch (action.type) {
     case "REQUEST_GROUP_INFO":
@@ -195,7 +201,11 @@ const groupReducer = (state = initState, action: any) => {
       return {
         ...state,
         selectedGroup: action.payload
-          ? { groupId: action.payload.groupId, groupName: action.payload.groupName, groupImg: action.payload.groupImg }
+          ? {
+              groupId: action.payload.groupId,
+              groupName: action.payload.groupName,
+              groupImage: action.payload.groupImage,
+            }
           : null,
         albumList: action.payload ? action.payload.albumList : null,
         postsList: action.payload
@@ -256,7 +266,7 @@ const groupReducer = (state = initState, action: any) => {
       };
     case "UPDATE_POST_SUCCEED":
       const renewAlbumList = state.albumList.map((album: AlbumListItemType, idx) => {
-        if (album.posts.some((item) => item.postId != action.post.postId)) {
+        if (!album.posts.some((item) => item.postId === action.post.postId)) {
           return album;
         }
         const updateAlbum: AlbumListItemType = {
@@ -299,7 +309,7 @@ const groupReducer = (state = initState, action: any) => {
       };
     case "DELETE_POST_SUCCEED":
       const afterDeleteAlbumList = state.albumList.map((album: AlbumListItemType, idx) => {
-        if (!album.posts.some((item) => item.postId == action.postId)) {
+        if (!album.posts.some((item) => item.postId === action.postId)) {
           return album;
         }
         const updateAlbum: AlbumListItemType = {

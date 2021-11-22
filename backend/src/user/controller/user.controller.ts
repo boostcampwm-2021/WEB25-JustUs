@@ -15,7 +15,7 @@ import { multerOption } from "src/image/service/image.service";
 @ApiTags("유저 API")
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
-@Controller("api/user")
+@Controller("user")
 export class UserController {
   constructor(private readonly userService: UserService) {}
 

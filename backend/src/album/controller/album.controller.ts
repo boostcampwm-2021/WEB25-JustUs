@@ -9,7 +9,7 @@ import { CreateAlbumResponseDto } from "src/dto/album/createAlbumResponse.dto";
 @ApiTags("앨범 API")
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
-@Controller("api/albums")
+@Controller("albums")
 export class AlbumController {
   constructor(private readonly albumService: AlbumService) {}
 

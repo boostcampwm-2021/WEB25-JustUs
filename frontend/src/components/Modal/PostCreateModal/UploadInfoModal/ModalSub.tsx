@@ -11,13 +11,17 @@ interface IData {
 interface IPagination {
   [key: string]: string;
 }
-
+interface ILocation {
+  placeName: string;
+  x: number;
+  y: number;
+}
 interface ModalSubProps {
   searchKeyword: string;
   setSearchKeyword: Dispatch<SetStateAction<string>>;
   isSubOpened: boolean;
   setIsSubOpened: Dispatch<SetStateAction<boolean>>;
-  setSelectedLocation: Dispatch<SetStateAction<IData>>;
+  setSelectedLocation: Dispatch<SetStateAction<ILocation>>;
   searchResult: IData[];
   setSearchResult: Dispatch<SetStateAction<IData[]>>;
   page: number;

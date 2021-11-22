@@ -1,10 +1,11 @@
-import React, { Dispatch, SetStateAction } from "react";
-import { useSelector } from "react-redux";
+import React, { Dispatch, SetStateAction, useEffect, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
 import styled from "styled-components";
 import Group from "./Group";
 import AddGroupButton from "./AddGroupButton";
 import COLOR from "@styles/Color";
+import { updateGroupOrderAction } from "@src/reducer/UserReducer";
 
 interface FirstDepthProps {
   isToggle: boolean;
@@ -14,6 +15,8 @@ interface FirstDepthProps {
 
 const FirstDepth = ({ isToggle, setIsToggle, addGroupBtnRef }: FirstDepthProps) => {
   const { groups }: any = useSelector((state: RootState) => state.groups);
+  const draggableRef = useRef<HTMLDivElement>(null);
+  const dispatch = useDispatch();
 
   if (!groups.length) return null;
 
@@ -35,6 +38,20 @@ const FirstDepth = ({ isToggle, setIsToggle, addGroupBtnRef }: FirstDepthProps) 
   }
 
   function handleDrop(ev: React.DragEvent<HTMLDivElement>) {
+    const draggableWrapper = draggableRef.current;
+
+    if (!draggableWrapper) return;
+
+    const children = draggableWrapper.children;
+    const groupOrder: Number[] = [];
+
+    Array.from(children).forEach((child) => {
+      const groupId = child.getAttribute("data-id");
+      groupOrder.push(Number(groupId));
+    });
+
+    dispatch(updateGroupOrderAction({ groupOrder }));
+
     const item = ev.target as HTMLElement;
     item.classList.remove("drag-sort-active");
   }
@@ -42,7 +59,7 @@ const FirstDepth = ({ isToggle, setIsToggle, addGroupBtnRef }: FirstDepthProps) 
   return (
     <>
       <FirstDepthWrapper>
-        <DraggableWrapper>
+        <DraggableWrapper ref={draggableRef}>
           {groups.map((group: any) =>
             group ? (
               <Group
