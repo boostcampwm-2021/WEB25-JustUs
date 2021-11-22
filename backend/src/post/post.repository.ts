@@ -1,4 +1,4 @@
-import { EntityRepository, Repository, DeleteResult } from "typeorm";
+import { EntityRepository, Repository } from "typeorm";
 import { Post } from "./post.entity";
 
 @EntityRepository(Post)
@@ -21,13 +21,5 @@ export class PostRepository extends Repository<Post> {
       ])
       .where("post.postId = :id", { id: postId })
       .getOne();
-  }
-
-  async deleteHashTagsQuery(postId: number): Promise<DeleteResult> {
-    return await this.createQueryBuilder()
-      .delete()
-      .from("posts_hashtags")
-      .where("posts_post_id=:postId", { postId: postId })
-      .execute();
   }
 }
