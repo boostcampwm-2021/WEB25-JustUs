@@ -83,7 +83,7 @@ async function requestJoinGroupApi(payload: any) {
 async function requestUpdateGroupApi(payload: any) {
   const formData = new FormData();
   formData.append("groupName", payload.groupName);
-  formData.append("groupImage", payload.groupImage);
+  if (payload.groupImage) formData.append("groupImage", payload.groupImage);
 
   const result = await axios.put(`${SERVER_URL}/api/groups/${payload.groupId}`, formData, {
     withCredentials: true,
