@@ -4,23 +4,14 @@ import { flexRowCenterAlign } from "@styles/StyledComponents";
 import Modal from "@components/Modal";
 import { useDispatch } from "react-redux";
 import COLOR from "@styles/Color";
-import { useSelector } from "react-redux";
-import { RootState } from "@src/reducer";
 import { createGroupAction } from "@src/reducer/GroupReducer";
-
-interface Group {
-  groupId: number;
-  groupName: string;
-  img: string;
-}
 
 const CreateGroupModal = () => {
   const uploadBtnRef = useRef<HTMLInputElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
   const groupNameRef = useRef<HTMLInputElement>(null);
-  const [groupImg, setGroupImg] = useState("/icons/person.svg");
+  const [groupImg, setGroupImg] = useState<string>("");
   const [imageFile, setImageFile] = useState<File>();
-  const { groups }: any = useSelector((state: RootState) => state.groups);
   const dispatch = useDispatch();
 
   const closeModal = () => {
@@ -34,7 +25,6 @@ const CreateGroupModal = () => {
   const loadImage = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
     if (!files) return;
-
     const file = files[0];
     const reader = new FileReader();
 
@@ -42,7 +32,6 @@ const CreateGroupModal = () => {
       if (!e.target) return;
       if (!imageRef.current) return;
       if (!e.target.result) return;
-
       setGroupImg(e.target.result as string);
       setImageFile(file as File);
     };
@@ -51,7 +40,7 @@ const CreateGroupModal = () => {
   };
 
   const onClickDeleteBtn = () => {
-    setGroupImg("/icons/person.svg");
+    setGroupImg("");
   };
 
   const onClickCreateBtn = () => {
@@ -66,16 +55,7 @@ const CreateGroupModal = () => {
 
   const createGroup = () => {
     if (!groupNameRef.current) return;
-
-    const groupId = Math.floor(Math.random() * (1000 - 1)) + 1;
-    const albumId = Math.floor(Math.random() * (1000 - 1)) + 1;
     const groupName = groupNameRef.current.value;
-    const newGroup = {
-      groupId,
-      groupName,
-      groupImg,
-      albumList: [{ albumId, albumName: "기본 앨범", posts: [] }],
-    };
 
     dispatch(createGroupAction({ groupName, groupImage: imageFile }));
 
@@ -91,7 +71,7 @@ const CreateGroupModal = () => {
       >
         <Header>
           <TitleWrapper>
-            <div>새 그룹 생성</div>
+            <div>그룹 생성</div>
           </TitleWrapper>
           <CloseBtn>
             <button type="button" onClick={closeModal}>
@@ -100,8 +80,14 @@ const CreateGroupModal = () => {
           </CloseBtn>
         </Header>
         <Content>
-          <ImageBackground groupImg={groupImg}>
-            <img src={groupImg} alt="person icon" ref={imageRef} width="100%" height="100%" />
+          <ImageBackground>
+            <img
+              src={groupImg ? groupImg : "/icons/podo-many.png"}
+              alt="default icon"
+              ref={imageRef}
+              width="100%"
+              height="100%"
+            />
           </ImageBackground>
           <UploadImgBtnWrapper onClick={onClickUploadBtn}>
             <input type="file" accept="image/*" hidden ref={uploadBtnRef} onChange={loadImage} />
@@ -170,14 +156,17 @@ const Content = styled.div`
   align-items: center;
 `;
 
-const ImageBackground = styled.div<{ groupImg: string }>`
+const ImageBackground = styled.div`
   ${flexRowCenterAlign}
   margin-top: 4rem;
   width: 10rem;
   height: 10rem;
-  background-color: ${(props) => props.theme.SECONDARY};
-  opacity: ${(props) => (props.groupImg === "/icons/person.svg" ? "0.4" : "")};
-  border-radius: 100%;
+  background-color: ${COLOR.WHITE};
+  border-radius: 1vw;
+  border: 5px solid ${(props) => props.theme.SECONDARY};
+  & img {
+    border-radius: 0.5vw;
+  }
 `;
 
 const UploadImgBtnWrapper = styled.div`
@@ -196,7 +185,7 @@ const UploadImgBtnWrapper = styled.div`
 const DeleteImgBtnWrapper = styled.div`
   cursor: pointer;
   margin-top: 4rem;
-  color: ${COLOR.BLUE};
+  color: ${COLOR.RED};
   font-weight: bold;
   font-size: 1.6rem;
 `;
@@ -217,13 +206,13 @@ const GroupNameInputWrapper = styled.input`
 const CreateBtnWrapper = styled.div`
   ${flexRowCenterAlign}
   cursor: pointer;
-  width: 7vw;
-  height: 5vh;
+  width: 10rem;
+  height: 4rem;
   border-radius: 10px;
   color: ${COLOR.WHITE};
   background-color: ${(props) => props.theme.PRIMARY};
   margin-top: 4rem;
-  font-size: 2rem;
+  font-size: 1.5rem;
 `;
 
 export default CreateGroupModal;
