@@ -11,8 +11,18 @@ import {
   UseGuards,
   UseInterceptors,
   UploadedFiles,
+  Query,
 } from "@nestjs/common";
-import { ApiTags, ApiOkResponse, ApiParam, ApiResponse, ApiBearerAuth, ApiConsumes, ApiBody } from "@nestjs/swagger";
+import {
+  ApiTags,
+  ApiOkResponse,
+  ApiParam,
+  ApiResponse,
+  ApiBearerAuth,
+  ApiConsumes,
+  ApiBody,
+  ApiQuery,
+} from "@nestjs/swagger";
 import { CustomRequest } from "src/custom//myRequest/customRequest";
 import { JwtAuthGuard } from "src/auth/guard/jwt-auth-guard";
 import { PostService } from "../service/post.service";
@@ -20,13 +30,14 @@ import { CreatePostRequestDto } from "src/dto/post/createPostRequest.dto";
 import { GetPostInfoResponseDto } from "src/dto/post/getPostInfoResponse.dto";
 import { UpdatePostInfoRequestDto } from "src/dto/post/updatePostInfoRequest.dto";
 import { ShiftPostRequestDto } from "src/dto/post/shiftPostRequest.dto";
+import { GetSearchPostResponse } from "src/dto/post/getSearchPostResponse.dto";
 import { FilesInterceptor } from "@nestjs/platform-express";
 import { multerOption } from "src/image/service/image.service";
 
 @ApiTags("게시글 API")
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
-@Controller("api/posts")
+@Controller("posts")
 export class PostController {
   constructor(private readonly postService: PostService) {}
 
@@ -46,6 +57,13 @@ export class PostController {
     return this.postService.createPost(userId, files, createPostRequestDto);
   }
 
+  @Get("/search")
+  @ApiQuery({ name: "hashtagId", required: true })
+  @ApiResponse({ type: GetSearchPostResponse, status: 200 })
+  GetSearchPost(@Query("hashtagId") hashtagId: number): Promise<GetSearchPostResponse> {
+    return this.postService.getSearchPost(hashtagId);
+  }
+
   @Get("/:postId")
   @ApiParam({ name: "postId", type: Number })
   @ApiResponse({ type: GetPostInfoResponseDto, status: 200 })
@@ -54,9 +72,9 @@ export class PostController {
   }
 
   @Put("/:postId")
+  @UseInterceptors(FilesInterceptor("addImages", 5, multerOption))
   @ApiConsumes("multipart/form-data")
   @ApiBody({ type: UpdatePostInfoRequestDto })
-  @UseInterceptors(FilesInterceptor("addImages", 5, multerOption))
   @ApiParam({ name: "postId", type: Number })
   @ApiOkResponse({ description: "게시글 수정 성공" })
   UpdatePost(
@@ -73,8 +91,9 @@ export class PostController {
   @Delete("/:postId")
   @ApiParam({ name: "postId", type: Number })
   @ApiOkResponse({ description: "게시글 삭제 성공" })
-  DeletePost(@Param("postId") postId: number): Promise<string> {
-    return this.postService.deletePost(postId);
+  DeletePost(@Req() { user }: CustomRequest, @Param("postId") postId: number): Promise<string> {
+    const { userId } = user;
+    return this.postService.deletePost(userId, postId);
   }
 
   @Put("/:postId/shift")
