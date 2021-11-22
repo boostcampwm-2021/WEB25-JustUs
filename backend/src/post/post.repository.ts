@@ -13,6 +13,7 @@ export class PostRepository extends Repository<Post> {
         "post.postDate",
         "post.postLatitude",
         "post.postLongitude",
+        "post.postLocation",
         "image.imageUrl",
         "image.imageId",
         "user.userId",

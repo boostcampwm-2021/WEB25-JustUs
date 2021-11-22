@@ -35,6 +35,7 @@ interface PointerEvent {
   offset: Point;
   pointerEvent: DOMEvent;
   feature: Feature;
+  latlng: naver.maps.LatLng;
 }
 
 interface PostType {
@@ -90,6 +91,7 @@ const setMap = (
   ZOOM_SIZE: number,
   setIsRightClick: Dispatch<SetStateAction<Boolean>>,
   setRightPosition: Dispatch<SetStateAction<Point>>,
+  setLatLng: Dispatch<SetStateAction<naver.maps.LatLng | undefined>>,
   setClickInfo: Dispatch<SetStateAction<PointerEvent>>,
   setNaverMap: Dispatch<SetStateAction<naver.maps.Map | undefined>>,
   setInfoWindow: Dispatch<SetStateAction<naver.maps.InfoWindow | undefined>>,
@@ -114,6 +116,7 @@ const setMap = (
 
   naver.maps.Event.addListener(map, "rightclick", (e: PointerEvent) => {
     setClickInfo(e);
+    setLatLng(e.latlng);
     setRightPosition({ x: e.pointerEvent.pageX, y: e.pointerEvent.pageY });
     setIsRightClick(true);
   });
@@ -134,6 +137,7 @@ const Map = () => {
   const [clickInfo, setClickInfo] = useState<any>();
   const [naverMap, setNaverMap] = useState<naver.maps.Map>();
   const [infoWindow, setInfoWindow] = useState<naver.maps.InfoWindow>();
+  const [latLng, setLatLng] = useState<naver.maps.LatLng>();
   const [currentMarkers, setCurrentMarkers] = useState<Array<naver.maps.Marker>>([]);
   const [currentClustering, setCurrentClustering] = useState<IMarkerClustering | undefined>(undefined);
   const { postsList }: IPostsList = useSelector((state: RootState) => state.groups);
@@ -145,7 +149,17 @@ const Map = () => {
       const INIT_X = 37.511337;
       const INIT_Y = 127.012084;
       const ZOOM_SIZE = 13;
-      setMap(INIT_X, INIT_Y, ZOOM_SIZE, setIsRightClick, setRightPosition, setClickInfo, setNaverMap, setInfoWindow);
+      setMap(
+        INIT_X,
+        INIT_Y,
+        ZOOM_SIZE,
+        setIsRightClick,
+        setRightPosition,
+        setLatLng,
+        setClickInfo,
+        setNaverMap,
+        setInfoWindow,
+      );
     };
     initMap();
   }, []);
@@ -234,7 +248,12 @@ const Map = () => {
     <React.Fragment>
       <Maps id="map" />
       {isRightClick && (
-        <MapLayerPostModal clickInfo={clickInfo} rightPosition={rightPosition} setIsRightClick={setIsRightClick} />
+        <MapLayerPostModal
+          latLng={latLng}
+          clickInfo={clickInfo}
+          rightPosition={rightPosition}
+          setIsRightClick={setIsRightClick}
+        />
       )}
       <FloatActionBtn onClick={modalOpen}>+</FloatActionBtn>
     </React.Fragment>

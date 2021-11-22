@@ -9,13 +9,27 @@ interface FileObject {
   imageUrl: File | string;
   imageId: string;
 }
+interface IPost {
+  userId: number;
+  userNickname: string;
+  postId: number;
+  postTitle: string;
+  postContent: string;
+  postDate: string;
+  images: Array<{ imageUrl: string; imageId: string }>;
+  postLatitude: number;
+  postLongitude: number;
+  postLocation: string;
+}
 
 const PostUpdateModal = () => {
   const [mode, setMode] = useState<string>("image");
-  const { selectedPost }: any = useSelector((state: RootState) => state.modal);
+  const { selectedPost }: { selectedPost: IPost } = useSelector((state: RootState) => state.modal);
   const [files, setFiles] = useState<FileObject[]>(selectedPost.images);
   const prevLocation = {
-    place_name: selectedPost.postLocation,
+    placeName: selectedPost.postLocation,
+    x: selectedPost.postLongitude,
+    y: selectedPost.postLatitude,
   };
   const changeMode = () => {
     if (mode === "image") setMode("info");
