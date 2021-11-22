@@ -32,7 +32,7 @@ import { multerOption } from "src/image/service/image.service";
 @ApiTags("그룹 API")
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
-@Controller("api/groups")
+@Controller("groups")
 export class GroupController {
   constructor(private readonly groupService: GroupService) {}
 
