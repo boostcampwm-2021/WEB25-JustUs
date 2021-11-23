@@ -5,6 +5,7 @@ import Header from "@components/Header";
 import Sidebar from "@components/Sidebar";
 import ModalManager from "@components/Modal/ModalManager";
 import Map from "@components/Map";
+import Empty from "@components/Empty";
 import { GroupModalAction } from "@src/action";
 import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
@@ -43,15 +44,10 @@ const Main = () => {
   if (userInfoLoading) return <></>;
   return (
     <>
-      <Header isToggle={isToggle} setIsToggle={setIsToggle} />
+      <Header />
       <Content>
         <Sidebar isToggle={isToggle} setIsToggle={setIsToggle} />
-        {!!groups.length && <Map />}
-        {!groups.length && (
-          <CryingGrapeWrapper>
-            <Guide>그룹을 생성/참가 해주세요 ㅠㅠ</Guide>
-          </CryingGrapeWrapper>
-        )}
+        {groups.length > 0 ? <Map /> : <Empty />}
       </Content>
       <ModalManager setIsToggle={setIsToggle} />
     </>
@@ -61,22 +57,4 @@ const Main = () => {
 const Content = styled.div`
   display: flex;
 `;
-
-const CryingGrapeWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: flex-end;
-  background: center;
-  background-image: url("/icons/crying-podo.png");
-  background-size: 40%;
-  background-repeat: no-repeat;
-  width: 100%;
-  height: 95vh;
-`;
-
-const Guide = styled.div`
-  font-size: 50px;
-  margin-bottom: 3vh;
-`;
-
 export default Main;
