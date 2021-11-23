@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { Injectable, NotFoundException, UnauthorizedException } from "@nestjs/common";
 import { ImageService } from "src/image/service/image.service";
 import { InjectRepository } from "@nestjs/typeorm";
 import { PostRepository } from "../post.repository";
@@ -161,7 +161,7 @@ export class PostService {
     if (!post) throw new NotFoundException(`Not found post with the id ${postId}`);
 
     const postUserId = post.user.userId;
-    if (postUserId !== userId) throw new NotFoundException("It cannot be updated because it is not the author.");
+    if (postUserId !== userId) throw new UnauthorizedException("It cannot be updated because it is not the author.");
 
     return post;
   }
