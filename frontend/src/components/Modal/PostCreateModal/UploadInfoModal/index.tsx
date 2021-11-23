@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Carousel from "@components/Modal/PostCreateModal/UploadInfoModal/Carousel";
 import { RootState } from "@src/reducer";
 import ModalSub from "./ModalSub";
+import { flexRowCenterAlign } from "@styles/StyledComponents";
 
 interface FileObject {
   imageUrl: File | string;
@@ -164,9 +165,10 @@ const UploadInfoModal = ({
         event.nativeEvent.stopImmediatePropagation();
       }}
       isSubOpened={isSubOpened}
+      className="modalContainer"
     >
-      <ModalMain isSubOpened={isSubOpened}>
-        <ModalHeader>
+      <ModalMain isSubOpened={isSubOpened} className="modalMain">
+        <ModalHeader className="modalHeader">
           <ModalTitle>{mode === "create" ? "새 게시물 만들기" : "게시물 수정"}</ModalTitle>
           <ModalHeaderRigthBtn onClick={closeModal}>
             <img src="/icons/x.svg" alt="close"></img>
@@ -255,6 +257,14 @@ const contentSize = css`
   height: 20rem;
   width: 100%;
 `;
+const headerBtn = css`
+  ${flexRowCenterAlign}
+  border: none;
+  background: none;
+  & > img {
+    cursor: pointer;
+  }
+`;
 const ModalContainer = styled.div<{ isSubOpened: boolean }>`
   display: flex;
   flex-direction: row;
@@ -278,53 +288,38 @@ const ModalMain = styled.div<{ isSubOpened: boolean }>`
 const ModalHeader = styled.div`
   display: grid;
   grid-template-columns: 10% 80% 10%;
-  height: 60px;
+  height: 6rem;
   box-sizing: border-box;
-  font-size: max(1.2vw, 20px);
+  position: relative;
 `;
 const ModalTitle = styled.div`
+  ${flexRowCenterAlign}
   grid-column-start: 2;
   grid-column-end: 3;
   grid-row-start: 1;
   grid-row-end: 2;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
   font-size: 2.5rem;
 `;
 const ModalHeaderLeftBtn = styled.button`
-  grid-column-start: 1;
-  grid-column-end: 2;
-  grid-row-start: 1;
-  grid-row-end: 2;
-  border: none;
-  background: none;
-  cursor: pointer;
+  ${headerBtn}
 `;
 const ModalHeaderRigthBtn = styled.button`
-  grid-column-start: 3;
-  grid-column-end: 4;
-  grid-row-start: 1;
-  grid-row-end: 2;
-  border: none;
-  background: none;
-  cursor: pointer;
+  ${headerBtn}
 `;
 const ModalContent = styled.div`
   display: grid;
-  height: 100%;
+  position: relative;
   grid-template-columns: 50% 50%;
   box-sizing: border-box;
 `;
 const ModalLeft = styled.div`
+  position: relative;
   width: 100%;
-  height: 45vh;
 `;
 const ModalRight = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
-  height: 100%;
   & mark {
     ${contentOverflow}
     ${contentWhiteSpace}
@@ -335,10 +330,17 @@ const ModalRight = styled.div`
   & .new-line {
     height: 2rem;
   }
+  & > * {
+    margin-top: 1rem;
+    &:first-child {
+      margin: 0;
+    }
+  }
 `;
 const InputTitle = styled.input`
   flex-basis: 5vh;
   border: none;
+  background-color: transparent;
   border-bottom: 1px solid ${COLOR.LIGHTGRAY1};
   font-size: 1.6rem;
   &:focus {
@@ -434,7 +436,10 @@ const InputPlaceName = styled.div`
 const LocationButton = styled.button`
   border: none;
   background: none;
-  cursor: pointer;
+  & > img {
+    ${flexRowCenterAlign}
+    cursor: pointer;
+  }
 `;
 const UploadButton = styled.button<{ activate: boolean }>`
   background-color: ${(props) => {
