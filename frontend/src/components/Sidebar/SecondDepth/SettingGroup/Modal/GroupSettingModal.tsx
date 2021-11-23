@@ -65,7 +65,7 @@ const GroupSettingModal = () => {
   };
 
   const onClickDeleteBtn = () => {
-    setGroupImg("/icons/person.svg");
+    setGroupImg("");
   };
 
   return (
@@ -77,7 +77,7 @@ const GroupSettingModal = () => {
       >
         <Header>
           <TitleWrapper>
-            <div>그룹 정보 수정</div>
+            <div>그룹 수정</div>
           </TitleWrapper>
           <CloseBtn>
             <button type="button" onClick={closeModal}>
@@ -86,8 +86,14 @@ const GroupSettingModal = () => {
           </CloseBtn>
         </Header>
         <Content>
-          <ImageBackground groupImage={selectedGroup.groupImage}>
-            <img src={groupImg} alt="person icon" ref={imageRef} width="100%" height="100%" />
+          <ImageBackground>
+            <img
+              src={groupImg ? groupImg : "/icons/podo-many.jpeg"}
+              alt="default icon"
+              ref={imageRef}
+              width="100%"
+              height="100%"
+            />
           </ImageBackground>
           <UploadImgBtnWrapper onClick={onClickUploadBtn}>
             <input type="file" accept="image/*" hidden ref={uploadBtnRef} onChange={loadImage} />
@@ -150,21 +156,19 @@ const Content = styled.div`
   flex-direction: column;
   align-items: center;
 `;
-const ImageBackground = styled.div<{ groupImage: string }>`
+const ImageBackground = styled.div`
   ${flexRowCenterAlign}
   margin-top: 4rem;
   width: 10rem;
   height: 10rem;
-  background-color: ${(props) => props.theme.SECONDARY};
-  opacity: ${(props) => (props.groupImage.match(/base-person-image$/) ? "0.4" : "")};
-  border-radius: 100%;
-
-  & > img {
-    width: 10rem;
-    height: 10rem;
-    border-radius: 100%;
+  background-color: ${COLOR.WHITE};
+  border-radius: 1vw;
+  border: 5px solid ${(props) => props.theme.SECONDARY};
+  & img {
+    border-radius: 0.5vw;
   }
 `;
+
 const UploadImgBtnWrapper = styled.div`
   ${flexRowCenterAlign}
   cursor: pointer;
@@ -180,7 +184,7 @@ const UploadImgBtnWrapper = styled.div`
 const DeleteImgBtnWrapper = styled.div`
   cursor: pointer;
   margin-top: 4rem;
-  color: ${COLOR.BLUE};
+  color: ${COLOR.RED};
   font-weight: bold;
   font-size: 1.6rem;
 `;
@@ -199,13 +203,13 @@ const GroupNameInputWrapper = styled.input`
 const CreateBtnWrapper = styled.div`
   ${flexRowCenterAlign}
   cursor: pointer;
-  width: 7vw;
-  height: 5vh;
+  width: 10rem;
+  height: 4rem;
   border-radius: 10px;
   color: ${COLOR.WHITE};
   background-color: ${(props) => props.theme.PRIMARY};
   margin-top: 4rem;
-  font-size: 2rem;
+  font-size: 1.5rem;
 `;
 
 export default GroupSettingModal;
