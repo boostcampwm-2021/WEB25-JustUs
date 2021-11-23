@@ -171,8 +171,16 @@ const CloseBtn = styled.div`
   ${flexRowCenterAlign};
 
   & > button {
-    background: transparent;
+    background-color: ${COLOR.WHITE};
     border: none;
+    height: 3rem;
+    width: 3rem;
+    border-radius: 50%;
+    ${flexRowCenterAlign}
+    cursor: pointer;
+    &:hover {
+      background-color: ${COLOR.GRAY};
+    }
   }
 `;
 const Content = styled.div`

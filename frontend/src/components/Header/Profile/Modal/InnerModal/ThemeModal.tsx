@@ -112,9 +112,16 @@ const ThemeListGroup = styled.ul`
 const ModalHeaderRigthBtn = styled.button`
   grid-column-start: 3;
   grid-column-end: 4;
+  background-color: ${COLOR.WHITE};
   border: none;
-  background: none;
+  height: 3rem;
+  width: 3rem;
+  border-radius: 50%;
+  ${flexRowCenterAlign}
   cursor: pointer;
+  &:hover {
+    background-color: ${COLOR.GRAY};
+  }
 `;
 
 const ModalTitle = styled.div`
