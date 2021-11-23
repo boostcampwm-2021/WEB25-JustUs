@@ -10,7 +10,7 @@ export const typeORMConfig: TypeOrmModuleOptions = {
   password: process.env.JUSTUS_MYSQL_PASSWORD,
   database: process.env.JUSTUS_MYSQL_DATABASE,
   entities: [__dirname + process.env.JUSTUS_ENTITIY_PATH],
-  synchronize: process.env.JUSTUS_MYSQL_SYNC === "1" ? true : false,
+  synchronize: process.env.JUSTUS_MYSQL_SYNC === "1",
   namingStrategy: new SnakeNamingStrategy(),
   logging: process.env.NODE_ENV === "dev",
 };
