@@ -1,4 +1,4 @@
-import { Controller, Req, Get, Put, Body, UseGuards, HttpCode, UseInterceptors, UploadedFile } from "@nestjs/common";
+import { Controller, Req, Get, Put, Body, UseGuards, UseInterceptors, UploadedFile } from "@nestjs/common";
 import { ApiTags, ApiOkResponse, ApiResponse, ApiBearerAuth, ApiConsumes, ApiBody } from "@nestjs/swagger";
 import { CustomRequest } from "src/custom/myRequest/customRequest";
 import { CustomFile } from "src/custom/myFile/customFile";
@@ -27,7 +27,6 @@ export class UserController {
   }
 
   @Put()
-  @HttpCode(200)
   @UseInterceptors(FileInterceptor("profileImage", multerOption))
   @ApiConsumes("multipart/form-data")
   @ApiBody({ type: UpdateUserInfoRequestDto })
@@ -43,7 +42,6 @@ export class UserController {
   }
 
   @Put("/grouporder")
-  @HttpCode(200)
   @ApiOkResponse({ description: "그룹 순서 수정 성공" })
   UpdateGroupOrder(
     @Req() { user }: CustomRequest,

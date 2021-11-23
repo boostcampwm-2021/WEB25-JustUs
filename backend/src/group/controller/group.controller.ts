@@ -3,7 +3,6 @@ import {
   Controller,
   Req,
   Get,
-  HttpCode,
   Param,
   Post,
   Put,
@@ -37,7 +36,6 @@ export class GroupController {
   constructor(private readonly groupService: GroupService) {}
 
   @Post()
-  @HttpCode(200)
   @UseInterceptors(FileInterceptor("groupImage", multerOption))
   @ApiConsumes("multipart/form-data")
   @ApiBody({ type: CreateGroupRequestDto })
@@ -52,7 +50,6 @@ export class GroupController {
   }
 
   @Post("/join")
-  @HttpCode(200)
   @ApiResponse({ type: Number, description: "참가한 그룹 ID", status: 200 })
   AttendGroup(@Req() { user }: CustomRequest, @Body() attendGroupRequestDto: AttendGroupRequestDto): Promise<number> {
     const { userId } = user;
@@ -74,7 +71,6 @@ export class GroupController {
   }
 
   @Put("/:groupId")
-  @HttpCode(200)
   @UseInterceptors(FileInterceptor("groupImage", multerOption))
   @ApiConsumes("multipart/form-data")
   @ApiBody({ type: UpdateGroupInfoRequestDto })
@@ -97,7 +93,6 @@ export class GroupController {
   }
 
   @Put("/:groupId/albumorder")
-  @HttpCode(200)
   @ApiParam({ name: "groupId", type: Number })
   @ApiOkResponse({ description: "앨범 순서 수정 성공" })
   UpdateAlbumOrder(

@@ -4,7 +4,6 @@ import {
   Controller,
   Delete,
   Get,
-  HttpCode,
   Param,
   Post,
   Put,
@@ -42,7 +41,6 @@ export class PostController {
   constructor(private readonly postService: PostService) {}
 
   @Post()
-  @HttpCode(200)
   @ApiConsumes("multipart/form-data")
   @ApiBody({ type: CreatePostRequestDto })
   @UseInterceptors(FilesInterceptor("postImages", 5, multerOption))

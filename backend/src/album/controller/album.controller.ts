@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, HttpCode, Param, Post, Put, UseGuards } from "@nestjs/common";
+import { Body, Controller, Delete, Param, Post, Put, UseGuards } from "@nestjs/common";
 import { ApiTags, ApiOkResponse, ApiParam, ApiResponse, ApiBearerAuth } from "@nestjs/swagger";
 import { JwtAuthGuard } from "src/auth/guard/jwt-auth-guard";
 import { AlbumService } from "../service/album.service";
@@ -14,14 +14,12 @@ export class AlbumController {
   constructor(private readonly albumService: AlbumService) {}
 
   @Post()
-  @HttpCode(200)
   @ApiResponse({ type: CreateAlbumResponseDto, status: 200 })
   CreateAlbum(@Body() createAlbumRequestDto: CreateAlbumRequestDto): Promise<CreateAlbumResponseDto> {
     return this.albumService.createAlbum(createAlbumRequestDto);
   }
 
   @Put("/:albumId")
-  @HttpCode(200)
   @ApiParam({ name: "albumId", type: Number })
   @ApiOkResponse({ description: "앨범 수정 성공" })
   UpdateAlbumInfo(
@@ -32,7 +30,6 @@ export class AlbumController {
   }
 
   @Delete("/:albumId")
-  @HttpCode(200)
   @ApiParam({ name: "albumId", type: Number })
   @ApiOkResponse({ description: "앨범 삭제 성공" })
   DeleteAlbum(@Param("albumId") albumId: number): Promise<string> {
