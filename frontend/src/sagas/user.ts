@@ -12,7 +12,7 @@ import {
   REQUEST_UPDATE_GROUP_ORDER,
 } from "@src/reducer/UserReducer";
 import axios from "axios";
-import { GET_GROUP_LIST, SET_GROUPS } from "@src/reducer/GroupReducer";
+import { GET_GROUP_LIST_REQUEST, GET_GROUP_LIST_SUCCEED, GET_GROUP_LIST_FAILED } from "@src/reducer/GroupReducer";
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
@@ -105,11 +105,15 @@ function* updateUserInfo() {
 
 function* getGroupList() {
   yield put({ type: "SPINNER_OPEN" });
-  const result: ResponseGenerator = yield call(getGroupListApi);
-  const { groups } = result.data;
-  yield put({ type: SET_GROUPS, payload: groups });
-
-  yield put({ type: "SPINNER_CLOSE" });
+  try {
+    const result: ResponseGenerator = yield call(getGroupListApi);
+    const { groups } = result.data;
+    yield put({ type: GET_GROUP_LIST_SUCCEED, payload: groups });
+  } catch {
+    yield put({ type: GET_GROUP_LIST_FAILED });
+  } finally {
+    yield put({ type: "SPINNER_CLOSE" });
+  }
 }
 
 function* updateGroupOrder(action: any) {
@@ -131,7 +135,7 @@ function* watchUpdateUserInfo() {
 }
 
 function* watchGetGroupList() {
-  yield takeEvery(GET_GROUP_LIST, getGroupList);
+  yield takeEvery(GET_GROUP_LIST_REQUEST, getGroupList);
 }
 
 function* watchUpdateGroupOrder() {

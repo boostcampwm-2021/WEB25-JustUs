@@ -16,11 +16,9 @@ import Spinner from "@components/Spinner";
 const Main = () => {
   const [isToggle, setIsToggle] = useState<boolean>(true);
   const dispatch = useDispatch();
-  const { groups }: any = useSelector((state: RootState) => state.groups);
+  const { groups, groupListLoaded }: any = useSelector((state: RootState) => state.groups);
   const { spinnerActivate }: any = useSelector((state: RootState) => state.spinner);
-  const { userInfoLoading, userProfile, userInfoError, userInfoSucceed, userLoggedOut } = useSelector(
-    (state: RootState) => state.user,
-  );
+  const { userProfile, userInfoError, userLoggedOut } = useSelector((state: RootState) => state.user);
   const history = useHistory();
 
   useEffect(() => {
@@ -51,7 +49,9 @@ const Main = () => {
     }
   }, [userLoggedOut, userInfoError]);
 
-  if (userInfoLoading) return <></>;
+  if (!userProfile || !groupListLoaded) {
+    return <Spinner />;
+  }
   return (
     <>
       {spinnerActivate ? <Spinner /> : null}
