@@ -2,7 +2,7 @@ export const initState = {
   userNickName: null,
   userProfile: null,
   userId: null,
-  userInfoLoading: true,
+  userInfoLoading: false,
   userInfoSucceed: false,
   userInfoError: false,
 
@@ -17,6 +17,7 @@ export const initState = {
 export const USER_INFO_REQUEST = "USER_INFO_REQUEST";
 export const USER_INFO_SUCCEED = "USER_INFO_SUCCEED";
 export const USER_INFO_FAILED = "USER_INFO_FAILED";
+export const USER_INFO_INIT = "USER_INFO_INIT";
 export const USER_INFO_UPDATE = "USER_INFO_UPDATE";
 export const SET_UPDATED_USER_INFO = "SET_UPDATED_USER_INFO";
 export const SET_UPDATE_FAIL = "SET_UPDATE_FAIL";
@@ -55,6 +56,8 @@ export const userReducer = (state = initState, action: any) => {
         userInfoLoading: true,
         userInfoSucceed: false,
         userInfoError: false,
+        userLoggingOut: false,
+        userLoggedOut: false,
       };
     case USER_INFO_SUCCEED:
       return {
@@ -76,15 +79,26 @@ export const userReducer = (state = initState, action: any) => {
         userProfile: null,
         userId: null,
       };
+    case USER_INFO_INIT:
+      return {
+        ...state,
+        userInfoLoading: false,
+        userInfoSucceed: false,
+        userInfoError: false,
+        userLoggingOut: false,
+        userLoggedOut: false,
+      };
     case LOG_OUT_REQUEST:
       return {
         ...state,
         userLoggingOut: true,
+        userLoggedOut: false,
       };
     case LOG_OUT_SUCCEED:
       return {
         ...state,
         userLoggingOut: false,
+        userLoggedOut: true,
         userInfoSucceed: false,
         userNickName: null,
         userProfile: null,
@@ -94,6 +108,7 @@ export const userReducer = (state = initState, action: any) => {
       return {
         ...state,
         userLoggingOut: false,
+        userLoggedOut: false,
       };
     case USER_INFO_UPDATE:
       return {

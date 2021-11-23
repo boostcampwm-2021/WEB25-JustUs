@@ -6,6 +6,7 @@ import Group from "./Group";
 import AddGroupButton from "./AddGroupButton";
 import COLOR from "@styles/Color";
 import { updateGroupOrderAction } from "@src/reducer/UserReducer";
+import { getAlbumListAction } from "@src/reducer/GroupReducer";
 
 interface FirstDepthProps {
   isToggle: boolean;
@@ -17,6 +18,11 @@ const FirstDepth = ({ isToggle, setIsToggle, addGroupBtnRef }: FirstDepthProps) 
   const { groups }: any = useSelector((state: RootState) => state.groups);
   const draggableRef = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (!groups.length) return;
+    dispatch(getAlbumListAction(groups[0]));
+  }, [groups]);
 
   if (!groups.length) return null;
 

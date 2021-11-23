@@ -1,60 +1,59 @@
-import { Dispatch, MouseEventHandler, ReactEventHandler, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useState, useEffect } from "react";
 import COLOR from "@src/styles/Color";
 import styled from "styled-components";
+import { GroupType, IHashtag, requestHashtagsAction } from "@src/reducer/GroupReducer";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@src/reducer";
+import { flexRowCenterAlign } from "@src/styles/StyledComponents";
 
 interface RecommendProps {
   inputKeyword: string;
   setSearchKeyword: Dispatch<SetStateAction<string>>;
   doSearch: Function;
 }
-interface TagType {
-  id: number;
-  name: string;
-}
 
 const Recommend = ({ inputKeyword, setSearchKeyword, doSearch }: RecommendProps) => {
-  const allTagList = [
-    { id: 0, name: "미삼집" },
-    { id: 1, name: "맥도날드" },
-    { id: 2, name: "농성화로" },
-    { id: 3, name: "아웃백" },
-    { id: 4, name: "버거킹" },
-    { id: 5, name: "롯데리아" },
-    { id: 6, name: "kfc" },
-    { id: 7, name: "포도주" },
-    { id: 8, name: "솥뚜껑" },
-    { id: 9, name: "팔팔소곱창" },
-    { id: 10, name: "청해" },
-    { id: 11, name: "맥도널드" },
-    { id: 12, name: "청헤" },
-  ];
+  const { selectedGroup, hashTags }: { selectedGroup: GroupType; hashTags: IHashtag[] } = useSelector(
+    (state: RootState) => state.groups,
+  );
+  const dispatch = useDispatch();
+  const [recommendArray, setRecommendArray] = useState<IHashtag[]>([]);
 
-  const recommendTag = (tagList: TagType[], input: string) => {
-    const recommendArray = tagList.filter((tag) => tag.name.indexOf(input) !== -1);
-    return recommendArray;
+  const recommendTag = (tagList: IHashtag[], input: string) => {
+    return tagList.filter((tag) => tag.hashtagContent.indexOf(input) !== -1);
   };
-
-  const recommendArray = recommendTag(allTagList, inputKeyword);
 
   const onClickHashTag = (e: React.MouseEvent<HTMLSpanElement>) => {
-    const selectedTag = (e.target as HTMLElement).innerHTML;
-    setSearchKeyword(selectedTag);
-    doSearch(selectedTag);
+    const clicked = (e.target as HTMLElement).closest(".hashtag-wrapper");
+    if (!clicked) return;
+
+    const hashtagId = Number(clicked.getAttribute("data-id"));
+    doSearch(hashtagId);
   };
+
+  useEffect(() => {
+    selectedGroup && dispatch(requestHashtagsAction({ groupId: selectedGroup.groupId }));
+  }, []);
+
+  useEffect(() => {
+    setRecommendArray(recommendTag(hashTags, inputKeyword));
+  }, [hashTags, inputKeyword]);
 
   return (
     <SearchListContainer>
       {recommendArray.length > 0 ? (
         <>
           <ul>
-            {recommendArray.map(({ id, name }) => (
-              <li key={id}>
-                #<span onClick={onClickHashTag}>{name}</span>
+            {recommendArray.map(({ hashtagId, hashtagContent }) => (
+              <li className="hashtag-wrapper" data-id={hashtagId} key={hashtagId} onClick={onClickHashTag}>
+                #<span>{hashtagContent}</span>
               </li>
             ))}
           </ul>
         </>
-      ) : null}
+      ) : (
+        <NoResultWrapper>등록된 해시태그가 존재하지 않습니다.</NoResultWrapper>
+      )}
     </SearchListContainer>
   );
 };
@@ -93,6 +92,11 @@ const SearchListContainer = styled.div`
       }
     }
   }
+`;
+const NoResultWrapper = styled.div`
+  ${flexRowCenterAlign};
+  height: 15rem;
+  font-size: 1.6rem;
 `;
 
 export default Recommend;
