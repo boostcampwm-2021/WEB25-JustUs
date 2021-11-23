@@ -2,12 +2,13 @@ import { useDispatch } from "react-redux";
 import COLOR from "@styles/Color";
 import styled from "styled-components";
 import { flexRowCenterAlign } from "@src/styles/StyledComponents";
+import { SET_RIGHT_CLICK_MODAL } from "@src/reducer/MapReducer";
 
 const MapLayerPostModal = (e: any) => {
   const dispatch = useDispatch();
 
   const modalOpen = (x: number, y: number) => {
-    e.setIsRightClick(false);
+    dispatch({ type: SET_RIGHT_CLICK_MODAL, payload: false });
     dispatch({ type: "SET_ADDRESS", payload: "" });
     dispatch({ type: "SET_POSITION", payload: { x, y } });
     dispatch({ type: "OPEN_MODAL", payload: "UploadAddressModal" });

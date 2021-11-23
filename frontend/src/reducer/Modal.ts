@@ -23,6 +23,8 @@ const initState: {
   selectedPost: IPost;
   clusteredMarker: Imarker[];
   isPostLoading: boolean;
+  isProfileWrapperModalOpened: boolean;
+  albumSettingWrapperModalIdx: number;
 } = {
   nowModal: "",
   nowAddress: "",
@@ -44,6 +46,8 @@ const initState: {
   },
   clusteredMarker: [],
   isPostLoading: false,
+  isProfileWrapperModalOpened: false,
+  albumSettingWrapperModalIdx: -1,
 };
 
 const ModalReducer = (state = initState, action: any) => {
@@ -83,6 +87,18 @@ const ModalReducer = (state = initState, action: any) => {
       };
     default:
       return state;
+    case "SET_PROFILE_WRAPPER_MODAL_OPENED": {
+      return {
+        ...state,
+        isProfileWrapperModalOpened: action.payload,
+      };
+    }
+    case "SET_ALBUM_SETTING_WRAPPER_MODAL_IDX": {
+      return {
+        ...state,
+        albumSettingWrapperModalIdx: action.payload,
+      };
+    }
   }
 };
 

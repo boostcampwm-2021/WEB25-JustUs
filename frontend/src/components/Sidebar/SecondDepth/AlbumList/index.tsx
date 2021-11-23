@@ -10,8 +10,8 @@ import { updateAlbumOrderAction, postShiftAlbumAction } from "@src/reducer/Group
 const AlbumList = () => {
   const dispatch = useDispatch();
   const [postSelected, setPostSelected] = useState<number>(-1);
-  const [modalOpenedIdx, setModalOpenedIdx] = useState<number>(-1);
   const { albumList, selectedGroup }: any = useSelector((state: RootState) => state.groups);
+  const { albumSettingWrapperModalIdx } = useSelector((state: RootState) => state.modal);
   const clickedTarget = useSelector((state: RootState) => state.groupModal.clickedTarget);
   const { selectedPost }: any = useSelector((state: RootState) => state.modal);
   const draggableRef = useRef<HTMLDivElement>(null);
@@ -113,11 +113,11 @@ const AlbumList = () => {
     const clickHandler = () => {
       if (!clickedTarget.target) return;
       if (!clickedTarget.target.closest(".modifying-album-btn")) {
-        setModalOpenedIdx(-1);
+        dispatch({ type: "SET_ALBUM_SETTING_WRAPPER_MODAL_IDX", payload: -1 });
       }
 
       if (clickedTarget.target.closest(".update-album-btn") || clickedTarget.target.closest(".delete-album-btn")) {
-        setModalOpenedIdx(-1);
+        dispatch({ type: "SET_ALBUM_SETTING_WRAPPER_MODAL_IDX", payload: -1 });
       }
     };
 
@@ -138,8 +138,6 @@ const AlbumList = () => {
                 album={album}
                 postSelected={postSelected}
                 setPostSelected={setPostSelected}
-                modalOpenedIdx={modalOpenedIdx}
-                setModalOpenedIdx={setModalOpenedIdx}
                 AlbumDragEndHandler={onAlbumDragEndHandler}
                 DropHandler={onDropHandler}
                 PostDragHandler={onPostDragHandler}

@@ -7,8 +7,6 @@ interface AlbumProps {
   album: any;
   postSelected: number;
   setPostSelected: React.Dispatch<React.SetStateAction<number>>;
-  modalOpenedIdx: number;
-  setModalOpenedIdx: React.Dispatch<React.SetStateAction<number>>;
   AlbumDragEndHandler: (ev: React.DragEvent<HTMLDivElement>) => void;
   PostDragEndHandler: (ev: React.DragEvent<HTMLDivElement>) => void;
   DragLeaveHandler: (ev: React.DragEvent<HTMLDivElement>) => void;
@@ -22,8 +20,6 @@ const Album = ({
   album,
   postSelected,
   setPostSelected,
-  modalOpenedIdx,
-  setModalOpenedIdx,
   AlbumDragEndHandler,
   PostDragEndHandler,
   DropHandler,
@@ -39,8 +35,6 @@ const Album = ({
         albumName={album.albumName}
         postToggle={postToggle}
         setPostToggle={setPostToggle}
-        modalOpenedIdx={modalOpenedIdx}
-        setModalOpenedIdx={setModalOpenedIdx}
         AlbumDragHandler={AlbumDragHandler}
         DragEndHandler={AlbumDragEndHandler}
       ></Header>
