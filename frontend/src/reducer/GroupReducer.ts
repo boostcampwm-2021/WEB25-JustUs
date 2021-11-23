@@ -44,6 +44,7 @@ interface IInitState {
   postShiftAlbumSucceed: boolean;
   postShiftAlbumError: boolean;
   hashTags: IHashtag[];
+  hashTagsError: boolean;
   searchList: PostType[];
 }
 
@@ -69,6 +70,7 @@ const initState: IInitState = {
   postShiftAlbumSucceed: false,
   postShiftAlbumError: false,
   hashTags: [],
+  hashTagsError: false,
   searchList: [],
 };
 
@@ -532,7 +534,8 @@ const groupReducer = (state = initState, action: any) => {
     case SET_HASHTAGS:
       return {
         ...state,
-        hashTags: action.payload,
+        hashTags: action.payload.hashTags,
+        hashTagsError: action.payload.hashTagsError,
       };
     case SET_SEARCHLIST:
       return {

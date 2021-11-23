@@ -13,7 +13,11 @@ interface RecommendProps {
 }
 
 const Recommend = ({ inputKeyword, setSearchKeyword, doSearch }: RecommendProps) => {
-  const { selectedGroup, hashTags }: { selectedGroup: GroupType; hashTags: IHashtag[] } = useSelector(
+  const {
+    selectedGroup,
+    hashTags,
+    hashTagsError,
+  }: { selectedGroup: GroupType; hashTags: IHashtag[]; hashTagsError: boolean } = useSelector(
     (state: RootState) => state.groups,
   );
   const dispatch = useDispatch();
@@ -41,18 +45,22 @@ const Recommend = ({ inputKeyword, setSearchKeyword, doSearch }: RecommendProps)
 
   return (
     <SearchListContainer>
-      {recommendArray.length > 0 ? (
-        <>
-          <ul>
-            {recommendArray.map(({ hashtagId, hashtagContent }) => (
-              <li className="hashtag-wrapper" data-id={hashtagId} key={hashtagId} onClick={onClickHashTag}>
-                #<span>{hashtagContent}</span>
-              </li>
-            ))}
-          </ul>
-        </>
+      {!hashTagsError ? (
+        recommendArray.length ? (
+          <>
+            <ul>
+              {recommendArray.map(({ hashtagId, hashtagContent }) => (
+                <li className="hashtag-wrapper" data-id={hashtagId} key={hashtagId} onClick={onClickHashTag}>
+                  #<span>{hashtagContent}</span>
+                </li>
+              ))}
+            </ul>
+          </>
+        ) : (
+          <NoResultWrapper>등록된 해시태그가 존재하지 않습니다.</NoResultWrapper>
+        )
       ) : (
-        <NoResultWrapper>등록된 해시태그가 존재하지 않습니다.</NoResultWrapper>
+        <NoResultWrapper>해시태그를 불러올 수 없습니다.</NoResultWrapper>
       )}
     </SearchListContainer>
   );
