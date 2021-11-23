@@ -40,7 +40,7 @@ const InputModal = ({ addAlbumModalRef, setIsAddAlbumModalOpened }: InputModalPr
 
   return (
     <AddAlbumModalWrapper ref={addAlbumModalRef} className="add-album-modal">
-      <AlbumCreateInputWrapper placeholder="새 앨범" onChange={onChangeName} />
+      <AlbumCreateInputWrapper placeholder="새 앨범" onChange={onChangeName} spellCheck={false} />
       <AlbumCreateBtnWrapper onClick={onClickAddAlbum}>생성</AlbumCreateBtnWrapper>
     </AddAlbumModalWrapper>
   );
