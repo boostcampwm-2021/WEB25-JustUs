@@ -177,7 +177,7 @@ const UploadInfoModal = ({
             <img src="/icons/prev.svg" alt="prev modal"></img>
           </ModalHeaderLeftBtn>
         </ModalHeader>
-        <ModalContent>
+        <ModalContent className="modalContent">
           <ModalLeft className="modalLeft">
             <Carousel files={files} carouselWidth={250} />
           </ModalLeft>
@@ -269,10 +269,8 @@ const ModalContainer = styled.div<{ isSubOpened: boolean }>`
   display: flex;
   flex-direction: row;
   background-color: ${COLOR.WHITE};
-  /* min-width: 40%; */
-  width: 50%;
-  /* height: 60%; */
-  /* min-height: 50rem; */
+  height: 60%;
+  min-height: 480px;
   border-radius: 1rem;
   box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
 
@@ -283,14 +281,15 @@ const ModalContainer = styled.div<{ isSubOpened: boolean }>`
 const ModalMain = styled.div<{ isSubOpened: boolean }>`
   display: flex;
   flex-direction: column;
-  min-width: ${(props) => (props.isSubOpened ? "40vw" : "40vw")};
+  min-width: 720px;
   height: 100%;
   z-index: 6;
+  display: grid;
+  grid-template-rows: 10% 90%;
 `;
 const ModalHeader = styled.div`
   display: grid;
   grid-template-columns: 10% 80% 10%;
-  height: 6rem;
   box-sizing: border-box;
   position: relative;
 `;
@@ -314,17 +313,22 @@ const ModalContent = styled.div`
   position: relative;
   grid-template-columns: 50% 50%;
   box-sizing: border-box;
-  margin: 0 1rem 1.5rem;
+  margin: 0 2rem 2rem 1rem;
+  height: 100%;
 `;
 const ModalLeft = styled.div`
   position: relative;
   width: 100%;
-  height: 100%;
+  height: 90%;
+  min-width: 300px;
+  margin-right: 2rem;
 `;
 const ModalRight = styled.div`
   position: relative;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  height: 90%;
+  margin-left: 2rem;
+  grid-template-rows: 10% 40% 30% 10%;
   & mark {
     ${contentOverflow}
     ${contentWhiteSpace}
