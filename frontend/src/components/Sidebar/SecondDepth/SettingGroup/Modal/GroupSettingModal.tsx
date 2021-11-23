@@ -9,7 +9,7 @@ import { updateGroupAction } from "@src/reducer/GroupReducer";
 
 const GroupSettingModal = () => {
   const { selectedGroup, albumList }: any = useSelector((state: RootState) => state.groups);
-  const [groupImg, setGroupImg] = useState(selectedGroup.groupImage);
+  const [nowImg, setNowImg] = useState(selectedGroup.groupImage);
   const [imageFile, setImageFile] = useState<File>();
   const groupNameRef = useRef<HTMLInputElement>(null);
   const uploadBtnRef = useRef<HTMLInputElement>(null);
@@ -36,7 +36,15 @@ const GroupSettingModal = () => {
     const groupName = groupNameRef.current.value;
     const groupImage = imageFile;
 
-    dispatch(updateGroupAction({ groupId: selectedGroup.groupId, groupName, groupImage, albumList }));
+    dispatch(
+      updateGroupAction({
+        groupId: selectedGroup.groupId,
+        groupName,
+        groupImage,
+        albumList,
+        clearImage: nowImg ? 0 : 1,
+      }),
+    );
     closeModal();
   };
 
@@ -57,7 +65,7 @@ const GroupSettingModal = () => {
       if (!imageRef.current) return;
       if (!e.target.result) return;
 
-      setGroupImg(e.target.result as string);
+      setNowImg(e.target.result as string);
       setImageFile(file as File);
     };
 
@@ -65,7 +73,8 @@ const GroupSettingModal = () => {
   };
 
   const onClickDeleteBtn = () => {
-    setGroupImg("");
+    setNowImg("");
+    setImageFile(undefined);
   };
 
   return (
@@ -86,27 +95,43 @@ const GroupSettingModal = () => {
           </CloseBtn>
         </Header>
         <Content>
-          <ImageBackground>
-            <img
-              src={groupImg ? groupImg : "/icons/podo-many-high.png"}
-              alt="default icon"
-              ref={imageRef}
-              width="100%"
-              height="100%"
-            />
-          </ImageBackground>
-          <UploadImgBtnWrapper onClick={onClickUploadBtn}>
-            <input type="file" accept="image/*" hidden ref={uploadBtnRef} onChange={loadImage} />
-            이미지 업로드
-          </UploadImgBtnWrapper>
-          <DeleteImgBtnWrapper onClick={onClickDeleteBtn}>사진 제거</DeleteImgBtnWrapper>
-          <GroupNameInputWrapper placeholder="그룹 이름을 입력해주세요" ref={groupNameRef} spellCheck={false} />
-          <CreateBtnWrapper onClick={onClickUpdateBtn}>수정하기</CreateBtnWrapper>
+          <div>
+            <ImageBackground>
+              <img
+                src={nowImg ? nowImg : "/icons/podo-many-high.png"}
+                alt="default icon"
+                ref={imageRef}
+                width="100%"
+                height="100%"
+              />
+              {nowImg ? (
+                <DeleteImgBtnWrapper onClick={onClickDeleteBtn}>
+                  <img src="/icons/delete.svg" alt="delete button"></img>
+                </DeleteImgBtnWrapper>
+              ) : null}
+            </ImageBackground>
+            <UploadImgBtnWrapper onClick={onClickUploadBtn}>
+              <input type="file" accept="image/*" hidden ref={uploadBtnRef} onChange={loadImage} />
+              <img src="/icons/add-photo.svg" alt="add Photo" width={"20rem"}></img>
+              사진 찾기
+            </UploadImgBtnWrapper>
+          </div>
+          <GridRight>
+            <GroupNameInputWrapper placeholder="그룹 이름을 입력해주세요" ref={groupNameRef} spellCheck={false} />
+            <CreateBtnWrapper onClick={onClickUpdateBtn}>수정하기</CreateBtnWrapper>
+          </GridRight>
         </Content>
       </ModalContainer>
     </Modal>
   );
 };
+const GridRight = styled.div`
+  ${flexRowCenterAlign}
+  height:100%;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding-right: 2rem;
+`;
 
 const modalSlideUp = keyframes`
   0% {
@@ -120,14 +145,15 @@ const modalSlideUp = keyframes`
 `;
 const ModalContainer = styled.div`
   background-color: ${COLOR.WHITE};
-  min-height: 55rem;
-  min-width: 30vw;
+  min-height: 38rem;
+  min-width: 50rem;
   border-radius: 2rem;
   display: flex;
   flex-direction: column;
   animation-name: ${modalSlideUp};
   animation-duration: 1s;
 `;
+
 const Header = styled.div`
   display: grid;
   grid-template-columns: 10% 80% 10%;
@@ -152,36 +178,42 @@ const CloseBtn = styled.div`
   }
 `;
 const Content = styled.div`
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 50% 50%;
   align-items: center;
+  justify-items: center;
 `;
 const ImageBackground = styled.div`
   ${flexRowCenterAlign}
   margin-top: 4rem;
-  width: 10rem;
-  height: 10rem;
+  width: 15rem;
+  height: 15rem;
   background-color: ${COLOR.WHITE};
   border-radius: 1vw;
-  border: 5px solid ${(props) => props.theme.SECONDARY};
+  border: 6px solid ${(props) => props.theme.SECONDARY};
   & img {
-    border-radius: 0.5vw;
+    border-radius: 0.6vw;
   }
+  position: relative;
 `;
 
 const UploadImgBtnWrapper = styled.div`
   ${flexRowCenterAlign}
   cursor: pointer;
-  margin-top: 4rem;
+  margin-top: 1rem;
   border-radius: 10px;
-  border: 2px solid ${(props) => props.theme.PRIMARY};
+  border: 2px solid ${COLOR.SHADOW_BLACK};
   font-weight: bold;
-  font-size: 1.6rem;
+  font-size: 1.5rem;
+  color: ${COLOR.SHADOW_BLACK};
   line-height: 16px;
-  width: 150px;
-  height: 33px;
+  width: 15rem;
+  height: 3rem;
 `;
 const DeleteImgBtnWrapper = styled.div`
+  position: absolute;
+  bottom: 13rem;
+  left: 13rem;
   cursor: pointer;
   margin-top: 4rem;
   color: ${COLOR.RED};
@@ -191,7 +223,7 @@ const DeleteImgBtnWrapper = styled.div`
 const GroupNameInputWrapper = styled.input`
   margin-top: 4rem;
   border: none;
-  width: 200px;
+  width: 23rem;
   font-size: 1.6rem;
   border-bottom: 1px solid ${(props) => props.theme.PRIMARY};
   &::-webkit-input-placeholder {
@@ -199,17 +231,26 @@ const GroupNameInputWrapper = styled.input`
     font-weight: 800;
     font-size: 1.6rem;
   }
+  &:focus {
+    outline: none;
+  }
 `;
+
 const CreateBtnWrapper = styled.div`
   ${flexRowCenterAlign}
   cursor: pointer;
-  width: 10rem;
-  height: 4rem;
-  border-radius: 10px;
   color: ${COLOR.WHITE};
-  background-color: ${(props) => props.theme.PRIMARY};
+  background-color: ${(props) => props.theme.SECONDARY};
   margin-top: 4rem;
+  border-radius: 10px;
+  font-weight: bold;
   font-size: 1.5rem;
+  line-height: 16px;
+  width: 15rem;
+  height: 3rem;
+  &:hover {
+    background-color: ${(props) => props.theme.PRIMARY};
+  }
 `;
 
 export default GroupSettingModal;

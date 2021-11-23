@@ -98,7 +98,7 @@ const CreateGroupModal = () => {
             <UploadImgBtnWrapper onClick={onClickUploadBtn}>
               <input type="file" accept="image/*" hidden ref={uploadBtnRef} onChange={loadImage} />
               <img src="/icons/add-photo.svg" alt="add Photo" width={"20rem"}></img>
-              파일 찾기
+              사진 찾기
             </UploadImgBtnWrapper>
           </div>
           <GridRight>
