@@ -24,9 +24,9 @@ const GroupInfoModal = ({ setIsToggle }: SettingGroupModalProps) => {
     setClickedDropclickedDropBtn(true);
   };
   const onClickConfirmBtn = () => {
-    const { groupId } = selectedGroup;
+    const { groupId, groupName } = selectedGroup;
 
-    dispatch(deleteGroupAction({ groupId }));
+    dispatch(deleteGroupAction({ groupId, groupName }));
     closeModal();
     setIsToggle(false);
   };

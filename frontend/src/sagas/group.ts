@@ -83,7 +83,6 @@ async function requestUpdateGroupApi(payload: any) {
   const formData = new FormData();
   formData.append("groupName", payload.groupName);
   if (payload.groupImage) formData.append("groupImage", payload.groupImage);
-
   const result = await axios.put(`${SERVER_URL}/api/groups/${payload.groupId}`, formData, {
     withCredentials: true,
     headers: { "Content-Type": "multipart/form-data" },
@@ -136,6 +135,10 @@ function* deleteGroup(action: any) {
     const result: ResponseGenerator = yield call(deleteGroupApi, action.payload);
     yield put({ type: "SET_SELECTED_GROUP", payload: null });
     yield put({ type: "DELETE_GROUP", payload: action.payload });
+    yield put({
+      type: SET_SUCCEED_TOAST,
+      payload: { text: `${action.payload.groupName} 그룹에서 탈퇴했습니다.`, isSucceed: true, isError: false },
+    });
   } catch (err) {}
 }
 
@@ -158,6 +161,10 @@ function* requestJoinGroup(action: any) {
 
     yield put({ type: SET_GROUPS, payload: groups });
     yield put({ type: "CLOSE_MODAL" });
+    yield put({
+      type: SET_SUCCEED_TOAST,
+      payload: { text: `그룹에 참여했습니다.`, isSucceed: true, isError: false },
+    });
   } catch (err) {}
 }
 
@@ -172,6 +179,10 @@ function* requestUpdateGroup(action: any) {
 
     yield put({ type: SET_GROUPS, payload: groups });
     yield put({ type: "SET_SELECTED_GROUP", payload: { groupId, groupName, groupImage, albumList } });
+    yield put({
+      type: SET_SUCCEED_TOAST,
+      payload: { text: `그룹 정보가 수정되었습니다.`, isSucceed: true, isError: false },
+    });
   } catch (err) {}
 }
 
