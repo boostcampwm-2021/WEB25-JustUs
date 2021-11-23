@@ -16,7 +16,7 @@ import {
   POST_SHIFT_ALBUM_SUCCEED,
   POST_SHIFT_ALBUM_FAILED,
 } from "@src/reducer/GroupReducer";
-import { SET_SUCCEED_TOAST } from "@src/reducer/ToastReducer";
+import { SET_SUCCEED_TOAST, SET_ERROR_TOAST } from "@src/reducer/ToastReducer";
 import axios from "axios";
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
@@ -62,6 +62,10 @@ function* createAlbum({ payload }: any) {
     });
   } catch (err: any) {
     yield put({ type: NEW_ALBUM_FAILED });
+    yield put({
+      type: SET_ERROR_TOAST,
+      payload: { text: `앨범 생성에 실패했습니다.`, isSucceed: false, isError: true },
+    });
   }
 }
 
@@ -76,6 +80,10 @@ function* updateAlbum({ payload }: any) {
     });
   } catch (err: any) {
     yield put({ type: UPDATE_ALBUM_FAILED });
+    yield put({
+      type: SET_ERROR_TOAST,
+      payload: { text: `앨범 수정에 실패했습니다.`, isSucceed: false, isError: true },
+    });
   }
 }
 
@@ -90,6 +98,10 @@ function* deleteAlbum({ payload }: any) {
     });
   } catch (err: any) {
     yield put({ type: DELETE_ALBUM_FAILED });
+    yield put({
+      type: SET_ERROR_TOAST,
+      payload: { text: `앨범 삭제에 실패했습니다.`, isSucceed: false, isError: true },
+    });
   }
 }
 
