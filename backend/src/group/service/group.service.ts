@@ -39,7 +39,10 @@ export class GroupService {
     const { groupName } = createGroupRequestDto;
     const groupCode = await this.createInvitaionCode();
 
-    const saveObject = groupImage === undefined ? { groupName, groupCode } : { groupImage, groupName, groupCode };
+    const saveObject =
+      groupImage === undefined
+        ? { groupImage: process.env.JUSTUS_BASE_IMG, groupName, groupCode }
+        : { groupImage, groupName, groupCode };
 
     const group = await this.groupRepository.save(saveObject);
     const { groupId } = group;
@@ -105,12 +108,13 @@ export class GroupService {
     updateGroupInfoRequestDto: UpdateGroupInfoRequestDto,
   ): Promise<UpdateGroupInfoResponseDto> {
     const groupImage = this.imageService.getImageUrl(file);
-    const { groupName } = updateGroupInfoRequestDto;
+    const { groupName, clearImage } = updateGroupInfoRequestDto;
 
     const group = await this.groupRepository.findOne({ groupId });
     if (!group) throw new NotFoundException(`Not found group with the id ${groupId}`);
 
-    const updateObject = groupImage === undefined ? { groupName } : { groupImage, groupName };
+    const checkClearImage = clearImage === 1 ? { groupImage: process.env.JUSTUS_BASE_IMG, groupName } : { groupName };
+    const updateObject = groupImage === undefined ? checkClearImage : { groupImage, groupName };
 
     this.groupRepository.update(groupId, updateObject);
 
@@ -121,7 +125,7 @@ export class GroupService {
     const result = await this.groupRepository.leaveGroupQuery(groupId, userId);
     if (!result.affected) throw new NotFoundException("그룹에 해당 유저가 없습니다.");
 
-    const group = await this.groupRepository.findOne(groupId, { relations: ["users", "albums"] });
+    const group = await this.groupRepository.findOne(groupId, { relations: ["users"] });
     if (!group) throw new NotFoundException(`Not found group with the id ${groupId}`);
     const { users } = group;
 
