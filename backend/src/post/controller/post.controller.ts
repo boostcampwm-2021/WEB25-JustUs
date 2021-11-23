@@ -1,29 +1,6 @@
-import {
-  Body,
-  Req,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Post,
-  Put,
-  UseGuards,
-  UseInterceptors,
-  UploadedFiles,
-  Query,
-} from "@nestjs/common";
-import {
-  ApiTags,
-  ApiOkResponse,
-  ApiParam,
-  ApiResponse,
-  ApiBearerAuth,
-  ApiConsumes,
-  ApiBody,
-  ApiQuery,
-} from "@nestjs/swagger";
+import { Body, Req, Delete, Get, Param, Post, Put, UseInterceptors, UploadedFiles, Query } from "@nestjs/common";
+import { ApiOkResponse, ApiParam, ApiResponse, ApiConsumes, ApiBody, ApiQuery } from "@nestjs/swagger";
 import { CustomRequest } from "src/custom//myRequest/customRequest";
-import { JwtAuthGuard } from "src/auth/guard/jwt-auth-guard";
 import { PostService } from "../service/post.service";
 import { CreatePostRequestDto } from "src/dto/post/createPostRequest.dto";
 import { GetPostInfoResponseDto } from "src/dto/post/getPostInfoResponse.dto";
@@ -32,11 +9,9 @@ import { ShiftPostRequestDto } from "src/dto/post/shiftPostRequest.dto";
 import { GetSearchPostResponse } from "src/dto/post/getSearchPostResponse.dto";
 import { FilesInterceptor } from "@nestjs/platform-express";
 import { multerOption } from "src/image/service/image.service";
+import { CustomController } from "src/custom/decorator/controller.decorator";
 
-@ApiTags("게시글 API")
-@ApiBearerAuth()
-@UseGuards(JwtAuthGuard)
-@Controller("posts")
+@CustomController("posts", "게시글 API")
 export class PostController {
   constructor(private readonly postService: PostService) {}
 

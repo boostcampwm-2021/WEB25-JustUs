@@ -1,8 +1,6 @@
-import { Controller, Req, Get, Put, Body, UseGuards, UseInterceptors, UploadedFile } from "@nestjs/common";
-import { ApiTags, ApiOkResponse, ApiResponse, ApiBearerAuth, ApiConsumes, ApiBody } from "@nestjs/swagger";
+import { Req, Get, Put, Body, UseInterceptors, UploadedFile } from "@nestjs/common";
 import { CustomRequest } from "src/custom/myRequest/customRequest";
 import { CustomFile } from "src/custom/myFile/customFile";
-import { JwtAuthGuard } from "src/auth/guard/jwt-auth-guard";
 import { UserService } from "../service/user.service";
 import { UserInfoResponseDto } from "src/dto/user/userInfoResponse.dto";
 import { UpdateUserInfoRequestDto } from "src/dto/user/updateUserInfoRequest.dto";
@@ -11,16 +9,20 @@ import { GetGroupsResponseDto } from "src/dto/user/getGroupsResponse.dto";
 import { UpdateUserInfoResponseDto } from "src/dto/user/updateUserInfoResponse.dto";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { multerOption } from "src/image/service/image.service";
+import {
+  SwaggerUpdateUserInfo,
+  SwaggerGetUserInfo,
+  SwaggerUpdateGroupOrder,
+  SwaggerGetGroups,
+} from "../decorator/swagger";
+import { CustomController } from "src/custom/decorator/controller.decorator";
 
-@ApiTags("유저 API")
-@ApiBearerAuth()
-@UseGuards(JwtAuthGuard)
-@Controller("user")
+@CustomController("user", "유저 API")
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get()
-  @ApiResponse({ type: UserInfoResponseDto, status: 200 })
+  @SwaggerGetUserInfo()
   GetUserInfo(@Req() { user }: CustomRequest): Promise<UserInfoResponseDto> {
     const { userId } = user;
     return this.userService.getUserInfo(userId);
@@ -28,9 +30,7 @@ export class UserController {
 
   @Put()
   @UseInterceptors(FileInterceptor("profileImage", multerOption))
-  @ApiConsumes("multipart/form-data")
-  @ApiBody({ type: UpdateUserInfoRequestDto })
-  @ApiResponse({ type: UpdateUserInfoResponseDto, status: 200 })
+  @SwaggerUpdateUserInfo()
   UpdateUserInfo(
     @Req() { user }: CustomRequest,
     @Body() updateUserInfoRequestDto: UpdateUserInfoRequestDto,
@@ -42,7 +42,7 @@ export class UserController {
   }
 
   @Put("/grouporder")
-  @ApiOkResponse({ description: "그룹 순서 수정 성공" })
+  @SwaggerUpdateGroupOrder()
   UpdateGroupOrder(
     @Req() { user }: CustomRequest,
     @Body() updateGroupOrderRequestDto: UpdateGroupOrderRequestDto,
@@ -52,7 +52,7 @@ export class UserController {
   }
 
   @Get("groups")
-  @ApiResponse({ type: GetGroupsResponseDto, status: 200 })
+  @SwaggerGetGroups()
   GetGroups(@Req() { user }: CustomRequest): Promise<GetGroupsResponseDto> {
     const { userId } = user;
     return this.userService.getGroups(userId);

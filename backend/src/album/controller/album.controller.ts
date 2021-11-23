@@ -1,15 +1,12 @@
-import { Body, Controller, Delete, Param, Post, Put, UseGuards } from "@nestjs/common";
-import { ApiTags, ApiOkResponse, ApiParam, ApiResponse, ApiBearerAuth } from "@nestjs/swagger";
-import { JwtAuthGuard } from "src/auth/guard/jwt-auth-guard";
+import { Body, Delete, Param, Post, Put } from "@nestjs/common";
+import { ApiOkResponse, ApiParam, ApiResponse } from "@nestjs/swagger";
 import { AlbumService } from "../service/album.service";
 import { CreateAlbumRequestDto } from "src/dto/album/createAlbumRequest.dto";
 import { UpdateAlbumInfoRequestDto } from "src/dto/album/updateAlbumInfoRequest.dto";
 import { CreateAlbumResponseDto } from "src/dto/album/createAlbumResponse.dto";
+import { CustomController } from "src/custom/decorator/controller.decorator";
 
-@ApiTags("앨범 API")
-@ApiBearerAuth()
-@UseGuards(JwtAuthGuard)
-@Controller("albums")
+@CustomController("albums", "앨범 API")
 export class AlbumController {
   constructor(private readonly albumService: AlbumService) {}
 

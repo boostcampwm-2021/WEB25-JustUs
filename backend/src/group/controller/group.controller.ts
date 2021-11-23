@@ -1,20 +1,7 @@
-import {
-  Body,
-  Controller,
-  Req,
-  Get,
-  Param,
-  Post,
-  Put,
-  Delete,
-  UseGuards,
-  UseInterceptors,
-  UploadedFile,
-} from "@nestjs/common";
-import { ApiTags, ApiOkResponse, ApiParam, ApiResponse, ApiBearerAuth, ApiBody, ApiConsumes } from "@nestjs/swagger";
+import { Body, Req, Get, Param, Post, Put, Delete, UseInterceptors, UploadedFile } from "@nestjs/common";
+import { ApiOkResponse, ApiParam, ApiResponse, ApiBody, ApiConsumes } from "@nestjs/swagger";
 import { CustomRequest } from "src/custom/myRequest/customRequest";
 import { CustomFile } from "src/custom/myFile/customFile";
-import { JwtAuthGuard } from "src/auth/guard/jwt-auth-guard";
 import { GroupService } from "../service/group.service";
 import { CreateGroupRequestDto } from "src/dto/group/createGroupRequest.dto";
 import { AttendGroupRequestDto } from "src/dto/group/attendGroupRequest.dto";
@@ -27,11 +14,9 @@ import { UpdateGroupInfoResponseDto } from "src/dto/group/updateGroupInfoRespons
 import { GetHashTagsResponseDto } from "src/dto/group/getHashTagsResponse.dto";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { multerOption } from "src/image/service/image.service";
+import { CustomController } from "src/custom/decorator/controller.decorator";
 
-@ApiTags("그룹 API")
-@ApiBearerAuth()
-@UseGuards(JwtAuthGuard)
-@Controller("groups")
+@CustomController("groups", "그룹 API")
 export class GroupController {
   constructor(private readonly groupService: GroupService) {}
 
