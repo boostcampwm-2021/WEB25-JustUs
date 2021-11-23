@@ -1,5 +1,6 @@
 import { useDispatch } from "react-redux";
 import styled, { keyframes } from "styled-components";
+import COLOR from "@styles/Color";
 const Empty = () => {
   const dispatch = useDispatch();
   const onClickCreateGroupBtn = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -12,39 +13,70 @@ const Empty = () => {
 
   return (
     <EmptyContainer>
-      <Appareil>
-        <Bandes>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-        </Bandes>
-        <Objectif />
-        <Lentille />
-        <Souslentille />
-        <Pointe />
-        <Flash />
-        <Fente />
-      </Appareil>
-      <Photo>
-        <Cache></Cache>
-      </Photo>
-      <button onClick={onClickCreateGroupBtn}>그룹 생성</button>
-      <button onClick={onClickJoinGroupBtn}>그룹 참가</button>
+      <GroupButton onClick={onClickCreateGroupBtn}>그룹 생성</GroupButton>
+      <Polaroid>
+        <Appareil>
+          <Bandes>
+            <div />
+            <div />
+            <div />
+            <div />
+            <div />
+            <div />
+          </Bandes>
+          <Objectif />
+          <Lentille />
+          <Souslentille />
+          <Pointe />
+          <Flash />
+          <Fente />
+        </Appareil>
+        <Photo>
+          <Cache></Cache>
+        </Photo>
+      </Polaroid>
+      <GroupButton onClick={onClickJoinGroupBtn}>그룹 참가</GroupButton>
     </EmptyContainer>
   );
 };
 
 const EmptyContainer = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 400px 1fr;
   position: absolute;
-  width: 100vw;
+  width: 100%;
   height: 90vh;
   background-color: ${(props) => props.theme.SECONDARY};
   padding-top: 5vh;
   overflow: hidden;
 `;
+
+const Polaroid = styled.div``;
+
+const GroupButton = styled.button`
+  border: 10px double ${(props) => props.theme.PRIMARY};
+  height: 15rem;
+  width: 15rem;
+  display: block;
+  text-align: center;
+  cursor: pointer;
+  overflow: hidden;
+  position: relative;
+  color: ${COLOR.WHITE};
+  font-weight: bold;
+  font-size: 2.4rem;
+  align-self: center;
+  justify-self: center;
+  background-color: ${(props) => props.theme.SECONDARY};
+  border-radius: 40%;
+  box-shadow: 10px 5px 15px rgba(0, 0, 0, 0.2);
+
+  &:hover {
+    background-color: ${(props) => props.theme.PRIMARY};
+    border: 10px double ${(props) => props.theme.SECONDARY};
+  }
+`;
+
 const Appareil = styled.div`
   background: #ffffff; /* Old browsers */
   background: -moz-linear-gradient(top, #ffffff 37%, #d4d3d3 99%, #d0d0d0 100%, #989898 100%); /* FF3.6-15 */
@@ -194,7 +226,7 @@ const Flash = styled.div`
   position: absolute;
   left: 80px;
   top: 40px;
-  z-index: 19;
+  z-index: 1;
   animation: ${flash} 6s 1s linear infinite;
 `;
 const Fente = styled.div`
