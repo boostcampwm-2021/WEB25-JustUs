@@ -10,40 +10,37 @@ import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
 import { useHistory } from "react-router-dom";
 import { getGroupListAction } from "@src/reducer/GroupReducer";
-import { userInfoRequestAction } from "@src/reducer/UserReducer";
 
 const Main = () => {
   const [isToggle, setIsToggle] = useState<boolean>(true);
   const dispatch = useDispatch();
   const { groups }: any = useSelector((state: RootState) => state.groups);
-  const { userInfoLoading } = useSelector((state: RootState) => state.user);
-  const { userProfile } = useSelector((state: RootState) => state.user);
+  const { userInfoLoading, userProfile, userInfoError, userInfoSucceed, userLoggedOut } = useSelector(
+    (state: RootState) => state.user,
+  );
   const history = useHistory();
 
   useEffect(() => {
     document.addEventListener("click", (event) => {
       const { target, clientX, clientY } = event;
       if (!(event.target instanceof HTMLElement)) return;
-
       dispatch({ type: GroupModalAction.SET_CLICKED_TARGET, payload: { target, clientX, clientY } });
     });
-
-    dispatch(getGroupListAction());
   }, []);
 
   useEffect(() => {
-    dispatch(userInfoRequestAction());
-  }, []);
+    if (userProfile) {
+      dispatch(getGroupListAction());
+    }
+  }, [userProfile]);
 
   useEffect(() => {
-    if (!userInfoLoading && !userProfile) {
+    if (userLoggedOut | userInfoError) {
       history.push("/login");
     }
-  }, [userProfile, userInfoLoading]);
+  }, [userLoggedOut, userInfoError]);
 
-  if (!userInfoLoading && !userProfile) {
-    return <></>;
-  }
+  if (userInfoLoading) return <></>;
   return (
     <>
       <Header isToggle={isToggle} setIsToggle={setIsToggle} />
