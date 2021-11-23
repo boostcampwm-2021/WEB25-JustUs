@@ -1,10 +1,13 @@
 import { MouseEvent, Dispatch, SetStateAction } from "react";
 import COLOR from "@src/styles/Color";
 import styled from "styled-components";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@src/reducer";
+import { PostType } from "@src/reducer/GroupReducer";
 
 interface SearchListContent {
-  id: number;
-  name: string;
+  postId: number;
+  postTitle: string;
 }
 
 interface SearchListProps {
@@ -13,36 +16,25 @@ interface SearchListProps {
 }
 
 const SearchList = ({ setSearchKeyword, setIsSearchListOpened }: SearchListProps) => {
-  const searchListContents: SearchListContent[] = [
-    { id: 0, name: "미삼집 관련 게시글" },
-    { id: 1, name: "맥도날드 관련 게시글" },
-    { id: 2, name: "농성화로 관련 게시글" },
-    { id: 3, name: "아웃백 관련 게시글" },
-    { id: 4, name: "버거킹 관련 게시글" },
-    { id: 5, name: "롯데리아 관련 게시글" },
-    { id: 6, name: "kfc 관련 게시글" },
-    { id: 7, name: "포도주 관련 게시글" },
-    { id: 8, name: "솥뚜껑 관련 게시글" },
-    { id: 9, name: "팔팔소곱창 관련 게시글" },
-    { id: 10, name: "청해 관련 게시글" },
-  ];
+  const { searchList }: { searchList: PostType[] } = useSelector((state: RootState) => state.groups);
+  const dispatch = useDispatch();
 
-  const handleClickSearchListItem = (e: HTMLElement) => {
-    setSearchKeyword(e.innerText);
+  const onClickPost = (postId: number) => {
+    dispatch({ type: "SELECT_POST_REQUEST", postId });
     setIsSearchListOpened(false);
   };
 
   return (
     <SearchListContainer>
       <ul>
-        {searchListContents.map(({ id, name }: SearchListContent) => (
+        {searchList.map(({ postId, postTitle }: SearchListContent) => (
           <li
-            key={id}
-            onClick={(e: MouseEvent<HTMLElement>) => {
-              handleClickSearchListItem(e.target as HTMLElement);
+            key={postId}
+            onClick={() => {
+              onClickPost(postId);
             }}
           >
-            {name}
+            {postTitle}
           </li>
         ))}
       </ul>
@@ -72,6 +64,7 @@ const SearchListContainer = styled.div`
       padding: 1vh 0 1vh 1vh;
       margin: 0 1.5vw 0 0;
       border-bottom: 1px solid ${COLOR.GRAY};
+      font-size: 1.6rem;
       &:hover {
         font-weight: bold;
         cursor: pointer;
