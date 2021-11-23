@@ -104,9 +104,12 @@ function* updateUserInfo() {
 }
 
 function* getGroupList() {
+  yield put({ type: "SPINNER_OPEN" });
   const result: ResponseGenerator = yield call(getGroupListApi);
   const { groups } = result.data;
   yield put({ type: SET_GROUPS, payload: groups });
+
+  yield put({ type: "SPINNER_CLOSE" });
 }
 
 function* updateGroupOrder(action: any) {

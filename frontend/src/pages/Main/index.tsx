@@ -11,11 +11,13 @@ import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
 import { useHistory } from "react-router-dom";
 import { getGroupListAction } from "@src/reducer/GroupReducer";
+import Spinner from "@components/Spinner";
 
 const Main = () => {
   const [isToggle, setIsToggle] = useState<boolean>(true);
   const dispatch = useDispatch();
   const { groups }: any = useSelector((state: RootState) => state.groups);
+  const { spinnerActivate }: any = useSelector((state: RootState) => state.spinner);
   const { userInfoLoading, userProfile, userInfoError, userInfoSucceed, userLoggedOut } = useSelector(
     (state: RootState) => state.user,
   );
@@ -52,6 +54,7 @@ const Main = () => {
   if (userInfoLoading) return <></>;
   return (
     <>
+      {spinnerActivate ? <Spinner /> : null}
       <Header />
       <Content>
         <Sidebar isToggle={isToggle} setIsToggle={setIsToggle} />
