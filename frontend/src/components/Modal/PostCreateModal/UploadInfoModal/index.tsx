@@ -270,7 +270,7 @@ const ModalContainer = styled.div<{ isSubOpened: boolean }>`
   flex-direction: row;
   background-color: ${COLOR.WHITE};
   height: 60%;
-  min-height: 480px;
+  min-height: 460px;
   border-radius: 1rem;
   box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
 
@@ -328,7 +328,7 @@ const ModalRight = styled.div`
   display: grid;
   height: 90%;
   margin-left: 2rem;
-  grid-template-rows: 10% 40% 30% 10%;
+  grid-template-rows: 15% 40% 30% 15%;
   & mark {
     ${contentOverflow}
     ${contentWhiteSpace}
