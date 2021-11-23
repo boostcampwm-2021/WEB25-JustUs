@@ -13,7 +13,7 @@ import {
 } from "@src/reducer/UserReducer";
 import axios from "axios";
 import { GET_GROUP_LIST, SET_GROUPS } from "@src/reducer/GroupReducer";
-import { SET_SUCCEED_TOAST } from "@src/reducer/ToastReducer";
+import { SET_SUCCEED_TOAST, SET_ERROR_TOAST } from "@src/reducer/ToastReducer";
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
@@ -105,6 +105,10 @@ function* updateUserInfo() {
     });
   } catch (err: any) {
     yield put({ type: SET_UPDATE_FAIL });
+    yield put({
+      type: SET_ERROR_TOAST,
+      payload: { text: `회원 정보 수정에 실패했습니다.`, isSucceed: false, isError: true },
+    });
   }
 }
 
