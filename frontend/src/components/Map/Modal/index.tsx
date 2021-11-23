@@ -8,7 +8,7 @@ const MapLayerPostModal = (e: any) => {
   const dispatch = useDispatch();
 
   const modalOpen = (x: number, y: number) => {
-    dispatch({ type: SET_RIGHT_CLICK_MODAL, payload: false });
+    dispatch({ type: SET_RIGHT_CLICK_MODAL, payload: { isRightClickModalOpened: false } });
     dispatch({ type: "SET_ADDRESS", payload: "" });
     dispatch({ type: "SET_POSITION", payload: { x, y } });
     dispatch({ type: "OPEN_MODAL", payload: "UploadAddressModal" });

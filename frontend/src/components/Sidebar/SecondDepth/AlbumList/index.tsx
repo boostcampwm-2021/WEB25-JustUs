@@ -6,6 +6,7 @@ import Album from "./Album";
 import COLOR from "@styles/Color";
 import { useDispatch } from "react-redux";
 import { updateAlbumOrderAction, postShiftAlbumAction } from "@src/reducer/GroupReducer";
+import { SET_ALBUM_SETTING_WRAPPER_MODAL_IDX } from "@src/reducer/Modal";
 
 const AlbumList = () => {
   const dispatch = useDispatch();
@@ -113,11 +114,11 @@ const AlbumList = () => {
     const clickHandler = () => {
       if (!clickedTarget.target) return;
       if (!clickedTarget.target.closest(".modifying-album-btn")) {
-        dispatch({ type: "SET_ALBUM_SETTING_WRAPPER_MODAL_IDX", payload: -1 });
+        dispatch({ type: SET_ALBUM_SETTING_WRAPPER_MODAL_IDX, payload: { albumSettingWrapperModalIdx: -1 } });
       }
 
       if (clickedTarget.target.closest(".update-album-btn") || clickedTarget.target.closest(".delete-album-btn")) {
-        dispatch({ type: "SET_ALBUM_SETTING_WRAPPER_MODAL_IDX", payload: -1 });
+        dispatch({ type: SET_ALBUM_SETTING_WRAPPER_MODAL_IDX, payload: { albumSettingWrapperModalIdx: -1 } });
       }
     };
 

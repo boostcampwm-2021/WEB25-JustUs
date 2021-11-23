@@ -12,12 +12,16 @@ const Profile = () => {
   const { clickedTarget } = useSelector((state: RootState) => state.groupModal);
 
   const handleProfileBtnClick = () => {
-    dispatch({ type: "SET_PROFILE_WRAPPER_MODAL_OPENED", payload: !isProfileWrapperModalOpened });
+    dispatch({
+      type: "SET_PROFILE_WRAPPER_MODAL_OPENED",
+      payload: { isProfileWrapperModalOpened: !isProfileWrapperModalOpened },
+    });
   };
 
   useEffect(() => {
     const target = clickedTarget.target.closest("#profile");
-    if (!target) dispatch({ type: "SET_PROFILE_WRAPPER_MODAL_OPENED", payload: false });
+    if (!target)
+      dispatch({ type: "SET_PROFILE_WRAPPER_MODAL_OPENED", payload: { isProfileWrapperModalOpened: false } });
   }, [clickedTarget]);
 
   return (
