@@ -1,5 +1,4 @@
-/*global kakao*/
-import React, { useEffect, useState, useRef, ChangeEvent } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import styled, { css } from "styled-components";
 import COLOR from "@styles/Color";
 import { useDispatch, useSelector } from "react-redux";
@@ -168,7 +167,7 @@ const UploadInfoModal = ({
     >
       <ModalMain isSubOpened={isSubOpened}>
         <ModalHeader>
-          <ModalTitle>{mode == "create" ? "새 게시물 만들기" : "게시물 수정"}</ModalTitle>
+          <ModalTitle>{mode === "create" ? "새 게시물 만들기" : "게시물 수정"}</ModalTitle>
           <ModalHeaderRigthBtn onClick={closeModal}>
             <img src="/icons/x.svg" alt="close"></img>
           </ModalHeaderRigthBtn>
@@ -212,12 +211,12 @@ const UploadInfoModal = ({
                   <InputPlaceName>{address}</InputPlaceName>
                 )}
                 <LocationButton onClick={address === "" ? onClickLocationBtn : () => null}>
-                  <img src="/icons/location.svg" width="100%" />
+                  <img src="/icons/location.svg" alt="location" width="100%" />
                 </LocationButton>
               </InputPlace>
             </InputBottom>
             <UploadButton activate={activate} onClick={handleSaveBtn}>
-              {mode == "create" ? "게시하기" : "수정하기"}
+              {mode === "create" ? "게시하기" : "수정하기"}
             </UploadButton>
           </ModalRight>
         </ModalContent>
