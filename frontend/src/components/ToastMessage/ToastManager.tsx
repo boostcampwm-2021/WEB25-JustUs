@@ -11,7 +11,7 @@ const ToastManager = () => {
   return (
     <>
       {isSucceed && <Succeed text={text} />}
-      {isError && <Error />}
+      {isError && <Error text={text} />}
     </>
   );
 };

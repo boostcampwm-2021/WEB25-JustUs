@@ -183,7 +183,12 @@ function* requestUpdateGroup(action: any) {
       type: SET_SUCCEED_TOAST,
       payload: { text: `그룹 정보가 수정되었습니다.`, isSucceed: true, isError: false },
     });
-  } catch (err) {}
+  } catch (err) {
+    yield put({
+      type: SET_SUCCEED_TOAST,
+      payload: { text: `그룹 정보 수정에 실패했습니다.`, isSucceed: false, isError: true },
+    });
+  }
 }
 
 function* requestHashtags(action: any) {

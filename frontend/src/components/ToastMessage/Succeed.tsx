@@ -19,9 +19,9 @@ const Succeed = ({ text }: { text: string }) => {
     <Toast>
       <ToastWrapper id="toast" key={key}>
         <Content>
-          <OkIconWrapper>
+          <IconWrapper>
             <FcOk size="30" />
-          </OkIconWrapper>
+          </IconWrapper>
           <Text>{text}</Text>
           <CloseBtn onClick={onClickCloseBtn}>
             <img src="/icons/clear.svg" alt="clear icon" />
@@ -66,6 +66,7 @@ const ToastWrapper = styled.div`
   border-radius: 10px;
   animation-name: ${up};
   animation-duration: 5s;
+  animation-timing-function: ease-out;
   visibility: hidden;
   background-color: ${COLOR.WHITE};
   z-index: 10;
@@ -75,7 +76,7 @@ const Content = styled.div`
   display: grid;
   grid-template-columns: 20% 70% 10%;
 `;
-const OkIconWrapper = styled.div`
+const IconWrapper = styled.div`
   grid-column-start: 1;
   grid-column-end: 2;
   ${flexRowCenterAlign}
