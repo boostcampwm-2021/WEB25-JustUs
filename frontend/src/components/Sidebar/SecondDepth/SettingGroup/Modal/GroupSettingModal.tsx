@@ -25,13 +25,11 @@ const GroupSettingModal = () => {
       alert("그룹 이름은 반드시 입력해야 합니다.");
       return;
     }
-
     updateGroup();
   };
 
   const updateGroup = () => {
     const groupImage = imageFile;
-
     dispatch(
       updateGroupAction({
         groupId: selectedGroup.groupId,
