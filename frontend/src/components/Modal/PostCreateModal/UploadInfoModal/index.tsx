@@ -416,6 +416,11 @@ const InputBottom = styled.div`
   align-items: flex-end;
   border-top: 1px solid ${COLOR.LIGHTGRAY1};
   min-height: 10rem;
+  & > input[type="date"] {
+    font-family: "NanumGothic", sans-serif;
+    overflow: hidden;
+    padding: 0;
+  }
 `;
 const InputDate = styled.input`
   flex-basis: 20vh;
