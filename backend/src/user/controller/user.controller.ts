@@ -9,12 +9,7 @@ import { GetGroupsResponseDto } from "src/dto/user/getGroupsResponse.dto";
 import { UpdateUserInfoResponseDto } from "src/dto/user/updateUserInfoResponse.dto";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { multerOption } from "src/image/service/image.service";
-import {
-  SwaggerUpdateUserInfo,
-  SwaggerGetUserInfo,
-  SwaggerUpdateGroupOrder,
-  SwaggerGetGroups,
-} from "../decorator/swagger";
+import { SwaggerUpdateUserInfo, SwaggerGetUserInfo, SwaggerUpdateGroupOrder, SwaggerGetGroups } from "../swagger";
 import { CustomController } from "src/custom/decorator/controller.decorator";
 
 @CustomController("user", "유저 API")

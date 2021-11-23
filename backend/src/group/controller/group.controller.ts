@@ -1,5 +1,4 @@
 import { Body, Req, Get, Param, Post, Put, Delete, UseInterceptors, UploadedFile } from "@nestjs/common";
-import { ApiOkResponse, ApiParam, ApiResponse, ApiBody, ApiConsumes } from "@nestjs/swagger";
 import { CustomRequest } from "src/custom/myRequest/customRequest";
 import { CustomFile } from "src/custom/myFile/customFile";
 import { GroupService } from "../service/group.service";
@@ -14,6 +13,16 @@ import { UpdateGroupInfoResponseDto } from "src/dto/group/updateGroupInfoRespons
 import { GetHashTagsResponseDto } from "src/dto/group/getHashTagsResponse.dto";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { multerOption } from "src/image/service/image.service";
+import {
+  SwaggerCreateGroup,
+  SwaggerAttendGroup,
+  SwaggerGetGroupInfo,
+  SwaggerGetAlbums,
+  SwaggerUpdateGroupInfo,
+  SwaggerLeaveGroup,
+  SwaggerUpdateAlbumOrder,
+  SwaggerGetHashTags,
+} from "../swagger";
 import { CustomController } from "src/custom/decorator/controller.decorator";
 
 @CustomController("groups", "그룹 API")
@@ -22,9 +31,7 @@ export class GroupController {
 
   @Post()
   @UseInterceptors(FileInterceptor("groupImage", multerOption))
-  @ApiConsumes("multipart/form-data")
-  @ApiBody({ type: CreateGroupRequestDto })
-  @ApiResponse({ type: CreateGroupResponseDto, status: 200 })
+  @SwaggerCreateGroup()
   CreateGroup(
     @Req() { user }: CustomRequest,
     @Body() createGroupRequestDto: CreateGroupRequestDto,
@@ -35,32 +42,27 @@ export class GroupController {
   }
 
   @Post("/join")
-  @ApiResponse({ type: Number, description: "참가한 그룹 ID", status: 200 })
+  @SwaggerAttendGroup()
   AttendGroup(@Req() { user }: CustomRequest, @Body() attendGroupRequestDto: AttendGroupRequestDto): Promise<number> {
     const { userId } = user;
     return this.groupService.attendGroup(userId, attendGroupRequestDto);
   }
 
   @Get("/:groupId")
-  @ApiParam({ name: "groupId", type: Number })
-  @ApiResponse({ type: GetGroupInfoResponseDto, status: 200 })
+  @SwaggerGetGroupInfo()
   GetGroupInfo(@Param("groupId") groupId: number): Promise<GetGroupInfoResponseDto> {
     return this.groupService.getGroupInfo(groupId);
   }
 
   @Get("/:groupId/albums")
-  @ApiParam({ name: "groupId", type: Number })
-  @ApiResponse({ type: GetAlbumsResponseDto, status: 200 })
+  @SwaggerGetAlbums()
   GetAlbums(@Param("groupId") groupId: number): Promise<GetAlbumsResponseDto> {
     return this.groupService.getAlbums(groupId);
   }
 
   @Put("/:groupId")
   @UseInterceptors(FileInterceptor("groupImage", multerOption))
-  @ApiConsumes("multipart/form-data")
-  @ApiBody({ type: UpdateGroupInfoRequestDto })
-  @ApiParam({ name: "groupId", type: Number })
-  @ApiResponse({ type: UpdateGroupInfoResponseDto, status: 200 })
+  @SwaggerUpdateGroupInfo()
   UpdateGroupInfo(
     @Param("groupId") groupId: number,
     @Body() updateGroupInfoRequestDto: UpdateGroupInfoRequestDto,
@@ -70,16 +72,14 @@ export class GroupController {
   }
 
   @Delete("/:groupId")
-  @ApiParam({ name: "groupId", type: Number })
-  @ApiOkResponse({ description: "그룹 탈퇴 성공" })
+  @SwaggerLeaveGroup()
   LeaveGroup(@Req() { user }: CustomRequest, @Param("groupId") groupId: number): Promise<string> {
     const { userId } = user;
     return this.groupService.leaveGroup(userId, groupId);
   }
 
   @Put("/:groupId/albumorder")
-  @ApiParam({ name: "groupId", type: Number })
-  @ApiOkResponse({ description: "앨범 순서 수정 성공" })
+  @SwaggerUpdateAlbumOrder()
   UpdateAlbumOrder(
     @Param("groupId") groupId: number,
     @Body() updateAlbumOrderRequestDto: UpdateAlbumOrderRequestDto,
@@ -88,8 +88,7 @@ export class GroupController {
   }
 
   @Get("/:groupId/hashtags")
-  @ApiParam({ name: "groupId", type: Number })
-  @ApiResponse({ type: GetHashTagsResponseDto, status: 200 })
+  @SwaggerGetHashTags()
   GetHashTags(@Param("groupId") groupId: number): Promise<GetHashTagsResponseDto> {
     return this.groupService.getHashTags(groupId);
   }
