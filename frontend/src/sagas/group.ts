@@ -2,7 +2,7 @@ import { all, fork, put, call, takeLatest, select, delay } from "redux-saga/effe
 import axios from "axios";
 import { getGroupListApi } from "@src/sagas/user";
 import { SET_GROUPS, SET_HASHTAGS } from "@src/reducer/GroupReducer";
-import { SET_SUCCEED_TOAST } from "@src/reducer/ToastReducer";
+import { SET_SUCCEED_TOAST, SET_ERROR_TOAST } from "@src/reducer/ToastReducer";
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
@@ -116,7 +116,12 @@ function* createGroup({ payload }: any) {
       type: SET_SUCCEED_TOAST,
       payload: { text: `${groupName} 그룹 생성에 성공했습니다.`, isSucceed: true, isError: false },
     });
-  } catch (err: any) {}
+  } catch (err: any) {
+    yield put({
+      type: SET_ERROR_TOAST,
+      payload: { text: `그룹 생성에 실패했습니다.`, isSucceed: false, isError: true },
+    });
+  }
 }
 
 function* getAlbumList(action: any) {
@@ -139,7 +144,12 @@ function* deleteGroup(action: any) {
       type: SET_SUCCEED_TOAST,
       payload: { text: `${action.payload.groupName} 그룹에서 탈퇴했습니다.`, isSucceed: true, isError: false },
     });
-  } catch (err) {}
+  } catch (err) {
+    yield put({
+      type: SET_ERROR_TOAST,
+      payload: { text: `그룹 탈퇴에 실패했습니다.`, isSucceed: false, isError: true },
+    });
+  }
 }
 
 function* getGroupMemberList(action: any) {
@@ -165,7 +175,12 @@ function* requestJoinGroup(action: any) {
       type: SET_SUCCEED_TOAST,
       payload: { text: `그룹에 참여했습니다.`, isSucceed: true, isError: false },
     });
-  } catch (err) {}
+  } catch (err) {
+    yield put({
+      type: SET_ERROR_TOAST,
+      payload: { text: `그룹 참여에 실패했습니다.`, isSucceed: false, isError: true },
+    });
+  }
 }
 
 function* requestUpdateGroup(action: any) {
@@ -185,7 +200,7 @@ function* requestUpdateGroup(action: any) {
     });
   } catch (err) {
     yield put({
-      type: SET_SUCCEED_TOAST,
+      type: SET_ERROR_TOAST,
       payload: { text: `그룹 정보 수정에 실패했습니다.`, isSucceed: false, isError: true },
     });
   }
