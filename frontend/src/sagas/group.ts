@@ -2,6 +2,7 @@ import { all, fork, put, call, takeLatest, select, delay } from "redux-saga/effe
 import axios from "axios";
 import { getGroupListApi } from "@src/sagas/user";
 import { SET_GROUPS, SET_HASHTAGS } from "@src/reducer/GroupReducer";
+import { SET_SUCCEED_TOAST } from "@src/reducer/ToastReducer";
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
@@ -112,6 +113,10 @@ function* createGroup({ payload }: any) {
     const { groupName } = payload;
 
     yield put({ type: "ADD_GROUP", payload: { groupId, groupName, groupImage } });
+    yield put({
+      type: SET_SUCCEED_TOAST,
+      payload: { text: `${groupName} 그룹 생성에 성공했습니다.`, isSucceed: true, isError: false },
+    });
   } catch (err: any) {}
 }
 

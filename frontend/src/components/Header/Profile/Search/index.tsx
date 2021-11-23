@@ -63,7 +63,7 @@ const BackGround = styled.div`
   width: 100%;
   height: 100%;
   background-color: transparent;
-  z-index: 3;
+  z-index: 6;
 `;
 
 const SearchContainer = styled.div`

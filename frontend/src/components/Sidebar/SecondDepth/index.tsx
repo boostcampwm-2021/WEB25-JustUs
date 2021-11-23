@@ -66,7 +66,7 @@ const SecondDepthWrapper = styled.div<{ isToggle: boolean }>`
   border-left: 1px ${COLOR.WHITE} solid;
   position: absolute;
   left: 5vw;
-  z-index: ${(props) => (props.isToggle ? 4 : 0)};
+  z-index: ${(props) => (props.isToggle ? 6 : 0)};
   animation-name: ${(props) => (props.isToggle ? SidebarOpen : SidebarHide)};
   animation-duration: 1s;
 `;

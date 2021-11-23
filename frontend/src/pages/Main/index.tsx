@@ -11,6 +11,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
 import { useHistory } from "react-router-dom";
 import { getGroupListAction } from "@src/reducer/GroupReducer";
+import ToastManager from "@src/components/ToastMessage/ToastManager";
 
 const Main = () => {
   const [isToggle, setIsToggle] = useState<boolean>(true);
@@ -58,6 +59,7 @@ const Main = () => {
         {groups.length > 0 ? <Map /> : <Empty />}
       </Content>
       <ModalManager setIsToggle={setIsToggle} />
+      <ToastManager />
     </>
   );
 };

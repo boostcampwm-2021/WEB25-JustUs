@@ -59,7 +59,6 @@ const UserInfoModal = () => {
 
   useEffect(() => {
     const updateSucceeded = () => {
-      alert("회원정보가 수정되었습니다.");
       closeUserInfoModal();
       dispatch({ type: SET_UPDATED_INIT });
     };
