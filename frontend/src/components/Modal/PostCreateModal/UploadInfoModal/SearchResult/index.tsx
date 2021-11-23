@@ -62,6 +62,13 @@ const SearchResultWrapper = styled.div`
   display: flex;
   flex-direction: column;
   overflow-y: scroll;
+  &::-webkit-scrollbar {
+    width: 0.8rem;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: ${(props) => props.theme.SECONDARY};
+    border-radius: 1rem;
+  }
   height: 100%;
   box-sizing: border-box;
 `;
