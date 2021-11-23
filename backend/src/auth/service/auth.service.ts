@@ -14,9 +14,10 @@ export class AuthService {
     return user;
   }
 
-  createToken(userId: number, expire: string): string {
+  createToken(userId: number, userEmail: string, expire: string): string {
     const payload = {
       userId: userId,
+      userEmail: userEmail,
       userToken: "loginToken",
     };
 
