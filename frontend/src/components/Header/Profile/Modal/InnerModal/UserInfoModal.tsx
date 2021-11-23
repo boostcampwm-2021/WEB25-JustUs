@@ -7,6 +7,7 @@ import { flexColumnCenterAlign, flexRowCenterAlign } from "@src/styles/StyledCom
 import { userInfoUpdateAction, SET_UPDATED_INIT } from "@src/reducer/UserReducer";
 import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
+import { SET_ERROR_TOAST } from "@src/reducer/ToastReducer";
 
 const UserInfoModal = () => {
   const uploadBtnRef = useRef<HTMLInputElement>(null);
@@ -50,7 +51,7 @@ const UserInfoModal = () => {
   const onClickUpdateBtn = () => {
     if (!userNameRef.current) return;
     if (userNameRef.current.value === "") {
-      alert("닉네임은 반드시 입력해야 합니다.");
+      dispatch({ type: SET_ERROR_TOAST, payload: { text: "닉네임은 반드시 입력해야 합니다." } });
       return;
     }
 
@@ -64,7 +65,7 @@ const UserInfoModal = () => {
     };
 
     const updateFailed = () => {
-      alert("회원정보 수정에 실패했습니다.");
+      // alert("회원정보 수정에 실패했습니다.");
     };
 
     if (updateSucceed === null) return;

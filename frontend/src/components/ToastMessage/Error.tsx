@@ -39,7 +39,7 @@ const Error = ({ text }: { text: string }) => {
 const shake = keyframes`
   0% {
     transform: translateY(-15rem);
-    z-index: 6;
+    z-index: 8;
     visibility: visible;
     box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.5);
   }
