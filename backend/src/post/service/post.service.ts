@@ -71,7 +71,7 @@ export class PostService {
   async getHashTag(textParam: string, groupId: number): Promise<HashTag[]> {
     const tagsContent = this.removeTags(textParam);
 
-    return tagsContent === undefined ? [] : await this.hashTagService.makeHashTag(groupId, tagsContent);
+    return await this.hashTagService.makeHashTag(groupId, tagsContent);
   }
 
   removeTags(textParam: string): string[] {
@@ -81,7 +81,7 @@ export class PostService {
       return e.substr(1);
     });
 
-    return removeTag;
+    return removeTag === undefined ? [] : removeTag;
   }
 
   async getPostInfo(postId: number): Promise<GetPostInfoResponseDto> {
@@ -117,10 +117,14 @@ export class PostService {
     const { postTitle, postContent, deleteImagesId, postDate, postLocation, postLatitude, postLongitude, groupId } =
       updatePostInfoRequestDto;
 
-    const relations = ["user"];
+    const relations = ["user", "hashtags"];
     const post = await this.validateUserAuthor(userId, postId, relations);
 
-    await this.postRepository.deleteHashTagsQuery(postId);
+    const oldTags = this.removeTags(post.postContent);
+    const newTags = this.removeTags(postContent);
+    const differenceTags = oldTags.filter(tag => !newTags.includes(tag));
+
+    await this.hashTagService.deleteHashTags(differenceTags, postId);
 
     const hashtags = await this.getHashTag(postContent, groupId);
 
@@ -144,6 +148,8 @@ export class PostService {
   async deletePost(userId: number, postId: number): Promise<string> {
     const relations = ["user", "images"];
     const post = await this.validateUserAuthor(userId, postId, relations);
+    const deleteTags = this.removeTags(post.postContent);
+    await this.hashTagService.deleteHashTags(deleteTags, postId);
 
     this.postRepository.softRemove(post);
 
