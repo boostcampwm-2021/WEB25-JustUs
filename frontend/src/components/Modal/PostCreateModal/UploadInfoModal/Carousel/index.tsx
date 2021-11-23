@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import COLOR from "@styles/Color";
 
@@ -15,12 +15,12 @@ const Carousel = ({ files, carouselWidth }: CarouselProps) => {
   const carouselRef = useRef<HTMLDivElement>(null);
   const [imageIndex, setImageIndex] = useState(0);
   const showNextImage = () => {
-    if (imageIndex == files.length - 1 || !carouselRef.current) return;
+    if (imageIndex === files.length - 1 || !carouselRef.current) return;
     setImageIndex(imageIndex + 1);
   };
 
   const showPrevImage = () => {
-    if (imageIndex == 0 || !carouselRef.current) return;
+    if (imageIndex === 0 || !carouselRef.current) return;
     setImageIndex(imageIndex - 1);
   };
 
@@ -32,13 +32,14 @@ const Carousel = ({ files, carouselWidth }: CarouselProps) => {
   return (
     <CarouselContainer carouselWidth={carouselWidth}>
       <ChangeImageButton onClick={showPrevImage} type="button">
-        <img src="/icons/prev.svg" alt="prev image" height="30%"></img>
+        <img src="/icons/prev.svg" alt="go prev" height="30%"></img>
       </ChangeImageButton>
       <CarouselWindow>
         <CarouselImage ref={carouselRef} carouselWidth={carouselWidth}>
           {files.map((fileObject, idx) => (
             <div key={idx}>
               <img
+                alt={String(fileObject)}
                 src={
                   typeof fileObject.imageUrl === "string"
                     ? fileObject.imageUrl
@@ -50,11 +51,11 @@ const Carousel = ({ files, carouselWidth }: CarouselProps) => {
         </CarouselImage>
       </CarouselWindow>
       <ChangeImageButton onClick={showNextImage} type="button">
-        <img src="/icons/next.svg" alt="next image" height="30%"></img>
+        <img src="/icons/next.svg" alt="go next" height="30%"></img>
       </ChangeImageButton>
       <DotContainer>
-        {files.map((fileObject, idx) => (
-          <Dot key={idx} color={imageIndex == idx ? COLOR.BLACK : COLOR.GRAY}></Dot>
+        {files.map((_, idx) => (
+          <Dot key={idx} color={imageIndex === idx ? COLOR.BLACK : COLOR.GRAY}></Dot>
         ))}
       </DotContainer>
     </CarouselContainer>
@@ -71,7 +72,18 @@ const CarouselContainer = styled.div<{ carouselWidth: number }>`
   align-items: center;
   justify-content: center;
 `;
-
+const ChangeImageButton = styled.button`
+  z-index: 2;
+  height: 20%;
+  border: none;
+  background: none;
+  cursor: pointer;
+`;
+const CarouselWindow = styled.div`
+  display: grid;
+  overflow: hidden;
+  height: 100%;
+`;
 const CarouselImage = styled.div<{ carouselWidth: number }>`
   display: flex;
   justify-content: center;
@@ -89,21 +101,6 @@ const CarouselImage = styled.div<{ carouselWidth: number }>`
     object-fit: contain;
   }
 `;
-
-const CarouselWindow = styled.div`
-  display: grid;
-  overflow: hidden;
-  height: 100%;
-`;
-
-const ChangeImageButton = styled.button`
-  z-index: 2;
-  height: 20%;
-  border: none;
-  background: none;
-  cursor: pointer;
-`;
-
 const DotContainer = styled.div`
   grid-column-start: 2;
   grid-column-end: 3;
@@ -112,7 +109,6 @@ const DotContainer = styled.div`
   justify-content: center;
   align-items: center;
 `;
-
 const Dot = styled.div`
   width: 5px;
   height: 5px;
