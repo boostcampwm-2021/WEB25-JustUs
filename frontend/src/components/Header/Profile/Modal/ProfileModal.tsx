@@ -24,7 +24,6 @@ const ProfileModal = () => {
   ];
 
   const dispatch = useDispatch();
-  const { userNickName } = useSelector((state: RootState) => state.user);
   const { isProfileWrapperModalOpened } = useSelector((state: RootState) => state.modal);
   const onClickProfileItem = ({ payload, id }: ModalListItem) => {
     dispatch({ type: "SET_PROFILE_WRAPPER_MODAL_OPENED", payload: !isProfileWrapperModalOpened });
@@ -39,7 +38,6 @@ const ProfileModal = () => {
   return (
     <ModalWrapper>
       <Container>
-        <div>{userNickName}</div>
         <ul>
           {modalListItem.map((item) => (
             <li onClick={() => onClickProfileItem(item)} key={item.id}>
@@ -53,21 +51,27 @@ const ProfileModal = () => {
 };
 
 const ModalWrapper = styled.div`
-  width: 15%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 15rem;
   background-color: ${COLOR.WHITE};
   position: absolute;
   right: 1vw;
   top: 5vh;
   border-radius: 1rem;
   z-index: 10;
+  border: 1px solid ${COLOR.SHADOW_BLACK};
+  box-shadow: 0.5rem 0.6rem 0.6rem 0rem ${COLOR.SHADOW_BLACK};
 `;
 
 const Container = styled.div`
-  margin: 10%;
+  padding: 2rem;
   font-size: 2rem;
 
   & li {
-    padding: 10%;
+    padding-bottom: 2rem;
 
     &:hover {
       font-weight: bold;

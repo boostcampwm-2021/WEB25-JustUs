@@ -1,7 +1,7 @@
 import { all, fork, put, call, takeLatest, select, delay } from "redux-saga/effects";
 import axios from "axios";
 import { getGroupListApi } from "@src/sagas/user";
-import { SET_GROUPS } from "@src/reducer/GroupReducer";
+import { SET_GROUPS, SET_HASHTAGS } from "@src/reducer/GroupReducer";
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
@@ -41,11 +41,9 @@ function getGroupInfoApi(params: any) {
 
 async function createGroupApi(payload: any) {
   const formData = new FormData();
-  const res = await fetch("http://localhost:3000/img/person.png");
-  const blob = await res.blob();
-  const baseImage = new File([blob], "base-person-image", { type: "image/png" });
-
-  formData.append("groupImage", payload.groupImage ? payload.groupImage : baseImage);
+  if (payload.groupImage) {
+    formData.append("groupImage", payload.groupImage);
+  }
   formData.append("groupName", payload.groupName);
 
   const result = await axios.post(`${SERVER_URL}/api/groups`, formData, {
@@ -90,6 +88,11 @@ async function requestUpdateGroupApi(payload: any) {
     headers: { "Content-Type": "multipart/form-data" },
   });
 
+  return result;
+}
+
+async function requestHashtagsApi(payload: any) {
+  const result = await axios.get(`${SERVER_URL}/api/groups/${payload.groupId}/hashtags`, { withCredentials: true });
   return result;
 }
 
@@ -167,6 +170,13 @@ function* requestUpdateGroup(action: any) {
   } catch (err) {}
 }
 
+function* requestHashtags(action: any) {
+  try {
+    const result: ResponseGenerator = yield call(requestHashtagsApi, action.payload);
+    yield put({ type: SET_HASHTAGS, payload: result.data.hashtags });
+  } catch (err) {}
+}
+
 function* watchGroupInfo() {
   yield takeLatest("REQUEST_GROUP_INFO", getGroupInfo);
 }
@@ -195,6 +205,10 @@ function* watchRequestUpdateGroup() {
   yield takeLatest("REQUEST_UPDATE_GROUP", requestUpdateGroup);
 }
 
+function* watchRequestHashtags() {
+  yield takeLatest("REQUEST_HASHTAGS", requestHashtags);
+}
+
 export default function* groupSaga() {
   yield all([
     fork(watchGroupInfo),
@@ -204,5 +218,6 @@ export default function* groupSaga() {
     fork(watchGetGroupMemberList),
     fork(watchRequestJoinGroup),
     fork(watchRequestUpdateGroup),
+    fork(watchRequestHashtags),
   ]);
 }

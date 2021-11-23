@@ -1,10 +1,23 @@
+import { useEffect } from "react";
 import styled from "styled-components";
 import COLOR from "@src/styles/Color";
 import { flexColumnCenterAlign, flexRowCenterAlign } from "@src/styles/StyledComponents";
-
+import { RootState } from "@src/reducer";
+import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 const Login = () => {
   const SERVER_URL = process.env.REACT_APP_SERVER_URL;
   const LOGIN_URL = `${SERVER_URL}/api/auth/login`;
+  const { userProfile, userInfoLoading } = useSelector((state: RootState) => state.user);
+  const history = useHistory();
+
+  useEffect(() => {
+    if (userProfile) {
+      history.push("/");
+    }
+  }, [userProfile]);
+
+  if (userInfoLoading) return <></>;
   return (
     <>
       <BackgroundImg imgUrl="/img/sand.jpg">

@@ -1,11 +1,11 @@
 import { GroupAction } from "@src/action";
 
-interface GroupType {
+export interface GroupType {
   groupId: number;
   groupName: string;
   groupImg: string;
 }
-interface PostType {
+export interface PostType {
   postId: number;
   postTitle: string;
   postLatitude: number;
@@ -16,6 +16,10 @@ interface AlbumListItemType {
   albumName: string;
   posts: PostType[];
   base: boolean;
+}
+export interface IHashtag {
+  hashtagId: number;
+  hashtagContent: string;
 }
 
 interface IInitState {
@@ -39,6 +43,8 @@ interface IInitState {
   postShiftAlbumLoading: boolean;
   postShiftAlbumSucceed: boolean;
   postShiftAlbumError: boolean;
+  hashTags: IHashtag[];
+  searchList: PostType[];
 }
 
 const initState: IInitState = {
@@ -62,6 +68,8 @@ const initState: IInitState = {
   postShiftAlbumLoading: false,
   postShiftAlbumSucceed: false,
   postShiftAlbumError: false,
+  hashTags: [],
+  searchList: [],
 };
 
 export const CREATE_GROUP = "CREATE_GROUP";
@@ -73,7 +81,6 @@ export const GET_GROUP_LIST = "GET_GROUP_LIST";
 export const SET_GROUPS = "SET_GROUPS";
 export const REQUEST_JOIN_GROUP = "REQUEST_JOIN_GROUP";
 export const REQUEST_UPDATE_GROUP = "REQUEST_UPDATE_GROUP";
-
 export const NEW_ALBUM_REQUEST = "NEW_ALBUM_REQUEST";
 export const NEW_ALBUM_SUCCEED = "NEW_ALBUM_SUCCEED";
 export const NEW_ALBUM_FAILED = "NEW_ALBUM_FAILED";
@@ -89,6 +96,9 @@ export const UPDATE_ALBUM_ORDER_FAILED = "UPDATE_ALBUM_ORDER_FAILED";
 export const POST_SHIFT_ALBUM_REQUEST = "POST_SHIFT_ALBUM_REQUEST";
 export const POST_SHIFT_ALBUM_SUCCEED = "POST_SHIFT_ALBUM_SUCCEED";
 export const POST_SHIFT_ALBUM_FAILED = "POST_SHIFT_ALBUM_FAILED";
+export const REQUEST_HASHTAGS = "REQUEST_HASHTAGS";
+export const SET_HASHTAGS = "SET_HASHTAGS";
+export const REQUEST_POSTS_BY_HASHTAG = "REQUEST_POSTS_BY_HASHTAG";
 
 export const createGroupAction = (payload: any) => ({
   type: CREATE_GROUP,
@@ -171,6 +181,16 @@ export const postShiftAlbumAction = (
 
 export const updateGroupAction = (payload: any) => ({
   type: REQUEST_UPDATE_GROUP,
+  payload,
+});
+
+export const requestHashtagsAction = (payload: any) => ({
+  type: REQUEST_HASHTAGS,
+  payload,
+});
+
+export const requestPostsByHashtag = (payload: any) => ({
+  type: REQUEST_POSTS_BY_HASHTAG,
   payload,
 });
 
@@ -348,6 +368,7 @@ const groupReducer = (state = initState, action: any) => {
         },
       };
     case "SET_GROUPS":
+      if (!action.payload[0]) return { ...state };
       return {
         ...state,
         groups: action.payload,
@@ -506,6 +527,16 @@ const groupReducer = (state = initState, action: any) => {
         postShiftAlbumLoading: false,
         postShiftAlbumSucceed: false,
         postShiftAlbumError: true,
+      };
+    case SET_HASHTAGS:
+      return {
+        ...state,
+        hashTags: action.payload,
+      };
+    case "SET_SEARCHLIST":
+      return {
+        ...state,
+        searchList: action.payload.searchList,
       };
     default:
       return state;

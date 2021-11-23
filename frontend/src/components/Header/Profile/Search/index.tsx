@@ -1,29 +1,25 @@
 import { useState, ChangeEvent, KeyboardEvent } from "react";
 import COLOR from "@styles/Color";
 import styled from "styled-components";
-
 import SearchList from "@components/Header/Profile/Search/SearchList";
 import Recommend from "@components/Header/Profile/Search/Recommend";
+import { useDispatch } from "react-redux";
+import { requestPostsByHashtag } from "@src/reducer/GroupReducer";
 
 const Search = () => {
   const [searchKeyword, setSearchKeyword] = useState<string>("");
   const [isSearchListOpened, setIsSearchListOpened] = useState<Boolean>(false);
   const [isRecommendOpened, setIsRecommendOpened] = useState<Boolean>(false);
+  const dispatch = useDispatch();
 
   const handleSearchInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchKeyword(e.target.value);
   };
 
-  const handleKeyPress = (e: KeyboardEvent<HTMLDivElement>) => {
-    if (e.key === "Enter" && searchKeyword) {
-      (document.activeElement as HTMLElement).blur();
-      doSearch(searchKeyword);
-    }
-  };
-
-  const doSearch = (key: string) => {
+  const doSearch = (hashtagId: number) => {
     setIsSearchListOpened(true);
     setIsRecommendOpened(false);
+    dispatch(requestPostsByHashtag({ hashtagId }));
   };
 
   const onFocusInput = () => {
@@ -44,10 +40,10 @@ const Search = () => {
         <SearchInput
           type="text"
           placeholder="해시태그를 입력하세요."
-          onKeyUp={handleKeyPress}
           onChange={handleSearchInputChange}
           value={searchKeyword}
           onFocus={onFocusInput}
+          spellCheck={false}
         />
         {isSearchListOpened && (
           <SearchList setSearchKeyword={setSearchKeyword} setIsSearchListOpened={setIsSearchListOpened} />

@@ -1,28 +1,16 @@
-import { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
 import COLOR from "@styles/Color";
 import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
-
 import Profile from "@components/Header/Profile";
 import Search from "@components/Header/Profile/Search";
-
-interface SidebarProps {
-  isToggle: boolean;
-  setIsToggle: Dispatch<SetStateAction<boolean>>;
-}
-
-const Header = ({ isToggle, setIsToggle }: SidebarProps) => {
+import Logo from "@components/Header/Logo";
+const Header = () => {
   const { groups }: any = useSelector((state: RootState) => state.groups);
-
-  const onClickMenu = () => {
-    if (!groups.length) return;
-    setIsToggle((prev) => !prev);
-  };
   return (
     <HeaderContainer groups={groups}>
-      <img src="/icons/menu.svg" className="pointer" onClick={onClickMenu} alt="menu" />
-      <Search />
+      <Logo />
+      {groups.length > 0 ? <Search /> : <div />}
       <Profile />
     </HeaderContainer>
   );
@@ -34,9 +22,10 @@ const HeaderContainer = styled.div<{ groups: any }>`
   box-sizing: border-box;
   border-bottom: 1px solid ${COLOR.WHITE};
   padding: 0 1vw;
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  justify-items: center;
   align-items: center;
+  grid-template-columns: 30rem 1fr 30rem;
   & img.pointer {
     &:hover {
       cursor: ${({ groups }) => (groups.length ? "pointer" : "not-allowed")};

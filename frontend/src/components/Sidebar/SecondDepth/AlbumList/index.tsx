@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
 import Album from "./Album";
+import COLOR from "@styles/Color";
 import { useDispatch } from "react-redux";
 import { updateAlbumOrderAction, postShiftAlbumAction } from "@src/reducer/GroupReducer";
 
@@ -153,12 +154,24 @@ const AlbumList = () => {
 };
 
 const DraggableWrapper = styled.div`
-  width: 100%;
+  margin-right: 0.9rem;
   & .post-hover {
     border: 2px dotted ${(props) => props.theme.MENUTEXT};
   }
   & .album-hover {
     border-top: 1px solid ${(props) => props.theme.MENUTEXT};
+  }
+  overflow: hidden;
+  &:hover {
+    margin-right: 0.1rem;
+    overflow-y: scroll;
+    &::-webkit-scrollbar {
+      width: 0.8rem;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: ${(props) => props.theme.SECONDARY};
+      border-radius: 1rem;
+    }
   }
 `;
 const AlbumWrapper = styled.div`
