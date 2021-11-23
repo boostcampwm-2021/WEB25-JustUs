@@ -62,6 +62,8 @@ const BackgroundImg = styled.div<{ imgUrl: string }>`
   background-image: url(${(props) => props.imgUrl});
   background-size: cover;
   height: 100vh;
+  z-index: 1;
+  position: relative;
 `;
 
 const BackgroundWrap = styled.div`
