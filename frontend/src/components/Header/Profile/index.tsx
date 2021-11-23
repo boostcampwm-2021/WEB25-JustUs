@@ -8,7 +8,9 @@ import COLOR from "@src/styles/Color";
 const Profile = () => {
   const dispatch = useDispatch();
   const { isProfileWrapperModalOpened } = useSelector((state: RootState) => state.modal);
-  const { userProfile, userNickName } = useSelector((state: RootState) => state.user);
+  const { userProfile, userNickName }: { userProfile: string; userNickName: string } = useSelector(
+    (state: RootState) => state.user,
+  );
   const { clickedTarget } = useSelector((state: RootState) => state.groupModal);
 
   const handleProfileBtnClick = () => {
@@ -22,9 +24,17 @@ const Profile = () => {
 
   return (
     <>
-      <ProfileContainer id="profile" onClick={handleProfileBtnClick}>
-        <ProfileName>{userNickName}</ProfileName>
-        <ProfileImage profile={userProfile}></ProfileImage>
+      <ProfileContainer>
+        <ProfileContent id="profile" onClick={handleProfileBtnClick}>
+          <ProfileName>
+            {userNickName
+              ? userNickName.length > 10
+                ? userNickName.substring(0, 10).concat("...")
+                : userNickName
+              : ""}
+          </ProfileName>
+          <ProfileImage profile={userProfile}></ProfileImage>
+        </ProfileContent>
       </ProfileContainer>
       {isProfileWrapperModalOpened && <ProfileModal />}
     </>
@@ -41,6 +51,9 @@ const ProfileContainer = styled.div`
   width: 100%;
   display: flex;
   justify-content: flex-end;
+`;
+const ProfileContent = styled.div`
+  display: flex;
   align-items: center;
 `;
 const ProfileImage = styled.button<{ profile: string }>`
