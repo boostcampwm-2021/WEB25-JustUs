@@ -83,7 +83,7 @@ const CreateGroupModal = () => {
           <div>
             <ImageBackground>
               <img
-                src={groupImg ? groupImg : "/icons/podo-many.jpeg"}
+                src={groupImg ? groupImg : "/icons/podo-many-high.png"}
                 alt="default icon"
                 ref={imageRef}
                 width="100%"
