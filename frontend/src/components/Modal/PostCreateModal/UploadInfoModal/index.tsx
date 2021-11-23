@@ -1,6 +1,6 @@
 /*global kakao*/
 import React, { useEffect, useState, useRef, ChangeEvent } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import COLOR from "@styles/Color";
 import { useDispatch, useSelector } from "react-redux";
 import Carousel from "@components/Modal/PostCreateModal/UploadInfoModal/Carousel";
@@ -97,11 +97,9 @@ const UploadInfoModal = ({
   };
 
   const applyHighlights = (textParam: string) => {
-    const highlightedText = textParam
-      .replace(/ /g, "<span>&nbsp;<span>")
-      .replace(/\n/g, "<br/>")
-      .replace(/#([\w|ㄱ-ㅎ|가-힣]+)/g, "<mark>$&</mark>");
-    return highlightedText;
+    const highlightedText = textParam.replace(/#([\w|ㄱ-ㅎ|가-힣]+)/g, "<mark>$&</mark>").replace(/\n/g, "<br>");
+    const addDiv = highlightedText && highlightedText.match(/\<br\>$/gm) ? `<div class="new-line"></div>` : ``;
+    return highlightedText + addDiv;
   };
 
   const handleScroll = () => {
@@ -185,8 +183,9 @@ const UploadInfoModal = ({
           <ModalRight className="modalRight">
             <InputTitle type="text" placeholder="제목" value={title} onChange={handelTitleInput} />
             <ContentWrap className="contentWrap">
-              <BackDrop className="backdrop" ref={backdropRef}></BackDrop>
-              <HighLights ref={highlightsRef} className="highlights"></HighLights>
+              <BackDrop className="backdrop" ref={backdropRef}>
+                <HighLights ref={highlightsRef} className="highlights"></HighLights>
+              </BackDrop>
               <InputText
                 ref={inputRef}
                 placeholder="내용"
@@ -310,14 +309,28 @@ const ContentWrap = styled.div`
   position: relative;
   width: 100%;
 `;
-const BackDrop = styled.div`
-  height: 20rem;
-  position: absolute;
-  width: 100%;
-  word-break: break-all;
-  overflow-y: scroll;
+const contentOverflow = css`
+  word-break: normal;
+  overflow-wrap: break-word;
+`;
+const contentWhiteSpace = css`
+  white-space: pre-wrap;
+`;
+const contentFont = css`
   font-size: 1.6rem;
   line-height: 2rem;
+`;
+const contentSize = css`
+  height: 20rem;
+  width: 100%;
+`;
+const BackDrop = styled.div`
+  ${contentOverflow}
+  ${contentWhiteSpace}
+  ${contentFont}
+  ${contentSize}
+  position: absolute;
+  overflow-y: scroll;
   &::-webkit-scrollbar {
     width: 0.8rem;
   }
@@ -327,29 +340,25 @@ const BackDrop = styled.div`
   }
 `;
 const HighLights = styled.div`
-  height: 20rem;
+  ${contentOverflow}
+  ${contentWhiteSpace}
+  ${contentFont}
+  ${contentSize}
   position: absolute;
-  width: 100%;
-  word-break: break-all;
   overflow-y: scroll;
-  font-size: 1.6rem;
-  line-height: 2rem;
   &::-webkit-scrollbar {
-    width: 0.8rem;
-  }
-  &::-webkit-scrollbar-thumb {
-    background-color: ${(props) => props.theme.SECONDARY};
-    border-radius: 1rem;
+    width: 0;
   }
 `;
 const InputText = styled.textarea`
-  height: 20rem;
+  ${contentOverflow}
+  ${contentWhiteSpace}
+  ${contentFont}
+  ${contentSize}
+  resize: none;
+  border: none;
   position: relative;
-  width: 100%;
-  word-break: break-all;
   overflow-y: scroll;
-  font-size: 1.6rem;
-  line-height: 2rem;
   &::-webkit-scrollbar {
     width: 0.8rem;
   }
@@ -367,12 +376,14 @@ const ModalRight = styled.div`
   flex-direction: column;
   height: 100%;
   & mark {
-    border-radius: 3px;
-    color: transparent;
+    ${contentOverflow}
+    ${contentWhiteSpace}
+    ${contentFont}
+    display: inline;
     background-color: ${COLOR.THEME1.SECONDARY};
-    letter-spacing: normal;
-    font-size: 1.6rem;
-    overflow: auto;
+  }
+  & .new-line {
+    height: 2rem;
   }
 `;
 const ModalLeft = styled.div`
