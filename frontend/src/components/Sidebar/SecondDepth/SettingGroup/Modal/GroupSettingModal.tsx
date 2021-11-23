@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import React, { useState, useRef } from "react";
 import styled, { keyframes } from "styled-components";
 import { flexRowCenterAlign } from "@src/styles/StyledComponents";
 import Modal from "@components/Modal";
@@ -10,8 +10,8 @@ import { updateGroupAction } from "@src/reducer/GroupReducer";
 const GroupSettingModal = () => {
   const { selectedGroup, albumList }: any = useSelector((state: RootState) => state.groups);
   const [nowImg, setNowImg] = useState(selectedGroup.groupImage);
+  const [newName, setNewName] = useState(selectedGroup.groupName);
   const [imageFile, setImageFile] = useState<File>();
-  const groupNameRef = useRef<HTMLInputElement>(null);
   const uploadBtnRef = useRef<HTMLInputElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
   const dispatch = useDispatch();
@@ -21,8 +21,7 @@ const GroupSettingModal = () => {
   };
 
   const onClickUpdateBtn = () => {
-    if (!groupNameRef.current) return;
-    if (groupNameRef.current.value === "") {
+    if (!newName) {
       alert("그룹 이름은 반드시 입력해야 합니다.");
       return;
     }
@@ -31,15 +30,12 @@ const GroupSettingModal = () => {
   };
 
   const updateGroup = () => {
-    if (!groupNameRef.current) return;
-
-    const groupName = groupNameRef.current.value;
     const groupImage = imageFile;
 
     dispatch(
       updateGroupAction({
         groupId: selectedGroup.groupId,
-        groupName,
+        groupName: newName,
         groupImage,
         albumList,
         clearImage: nowImg ? 0 : 1,
@@ -75,6 +71,10 @@ const GroupSettingModal = () => {
   const onClickDeleteBtn = () => {
     setNowImg("");
     setImageFile(undefined);
+  };
+
+  const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setNewName(event.target.value);
   };
 
   return (
@@ -117,7 +117,7 @@ const GroupSettingModal = () => {
             </UploadImgBtnWrapper>
           </div>
           <GridRight>
-            <GroupNameInputWrapper placeholder="그룹 이름을 입력해주세요" ref={groupNameRef} spellCheck={false} />
+            <GroupNameInputWrapper value={newName} spellCheck={false} onChange={handleNameChange} />
             <CreateBtnWrapper onClick={onClickUpdateBtn}>수정하기</CreateBtnWrapper>
           </GridRight>
         </Content>
