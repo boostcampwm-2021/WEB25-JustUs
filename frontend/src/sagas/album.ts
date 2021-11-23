@@ -58,13 +58,13 @@ function* createAlbum({ payload }: any) {
     yield put({ type: NEW_ALBUM_SUCCEED, payload: { albumName, groupId, albumId: result.data.albumId } });
     yield put({
       type: SET_SUCCEED_TOAST,
-      payload: { text: `${albumName} 앨범이 생성되었습니다.`, isSucceed: true, isError: false },
+      payload: { text: `${albumName} 앨범이 생성되었습니다.` },
     });
   } catch (err: any) {
     yield put({ type: NEW_ALBUM_FAILED });
     yield put({
       type: SET_ERROR_TOAST,
-      payload: { text: `앨범 생성에 실패했습니다.`, isSucceed: false, isError: true },
+      payload: { text: `앨범 생성에 실패했습니다.` },
     });
   }
 }
@@ -76,13 +76,13 @@ function* updateAlbum({ payload }: any) {
     yield put({ type: UPDATE_ALBUM_SUCCEED, payload: { albumName, albumId } });
     yield put({
       type: SET_SUCCEED_TOAST,
-      payload: { text: `앨범 정보가 수정되었습니다.`, isSucceed: true, isError: false },
+      payload: { text: `앨범 정보가 수정되었습니다.` },
     });
   } catch (err: any) {
     yield put({ type: UPDATE_ALBUM_FAILED });
     yield put({
       type: SET_ERROR_TOAST,
-      payload: { text: `앨범 수정에 실패했습니다.`, isSucceed: false, isError: true },
+      payload: { text: `앨범 수정에 실패했습니다.` },
     });
   }
 }
@@ -94,13 +94,13 @@ function* deleteAlbum({ payload }: any) {
     yield put({ type: DELETE_ALBUM_SUCCEED, payload: { albumId } });
     yield put({
       type: SET_SUCCEED_TOAST,
-      payload: { text: `앨범이 삭제되었습니다.`, isSucceed: true, isError: false },
+      payload: { text: `앨범이 삭제되었습니다.` },
     });
   } catch (err: any) {
     yield put({ type: DELETE_ALBUM_FAILED });
     yield put({
       type: SET_ERROR_TOAST,
-      payload: { text: `앨범 삭제에 실패했습니다.`, isSucceed: false, isError: true },
+      payload: { text: `앨범 삭제에 실패했습니다.` },
     });
   }
 }

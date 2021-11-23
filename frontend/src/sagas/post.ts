@@ -123,13 +123,13 @@ function* uploadPost({ post }: { type: string; post: IPost }) {
     yield put({ type: "UPLOAD_POST_SUCCEED", post: { ...post, postId: result.data } });
     yield put({
       type: SET_SUCCEED_TOAST,
-      payload: { text: `게시글이 생성되었습니다.`, isSucceed: true, isError: false },
+      payload: { text: `게시글이 생성되었습니다.` },
     });
   } catch (err: unknown) {
     yield put({ type: "UPLOAD_POST_FAILED" });
     yield put({
       type: SET_ERROR_TOAST,
-      payload: { text: `게시글 생성에 실패했습니다.`, isSucceed: false, isError: true },
+      payload: { text: `게시글 생성에 실패했습니다.` },
     });
   }
 }
@@ -151,13 +151,13 @@ function* deletePost({ postId }: { type: string; postId: number }) {
     yield put({ type: "CLOSE_MODAL" });
     yield put({
       type: SET_SUCCEED_TOAST,
-      payload: { text: `게시글이 삭제되었습니다.`, isSucceed: true, isError: false },
+      payload: { text: `게시글이 삭제되었습니다.` },
     });
   } catch (err: unknown) {
     yield put({ type: "SELECT_POST_FAILED" });
     yield put({
       type: SET_ERROR_TOAST,
-      payload: { text: `게시글 삭제에 실패했습니다.`, isSucceed: false, isError: true },
+      payload: { text: `게시글 삭제에 실패했습니다.` },
     });
   }
 }
@@ -168,13 +168,13 @@ function* updatePost({ post }: { type: string; post: IUpdatePost }) {
     yield put({ type: "UPDATE_POST_SUCCEED", post });
     yield put({
       type: SET_SUCCEED_TOAST,
-      payload: { text: `게시글이 수정되었습니다.`, isSucceed: true, isError: false },
+      payload: { text: `게시글이 수정되었습니다.` },
     });
   } catch (err: unknown) {
     yield put({ type: "UPDATE_POST_FAILED" });
     yield put({
       type: SET_ERROR_TOAST,
-      payload: { text: `게시글 수정에 실패했습니다.`, isSucceed: false, isError: true },
+      payload: { text: `게시글 수정에 실패했습니다.` },
     });
   }
 }

@@ -114,12 +114,12 @@ function* createGroup({ payload }: any) {
     yield put({ type: "ADD_GROUP", payload: { groupId, groupName, groupImage } });
     yield put({
       type: SET_SUCCEED_TOAST,
-      payload: { text: `${groupName} 그룹 생성에 성공했습니다.`, isSucceed: true, isError: false },
+      payload: { text: `${groupName} 그룹 생성에 성공했습니다.` },
     });
   } catch (err: any) {
     yield put({
       type: SET_ERROR_TOAST,
-      payload: { text: `그룹 생성에 실패했습니다.`, isSucceed: false, isError: true },
+      payload: { text: `그룹 생성에 실패했습니다.` },
     });
   }
 }
@@ -142,12 +142,12 @@ function* deleteGroup(action: any) {
     yield put({ type: "DELETE_GROUP", payload: action.payload });
     yield put({
       type: SET_SUCCEED_TOAST,
-      payload: { text: `${action.payload.groupName} 그룹에서 탈퇴했습니다.`, isSucceed: true, isError: false },
+      payload: { text: `${action.payload.groupName} 그룹에서 탈퇴했습니다.` },
     });
   } catch (err) {
     yield put({
       type: SET_ERROR_TOAST,
-      payload: { text: `그룹 탈퇴에 실패했습니다.`, isSucceed: false, isError: true },
+      payload: { text: `그룹 탈퇴에 실패했습니다.` },
     });
   }
 }
@@ -173,12 +173,12 @@ function* requestJoinGroup(action: any) {
     yield put({ type: "CLOSE_MODAL" });
     yield put({
       type: SET_SUCCEED_TOAST,
-      payload: { text: `그룹에 참여했습니다.`, isSucceed: true, isError: false },
+      payload: { text: `그룹에 참여했습니다.` },
     });
   } catch (err) {
     yield put({
       type: SET_ERROR_TOAST,
-      payload: { text: `그룹 참여에 실패했습니다.`, isSucceed: false, isError: true },
+      payload: { text: `그룹 참여에 실패했습니다.` },
     });
   }
 }
@@ -196,12 +196,12 @@ function* requestUpdateGroup(action: any) {
     yield put({ type: "SET_SELECTED_GROUP", payload: { groupId, groupName, groupImage, albumList } });
     yield put({
       type: SET_SUCCEED_TOAST,
-      payload: { text: `그룹 정보가 수정되었습니다.`, isSucceed: true, isError: false },
+      payload: { text: `그룹 정보가 수정되었습니다.` },
     });
   } catch (err) {
     yield put({
       type: SET_ERROR_TOAST,
-      payload: { text: `그룹 정보 수정에 실패했습니다.`, isSucceed: false, isError: true },
+      payload: { text: `그룹 정보 수정에 실패했습니다.` },
     });
   }
 }

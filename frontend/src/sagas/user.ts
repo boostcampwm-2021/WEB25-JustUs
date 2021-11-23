@@ -101,13 +101,13 @@ function* updateUserInfo() {
     });
     yield put({
       type: SET_SUCCEED_TOAST,
-      payload: { text: `회원 정보가 수정되었습니다.`, isSucceed: true, isError: false },
+      payload: { text: `회원 정보가 수정되었습니다.` },
     });
   } catch (err: any) {
     yield put({ type: SET_UPDATE_FAIL });
     yield put({
       type: SET_ERROR_TOAST,
-      payload: { text: `회원 정보 수정에 실패했습니다.`, isSucceed: false, isError: true },
+      payload: { text: `회원 정보 수정에 실패했습니다.` },
     });
   }
 }

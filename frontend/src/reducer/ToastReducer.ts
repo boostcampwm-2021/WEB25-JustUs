@@ -14,16 +14,16 @@ const toastReducer = (state = initState, action: any) => {
       return {
         ...state,
         text: action.payload.text,
-        isSucceed: action.payload.isSucceed,
-        isError: action.payload.isError,
+        isSucceed: true,
+        isError: false,
       };
     }
     case SET_ERROR_TOAST: {
       return {
         ...state,
         text: action.payload.text,
-        isSucceed: action.payload.isSucceed,
-        isError: action.payload.isError,
+        isSucceed: false,
+        isError: true,
       };
     }
     case CLEAR_TOAST: {
