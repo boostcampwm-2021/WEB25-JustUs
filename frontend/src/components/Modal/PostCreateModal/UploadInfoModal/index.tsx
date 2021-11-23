@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Carousel from "@components/Modal/PostCreateModal/UploadInfoModal/Carousel";
 import { RootState } from "@src/reducer";
 import ModalSub from "./ModalSub";
-import { flexRowCenterAlign } from "@styles/StyledComponents";
+import { flexRowCenterAlign, flexColumnCenterAlign } from "@styles/StyledComponents";
 
 interface FileObject {
   imageUrl: File | string;
@@ -269,8 +269,10 @@ const ModalContainer = styled.div<{ isSubOpened: boolean }>`
   display: flex;
   flex-direction: row;
   background-color: ${COLOR.WHITE};
-  min-width: 40vw;
-  height: 55rem;
+  /* min-width: 40%; */
+  width: 50%;
+  /* height: 60%; */
+  /* min-height: 50rem; */
   border-radius: 1rem;
   box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
 
@@ -302,6 +304,7 @@ const ModalTitle = styled.div`
 `;
 const ModalHeaderLeftBtn = styled.button`
   ${headerBtn}
+  ${flexColumnCenterAlign}
 `;
 const ModalHeaderRigthBtn = styled.button`
   ${headerBtn}
@@ -311,10 +314,12 @@ const ModalContent = styled.div`
   position: relative;
   grid-template-columns: 50% 50%;
   box-sizing: border-box;
+  margin: 0 1rem 1.5rem;
 `;
 const ModalLeft = styled.div`
   position: relative;
   width: 100%;
+  height: 100%;
 `;
 const ModalRight = styled.div`
   position: relative;
