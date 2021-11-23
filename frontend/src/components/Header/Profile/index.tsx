@@ -1,21 +1,23 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import styled from "styled-components";
 import ProfileModal from "@components/Header/Profile/Modal/ProfileModal";
 import { RootState } from "@src/reducer";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import COLOR from "@src/styles/Color";
+
 const Profile = () => {
-  const [isModalOpened, setIsModalOpened] = useState<boolean>(false);
+  const dispatch = useDispatch();
+  const { isProfileWrapperModalOpened } = useSelector((state: RootState) => state.modal);
   const { userProfile, userNickName } = useSelector((state: RootState) => state.user);
   const { clickedTarget } = useSelector((state: RootState) => state.groupModal);
 
-  const handleProfileBtnClick = (e: any) => {
-    setIsModalOpened((prev) => !prev);
+  const handleProfileBtnClick = () => {
+    dispatch({ type: "SET_PROFILE_WRAPPER_MODAL_OPENED", payload: !isProfileWrapperModalOpened });
   };
 
   useEffect(() => {
     const target = clickedTarget.target.closest("#profile");
-    if (!target) setIsModalOpened(false);
+    if (!target) dispatch({ type: "SET_PROFILE_WRAPPER_MODAL_OPENED", payload: false });
   }, [clickedTarget]);
 
   return (
@@ -24,7 +26,7 @@ const Profile = () => {
         <ProfileName>{userNickName}</ProfileName>
         <ProfileImage profile={userProfile}></ProfileImage>
       </ProfileContainer>
-      {isModalOpened && <ProfileModal />}
+      {isProfileWrapperModalOpened && <ProfileModal />}
     </>
   );
 };
