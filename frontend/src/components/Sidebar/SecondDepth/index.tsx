@@ -50,7 +50,7 @@ const SidebarOpen = keyframes`
 const SidebarHide = keyframes`
   from {
     transform: translateX(0);
-    z-index:4;
+    z-index:6;
   }
   to {
     z-index:0;
