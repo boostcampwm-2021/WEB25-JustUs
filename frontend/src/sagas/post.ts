@@ -1,6 +1,6 @@
 import { all, fork, put, call, takeEvery, select } from "redux-saga/effects";
 import axios from "axios";
-import { SET_SUCCEED_TOAST } from "@src/reducer/ToastReducer";
+import { SET_SUCCEED_TOAST, SET_ERROR_TOAST } from "@src/reducer/ToastReducer";
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
@@ -127,6 +127,10 @@ function* uploadPost({ post }: { type: string; post: IPost }) {
     });
   } catch (err: unknown) {
     yield put({ type: "UPLOAD_POST_FAILED" });
+    yield put({
+      type: SET_ERROR_TOAST,
+      payload: { text: `게시글 생성에 실패했습니다.`, isSucceed: false, isError: true },
+    });
   }
 }
 
@@ -151,6 +155,10 @@ function* deletePost({ postId }: { type: string; postId: number }) {
     });
   } catch (err: unknown) {
     yield put({ type: "SELECT_POST_FAILED" });
+    yield put({
+      type: SET_ERROR_TOAST,
+      payload: { text: `게시글 삭제에 실패했습니다.`, isSucceed: false, isError: true },
+    });
   }
 }
 
@@ -164,6 +172,10 @@ function* updatePost({ post }: { type: string; post: IUpdatePost }) {
     });
   } catch (err: unknown) {
     yield put({ type: "UPDATE_POST_FAILED" });
+    yield put({
+      type: SET_ERROR_TOAST,
+      payload: { text: `게시글 수정에 실패했습니다.`, isSucceed: false, isError: true },
+    });
   }
 }
 
