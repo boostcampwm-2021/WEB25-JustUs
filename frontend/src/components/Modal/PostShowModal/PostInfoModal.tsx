@@ -19,7 +19,16 @@ const highlights = (text: string) => {
     const hashTagWord = word.split("#");
     return hashTagWord.length > 1
       ? hashTagWord.map((tagWord, idx) => {
-          return idx === 0 ? makeSpan(tagWord, 0) : <mark>#{tagWord}</mark>;
+          return idx === 0 ? (
+            makeSpan(tagWord, 0)
+          ) : idx === hashTagWord.length - 1 ? (
+            <>
+              <mark>#{tagWord}</mark>
+              <> </>
+            </>
+          ) : (
+            <mark>#{tagWord}</mark>
+          );
         })
       : `${hashTagWord[0]} `;
   };
