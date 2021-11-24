@@ -53,7 +53,7 @@ const ButtonWrapper = styled.div<{ selectedGroupID: number; groupId: number; gro
   border-radius: 1vw;
   border: ${(props) =>
     props.selectedGroupID === props.groupId ? `5px solid ${props.theme.SECONDARY};` : `5px solid ${COLOR.WHITE}`};
-  background-image: url("${(props) => props.groupImage}");
+  background-image: url("${(props) => (props.groupImage ? props.groupImage : "/icons/podo-many.png")}");
   background-size: 100%;
   cursor: pointer;
   background-repeat: no-repeat;

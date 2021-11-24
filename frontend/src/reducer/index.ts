@@ -6,6 +6,7 @@ import AddressReducer from "./AddressReducer";
 import Theme from "./Theme";
 import UserReducer from "./UserReducer";
 import MapReducer from "./MapReducer";
+import SpinnerReducer from "./SpinnerReducer";
 
 const rootReducer = combineReducers({
   groupModal: GroupModalReducer,
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
   address: AddressReducer,
   user: UserReducer,
   map: MapReducer,
+  spinner: SpinnerReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

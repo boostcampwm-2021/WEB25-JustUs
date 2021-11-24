@@ -13,14 +13,14 @@ import { useHistory } from "react-router-dom";
 import { getGroupListAction } from "@src/reducer/GroupReducer";
 import { SET_RIGHT_CLICK_MODAL } from "@src/reducer/MapReducer";
 import { SET_PROFILE_WRAPPER_MODAL_OPENED, SET_ALBUM_SETTING_WRAPPER_MODAL_IDX } from "@src/reducer/Modal";
+import Spinner from "@components/Spinner";
 
 const Main = () => {
   const [isToggle, setIsToggle] = useState<boolean>(true);
   const dispatch = useDispatch();
-  const { groups }: any = useSelector((state: RootState) => state.groups);
-  const { userInfoLoading, userProfile, userInfoError, userInfoSucceed, userLoggedOut } = useSelector(
-    (state: RootState) => state.user,
-  );
+  const { groups, groupListLoaded }: any = useSelector((state: RootState) => state.groups);
+  const { spinnerActivate }: any = useSelector((state: RootState) => state.spinner);
+  const { userProfile, userInfoError, userLoggedOut } = useSelector((state: RootState) => state.user);
   const history = useHistory();
 
   useEffect(() => {
@@ -51,9 +51,12 @@ const Main = () => {
     }
   }, [userLoggedOut, userInfoError]);
 
-  if (userInfoLoading) return <></>;
+  if (!userProfile || !groupListLoaded) {
+    return <Spinner />;
+  }
   return (
     <>
+      {spinnerActivate ? <Spinner /> : null}
       <Header />
       <Content>
         <Sidebar isToggle={isToggle} setIsToggle={setIsToggle} />

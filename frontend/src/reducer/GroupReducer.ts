@@ -46,6 +46,7 @@ interface IInitState {
   hashTags: IHashtag[];
   hashTagsError: boolean;
   searchList: PostType[];
+  groupListLoaded: boolean;
 }
 
 const initState: IInitState = {
@@ -72,6 +73,7 @@ const initState: IInitState = {
   hashTags: [],
   hashTagsError: false,
   searchList: [],
+  groupListLoaded: false,
 };
 
 export const CREATE_GROUP = "CREATE_GROUP";
@@ -79,8 +81,10 @@ export const GET_ALBUM_LIST = "GET_ALBUM_LIST";
 export const REQUEST_DELETE = "REQUEST_DELETE";
 export const DELETE_GROUP = "DELETE_GROUP";
 export const GET_GROUP_MEMBER_LIST = "GET_GROUP_MEMBER_LIST";
-export const GET_GROUP_LIST = "GET_GROUP_LIST";
-export const SET_GROUPS = "SET_GROUPS";
+export const GET_GROUP_LIST_REQUEST = "GET_GROUP_LIST_REQUEST";
+export const GET_GROUP_LIST_SUCCEED = "GET_GROUP_LIST_SUCCEED";
+export const GET_GROUP_LIST_FAILED = "GET_GROUP_LIST_FAILED";
+
 export const REQUEST_JOIN_GROUP = "REQUEST_JOIN_GROUP";
 export const REQUEST_UPDATE_GROUP = "REQUEST_UPDATE_GROUP";
 export const NEW_ALBUM_REQUEST = "NEW_ALBUM_REQUEST";
@@ -124,7 +128,7 @@ export const getGroupMemberListAction = (payload: any) => ({
 });
 
 export const getGroupListAction = () => ({
-  type: GET_GROUP_LIST,
+  type: GET_GROUP_LIST_REQUEST,
 });
 
 export const requestJoinGroupAction = (payload: any) => ({
@@ -370,11 +374,21 @@ const groupReducer = (state = initState, action: any) => {
           users: action.payload.users,
         },
       };
-    case "SET_GROUPS":
+    case "GET_GROUP_LIST_REQUEST":
+      return {
+        ...state,
+      };
+    case "GET_GROUP_LIST_SUCCEED":
+      return {
+        ...state,
+        groups: !action.payload[0] ? [] : action.payload,
+        groupListLoaded: true,
+      };
+    case "GET_GROUP_LIST_FAILED":
       if (!action.payload[0]) return { ...state };
       return {
         ...state,
-        groups: action.payload,
+        groupListLoaded: true,
       };
     case NEW_ALBUM_REQUEST:
       return {

@@ -1,7 +1,7 @@
 import { all, fork, put, call, takeLatest, select, delay } from "redux-saga/effects";
 import axios from "axios";
 import { getGroupListApi } from "@src/sagas/user";
-import { SET_GROUPS, SET_HASHTAGS } from "@src/reducer/GroupReducer";
+import { GET_GROUP_LIST_SUCCEED, SET_HASHTAGS } from "@src/reducer/GroupReducer";
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
@@ -82,6 +82,7 @@ async function requestUpdateGroupApi(payload: any) {
   const formData = new FormData();
   formData.append("groupName", payload.groupName);
   if (payload.groupImage) formData.append("groupImage", payload.groupImage);
+  formData.append("clearImage", payload.clearImage);
 
   const result = await axios.put(`${SERVER_URL}/api/groups/${payload.groupId}`, formData, {
     withCredentials: true,
@@ -151,7 +152,7 @@ function* requestJoinGroup(action: any) {
     const result: ResponseGenerator = yield call(getGroupListApi);
     const { groups } = result.data;
 
-    yield put({ type: SET_GROUPS, payload: groups });
+    yield put({ type: GET_GROUP_LIST_SUCCEED, payload: groups });
     yield put({ type: "CLOSE_MODAL" });
   } catch (err) {}
 }
@@ -165,7 +166,7 @@ function* requestUpdateGroup(action: any) {
     const result2: ResponseGenerator = yield call(getGroupListApi);
     const { groups } = result2.data;
 
-    yield put({ type: SET_GROUPS, payload: groups });
+    yield put({ type: GET_GROUP_LIST_SUCCEED, payload: groups });
     yield put({ type: "SET_SELECTED_GROUP", payload: { groupId, groupName, groupImage, albumList } });
   } catch (err) {}
 }
