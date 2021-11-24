@@ -1,11 +1,11 @@
-/*global kakao*/
-import React, { useEffect, useState, useRef, ChangeEvent } from "react";
-import styled from "styled-components";
+import React, { useEffect, useState, useRef } from "react";
+import styled, { css } from "styled-components";
 import COLOR from "@styles/Color";
 import { useDispatch, useSelector } from "react-redux";
 import Carousel from "@components/Modal/PostCreateModal/UploadInfoModal/Carousel";
 import { RootState } from "@src/reducer";
 import ModalSub from "./ModalSub";
+import { flexRowCenterAlign, flexColumnCenterAlign } from "@styles/StyledComponents";
 
 interface FileObject {
   imageUrl: File | string;
@@ -97,11 +97,9 @@ const UploadInfoModal = ({
   };
 
   const applyHighlights = (textParam: string) => {
-    const highlightedText = textParam
-      .replace(/ /g, "<span>&nbsp;<span>")
-      .replace(/\n/g, "<br/>")
-      .replace(/#([\w|ㄱ-ㅎ|가-힣]+)/g, "<mark>$&</mark>");
-    return highlightedText;
+    const highlightedText = textParam.replace(/#([\w|ㄱ-ㅎ|가-힣]+)/g, "<mark>$&</mark>").replace(/\n/g, "<br>");
+    const addDiv = highlightedText && highlightedText.match(/\<br\>$/gm) ? `<div class="new-line"></div>` : ``;
+    return highlightedText + addDiv;
   };
 
   const handleScroll = () => {
@@ -167,10 +165,11 @@ const UploadInfoModal = ({
         event.nativeEvent.stopImmediatePropagation();
       }}
       isSubOpened={isSubOpened}
+      className="modalContainer"
     >
-      <ModalMain isSubOpened={isSubOpened}>
-        <ModalHeader>
-          <ModalTitle>{mode == "create" ? "새 게시물 만들기" : "게시물 수정"}</ModalTitle>
+      <ModalMain isSubOpened={isSubOpened} className="modalMain">
+        <ModalHeader className="modalHeader">
+          <ModalTitle>{mode === "create" ? "새 게시물 만들기" : "게시물 수정"}</ModalTitle>
           <ModalHeaderRigthBtn onClick={closeModal}>
             <img src="/icons/x.svg" alt="close"></img>
           </ModalHeaderRigthBtn>
@@ -178,15 +177,16 @@ const UploadInfoModal = ({
             <img src="/icons/prev.svg" alt="prev modal"></img>
           </ModalHeaderLeftBtn>
         </ModalHeader>
-        <ModalContent>
+        <ModalContent className="modalContent">
           <ModalLeft className="modalLeft">
             <Carousel files={files} carouselWidth={250} />
           </ModalLeft>
           <ModalRight className="modalRight">
             <InputTitle type="text" placeholder="제목" value={title} onChange={handelTitleInput} />
             <ContentWrap className="contentWrap">
-              <BackDrop className="backdrop" ref={backdropRef}></BackDrop>
-              <HighLights ref={highlightsRef} className="highlights"></HighLights>
+              <BackDrop className="backdrop" ref={backdropRef}>
+                <HighLights ref={highlightsRef} className="highlights"></HighLights>
+              </BackDrop>
               <InputText
                 ref={inputRef}
                 placeholder="내용"
@@ -213,12 +213,12 @@ const UploadInfoModal = ({
                   <InputPlaceName>{address}</InputPlaceName>
                 )}
                 <LocationButton onClick={address === "" ? onClickLocationBtn : () => null}>
-                  <img src="/icons/location.svg" width="100%" />
+                  <img src="/icons/location.svg" alt="location" width="100%" />
                 </LocationButton>
               </InputPlace>
             </InputBottom>
             <UploadButton activate={activate} onClick={handleSaveBtn}>
-              {mode == "create" ? "게시하기" : "수정하기"}
+              {mode === "create" ? "게시하기" : "수정하기"}
             </UploadButton>
           </ModalRight>
         </ModalContent>
@@ -242,25 +242,196 @@ const UploadInfoModal = ({
   );
 };
 
-const UploadButton = styled.button<{ activate: boolean }>`
-  background-color: ${(props) => {
-    if (props.activate) return props.theme.PRIMARY;
-    else return props.theme.SECONDARY;
-  }};
-  border: none;
-  border-radius: 1rem;
-  flex-basis: 3rem;
-  color: ${COLOR.WHITE};
-  font-size: 1.6rem;
-  cursor: ${(props) => {
-    if (props.activate) return "pointer";
-    else return "not-allowed";
-  }};
+const contentOverflow = css`
+  word-break: normal;
+  overflow-wrap: break-word;
 `;
-const LocationButton = styled.button`
+const contentWhiteSpace = css`
+  white-space: pre-wrap;
+`;
+const contentFont = css`
+  font-size: 1.6rem;
+  line-height: 2rem;
+`;
+const contentSize = css`
+  height: 20rem;
+  width: 100%;
+`;
+const headerBtn = css`
+  ${flexRowCenterAlign}
   border: none;
   background: none;
-  cursor: pointer;
+  & > img {
+    cursor: pointer;
+  }
+`;
+const ModalContainer = styled.div<{ isSubOpened: boolean }>`
+  display: flex;
+  flex-direction: row;
+  background-color: ${COLOR.WHITE};
+  height: 60%;
+  min-height: 460px;
+  border-radius: 1rem;
+  box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`;
+const ModalMain = styled.div<{ isSubOpened: boolean }>`
+  display: flex;
+  flex-direction: column;
+  min-width: 720px;
+  height: 100%;
+  z-index: 6;
+  display: grid;
+  grid-template-rows: 10% 90%;
+`;
+const ModalHeader = styled.div`
+  display: grid;
+  grid-template-columns: 10% 80% 10%;
+  box-sizing: border-box;
+  position: relative;
+`;
+const ModalTitle = styled.div`
+  ${flexRowCenterAlign}
+  grid-column-start: 2;
+  grid-column-end: 3;
+  grid-row-start: 1;
+  grid-row-end: 2;
+  font-size: 2.5rem;
+`;
+const ModalHeaderLeftBtn = styled.button`
+  ${headerBtn}
+  ${flexColumnCenterAlign}
+`;
+const ModalHeaderRigthBtn = styled.button`
+  ${headerBtn}
+`;
+const ModalContent = styled.div`
+  display: grid;
+  position: relative;
+  grid-template-columns: 50% 50%;
+  box-sizing: border-box;
+  margin: 0 2rem 2rem 1rem;
+  height: 100%;
+`;
+const ModalLeft = styled.div`
+  position: relative;
+  width: 100%;
+  height: 90%;
+  min-width: 300px;
+  margin-right: 2rem;
+`;
+const ModalRight = styled.div`
+  position: relative;
+  display: grid;
+  height: 90%;
+  margin-left: 2rem;
+  grid-template-rows: 15% 40% 30% 15%;
+  & mark {
+    ${contentOverflow}
+    ${contentWhiteSpace}
+    ${contentFont}
+    display: inline;
+    background-color: ${COLOR.THEME1.SECONDARY};
+  }
+  & .new-line {
+    height: 2rem;
+  }
+  & > * {
+    margin-top: 1rem;
+    &:first-child {
+      margin: 0;
+    }
+  }
+`;
+const InputTitle = styled.input`
+  flex-basis: 5vh;
+  border: none;
+  background-color: transparent;
+  border-bottom: 1px solid ${COLOR.LIGHTGRAY1};
+  font-size: 1.6rem;
+  &:focus {
+    outline: none;
+  }
+`;
+const ContentWrap = styled.div`
+  position: relative;
+  width: 100%;
+`;
+const BackDrop = styled.div`
+  ${contentOverflow}
+  ${contentWhiteSpace}
+  ${contentFont}
+  ${contentSize}
+  position: absolute;
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    width: 0.8rem;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: ${(props) => props.theme.SECONDARY};
+    border-radius: 1rem;
+  }
+`;
+const HighLights = styled.div`
+  ${contentOverflow}
+  ${contentWhiteSpace}
+  ${contentFont}
+  ${contentSize}
+  position: absolute;
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    width: 0;
+  }
+`;
+const InputText = styled.textarea`
+  ${contentOverflow}
+  ${contentWhiteSpace}
+  ${contentFont}
+  ${contentSize}
+  resize: none;
+  border: none;
+  position: relative;
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    width: 0.8rem;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: ${(props) => props.theme.SECONDARY};
+    border-radius: 1rem;
+  }
+  background-color: transparent;
+  &:focus {
+    outline: none;
+  }
+`;
+const InputBottom = styled.div`
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  max-height: 5rem;
+  justify-content: space-between;
+  align-items: flex-end;
+  border-top: 1px solid ${COLOR.LIGHTGRAY1};
+  min-height: 10rem;
+  & > input[type="date"] {
+    font-family: "NanumGothic", sans-serif;
+    overflow: hidden;
+    padding: 0;
+  }
+`;
+const InputDate = styled.input`
+  flex-basis: 20vh;
+  border: none;
+  font-size: 1.6rem;
+  z-index: 3;
+`;
+const InputPlace = styled.div`
+  display: flex;
+  width: 100%;
+  z-index: 3;
 `;
 const InputPlaceName = styled.div`
   border: 1px solid black;
@@ -276,171 +447,28 @@ const InputPlaceName = styled.div`
   color: ${COLOR.DARKGRAY};
   font-size: 1.6rem;
 `;
-const InputBottom = styled.div`
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  max-height: 5rem;
-  justify-content: space-between;
-  align-items: flex-end;
-  border-top: 1px solid ${COLOR.LIGHTGRAY1};
-  min-height: 10rem;
-`;
-const InputPlace = styled.div`
-  display: flex;
-  width: 100%;
-  z-index: 3;
-`;
-const InputDate = styled.input`
-  flex-basis: 20vh;
+const LocationButton = styled.button`
   border: none;
-  font-size: 1.6rem;
-  z-index: 3;
+  background: none;
+  & > img {
+    ${flexRowCenterAlign}
+    cursor: pointer;
+  }
 `;
-const InputTitle = styled.input`
-  flex-basis: 5vh;
+const UploadButton = styled.button<{ activate: boolean }>`
+  background-color: ${(props) => {
+    if (props.activate) return props.theme.PRIMARY;
+    else return props.theme.SECONDARY;
+  }};
   border: none;
-  border-bottom: 1px solid ${COLOR.LIGHTGRAY1};
-  font-size: 1.6rem;
-  &:focus {
-    outline: none;
-  }
-`;
-const ContentWrap = styled.div`
-  position: relative;
-  width: 100%;
-`;
-const BackDrop = styled.div`
-  height: 20rem;
-  position: absolute;
-  width: 100%;
-  word-break: break-all;
-  overflow-y: scroll;
-  font-size: 1.6rem;
-  line-height: 2rem;
-  &::-webkit-scrollbar {
-    width: 0.8rem;
-  }
-  &::-webkit-scrollbar-thumb {
-    background-color: ${(props) => props.theme.SECONDARY};
-    border-radius: 1rem;
-  }
-`;
-const HighLights = styled.div`
-  height: 20rem;
-  position: absolute;
-  width: 100%;
-  word-break: break-all;
-  overflow-y: scroll;
-  font-size: 1.6rem;
-  line-height: 2rem;
-  &::-webkit-scrollbar {
-    width: 0.8rem;
-  }
-  &::-webkit-scrollbar-thumb {
-    background-color: ${(props) => props.theme.SECONDARY};
-    border-radius: 1rem;
-  }
-`;
-const InputText = styled.textarea`
-  height: 20rem;
-  position: relative;
-  width: 100%;
-  word-break: break-all;
-  overflow-y: scroll;
-  font-size: 1.6rem;
-  line-height: 2rem;
-  &::-webkit-scrollbar {
-    width: 0.8rem;
-  }
-  &::-webkit-scrollbar-thumb {
-    background-color: ${(props) => props.theme.SECONDARY};
-    border-radius: 1rem;
-  }
-  background-color: transparent;
-  &:focus {
-    outline: none;
-  }
-`;
-const ModalRight = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  & mark {
-    border-radius: 3px;
-    color: transparent;
-    background-color: ${COLOR.THEME1.SECONDARY};
-    letter-spacing: normal;
-    font-size: 1.6rem;
-    overflow: auto;
-  }
-`;
-const ModalLeft = styled.div`
-  width: 100%;
-  height: 45vh;
-`;
-const ModalContent = styled.div`
-  display: grid;
-  height: 100%;
-  grid-template-columns: 50% 50%;
-  box-sizing: border-box;
-`;
-const ModalContainer = styled.div<{ isSubOpened: boolean }>`
-  display: flex;
-  flex-direction: row;
-  background-color: ${COLOR.WHITE};
-  min-width: 40vw;
-  height: 55rem;
   border-radius: 1rem;
-  box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
-`;
-const ModalMain = styled.div<{ isSubOpened: boolean }>`
-  display: flex;
-  flex-direction: column;
-  min-width: ${(props) => (props.isSubOpened ? "40vw" : "40vw")};
-  height: 100%;
-  z-index: 6;
-`;
-
-const ModalHeaderLeftBtn = styled.button`
-  grid-column-start: 1;
-  grid-column-end: 2;
-  grid-row-start: 1;
-  grid-row-end: 2;
-  border: none;
-  background: none;
-  cursor: pointer;
-`;
-const ModalHeaderRigthBtn = styled.button`
-  grid-column-start: 3;
-  grid-column-end: 4;
-  grid-row-start: 1;
-  grid-row-end: 2;
-  border: none;
-  background: none;
-  cursor: pointer;
-`;
-const ModalHeader = styled.div`
-  display: grid;
-  grid-template-columns: 10% 80% 10%;
-  height: 60px;
-  box-sizing: border-box;
-  font-size: max(1.2vw, 20px);
-`;
-const ModalTitle = styled.div`
-  grid-column-start: 2;
-  grid-column-end: 3;
-  grid-row-start: 1;
-  grid-row-end: 2;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  font-size: 2.5rem;
+  flex-basis: 3rem;
+  color: ${COLOR.WHITE};
+  font-size: 1.6rem;
+  cursor: ${(props) => {
+    if (props.activate) return "pointer";
+    else return "not-allowed";
+  }};
 `;
 
 export default UploadInfoModal;

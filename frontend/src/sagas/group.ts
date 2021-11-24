@@ -1,8 +1,8 @@
 import { all, fork, put, call, takeLatest, select, delay } from "redux-saga/effects";
 import axios from "axios";
 import { getGroupListApi } from "@src/sagas/user";
-import { SET_GROUPS, SET_HASHTAGS } from "@src/reducer/GroupReducer";
 import { SET_SUCCEED_TOAST, SET_ERROR_TOAST } from "@src/reducer/ToastReducer";
+import { GET_GROUP_LIST_SUCCEED, SET_HASHTAGS } from "@src/reducer/GroupReducer";
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
@@ -83,6 +83,8 @@ async function requestUpdateGroupApi(payload: any) {
   const formData = new FormData();
   formData.append("groupName", payload.groupName);
   if (payload.groupImage) formData.append("groupImage", payload.groupImage);
+  formData.append("clearImage", payload.clearImage);
+
   const result = await axios.put(`${SERVER_URL}/api/groups/${payload.groupId}`, formData, {
     withCredentials: true,
     headers: { "Content-Type": "multipart/form-data" },
@@ -169,7 +171,7 @@ function* requestJoinGroup(action: any) {
     const result: ResponseGenerator = yield call(getGroupListApi);
     const { groups } = result.data;
 
-    yield put({ type: SET_GROUPS, payload: groups });
+    yield put({ type: GET_GROUP_LIST_SUCCEED, payload: groups });
     yield put({ type: "CLOSE_MODAL" });
     yield put({
       type: SET_SUCCEED_TOAST,
@@ -192,7 +194,7 @@ function* requestUpdateGroup(action: any) {
     const result2: ResponseGenerator = yield call(getGroupListApi);
     const { groups } = result2.data;
 
-    yield put({ type: SET_GROUPS, payload: groups });
+    yield put({ type: GET_GROUP_LIST_SUCCEED, payload: groups });
     yield put({ type: "SET_SELECTED_GROUP", payload: { groupId, groupName, groupImage, albumList } });
     yield put({
       type: SET_SUCCEED_TOAST,
@@ -209,8 +211,10 @@ function* requestUpdateGroup(action: any) {
 function* requestHashtags(action: any) {
   try {
     const result: ResponseGenerator = yield call(requestHashtagsApi, action.payload);
-    yield put({ type: SET_HASHTAGS, payload: result.data.hashtags });
-  } catch (err) {}
+    yield put({ type: SET_HASHTAGS, payload: { hashTags: result.data.hashtags, hashTagsError: false } });
+  } catch (err) {
+    yield put({ type: SET_HASHTAGS, payload: { hashTags: [], hashTagsError: true } });
+  }
 }
 
 function* watchGroupInfo() {

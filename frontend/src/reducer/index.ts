@@ -7,6 +7,7 @@ import Theme from "./Theme";
 import UserReducer from "./UserReducer";
 import MapReducer from "./MapReducer";
 import ToastReducer from "./ToastReducer";
+import SpinnerReducer from "./SpinnerReducer";
 
 const rootReducer = combineReducers({
   groupModal: GroupModalReducer,
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
   user: UserReducer,
   map: MapReducer,
   toast: ToastReducer,
+  spinner: SpinnerReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

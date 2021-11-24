@@ -7,7 +7,7 @@ export class Image extends TimeStampEntity {
   @PrimaryGeneratedColumn()
   imageId: number;
 
-  @Column()
+  @Column({ type: "text" })
   imageUrl: string;
 
   @ManyToOne(() => Post, post => post.images, { onDelete: "CASCADE" })

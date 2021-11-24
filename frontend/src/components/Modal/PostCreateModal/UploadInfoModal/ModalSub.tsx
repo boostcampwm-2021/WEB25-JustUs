@@ -1,7 +1,7 @@
 import styled, { keyframes } from "styled-components";
 import COLOR from "@src/styles/Color";
 import React, { useState, useEffect, Dispatch, SetStateAction } from "react";
-import { flexRowCenterAlign } from "@src/styles/StyledComponents";
+import { flexRowCenterAlign, flexColumnCenterAlign } from "@styles/StyledComponents";
 import SearchResult from "@components/Modal/PostCreateModal/UploadInfoModal/SearchResult";
 import { useDispatch } from "react-redux";
 import { SET_ERROR_TOAST } from "@src/reducer/ToastReducer";
@@ -51,6 +51,8 @@ const ModalSub = ({
 }: ModalSubProps) => {
   const [input, setInput] = useState<string>("");
   const dispatch = useDispatch();
+  const SEARCH_ICON = "/icons/search.svg";
+  const SEARCH_PART_CLOSE_ICON = "/icons/arrow-left.svg";
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key !== "Enter") return;
@@ -115,7 +117,7 @@ const ModalSub = ({
     <ModalSubWrapper isToggle={isSubOpened}>
       <ModalHeader className="header-sub">
         <SearchContainer>
-          <img src="/icons/search.svg" height="90%" alt="search" />
+          <img src={SEARCH_ICON} height="90%" alt="search" />
           <SearchInput
             type="text"
             placeholder="지역명을 입력하세요."
@@ -136,7 +138,7 @@ const ModalSub = ({
         />
       )}
       <CloseBtn onClick={onClickCloseBtn} isToggle={isSubOpened}>
-        <img src="/icons/arrow-left.svg" alt="arrow left icon" />
+        <img src={SEARCH_PART_CLOSE_ICON} alt="search part close" />
       </CloseBtn>
     </ModalSubWrapper>
   );
@@ -187,28 +189,25 @@ const ModalSubWrapper = styled.div<{ isToggle: boolean }>`
 const ModalHeader = styled.div`
   display: grid;
   grid-template-columns: 10% 80% 10%;
-  padding: 1vw;
-  height: 60px;
+  height: 6rem;
   box-sizing: border-box;
-  border-bottom: 1px solid ${COLOR.GRAY};
   font-size: 1.6rem;
 `;
 const SearchContainer = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  margin: auto;
   height: 3vh;
   width: 100%;
-  background-color: ${COLOR.WHITE};
   border-radius: 5px;
-  padding: 0.5vh 0;
   & > img {
-    padding-right: 1rem;
+    margin: 0 1rem;
   }
 `;
 const SearchInput = styled.input`
-  height: 90%;
-  min-width: 14rem;
+  min-width: 20rem;
+  min-height: 10rem;
   border: none;
   background: transparent;
   &:focus-visible {

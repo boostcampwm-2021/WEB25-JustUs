@@ -84,7 +84,7 @@ const CreateGroupModal = () => {
           <div>
             <ImageBackground>
               <img
-                src={groupImg ? groupImg : "/icons/podo-many.jpeg"}
+                src={groupImg ? groupImg : "/icons/podo-many-high.png"}
                 alt="default icon"
                 ref={imageRef}
                 width="100%"
@@ -99,7 +99,7 @@ const CreateGroupModal = () => {
             <UploadImgBtnWrapper onClick={onClickUploadBtn}>
               <input type="file" accept="image/*" hidden ref={uploadBtnRef} onChange={loadImage} />
               <img src="/icons/add-photo.svg" alt="add Photo" width={"20rem"}></img>
-              파일 찾기
+              사진 찾기
             </UploadImgBtnWrapper>
           </div>
           <GridRight>
@@ -163,8 +163,16 @@ const CloseBtn = styled.div`
   ${flexRowCenterAlign};
 
   & > button {
-    background: transparent;
+    background-color: ${COLOR.WHITE};
     border: none;
+    height: 3rem;
+    width: 3rem;
+    border-radius: 50%;
+    ${flexRowCenterAlign}
+    cursor: pointer;
+    &:hover {
+      background-color: ${COLOR.GRAY};
+    }
   }
 `;
 

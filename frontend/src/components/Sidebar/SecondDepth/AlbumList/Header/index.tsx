@@ -6,6 +6,7 @@ import { ReactComponent as MoreVertSVG } from "@styles/icons/more-vert.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
 import { flexRowCenterAlign } from "@src/styles/StyledComponents";
+import { SET_ALBUM_SETTING_WRAPPER_MODAL_IDX } from "@src/reducer/Modal";
 
 interface HeaderProps {
   albumId: number;
@@ -26,7 +27,7 @@ const Header = ({ albumId, albumName, postToggle, setPostToggle, AlbumDragHandle
   };
 
   const onClickMoreBtn = () => {
-    dispatch({ type: "SET_ALBUM_SETTING_WRAPPER_MODAL_IDX", payload: albumId });
+    dispatch({ type: SET_ALBUM_SETTING_WRAPPER_MODAL_IDX, payload: { albumSettingWrapperModalIdx: albumId } });
   };
 
   return (
@@ -35,7 +36,7 @@ const Header = ({ albumId, albumName, postToggle, setPostToggle, AlbumDragHandle
         {postToggle && <ArrowDownSVG fill={nowTheme.MENUTEXT} />}
         {!postToggle && <ArrowRightSVG fill={nowTheme.MENUTEXT} />}
       </ArrowIcon>
-      <AlbumNameWrapper>
+      <AlbumNameWrapper onClick={onClickArrowDown}>
         <AlbumName>{albumName}</AlbumName>
       </AlbumNameWrapper>
       {albumName !== "기본 앨범" && (

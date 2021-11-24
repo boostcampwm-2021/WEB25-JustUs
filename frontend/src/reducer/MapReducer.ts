@@ -20,20 +20,20 @@ const mapReducer = (state = initState, action: any) => {
     case SET_RIGHT_CLICK_MODAL: {
       return {
         ...state,
-        isRightClickModalOpened: action.payload,
+        isRightClickModalOpened: action.payload.isRightClickModalOpened,
       };
     }
     case SET_INFO_WINDOW: {
       return {
         ...state,
-        infoWindow: action.payload,
+        infoWindow: action.payload.infoWindow,
       };
     }
 
     case SET_INFO_WINDOW_OPENED: {
       return {
         ...state,
-        isInfoWindowOpened: action.payload,
+        isInfoWindowOpened: action.payload.isInfoWindowOpened,
       };
     }
     case CLOSE_INFO_WINDOW: {
