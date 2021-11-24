@@ -4,6 +4,7 @@ import COLOR from "@src/styles/Color";
 import { RootState } from "@src/reducer";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutRequestAction } from "@src/reducer/UserReducer";
+import { SET_PROFILE_WRAPPER_MODAL_OPENED } from "@src/reducer/Modal";
 
 interface ProfileModalProps {
   isModalOpened: boolean;
@@ -26,7 +27,10 @@ const ProfileModal = () => {
   const dispatch = useDispatch();
   const { isProfileWrapperModalOpened } = useSelector((state: RootState) => state.modal);
   const onClickProfileItem = ({ payload, id }: ModalListItem) => {
-    dispatch({ type: "SET_PROFILE_WRAPPER_MODAL_OPENED", payload: !isProfileWrapperModalOpened });
+    dispatch({
+      type: SET_PROFILE_WRAPPER_MODAL_OPENED,
+      payload: { isProfileWrapperModalOpened: !isProfileWrapperModalOpened },
+    });
     if (id === 2) {
       dispatch(logoutRequestAction());
     } else {

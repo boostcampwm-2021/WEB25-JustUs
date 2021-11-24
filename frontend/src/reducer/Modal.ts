@@ -16,6 +16,9 @@ interface IPost {
   postLocation: string;
 }
 
+export const SET_PROFILE_WRAPPER_MODAL_OPENED = "SET_PROFILE_WRAPPER_MODAL_OPENED";
+export const SET_ALBUM_SETTING_WRAPPER_MODAL_IDX = "SET_ALBUM_SETTING_WRAPPER_MODAL_IDX";
+
 const initState: {
   nowModal: string;
   nowAddress: string;
@@ -87,16 +90,16 @@ const ModalReducer = (state = initState, action: any) => {
       };
     default:
       return state;
-    case "SET_PROFILE_WRAPPER_MODAL_OPENED": {
+    case SET_PROFILE_WRAPPER_MODAL_OPENED: {
       return {
         ...state,
-        isProfileWrapperModalOpened: action.payload,
+        isProfileWrapperModalOpened: action.payload.isProfileWrapperModalOpened,
       };
     }
-    case "SET_ALBUM_SETTING_WRAPPER_MODAL_IDX": {
+    case SET_ALBUM_SETTING_WRAPPER_MODAL_IDX: {
       return {
         ...state,
-        albumSettingWrapperModalIdx: action.payload,
+        albumSettingWrapperModalIdx: action.payload.albumSettingWrapperModalIdx,
       };
     }
   }

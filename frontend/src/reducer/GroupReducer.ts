@@ -44,6 +44,7 @@ interface IInitState {
   postShiftAlbumSucceed: boolean;
   postShiftAlbumError: boolean;
   hashTags: IHashtag[];
+  hashTagsError: boolean;
   searchList: PostType[];
 }
 
@@ -69,6 +70,7 @@ const initState: IInitState = {
   postShiftAlbumSucceed: false,
   postShiftAlbumError: false,
   hashTags: [],
+  hashTagsError: false,
   searchList: [],
 };
 
@@ -99,6 +101,7 @@ export const POST_SHIFT_ALBUM_FAILED = "POST_SHIFT_ALBUM_FAILED";
 export const REQUEST_HASHTAGS = "REQUEST_HASHTAGS";
 export const SET_HASHTAGS = "SET_HASHTAGS";
 export const REQUEST_POSTS_BY_HASHTAG = "REQUEST_POSTS_BY_HASHTAG";
+export const SET_SEARCHLIST = "SET_SEARCHLIST";
 
 export const createGroupAction = (payload: any) => ({
   type: CREATE_GROUP,
@@ -531,9 +534,10 @@ const groupReducer = (state = initState, action: any) => {
     case SET_HASHTAGS:
       return {
         ...state,
-        hashTags: action.payload,
+        hashTags: action.payload.hashTags,
+        hashTagsError: action.payload.hashTagsError,
       };
-    case "SET_SEARCHLIST":
+    case SET_SEARCHLIST:
       return {
         ...state,
         searchList: action.payload.searchList,
