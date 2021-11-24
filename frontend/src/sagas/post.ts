@@ -1,5 +1,6 @@
 import { all, fork, put, call, takeEvery, select } from "redux-saga/effects";
 import axios from "axios";
+import { SET_SUCCEED_TOAST, SET_ERROR_TOAST } from "@src/reducer/ToastReducer";
 import { SET_SEARCHLIST } from "@src/reducer/GroupReducer";
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
@@ -121,8 +122,16 @@ function* uploadPost({ post }: { type: string; post: IPost }) {
   try {
     const result: ResponseGenerator = yield call(uploadPostApi, post);
     yield put({ type: "UPLOAD_POST_SUCCEED", post: { ...post, postId: result.data } });
+    yield put({
+      type: SET_SUCCEED_TOAST,
+      payload: { text: `게시글이 생성되었습니다.` },
+    });
   } catch (err: unknown) {
     yield put({ type: "UPLOAD_POST_FAILED" });
+    yield put({
+      type: SET_ERROR_TOAST,
+      payload: { text: `게시글 생성에 실패했습니다.` },
+    });
   }
 }
 
@@ -141,8 +150,16 @@ function* deletePost({ postId }: { type: string; postId: number }) {
     const result: ResponseGenerator = yield call(deletePostApi, postId);
     yield put({ type: "DELETE_POST_SUCCEED", postId: postId });
     yield put({ type: "CLOSE_MODAL" });
+    yield put({
+      type: SET_SUCCEED_TOAST,
+      payload: { text: `게시글이 삭제되었습니다.` },
+    });
   } catch (err: unknown) {
     yield put({ type: "SELECT_POST_FAILED" });
+    yield put({
+      type: SET_ERROR_TOAST,
+      payload: { text: `게시글 삭제에 실패했습니다.` },
+    });
   }
 }
 
@@ -150,8 +167,16 @@ function* updatePost({ post }: { type: string; post: IUpdatePost }) {
   try {
     const result: ResponseGenerator = yield call(updatePostApi, post);
     yield put({ type: "UPDATE_POST_SUCCEED", post });
+    yield put({
+      type: SET_SUCCEED_TOAST,
+      payload: { text: `게시글이 수정되었습니다.` },
+    });
   } catch (err: unknown) {
     yield put({ type: "UPDATE_POST_FAILED" });
+    yield put({
+      type: SET_ERROR_TOAST,
+      payload: { text: `게시글 수정에 실패했습니다.` },
+    });
   }
 }
 

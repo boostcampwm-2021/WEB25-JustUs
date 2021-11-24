@@ -11,6 +11,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
 import { useHistory } from "react-router-dom";
 import { getGroupListAction } from "@src/reducer/GroupReducer";
+import ToastManager from "@src/components/ToastMessage/ToastManager";
 import { SET_RIGHT_CLICK_MODAL } from "@src/reducer/MapReducer";
 import { SET_PROFILE_WRAPPER_MODAL_OPENED, SET_ALBUM_SETTING_WRAPPER_MODAL_IDX } from "@src/reducer/Modal";
 import Spinner from "@components/Spinner";
@@ -20,7 +21,7 @@ const Main = () => {
   const dispatch = useDispatch();
   const { groups, groupListLoaded }: any = useSelector((state: RootState) => state.groups);
   const { spinnerActivate }: any = useSelector((state: RootState) => state.spinner);
-  const { userProfile, userInfoError, userLoggedOut } = useSelector((state: RootState) => state.user);
+  const { userNickName, userInfoError, userLoggedOut } = useSelector((state: RootState) => state.user);
   const history = useHistory();
 
   useEffect(() => {
@@ -40,10 +41,10 @@ const Main = () => {
   }, []);
 
   useEffect(() => {
-    if (userProfile) {
+    if (userNickName) {
       dispatch(getGroupListAction());
     }
-  }, [userProfile]);
+  }, [userNickName]);
 
   useEffect(() => {
     if (userLoggedOut | userInfoError) {
@@ -51,7 +52,7 @@ const Main = () => {
     }
   }, [userLoggedOut, userInfoError]);
 
-  if (!userProfile || !groupListLoaded) {
+  if (!userNickName || !groupListLoaded) {
     return <Spinner />;
   }
   return (
@@ -63,6 +64,7 @@ const Main = () => {
         {groups.length > 0 ? <Map /> : <Empty />}
       </Content>
       <ModalManager setIsToggle={setIsToggle} />
+      <ToastManager />
     </>
   );
 };

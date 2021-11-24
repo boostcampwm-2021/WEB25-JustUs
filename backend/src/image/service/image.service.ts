@@ -23,7 +23,6 @@ export const multerOption = {
     acl: "public-read",
     key: function (request, file, callback) {
       const url = `${process.env.NCP_OBJECT_STORAGE_PATH}/${encodeURI(Date.now().toString())} - ${file.originalname}`;
-      console.log(url);
       callback(null, url);
     },
   }),

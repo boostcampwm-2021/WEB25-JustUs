@@ -16,6 +16,7 @@ import {
   POST_SHIFT_ALBUM_SUCCEED,
   POST_SHIFT_ALBUM_FAILED,
 } from "@src/reducer/GroupReducer";
+import { SET_SUCCEED_TOAST, SET_ERROR_TOAST } from "@src/reducer/ToastReducer";
 import axios from "axios";
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
@@ -55,8 +56,16 @@ function* createAlbum({ payload }: any) {
     const { albumName, groupId } = payload;
     const result: ResponseGenerator = yield call(createAlbumApi, albumName, groupId);
     yield put({ type: NEW_ALBUM_SUCCEED, payload: { albumName, groupId, albumId: result.data.albumId } });
+    yield put({
+      type: SET_SUCCEED_TOAST,
+      payload: { text: `${albumName} 앨범이 생성되었습니다.` },
+    });
   } catch (err: any) {
     yield put({ type: NEW_ALBUM_FAILED });
+    yield put({
+      type: SET_ERROR_TOAST,
+      payload: { text: `앨범 생성에 실패했습니다.` },
+    });
   }
 }
 
@@ -65,8 +74,16 @@ function* updateAlbum({ payload }: any) {
     const { albumName, albumId } = payload;
     yield call(updateAlbumApi, albumName, albumId);
     yield put({ type: UPDATE_ALBUM_SUCCEED, payload: { albumName, albumId } });
+    yield put({
+      type: SET_SUCCEED_TOAST,
+      payload: { text: `앨범 정보가 수정되었습니다.` },
+    });
   } catch (err: any) {
     yield put({ type: UPDATE_ALBUM_FAILED });
+    yield put({
+      type: SET_ERROR_TOAST,
+      payload: { text: `앨범 수정에 실패했습니다.` },
+    });
   }
 }
 
@@ -75,8 +92,16 @@ function* deleteAlbum({ payload }: any) {
     const { albumId } = payload;
     yield call(deleteAlbumApi, albumId);
     yield put({ type: DELETE_ALBUM_SUCCEED, payload: { albumId } });
+    yield put({
+      type: SET_SUCCEED_TOAST,
+      payload: { text: `앨범이 삭제되었습니다.` },
+    });
   } catch (err: any) {
     yield put({ type: DELETE_ALBUM_FAILED });
+    yield put({
+      type: SET_ERROR_TOAST,
+      payload: { text: `앨범 삭제에 실패했습니다.` },
+    });
   }
 }
 

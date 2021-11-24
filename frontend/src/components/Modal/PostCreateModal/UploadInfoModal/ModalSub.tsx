@@ -3,6 +3,8 @@ import COLOR from "@src/styles/Color";
 import React, { useState, useEffect, Dispatch, SetStateAction } from "react";
 import { flexRowCenterAlign, flexColumnCenterAlign } from "@styles/StyledComponents";
 import SearchResult from "@components/Modal/PostCreateModal/UploadInfoModal/SearchResult";
+import { useDispatch } from "react-redux";
+import { SET_ERROR_TOAST } from "@src/reducer/ToastReducer";
 
 interface IData {
   [key: string]: string;
@@ -48,6 +50,7 @@ const ModalSub = ({
   setGobackClicked,
 }: ModalSubProps) => {
   const [input, setInput] = useState<string>("");
+  const dispatch = useDispatch();
   const SEARCH_ICON = "/icons/search.svg";
   const SEARCH_PART_CLOSE_ICON = "/icons/arrow-left.svg";
 
@@ -73,12 +76,11 @@ const ModalSub = ({
     const ps = new window.kakao.maps.services.Places();
     const placesSearchCB = (data: IData[], status: number, pagination: IPagination) => {
       if (status === window.kakao.maps.services.Status.ZERO_RESULT) {
-        alert("검색 결과가 존재하지 않습니다.");
+        dispatch({ type: SET_ERROR_TOAST, payload: { text: "검색 결과가 존재하지 않습니다." } });
         return;
       }
 
       if (status === window.kakao.maps.services.Status.ERROR) {
-        alert("검색 결과 중 오류가 발생했습니다.");
         return;
       }
 
