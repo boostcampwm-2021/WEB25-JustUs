@@ -3,7 +3,7 @@ import { ReactNode } from "react";
 
 const toastEl = document.getElementById("toast-message");
 if (toastEl) {
-  toastEl.style.display = "flex";
+  toastEl.style.display = "none";
   toastEl.style.justifyContent = "center";
   toastEl.style.alignItems = " flex-end";
   toastEl.style.width = "100%";
@@ -21,6 +21,7 @@ interface ToastProps {
 const Toast = ({ children }: ToastProps) => {
   if (!toastEl) return null;
 
+  toastEl.style.display = "flex";
   return ReactDOM.createPortal(children, toastEl);
 };
 
