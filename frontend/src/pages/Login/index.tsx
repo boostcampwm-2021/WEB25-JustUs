@@ -84,6 +84,10 @@ const LeftSide = styled.div`
   flex-direction: column;
   justify-content: space-between;
   height: 300px;
+
+  & > a {
+    width: 350px;
+  }
 `;
 
 const Logo = styled.div`

@@ -36,7 +36,7 @@ const Header = ({ albumId, albumName, postToggle, setPostToggle, AlbumDragHandle
         {postToggle && <ArrowDownSVG fill={nowTheme.MENUTEXT} />}
         {!postToggle && <ArrowRightSVG fill={nowTheme.MENUTEXT} />}
       </ArrowIcon>
-      <AlbumNameWrapper>
+      <AlbumNameWrapper onClick={onClickArrowDown}>
         <AlbumName>{albumName}</AlbumName>
       </AlbumNameWrapper>
       {albumName !== "기본 앨범" && (
