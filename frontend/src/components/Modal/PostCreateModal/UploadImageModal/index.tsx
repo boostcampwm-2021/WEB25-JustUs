@@ -166,6 +166,7 @@ const UploadButton = styled.div`
 
   & > p {
     ${modalTitleFont}
+    font-weight: normal;
     position: absolute;
     bottom: 1rem;
   }

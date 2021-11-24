@@ -26,7 +26,8 @@ export const modalHeaderWithOneIcon = css`
   position: relative;
 `;
 export const modalTitleFont = css`
-  font-size: 2.5rem;
+  font-size: 2rem;
+  font-weight: bold;
 `;
 const modalSlideUp = keyframes`
   0% {
