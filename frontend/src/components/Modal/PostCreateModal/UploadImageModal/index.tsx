@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import styled, { keyframes } from "styled-components";
 import { flexRowCenterAlign } from "@styles/StyledComponents";
 import shortid from "shortid";
@@ -22,6 +22,7 @@ const UploadImageModal = ({ changeMode, files, setFiles }: UploadImageModalProps
   const closeModal = () => {
     dispatch({ type: "CLOSE_MODAL" });
   };
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const clickInputTag = () => {
     if (!inputImagaRef.current || files.length === MAX_IMAGE) return;
@@ -31,8 +32,7 @@ const UploadImageModal = ({ changeMode, files, setFiles }: UploadImageModalProps
 
   const changeImage: React.ChangeEventHandler<HTMLInputElement> = (event) => {
     if (!event.target.files) return;
-    const file = event.target.files[0];
-    setFiles([...files, { imageUrl: file, imageId: shortid.generate() + "!" }]);
+    getThumbFile(event.target.files[0]);
   };
 
   const nextModal = () => {
@@ -41,6 +41,41 @@ const UploadImageModal = ({ changeMode, files, setFiles }: UploadImageModalProps
 
   const deleteImage = (deleteItem: FileObject) => {
     setFiles(files.filter((file) => file.imageId !== deleteItem.imageId));
+  };
+
+  const getThumbFile = (file: any) => {
+    const MB = 1048567;
+    const baseSize = MB * 4;
+    const compSize = MB;
+    if (file.size <= baseSize) {
+      setFiles([...files, { imageUrl: file, imageId: shortid.generate() + "!" }]);
+    } else {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = function (e) {
+        if (!canvasRef.current || !e.target?.result) return;
+        const canvas = canvasRef.current;
+        const ctx = canvas.getContext("2d");
+        const img = new Image();
+        img.src = e.target.result as string;
+        img.onload = function () {
+          const ratio = Math.sqrt(file.size / compSize);
+          canvas.width = img.width / ratio;
+          canvas.height = img.height / ratio;
+          ctx?.drawImage(img, 0, 0, canvas.width, canvas.height);
+          const dataURL = canvas.toDataURL("image/png");
+          const byteString = atob(dataURL.split(",")[1]);
+          const mimeString = dataURL.split(",")[0].split(":")[1].split(";")[0];
+          const ab = new ArrayBuffer(byteString.length);
+          const ia = new Uint8Array(ab);
+          for (let i = 0; i < byteString.length; i++) {
+            ia[i] = byteString.charCodeAt(i);
+          }
+          const tmpThumbFile = new Blob([ab], { type: mimeString });
+          setFiles([...files, { imageUrl: new File([tmpThumbFile], file.name), imageId: shortid.generate() + "!" }]);
+        };
+      };
+    }
   };
 
   return (
@@ -87,11 +122,16 @@ const UploadImageModal = ({ changeMode, files, setFiles }: UploadImageModalProps
           "",
         )}
       </ModalContent>
+      <Canvas ref={canvasRef} />
     </ModalContainer>
   );
 };
 
 export default UploadImageModal;
+
+const Canvas = styled.canvas`
+  display: none;
+`;
 
 const modalSlideUp = keyframes`
   0% {
