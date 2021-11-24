@@ -89,10 +89,17 @@ const CloseBtn = styled.div`
   justify-content: center;
   grid-column-start: 3;
   grid-column-end: 4;
-
   & > button {
     background-color: ${COLOR.WHITE};
     border: none;
+    height: 3rem;
+    width: 3rem;
+    border-radius: 50%;
+    ${flexRowCenterAlign}
+    cursor: pointer;
+    &:hover {
+      background-color: ${COLOR.GRAY};
+    }
   }
 `;
 

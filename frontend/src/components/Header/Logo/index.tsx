@@ -36,6 +36,7 @@ const TextLogo = styled.a`
   font-size: 2.1rem;
   color: ${COLOR.WHITE};
   margin-left: 2rem;
+  font-weight: bold;
   & div {
     display: inline-block;
     width: 2.1rem;

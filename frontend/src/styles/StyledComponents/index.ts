@@ -13,13 +13,4 @@ const flexColumnCenterAlign = css`
   align-items: center;
 `;
 
-const yesNoButtonWrapper = css`
-  width: 10rem;
-  height: 4rem;
-  border-radius: 10px;
-  margin-left: 30px;
-  cursor: pointer;
-  font-size: 2.2rem;
-`;
-
-export { flexRowCenterAlign, flexColumnCenterAlign, yesNoButtonWrapper };
+export { flexRowCenterAlign, flexColumnCenterAlign };

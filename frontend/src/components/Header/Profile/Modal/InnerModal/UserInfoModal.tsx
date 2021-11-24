@@ -3,7 +3,7 @@ import styled, { keyframes } from "styled-components";
 import Modal from "@components/Modal";
 import { useDispatch } from "react-redux";
 import COLOR from "@styles/Color";
-import { flexColumnCenterAlign, flexRowCenterAlign } from "@src/styles/StyledComponents";
+import { flexRowCenterAlign } from "@src/styles/StyledComponents";
 import { userInfoUpdateAction, SET_UPDATED_INIT } from "@src/reducer/UserReducer";
 import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
@@ -11,11 +11,11 @@ import { RootState } from "@src/reducer";
 const UserInfoModal = () => {
   const uploadBtnRef = useRef<HTMLInputElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
-  const userNameRef = useRef<HTMLInputElement>(null);
   const [imageFile, setImageFile] = useState<File>();
   const dispatch = useDispatch();
   const { userNickName, userProfile, updateSucceed } = useSelector((state: RootState) => state.user);
   const [userImg, setUserImg] = useState<string>(userProfile);
+  const [newName, setNewName] = useState<string>(userNickName);
 
   const closeUserInfoModal = () => {
     dispatch({ type: "CLOSE_MODAL" });
@@ -27,56 +27,34 @@ const UserInfoModal = () => {
   const loadImage = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
     if (!files) return;
-
     const file = files[0];
     const reader = new FileReader();
-
     reader.onload = (e) => {
       if (!e.target) return;
       if (!imageRef.current) return;
       if (!e.target.result) return;
-
       setUserImg(e.target.result as string);
       setImageFile(file as File);
     };
-
     reader.readAsDataURL(file);
   };
 
   const onClickDeleteBtn = () => {
-    setUserImg("/icons/person.svg");
+    setUserImg("");
   };
 
   const onClickUpdateBtn = () => {
-    if (!userNameRef.current) return;
-    if (userNameRef.current.value === "") {
+    if (!newName) {
       alert("닉네임은 반드시 입력해야 합니다.");
       return;
     }
-
-    dispatch(userInfoUpdateAction({ updateUserNickName: userNameRef.current.value, updateUserProfile: imageFile }));
+    dispatch(userInfoUpdateAction({ updateUserNickName: newName, updateUserProfile: imageFile }));
+    closeUserInfoModal();
   };
 
-  useEffect(() => {
-    const updateSucceeded = () => {
-      alert("회원정보가 수정되었습니다.");
-      closeUserInfoModal();
-      dispatch({ type: SET_UPDATED_INIT });
-    };
-
-    const updateFailed = () => {
-      alert("회원정보 수정에 실패했습니다.");
-    };
-
-    if (updateSucceed === null) return;
-
-    if (updateSucceed) {
-      updateSucceeded();
-      return;
-    }
-
-    updateFailed();
-  }, [userNickName]);
+  const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setNewName(event.target.value);
+  };
 
   return (
     <Modal>
@@ -86,36 +64,51 @@ const UserInfoModal = () => {
         }}
       >
         <Header>
-          <Title>회원 정보</Title>
+          <TitleWrapper>회원 정보</TitleWrapper>
           <CloseBtn>
-            <button
-              type="button"
-              onClick={() => {
-                closeUserInfoModal();
-              }}
-            >
+            <button type="button" onClick={closeUserInfoModal}>
               <img src="/icons/clear.svg" alt="clear icon" />
             </button>
           </CloseBtn>
         </Header>
-        <Container>
-          <Content>
-            <ImageBackground userImg={userImg}>
-              <img src={userImg} alt="person icon" ref={imageRef} width="100%" height="100%" />
+        <Content>
+          <div>
+            <ImageBackground>
+              <img
+                src={userImg ? userImg : "/icons/person.jpeg"}
+                alt="person icon"
+                ref={imageRef}
+                width="100%"
+                height="100%"
+              />
+              {userImg ? (
+                <DeleteImgBtnWrapper onClick={onClickDeleteBtn}>
+                  <img src="/icons/delete.svg" alt="delete button"></img>
+                </DeleteImgBtnWrapper>
+              ) : null}
             </ImageBackground>
             <UploadImgBtnWrapper onClick={onClickUploadBtn}>
               <input type="file" accept="image/*" hidden ref={uploadBtnRef} onChange={loadImage} />
-              이미지 업로드
+              <img src="/icons/add-photo.svg" alt="add Photo" width={"20rem"}></img>
+              사진 찾기
             </UploadImgBtnWrapper>
-            <DeleteImgBtnWrapper onClick={onClickDeleteBtn}>사진 제거</DeleteImgBtnWrapper>
-            <UserNameInputWrapper placeholder={userNickName} ref={userNameRef} spellCheck={false} />
+          </div>
+          <GridRight>
+            <UserNameInputWrapper value={newName} spellCheck={false} onChange={handleNameChange} />
             <SaveBtnWrapper onClick={onClickUpdateBtn}>저장하기</SaveBtnWrapper>
-          </Content>
-        </Container>
+          </GridRight>
+        </Content>
       </ModalContainer>
     </Modal>
   );
 };
+const GridRight = styled.div`
+  ${flexRowCenterAlign}
+  height:100%;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding-right: 2rem;
+`;
 
 const modalSlideUp = keyframes`
   0% {
@@ -129,8 +122,8 @@ const modalSlideUp = keyframes`
 `;
 const ModalContainer = styled.div`
   background-color: ${COLOR.WHITE};
-  min-height: 55rem;
-  min-width: 30vw;
+  min-height: 38rem;
+  min-width: 50rem;
   border-radius: 2rem;
   display: flex;
   flex-direction: column;
@@ -144,15 +137,19 @@ const Header = styled.div`
   padding: 2rem;
 `;
 
-const Container = styled.div`
-  margin: 0 10% 10% 10%;
+const Content = styled.div`
+  display: grid;
+  grid-template-columns: 50% 50%;
+  align-items: center;
+  justify-items: center;
 `;
 
-const Title = styled.div`
-  font-size: 3.5rem;
+const TitleWrapper = styled.div`
   text-align: center;
+  font-size: 2.5rem;
   grid-column-start: 2;
   grid-column-end: 3;
+  ${flexRowCenterAlign}
 `;
 const CloseBtn = styled.div`
   width: 100%;
@@ -163,43 +160,52 @@ const CloseBtn = styled.div`
   & > button {
     background-color: ${COLOR.WHITE};
     border: none;
+    height: 3rem;
+    width: 3rem;
+    border-radius: 50%;
+    ${flexRowCenterAlign}
+    cursor: pointer;
     &:hover {
-      cursor: pointer;
+      background-color: ${COLOR.GRAY};
     }
   }
 `;
 
-const Content = styled.div`
-  ${flexColumnCenterAlign}
-`;
-
-const ImageBackground = styled.div<{ userImg: string }>`
-  margin-top: 4rem;
-  width: 90px;
-  height: 90px;
-  background-color: ${(props) => props.theme.SECONDARY};
-  opacity: ${(props) => (props.userImg === "/icons/person.svg" ? "0.4" : "")};
-  border-radius: 100%;
+const ImageBackground = styled.div`
   ${flexRowCenterAlign}
+  margin-top: 4rem;
+  width: 15rem;
+  height: 15rem;
+  background-color: ${COLOR.WHITE};
+  border-radius: 1vw;
+  border: 6px solid ${(props) => props.theme.SECONDARY};
+  & img {
+    border-radius: 0.6vw;
+  }
+  position: relative;
 `;
 
 const UploadImgBtnWrapper = styled.div`
-  cursor: pointer;
-  margin-top: 4rem;
-  border-radius: 10px;
-  border: 2px solid ${(props) => props.theme.PRIMARY};
-  font-weight: bold;
-  font-size: 1.6rem;
-  line-height: 1rem;
-  width: 150px;
-  height: 33px;
   ${flexRowCenterAlign}
+  cursor: pointer;
+  margin-top: 1rem;
+  border-radius: 10px;
+  border: 2px solid ${COLOR.SHADOW_BLACK};
+  font-weight: bold;
+  font-size: 1.5rem;
+  color: ${COLOR.SHADOW_BLACK};
+  line-height: 16px;
+  width: 15rem;
+  height: 3rem;
 `;
 
 const DeleteImgBtnWrapper = styled.div`
+  position: absolute;
+  bottom: 13rem;
+  left: 13rem;
   cursor: pointer;
-  margin-top: 20px;
-  color: ${COLOR.BLUE};
+  margin-top: 4rem;
+  color: ${COLOR.RED};
   font-weight: bold;
   font-size: 1.6rem;
 `;
@@ -222,15 +228,20 @@ const UserNameInputWrapper = styled.input`
 `;
 
 const SaveBtnWrapper = styled.div`
-  cursor: pointer;
-  width: 10rem;
-  height: 4rem;
-  border-radius: 1rem;
-  color: ${COLOR.WHITE};
-  background-color: ${(props) => props.theme.PRIMARY};
   ${flexRowCenterAlign}
+  cursor: pointer;
+  color: ${COLOR.WHITE};
+  background-color: ${(props) => props.theme.SECONDARY};
   margin-top: 4rem;
-  font-size: 1.6rem;
+  border-radius: 10px;
+  font-weight: bold;
+  font-size: 1.5rem;
+  line-height: 16px;
+  width: 15rem;
+  height: 3rem;
+  &:hover {
+    background-color: ${(props) => props.theme.PRIMARY};
+  }
 `;
 
 export default UserInfoModal;
