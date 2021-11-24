@@ -75,7 +75,7 @@ const Container = styled.div`
   font-size: 2rem;
 
   & li {
-    padding-bottom: 2rem;
+    padding: 1rem 0;
 
     &:hover {
       font-weight: bold;
