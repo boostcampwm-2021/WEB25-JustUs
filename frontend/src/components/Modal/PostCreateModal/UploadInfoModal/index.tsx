@@ -335,7 +335,7 @@ const ModalRight = styled.div`
   display: grid;
   height: 90%;
   margin-left: 2rem;
-  grid-template-rows: 15% 40% 30% 15%;
+  grid-template-rows: 15% 45% 25% 15%;
   & mark {
     ${contentOverflow}
     ${contentWhiteSpace}
@@ -366,12 +366,14 @@ const InputTitle = styled.input`
 const ContentWrap = styled.div`
   position: relative;
   width: 100%;
+  height: 100%;
 `;
 const BackDrop = styled.div`
   ${contentOverflow}
   ${contentWhiteSpace}
   ${contentFont}
   ${contentSize}
+  height: 100%;
   position: absolute;
   overflow-y: scroll;
   &::-webkit-scrollbar {
@@ -389,6 +391,7 @@ const HighLights = styled.div`
   ${contentSize}
   position: absolute;
   overflow-y: scroll;
+  height: 100%;
   &::-webkit-scrollbar {
     width: 0;
   }
@@ -398,8 +401,8 @@ const InputText = styled.textarea`
   ${contentWhiteSpace}
   ${contentFont}
   ${contentSize}
+  height: 100%;
   resize: none;
-  border: none;
   position: relative;
   overflow-y: scroll;
   &::-webkit-scrollbar {
@@ -415,7 +418,6 @@ const InputText = styled.textarea`
   }
 `;
 const InputBottom = styled.div`
-  position: relative;
   display: flex;
   flex-direction: column;
   max-height: 5rem;
