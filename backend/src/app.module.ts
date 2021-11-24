@@ -1,4 +1,4 @@
-import { Module } from "@nestjs/common";
+import { MiddlewareConsumer, Module, NestModule } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { typeORMConfig } from "./configs/typeorm.config";
 import { UserModule } from "./user/user.module";
@@ -7,6 +7,7 @@ import { GroupModule } from "./group/group.module";
 import { AlbumModule } from "./album/album.module";
 import { PostModule } from "./post/post.module";
 import { HashtagModule } from "./hashtag/hashtag.module";
+import { LoggerMiddleware } from "./middlerware/logger.middleware";
 
 @Module({
   imports: [
@@ -19,4 +20,8 @@ import { HashtagModule } from "./hashtag/hashtag.module";
     HashtagModule,
   ],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer): any {
+    consumer.apply(LoggerMiddleware).forRoutes("*");
+  }
+}
