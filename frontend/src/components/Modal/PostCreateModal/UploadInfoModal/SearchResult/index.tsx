@@ -21,10 +21,10 @@ interface SearchResultProps {
 const SearchResult = ({ searchResult, setSelectedLocation, page, setPage, lastPage }: SearchResultProps) => {
   const data = searchResult;
   const searchResultWrapperRef = useRef() as React.MutableRefObject<HTMLDivElement>;
-
   const handleClickPlaceWrapper = (location: IData) => {
     setSelectedLocation({ placeName: location.place_name, x: Number(location.x), y: Number(location.y) });
   };
+  const RESULT_PLACE_ICON = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/places_jibun.png";
 
   const handleScroll = (e: UIEvent<HTMLElement>) => {
     const target = e.target as HTMLDivElement;
@@ -48,7 +48,7 @@ const SearchResult = ({ searchResult, setSelectedLocation, page, setPage, lastPa
           <RoadAddressName>{location.road_address_name}</RoadAddressName>
           <AddressName>
             <span>
-              <img src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/places_jibun.png" />
+              <img src={RESULT_PLACE_ICON} alt="result place icon" />
             </span>
             {location.address_name}
           </AddressName>
@@ -62,6 +62,13 @@ const SearchResultWrapper = styled.div`
   display: flex;
   flex-direction: column;
   overflow-y: scroll;
+  &::-webkit-scrollbar {
+    width: 0.8rem;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: ${(props) => props.theme.SECONDARY};
+    border-radius: 1rem;
+  }
   height: 100%;
   box-sizing: border-box;
 `;
