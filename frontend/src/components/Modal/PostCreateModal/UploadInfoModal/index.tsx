@@ -176,12 +176,12 @@ const UploadInfoModal = ({
       <ModalMain isSubOpened={isSubOpened} className="modalMain">
         <ModalHeader className="modalHeader">
           <ModalTitle>{mode === "create" ? "새 게시물 만들기" : "게시물 수정"}</ModalTitle>
-          <ModalHeaderRigthBtn onClick={closeModal}>
-            <img src="/icons/x.svg" alt="close"></img>
-          </ModalHeaderRigthBtn>
           <ModalHeaderLeftBtn onClick={changeMode}>
             <img src="/icons/prev.svg" alt="prev modal"></img>
           </ModalHeaderLeftBtn>
+          <ModalHeaderRigthBtn onClick={closeModal}>
+            <img src="/icons/x.svg" alt="close"></img>
+          </ModalHeaderRigthBtn>
         </ModalHeader>
         <ModalContent className="modalContent">
           <ModalLeft className="modalLeft">
