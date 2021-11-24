@@ -11,21 +11,20 @@ import { RootState } from "@src/reducer";
 const highlights = (text: string) => {
   const splited = text.split(/[\u0020]/);
   const makeSpan = (word: string, idx: number) => {
-    if (idx === splited.length - 1) return word;
-    return word;
+    if (idx === 0) return word;
+    return `${word} `;
   };
 
   const makeHashTag = (word: string) => {
     const hashTagWord = word.split("#");
-    console.log(hashTagWord, "hashTagWord");
     return hashTagWord.length > 1
       ? hashTagWord.map((tagWord, idx) => {
-          return idx === 0 ? makeSpan(tagWord, idx) : <mark>#{tagWord}</mark>;
+          return idx === 0 ? makeSpan(tagWord, 0) : <mark>#{tagWord}</mark>;
         })
-      : hashTagWord[0];
+      : `${hashTagWord[0]} `;
   };
 
-  return splited.map((word, idx) => {
+  return splited.map((word) => {
     return makeHashTag(word);
   });
 };
