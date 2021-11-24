@@ -29,12 +29,12 @@ export class NaverStrategy extends PassportStrategy(Strategy, "naver") {
     const user = await this.authService.validateUser(registerUserDto);
     if (!user) throw new UnauthorizedException("유저가 존재하지 않습니다.");
 
-    const { userId } = user;
+    const { userId, userEmail } = user;
 
     const accessTokenExpireTime = "1h";
     const refreshTokenExpireTime = "7d";
-    const accessToken = this.authService.createToken(userId, accessTokenExpireTime);
-    const refreshToken = this.authService.createToken(userId, refreshTokenExpireTime);
+    const accessToken = this.authService.createToken(userId, userEmail, accessTokenExpireTime);
+    const refreshToken = this.authService.createToken(userId, userEmail, refreshTokenExpireTime);
 
     await this.userService.updateToken(userId, refreshToken);
 

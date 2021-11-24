@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { Injectable, NotFoundException, UnauthorizedException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { GroupRepository } from "../group.repository";
 import { UserRepository } from "src/user/user.repository";
@@ -16,6 +16,7 @@ import { UpdateGroupInfoResponseDto } from "src/dto/group/updateGroupInfoRespons
 import { GetHashTagsResponseDto } from "src/dto/group/getHashTagsResponse.dto";
 import { AlbumService } from "src/album/service/album.service";
 import { ImageService } from "src/image/service/image.service";
+import { User } from "src/user/user.entity";
 
 @Injectable()
 export class GroupService {
@@ -56,7 +57,7 @@ export class GroupService {
 
     await this.groupRepository.update(groupId, { albumOrder: String(albumId) });
 
-    await this.applyUserEntity(userId, groupId, group);
+    await this.applyUserEntity(userId, groupId, group, false);
 
     return { groupId, groupImage };
   }
@@ -75,23 +76,31 @@ export class GroupService {
   async attendGroup(userId: number, attendGroupRequestDto: AttendGroupRequestDto): Promise<number> {
     const { code } = attendGroupRequestDto;
 
-    const group = await this.groupRepository.findOne({ groupCode: code });
+    const group = await this.groupRepository.findOne({ groupCode: code }, { relations: ["users"] });
     if (!group) throw new NotFoundException(`Not found group with the code ${code}`);
     const { groupId } = group;
 
-    await this.applyUserEntity(userId, groupId, group);
+    await this.applyUserEntity(userId, groupId, group, true);
 
     return group.groupId;
   }
 
-  async applyUserEntity(userId: number, groupId: number, group: Group): Promise<void> {
+  async applyUserEntity(userId: number, groupId: number, group: Group, attend: boolean): Promise<void> {
     const user = await this.userRepository.findOne(userId, { relations: ["groups"] });
     if (!user) throw new NotFoundException(`Not found user with the id ${userId}`);
+
+    const { users } = group;
+
+    if (attend && this.hasUser(userId, users)) throw new UnauthorizedException("You are already a member of a group.");
 
     const { groupOrder } = user;
     user.groupOrder = groupOrder === "" ? `${groupId}` : `${groupOrder},${groupId}`;
     user.groups.push(group);
     this.userRepository.save(user);
+  }
+
+  hasUser(userId: number, users: User[]): boolean {
+    return users.filter(user => user.userId === userId) !== [];
   }
 
   async getGroupInfo(groupId: number): Promise<GetGroupInfoResponseDto> {
