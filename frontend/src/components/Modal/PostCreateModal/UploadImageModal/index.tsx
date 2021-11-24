@@ -148,6 +148,7 @@ const uploadImage = css`
   box-sizing: border-box;
   border-radius: 1rem;
   min-height: 15rem;
+
   margin: 1rem 2rem 2rem 0;
   &:nth-child(3n + 1) {
     margin-left: 2rem;
@@ -192,8 +193,8 @@ const ImagePreview = styled.div`
   position: relative;
   & img {
     position: absolute;
-    max-height: 90%;
-    height: 100%;
+    max-height: 95%;
+    max-width: 95%;
     margin: auto;
     top: 0;
     bottom: 0;
