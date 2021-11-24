@@ -12,7 +12,7 @@ import { RootState } from "@src/reducer";
 import { useHistory } from "react-router-dom";
 import { getGroupListAction } from "@src/reducer/GroupReducer";
 import ToastManager from "@src/components/ToastMessage/ToastManager";
-import { SET_RIGHT_CLICK_MODAL } from "@src/reducer/MapReducer";
+import { CLOSE_POST_CREATE_WINDOW, SET_POST_CREATE_WINDOW_OPENED } from "@src/reducer/MapReducer";
 import { SET_PROFILE_WRAPPER_MODAL_OPENED, SET_ALBUM_SETTING_WRAPPER_MODAL_IDX } from "@src/reducer/Modal";
 import Spinner from "@components/Spinner";
 import { CLOSE_CLUSTERING_WINDOW } from "@src/reducer/MapReducer";
@@ -28,11 +28,13 @@ const Main = () => {
   useEffect(() => {
     document.addEventListener("click", (event) => {
       const { target, clientX, clientY } = event;
-      dispatch({ type: GroupModalAction.SET_CLICKED_TARGET, payload: { target, clientX, clientY } });
-      dispatch({ type: SET_RIGHT_CLICK_MODAL, payload: { isRightClickModalOpened: false } });
-
       const isClusteringClicked = (target as HTMLElement).getAttribute("src")?.match(/\/icons\/podo-(three|many).png/);
+      const isPostCreateClicked = (target as HTMLElement).closest("#createPostWindow");
+
+      dispatch({ type: GroupModalAction.SET_CLICKED_TARGET, payload: { target, clientX, clientY } });
+      dispatch({ type: SET_POST_CREATE_WINDOW_OPENED, payload: { isPostCreateWindowOpened: false } });
       !isClusteringClicked && dispatch({ type: CLOSE_CLUSTERING_WINDOW });
+      !isPostCreateClicked && dispatch({ type: CLOSE_POST_CREATE_WINDOW });
     });
 
     document.addEventListener("contextmenu", () => {

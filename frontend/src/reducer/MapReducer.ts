@@ -1,28 +1,26 @@
 interface IInitState {
-  isRightClickModalOpened: boolean;
   clusteringWindow: naver.maps.InfoWindow | null;
   isClusteringWindowOpened: boolean;
+  postCreateWindow: naver.maps.InfoWindow | null;
+  isPostCreateWindowOpened: boolean;
 }
 
 const initState: IInitState = {
-  isRightClickModalOpened: false,
   clusteringWindow: null,
   isClusteringWindowOpened: false,
+  postCreateWindow: null,
+  isPostCreateWindowOpened: false,
 };
 
-export const SET_RIGHT_CLICK_MODAL = "SET_RIGHT_CLICK_MODAL";
 export const SET_CLUSTERING_WINDOW = "SET_CLUSTERING_WINDOW";
-export const CLOSE_CLUSTERING_WINDOW = "CLOSE_CLUSTERING_WINDOW";
 export const SET_CLUSTERING_WINDOW_OPENED = "SET_CLUSTERING_WINDOW_OPENED";
+export const CLOSE_CLUSTERING_WINDOW = "CLOSE_CLUSTERING_WINDOW";
+export const SET_POST_CREATE_WINDOW = "SET_POST_CREATE_WINDOW";
+export const SET_POST_CREATE_WINDOW_OPENED = "SET_POST_CREATE_WINDOW_OPENED";
+export const CLOSE_POST_CREATE_WINDOW = "CLOSE_POST_CREATE_WINDOW";
 
 const mapReducer = (state = initState, action: any) => {
   switch (action.type) {
-    case SET_RIGHT_CLICK_MODAL: {
-      return {
-        ...state,
-        isRightClickModalOpened: action.payload.isRightClickModalOpened,
-      };
-    }
     case SET_CLUSTERING_WINDOW: {
       return {
         ...state,
@@ -37,7 +35,24 @@ const mapReducer = (state = initState, action: any) => {
       };
     }
     case CLOSE_CLUSTERING_WINDOW: {
-      state.clusteringWindow && state.isClusteringWindowOpened && state.clusteringWindow.close();
+      state.clusteringWindow && state.clusteringWindow.close();
+      return state;
+    }
+    case SET_POST_CREATE_WINDOW: {
+      return {
+        ...state,
+        postCreateWindow: action.payload.postCreateWindow,
+      };
+    }
+
+    case SET_POST_CREATE_WINDOW_OPENED: {
+      return {
+        ...state,
+        isPostCreateWindowOpened: action.payload.isPostCreateWindowOpened,
+      };
+    }
+    case CLOSE_POST_CREATE_WINDOW: {
+      state.postCreateWindow && state.postCreateWindow.close();
       return state;
     }
 
