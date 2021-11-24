@@ -94,7 +94,13 @@ const setMap = (
   setLatLng: Dispatch<SetStateAction<naver.maps.LatLng | undefined>>,
   setClickInfo: Dispatch<SetStateAction<PointerEvent>>,
   setNaverMap: Dispatch<SetStateAction<naver.maps.Map | undefined>>,
-  dispatch: Dispatch<{ type: string; payload: boolean | naver.maps.InfoWindow }>,
+  dispatch: Dispatch<{
+    type: string;
+    payload:
+      | { isRightClickModalOpened: boolean }
+      | { infoWindow: naver.maps.InfoWindow }
+      | { isInfoWindowOpened: boolean };
+  }>,
 ) => {
   const pos = new naver.maps.LatLng(INIT_X, INIT_Y);
   const map = new naver.maps.Map("map", {
@@ -112,23 +118,23 @@ const setMap = (
     borderWidth: 2,
     disableAnchor: true,
   });
-  dispatch({ type: SET_INFO_WINDOW, payload: newInfoWindow });
+  dispatch({ type: SET_INFO_WINDOW, payload: { infoWindow: newInfoWindow } });
 
   naver.maps.Event.addListener(map, "rightclick", (e: PointerEvent) => {
     setClickInfo(e);
     setLatLng(e.latlng);
     setRightPosition({ x: e.pointerEvent.pageX, y: e.pointerEvent.pageY });
-    dispatch({ type: SET_RIGHT_CLICK_MODAL, payload: true });
+    dispatch({ type: SET_RIGHT_CLICK_MODAL, payload: { isRightClickModalOpened: true } });
   });
   naver.maps.Event.addListener(map, "zoom_changed", (e: Number) => {
-    dispatch({ type: SET_RIGHT_CLICK_MODAL, payload: false });
+    dispatch({ type: SET_RIGHT_CLICK_MODAL, payload: { isRightClickModalOpened: false } });
     newInfoWindow.close();
-    dispatch({ type: SET_INFO_WINDOW_OPENED, payload: false });
+    dispatch({ type: SET_INFO_WINDOW_OPENED, payload: { isInfoWindowOpened: false } });
   });
   naver.maps.Event.addListener(map, "mousedown", (e: PointerEvent) => {
-    dispatch({ type: SET_RIGHT_CLICK_MODAL, payload: false });
+    dispatch({ type: SET_RIGHT_CLICK_MODAL, payload: { isRightClickModalOpened: false } });
     newInfoWindow.close();
-    dispatch({ type: SET_INFO_WINDOW_OPENED, payload: false });
+    dispatch({ type: SET_INFO_WINDOW_OPENED, payload: { isInfoWindowOpened: false } });
   });
 };
 
@@ -168,7 +174,7 @@ const Map = () => {
         if (infoWindow) {
           infoWindow.close();
         }
-        dispatch({ type: SET_RIGHT_CLICK_MODAL, payload: false });
+        dispatch({ type: SET_RIGHT_CLICK_MODAL, payload: { isRightClickModalOpened: false } });
         dispatch({ type: "SELECT_POST_REQUEST", postId: clickedPostID });
       };
 
@@ -180,7 +186,7 @@ const Map = () => {
       });
 
       const handleClickClustering = (members: IClustredMember[], LatLng: naver.maps.LatLng) => {
-        dispatch({ type: SET_RIGHT_CLICK_MODAL, payload: false });
+        dispatch({ type: SET_RIGHT_CLICK_MODAL, payload: { isRightClickModalOpened: false } });
         const clusteredMarker = members.map((member) => {
           return { postId: member.postId, postTitle: member.title };
         });
@@ -189,7 +195,7 @@ const Map = () => {
         infoWindow.setContent(['<div id="clustredMarkerList" style="width:20rem;height:10rem;">'].join(""));
         if (!naverMap) return;
         infoWindow.open(naverMap, LatLng);
-        dispatch({ type: SET_INFO_WINDOW_OPENED, payload: true });
+        dispatch({ type: SET_INFO_WINDOW_OPENED, payload: { isInfoWindowOpened: true } });
 
         ReactDOM.render(
           <React.StrictMode>
