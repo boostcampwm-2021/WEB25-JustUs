@@ -1,9 +1,15 @@
 import React, { useRef } from "react";
-import styled, { keyframes } from "styled-components";
-import { flexRowCenterAlign } from "@styles/StyledComponents";
-import shortid from "shortid";
-import COLOR from "@styles/Color";
 import { useDispatch } from "react-redux";
+import shortid from "shortid";
+
+import styled, { css } from "styled-components";
+import {
+  flexRowCenterAlign,
+  modalTitleFont,
+  modalSlideUpAnimation,
+  modalHeaderButtonIcon,
+} from "@styles/StyledComponents";
+import COLOR from "@styles/Color";
 
 interface FileObject {
   imageUrl: File | string;
@@ -50,20 +56,20 @@ const UploadImageModal = ({ changeMode, files, setFiles }: UploadImageModalProps
       }}
     >
       <ModalHeader>
-        <ModalTitle>사진 업로드</ModalTitle>
+        <ModalTitle className="modaltitle">사진 업로드</ModalTitle>
         {files.length === 0 ? (
-          <ModalHeaderRigthBtn onClick={closeModal}>
-            <img src="/icons/x.svg" alt="close" height="90%"></img>
+          <ModalHeaderRigthBtn className="modalHeaderRightBtn" onClick={closeModal}>
+            <img src="/icons/x.svg" alt="close"></img>
           </ModalHeaderRigthBtn>
         ) : (
-          <ModalHeaderRigthBtn onClick={nextModal}>
-            <img src="/icons/next.svg" alt="next" height="90%"></img>
+          <ModalHeaderRigthBtn className="modalHeaderRightBtn" onClick={nextModal}>
+            <img src="/icons/next.svg" alt="next"></img>
           </ModalHeaderRigthBtn>
         )}
       </ModalHeader>
       <ModalContent>
         <UploadButton onClick={clickInputTag}>
-          <img src="/icons/add-photo.svg" alt="add Photo"></img>
+          <img src="/icons/add-photo.svg" alt="add"></img>
           <ImageInput ref={inputImagaRef} accept="image/*" type="file" onChange={changeImage}></ImageInput>
           <p>
             {files.length}/{MAX_IMAGE}
@@ -73,7 +79,7 @@ const UploadImageModal = ({ changeMode, files, setFiles }: UploadImageModalProps
           (fileObject) => (
             <ImagePreview key={shortid.generate()}>
               <DeleteImageBtn onClick={() => deleteImage(fileObject)}>
-                <img src="/icons/delete.svg" alt="delete"></img>
+                <img src="/icons/delete.svg" alt="delete" width="100%"></img>
               </DeleteImageBtn>
               <img
                 src={
@@ -93,43 +99,30 @@ const UploadImageModal = ({ changeMode, files, setFiles }: UploadImageModalProps
 
 export default UploadImageModal;
 
-const modalSlideUp = keyframes`
-  0% {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  30% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-`;
 const ModalContainer = styled.div`
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-rows: 10% 90%;
   background-color: ${COLOR.WHITE};
-  width: 850px;
-  height: 530px;
-  border-radius: 10px;
+  height: 60%;
+  min-height: 460px;
+  min-width: 720px;
+  border-radius: 1rem;
   box-shadow: 0 2px 3px 0 ${COLOR.SHADOW_BLACK};
-  animation-name: ${modalSlideUp};
-  animation-duration: 1s;
+  ${modalSlideUpAnimation}
 `;
 const ModalHeader = styled.div`
   display: grid;
   grid-template-columns: 10% 80% 10%;
-  padding: 1vw;
-  height: 60px;
+  height: 100%;
   box-sizing: border-box;
-  font-size: max(1.2vw, 20px);
 `;
 const ModalTitle = styled.div`
   ${flexRowCenterAlign}
-  flex-direction: row;
+  ${modalTitleFont}
   grid-column-start: 2;
   grid-column-end: 3;
   grid-row-start: 1;
   grid-row-end: 2;
-  font-size: 2.5rem;
 `;
 const ModalHeaderRigthBtn = styled.button`
   grid-column-start: 3;
@@ -138,7 +131,9 @@ const ModalHeaderRigthBtn = styled.button`
   grid-row-end: 2;
   border: none;
   background: none;
-  cursor: pointer;
+  & > img {
+    ${modalHeaderButtonIcon}
+  }
 `;
 const ModalContent = styled.div`
   display: grid;
@@ -146,22 +141,39 @@ const ModalContent = styled.div`
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 50% 50%;
   box-sizing: border-box;
+  margin: 0 1.5rem;
 `;
-const UploadButton = styled.div`
-  background-color: ${COLOR.LIGHTGRAY2};
+const uploadImage = css`
   border: 1px solid ${COLOR.LIGHTGRAY1};
   box-sizing: border-box;
-  border-radius: 8px;
-  margin: 1vw;
+  border-radius: 1rem;
+  min-height: 15rem;
+  margin: 1rem 2rem 2rem 0;
+  &:nth-child(3n + 1) {
+    margin-left: 2rem;
+  }
+`;
+
+const UploadButton = styled.div`
+  background-color: ${COLOR.LIGHTGRAY2};
+  ${uploadImage}
   display: flex;
-  min-height: 150px;
   align-items: center;
   justify-content: space-around;
   flex-direction: column;
   cursor: pointer;
+  position: relative;
 
   & > p {
-    font-size: 1.6rem;
+    ${modalTitleFont}
+    position: absolute;
+    bottom: 1rem;
+  }
+  & > img {
+    width: 8rem;
+  }
+  &:hover {
+    background-color: ${COLOR.LIGHTGRAY1};
   }
 `;
 const ImageInput = styled.input`
@@ -173,20 +185,14 @@ const ImageInput = styled.input`
   border: 0;
 `;
 const ImagePreview = styled.div`
-  border: 1px solid ${COLOR.LIGHTGRAY1};
-  box-sizing: border-box;
-  border-radius: 8px;
-  margin: 1vw;
+  ${uploadImage}
   vertical-align: middle;
   text-align: center;
   position: relative;
-  min-height: 150px;
   & img {
     position: absolute;
-    max-width: 100%;
-    max-height: 100%;
-    width: auto;
-    height: auto;
+    max-height: 90%;
+    height: 100%;
     margin: auto;
     top: 0;
     bottom: 0;
@@ -197,11 +203,14 @@ const ImagePreview = styled.div`
 const DeleteImageBtn = styled.button`
   position: absolute;
   z-index: 1;
-  right: -1vw;
-  top: -1vw;
-  height: 40px;
-  width: 40px;
   border: none;
   background: none;
   cursor: pointer;
+  ${modalHeaderButtonIcon}
+  right: -1rem;
+  top: -1rem;
+  &:hover {
+    width: 2.6rem;
+    height: 2.6rem;
+  }
 `;

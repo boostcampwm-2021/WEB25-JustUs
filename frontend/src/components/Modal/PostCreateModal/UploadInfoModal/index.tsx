@@ -5,7 +5,13 @@ import { useDispatch, useSelector } from "react-redux";
 import Carousel from "@components/Modal/PostCreateModal/UploadInfoModal/Carousel";
 import { RootState } from "@src/reducer";
 import ModalSub from "./ModalSub";
-import { flexRowCenterAlign, flexColumnCenterAlign } from "@styles/StyledComponents";
+import {
+  flexRowCenterAlign,
+  flexColumnCenterAlign,
+  modalTitleFont,
+  modalSlideUpAnimation,
+  modalHeaderButtonIcon,
+} from "@styles/StyledComponents";
 
 interface FileObject {
   imageUrl: File | string;
@@ -262,7 +268,7 @@ const headerBtn = css`
   border: none;
   background: none;
   & > img {
-    cursor: pointer;
+    ${modalHeaderButtonIcon}
   }
 `;
 const ModalContainer = styled.div<{ isSubOpened: boolean }>`
@@ -272,7 +278,8 @@ const ModalContainer = styled.div<{ isSubOpened: boolean }>`
   height: 60%;
   min-height: 460px;
   border-radius: 1rem;
-  box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
+  box-shadow: 0 2px 3px 0 ${COLOR.SHADOW_BLACK};
+  ${modalSlideUpAnimation}
 
   &::-webkit-scrollbar {
     display: none;
@@ -295,11 +302,11 @@ const ModalHeader = styled.div`
 `;
 const ModalTitle = styled.div`
   ${flexRowCenterAlign}
+  ${modalTitleFont}
   grid-column-start: 2;
   grid-column-end: 3;
   grid-row-start: 1;
   grid-row-end: 2;
-  font-size: 2.5rem;
 `;
 const ModalHeaderLeftBtn = styled.button`
   ${headerBtn}
