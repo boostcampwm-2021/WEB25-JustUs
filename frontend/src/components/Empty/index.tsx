@@ -1,6 +1,8 @@
 import { useDispatch } from "react-redux";
 import styled, { keyframes } from "styled-components";
+import { flexRowCenterAlign, flexColumnCenterAlign } from "@src/styles/StyledComponents";
 import COLOR from "@styles/Color";
+import React from "react";
 const Empty = () => {
   const dispatch = useDispatch();
   const onClickCreateGroupBtn = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -11,9 +13,23 @@ const Empty = () => {
     dispatch({ type: "OPEN_MODAL", payload: "JoinGroupModal" });
   };
 
+  const enterMouse = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (!e.target) return;
+    ((e.target as HTMLButtonElement).previousSibling as HTMLElement).style.visibility = "visible";
+  };
+  const leaveMouse = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (!e.target) return;
+    ((e.target as HTMLButtonElement).previousSibling as HTMLElement).style.visibility = "hidden";
+  };
+
   return (
     <EmptyContainer>
-      <GroupButton onClick={onClickCreateGroupBtn}>그룹 생성</GroupButton>
+      <ButtonWrapper>
+        <MessageBox>그룹을 새로 만드시겠습니까?</MessageBox>
+        <GroupButton onClick={onClickCreateGroupBtn} onMouseEnter={enterMouse} onMouseLeave={leaveMouse}>
+          그룹 생성
+        </GroupButton>
+      </ButtonWrapper>
       <Polaroid>
         <Appareil>
           <Bandes>
@@ -35,10 +51,67 @@ const Empty = () => {
           <Cache></Cache>
         </Photo>
       </Polaroid>
-      <GroupButton onClick={onClickJoinGroupBtn}>그룹 참가</GroupButton>
+      <ButtonWrapper>
+        <MessageBox>초대 받은 코드가 있나요?</MessageBox>
+        <GroupButton onClick={onClickJoinGroupBtn} onMouseEnter={enterMouse} onMouseLeave={leaveMouse}>
+          그룹 참가
+        </GroupButton>
+      </ButtonWrapper>
     </EmptyContainer>
   );
 };
+
+const jump = keyframes`
+    0% {
+      transform: translateY(0%) ;
+    }
+    20% {
+      transform: translateY(2%) ;
+    }
+    50% {
+      transform: translateY(0%) ;
+    }
+    70% {
+      transform: translateY(-2%) ;
+    }
+    100% {
+      transform: translateY(0%) ;
+    }
+    `;
+
+const MessageBox = styled.div`
+  ${flexRowCenterAlign}
+  position: relative;
+  background: ${(props) => props.theme.PRIMARY};
+  border-radius: 0.4em;
+  height: 10rem;
+  font-size: 2rem;
+  color: ${(props) => props.theme.MENUTEXT};
+  border-radius: 30px;
+  bottom: 2rem;
+  width: 30rem;
+  border: 3px solid ${(props) => props.theme.PRIMARY};
+  font-weight: bold;
+  animation: ${jump} 1.2s 0s linear infinite;
+  visibility: hidden;
+  &:after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    width: 0;
+    height: 0;
+    border: 28px solid transparent;
+    border-top-color: ${(props) => props.theme.PRIMARY};
+    border-bottom: 0;
+    margin-bottom: -28px;
+  }
+`;
+
+const ButtonWrapper = styled.div`
+  ${flexColumnCenterAlign}
+  align-self: center;
+  justify-self: center;
+`;
 
 const EmptyContainer = styled.div`
   display: grid;
@@ -49,31 +122,25 @@ const EmptyContainer = styled.div`
   background-color: ${(props) => props.theme.SECONDARY};
   padding-top: 5vh;
   overflow: hidden;
+  z-index: 7;
 `;
 
 const Polaroid = styled.div``;
 
 const GroupButton = styled.button`
-  border: 10px double ${(props) => props.theme.PRIMARY};
-  height: 15rem;
-  width: 15rem;
-  display: block;
-  text-align: center;
+  border: 4px double ${(props) => props.theme.SECONDARY};
+  height: 20rem;
+  width: 20rem;
   cursor: pointer;
   overflow: hidden;
-  position: relative;
-  color: ${COLOR.WHITE};
+  color: ${(props) => props.theme.PRIMARY};
   font-weight: bold;
-  font-size: 2.4rem;
-  align-self: center;
-  justify-self: center;
+  font-size: 3rem;
   background-color: ${(props) => props.theme.SECONDARY};
   border-radius: 40%;
   box-shadow: 10px 5px 15px rgba(0, 0, 0, 0.2);
-
   &:hover {
-    background-color: ${(props) => props.theme.PRIMARY};
-    border: 10px double ${(props) => props.theme.SECONDARY};
+    border: 10px dashed ${(props) => props.theme.PRIMARY};
   }
 `;
 
@@ -99,9 +166,10 @@ const Appareil = styled.div`
   margin: auto;
   border-radius: 40px;
   position: relative;
+  box-shadow: 10px 5px 15px rgba(0, 0, 0, 0.2);
 `;
 const Bandes = styled.div`
-  background-color: white;
+  background-color: ${COLOR.WHITE};
   position: absolute;
   left: 50%;
   right: 0;
@@ -163,7 +231,7 @@ const Souslentille = styled.div`
   border: 4px solid #3c3a3f;
 `;
 const Pointe = styled.div`
-  background-color: black;
+  background-color: ${COLOR.BLACK};
   width: 6px;
   height: 6px;
   border-radius: 50%;
@@ -174,13 +242,13 @@ const Pointe = styled.div`
 
 const flash = keyframes`
 0%{
-  background-color: white;
-  border-color: white;
+  background-color: ${COLOR.WHITE};
+  border-color: ${COLOR.WHITE};
   transform: scale(1);
 }
 5% {
-  background-color: white;
-  border-color: white;
+  background-color: ${COLOR.WHITE};
+  border-color: ${COLOR.WHITE};
   transform: scale(100);
 }
 7% {
@@ -248,6 +316,7 @@ const Photo = styled.div`
   left: calc(50vw - 315px / 2);
   transform: translateY(-20px);
   animation: ${imprime} 6s 1s linear infinite;
+  box-shadow: 10px 5px 15px rgba(0, 0, 0, 0.2);
 `;
 const Cache = styled.div`
   height: 80%;
