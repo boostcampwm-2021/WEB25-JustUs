@@ -15,6 +15,7 @@ import ToastManager from "@src/components/ToastMessage/ToastManager";
 import { SET_RIGHT_CLICK_MODAL } from "@src/reducer/MapReducer";
 import { SET_PROFILE_WRAPPER_MODAL_OPENED, SET_ALBUM_SETTING_WRAPPER_MODAL_IDX } from "@src/reducer/Modal";
 import Spinner from "@components/Spinner";
+import { CLOSE_CLUSTERING_WINDOW } from "@src/reducer/MapReducer";
 
 const Main = () => {
   const [isToggle, setIsToggle] = useState<boolean>(true);
@@ -31,7 +32,7 @@ const Main = () => {
       dispatch({ type: SET_RIGHT_CLICK_MODAL, payload: { isRightClickModalOpened: false } });
 
       const isClusteringClicked = (target as HTMLElement).getAttribute("src")?.match(/\/icons\/podo-(three|many).png/);
-      !isClusteringClicked && dispatch({ type: "CLOSE_INFO_WINDOW" });
+      !isClusteringClicked && dispatch({ type: CLOSE_CLUSTERING_WINDOW });
     });
 
     document.addEventListener("contextmenu", () => {

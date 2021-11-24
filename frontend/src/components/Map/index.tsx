@@ -6,11 +6,10 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@src/reducer";
 import Marker from "@components/Map/Markers";
 import MapLayerPostModal from "./Modal";
-import dummyPosts from "./dummyPosts";
 import SetClustering from "@components/Map/SetClustering";
 import ReactDOM from "react-dom";
 import PostListModal from "@components/Modal/PostListModal";
-import { SET_RIGHT_CLICK_MODAL, SET_INFO_WINDOW, SET_INFO_WINDOW_OPENED } from "@src/reducer/MapReducer";
+import { SET_RIGHT_CLICK_MODAL, SET_CLUSTERING_WINDOW, SET_CLUSTERING_WINDOW_OPENED } from "@src/reducer/MapReducer";
 
 declare const MarkerClustering: any;
 declare global {
@@ -98,8 +97,8 @@ const setMap = (
     type: string;
     payload:
       | { isRightClickModalOpened: boolean }
-      | { infoWindow: naver.maps.InfoWindow }
-      | { isInfoWindowOpened: boolean };
+      | { clusteringWindow: naver.maps.InfoWindow }
+      | { isClusteringWindowOpened: boolean };
   }>,
 ) => {
   const pos = new naver.maps.LatLng(INIT_X, INIT_Y);
@@ -111,14 +110,14 @@ const setMap = (
   });
 
   setNaverMap(map);
-  const newInfoWindow = new naver.maps.InfoWindow({
+  const newClusteringWindow = new naver.maps.InfoWindow({
     content: "",
     maxWidth: 200,
     borderColor: COLOR.GRAY,
     borderWidth: 2,
     disableAnchor: true,
   });
-  dispatch({ type: SET_INFO_WINDOW, payload: { infoWindow: newInfoWindow } });
+  dispatch({ type: SET_CLUSTERING_WINDOW, payload: { clusteringWindow: newClusteringWindow } });
 
   naver.maps.Event.addListener(map, "rightclick", (e: PointerEvent) => {
     setClickInfo(e);
@@ -128,13 +127,13 @@ const setMap = (
   });
   naver.maps.Event.addListener(map, "zoom_changed", (e: Number) => {
     dispatch({ type: SET_RIGHT_CLICK_MODAL, payload: { isRightClickModalOpened: false } });
-    newInfoWindow.close();
-    dispatch({ type: SET_INFO_WINDOW_OPENED, payload: { isInfoWindowOpened: false } });
+    newClusteringWindow.close();
+    dispatch({ type: SET_CLUSTERING_WINDOW_OPENED, payload: { isClusteringWindowOpened: false } });
   });
   naver.maps.Event.addListener(map, "mousedown", (e: PointerEvent) => {
     dispatch({ type: SET_RIGHT_CLICK_MODAL, payload: { isRightClickModalOpened: false } });
-    newInfoWindow.close();
-    dispatch({ type: SET_INFO_WINDOW_OPENED, payload: { isInfoWindowOpened: false } });
+    newClusteringWindow.close();
+    dispatch({ type: SET_CLUSTERING_WINDOW_OPENED, payload: { isClusteringWindowOpened: false } });
   });
 };
 
@@ -142,8 +141,8 @@ const Map = () => {
   const dispatch = useDispatch();
   const {
     isRightClickModalOpened,
-    infoWindow,
-  }: { isRightClickModalOpened: boolean; infoWindow: naver.maps.InfoWindow | null } = useSelector(
+    clusteringWindow,
+  }: { isRightClickModalOpened: boolean; clusteringWindow: naver.maps.InfoWindow | null } = useSelector(
     (state: RootState) => state.map,
   );
   const [rightPosition, setRightPosition] = useState<Point>({ x: 0, y: 0 });
@@ -171,8 +170,8 @@ const Map = () => {
 
     const setMarker = () => {
       const handleClickMarker = (clickedPostID: number) => {
-        if (infoWindow) {
-          infoWindow.close();
+        if (clusteringWindow) {
+          clusteringWindow.close();
         }
         dispatch({ type: SET_RIGHT_CLICK_MODAL, payload: { isRightClickModalOpened: false } });
         dispatch({ type: "SELECT_POST_REQUEST", postId: clickedPostID });
@@ -191,11 +190,11 @@ const Map = () => {
           return { postId: member.postId, postTitle: member.title };
         });
 
-        if (!infoWindow) return;
-        infoWindow.setContent(['<div id="clustredMarkerList" style="width:20rem;height:10rem;">'].join(""));
+        if (!clusteringWindow) return;
+        clusteringWindow.setContent(['<div id="clustredMarkerList" style="width:20rem;height:10rem;">'].join(""));
         if (!naverMap) return;
-        infoWindow.open(naverMap, LatLng);
-        dispatch({ type: SET_INFO_WINDOW_OPENED, payload: { isInfoWindowOpened: true } });
+        clusteringWindow.open(naverMap, LatLng);
+        dispatch({ type: SET_CLUSTERING_WINDOW_OPENED, payload: { isClusteringWindowOpened: true } });
 
         ReactDOM.render(
           <React.StrictMode>
