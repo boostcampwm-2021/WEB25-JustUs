@@ -47,9 +47,14 @@ export const useResizeFile = (initFiles: FileObject[] = []) => {
     setFiles(files.filter((file) => file.imageId !== deleteItem.imageId));
   };
 
+  const clearFiles = () => {
+    setFiles([]);
+  };
+
   return {
     files,
     addFile,
     removeFile,
+    clearFiles,
   };
 };
