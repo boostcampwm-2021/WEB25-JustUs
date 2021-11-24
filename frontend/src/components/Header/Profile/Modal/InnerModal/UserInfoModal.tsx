@@ -1,10 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import styled, { keyframes } from "styled-components";
 import Modal from "@components/Modal";
 import { useDispatch } from "react-redux";
 import COLOR from "@styles/Color";
 import { flexRowCenterAlign } from "@src/styles/StyledComponents";
-import { userInfoUpdateAction, SET_UPDATED_INIT } from "@src/reducer/UserReducer";
+import { userInfoUpdateAction } from "@src/reducer/UserReducer";
 import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
 import { SET_ERROR_TOAST } from "@src/reducer/ToastReducer";
@@ -14,7 +14,7 @@ const UserInfoModal = () => {
   const imageRef = useRef<HTMLImageElement>(null);
   const [imageFile, setImageFile] = useState<File>();
   const dispatch = useDispatch();
-  const { userNickName, userProfile, updateSucceed } = useSelector((state: RootState) => state.user);
+  const { userNickName, userProfile } = useSelector((state: RootState) => state.user);
   const [userImg, setUserImg] = useState<string>(userProfile);
   const [newName, setNewName] = useState<string>(userNickName);
 
@@ -53,26 +53,6 @@ const UserInfoModal = () => {
     closeUserInfoModal();
   };
 
-  useEffect(() => {
-    const updateSucceeded = () => {
-      closeUserInfoModal();
-      dispatch({ type: SET_UPDATED_INIT });
-    };
-
-    const updateFailed = () => {
-      // alert("회원정보 수정에 실패했습니다.");
-    };
-
-    if (updateSucceed === null) return;
-
-    if (updateSucceed) {
-      updateSucceeded();
-      return;
-    }
-
-    updateFailed();
-  }, [userNickName]);
-  
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setNewName(event.target.value);
   };
