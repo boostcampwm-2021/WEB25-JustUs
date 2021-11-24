@@ -33,7 +33,10 @@ const CreateGroupModal = () => {
       if (!e.target) return;
       if (!imageRef.current) return;
       if (!e.target.result) return;
+      setGroupImg("");
+      clearFiles();
       addFile(file);
+      event.target.value = "";
     };
     reader.readAsDataURL(file);
   };

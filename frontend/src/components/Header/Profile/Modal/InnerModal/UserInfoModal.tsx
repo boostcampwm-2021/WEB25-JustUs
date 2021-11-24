@@ -35,9 +35,12 @@ const UserInfoModal = () => {
       if (!e.target) return;
       if (!imageRef.current) return;
       if (!e.target.result) return;
+      setUserImg("");
+      clearFiles();
       addFile(file);
+      event.target.value = "";
     };
-    reader.readAsDataURL(file);
+    if (file) reader.readAsDataURL(file);
   };
 
   useEffect(() => {

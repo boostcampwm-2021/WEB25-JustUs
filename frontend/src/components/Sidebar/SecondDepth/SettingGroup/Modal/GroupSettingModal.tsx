@@ -17,6 +17,7 @@ const GroupSettingModal = () => {
   const uploadBtnRef = useRef<HTMLInputElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
   const dispatch = useDispatch();
+  const defaultImageURL = "https://kr.object.ncloudstorage.com/justus/base/podo-many.png";
 
   const closeModal = () => {
     dispatch({ type: "CLOSE_MODAL" });
@@ -57,9 +58,12 @@ const GroupSettingModal = () => {
       if (!e.target) return;
       if (!imageRef.current) return;
       if (!e.target.result) return;
+      setNowImg("");
+      clearFiles();
       addFile(file);
+      event.target.value = "";
     };
-    reader.readAsDataURL(file);
+    if (file) reader.readAsDataURL(file);
   };
 
   useEffect(() => {
@@ -102,7 +106,7 @@ const GroupSettingModal = () => {
                 width="100%"
                 height="100%"
               />
-              {nowImg ? (
+              {nowImg && nowImg != defaultImageURL ? (
                 <DeleteImgBtnWrapper onClick={onClickDeleteBtn}>
                   <img src="/icons/delete.svg" alt="delete button"></img>
                 </DeleteImgBtnWrapper>

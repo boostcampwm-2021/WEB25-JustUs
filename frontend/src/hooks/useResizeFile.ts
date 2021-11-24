@@ -13,7 +13,7 @@ export const useResizeFile = (initFiles: FileObject[] = []) => {
     const baseSize = MB * 4;
     const compSize = MB;
     if (file.size <= baseSize) {
-      setFiles([...files, { imageUrl: file, imageId: (imageCnt++).toString() }]);
+      setFiles((prev) => [...prev, { imageUrl: file, imageId: (imageCnt++).toString() }]);
     } else {
       const reader = new FileReader();
       reader.readAsDataURL(file);
@@ -37,7 +37,10 @@ export const useResizeFile = (initFiles: FileObject[] = []) => {
             ia[i] = byteString.charCodeAt(i);
           }
           const tmpThumbFile = new Blob([ab], { type: mimeString });
-          setFiles([...files, { imageUrl: new File([tmpThumbFile], file.name), imageId: (imageCnt++).toString() }]);
+          setFiles((prev) => [
+            ...prev,
+            { imageUrl: new File([tmpThumbFile], file.name), imageId: (imageCnt++).toString() },
+          ]);
         };
       };
     }
