@@ -145,6 +145,7 @@ const ModalContent = styled.div`
     border-radius: 3px;
     color: ${COLOR.WHITE};
     background-color: ${(props) => props.theme.SECONDARY};
+    padding: 0 1rem 0 0.5rem;
     font-size: 2.5rem;
     font-family: "NanumDaCaeSaRang";
   }
