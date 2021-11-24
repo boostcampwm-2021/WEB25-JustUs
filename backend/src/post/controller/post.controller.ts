@@ -7,7 +7,7 @@ import { UpdatePostInfoRequestDto } from "src/dto/post/updatePostInfoRequest.dto
 import { ShiftPostRequestDto } from "src/dto/post/shiftPostRequest.dto";
 import { GetSearchPostResponse } from "src/dto/post/getSearchPostResponse.dto";
 import { FilesInterceptor } from "@nestjs/platform-express";
-import { multerOption } from "src/image/service/image.service";
+import { multerOption } from "src/configs";
 import {
   SwaggerCreatePost,
   SwaggerGetSearchPost,
