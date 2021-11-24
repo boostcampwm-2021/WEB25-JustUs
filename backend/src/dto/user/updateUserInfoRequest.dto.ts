@@ -1,5 +1,5 @@
-import { IsString, IsNotEmpty } from "class-validator";
-import { ApiProperty } from "@nestjs/swagger";
+import { IsString, IsNotEmpty, IsOptional } from "class-validator";
+import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 
 export class UpdateUserInfoRequestDto {
   @IsString()
@@ -7,6 +7,7 @@ export class UpdateUserInfoRequestDto {
   @ApiProperty()
   userNickname: string;
 
-  @ApiProperty({ type: "file" })
+  @IsOptional()
+  @ApiPropertyOptional({ type: "file" })
   profileImage: any;
 }

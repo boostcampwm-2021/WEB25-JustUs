@@ -57,7 +57,11 @@ const PostInfoModal = () => {
     >
       <Modal>
         <ModalHeader>
-          <PostTitle>{selectedPost.postTitle}</PostTitle>
+          <PostTitle>
+            {selectedPost.postTitle.length > 20
+              ? selectedPost.postTitle.substring(0, 20).concat("...")
+              : selectedPost.postTitle}
+          </PostTitle>
           {selectedPost.userId === userId ? (
             <MoreIconWrapper
               className="more-icon"

@@ -11,6 +11,8 @@ import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
 import { useHistory } from "react-router-dom";
 import { getGroupListAction } from "@src/reducer/GroupReducer";
+import { SET_RIGHT_CLICK_MODAL } from "@src/reducer/MapReducer";
+import { SET_PROFILE_WRAPPER_MODAL_OPENED, SET_ALBUM_SETTING_WRAPPER_MODAL_IDX } from "@src/reducer/Modal";
 import Spinner from "@components/Spinner";
 
 const Main = () => {
@@ -25,15 +27,15 @@ const Main = () => {
     document.addEventListener("click", (event) => {
       const { target, clientX, clientY } = event;
       dispatch({ type: GroupModalAction.SET_CLICKED_TARGET, payload: { target, clientX, clientY } });
-      dispatch({ type: "SET_RIGHT_CLICK_MODAL", payload: false });
+      dispatch({ type: SET_RIGHT_CLICK_MODAL, payload: { isRightClickModalOpened: false } });
 
       const isClusteringClicked = (target as HTMLElement).getAttribute("src")?.match(/\/icons\/podo-(three|many).png/);
       !isClusteringClicked && dispatch({ type: "CLOSE_INFO_WINDOW" });
     });
 
     document.addEventListener("contextmenu", () => {
-      dispatch({ type: "SET_PROFILE_WRAPPER_MODAL_OPENED", payload: false });
-      dispatch({ type: "SET_ALBUM_SETTING_WRAPPER_MODAL_IDX", payload: -1 });
+      dispatch({ type: SET_PROFILE_WRAPPER_MODAL_OPENED, payload: { isProfileWrapperModalOpened: false } });
+      dispatch({ type: SET_ALBUM_SETTING_WRAPPER_MODAL_IDX, payload: { albumSettingWrapperModalIdx: -1 } });
     });
   }, []);
 

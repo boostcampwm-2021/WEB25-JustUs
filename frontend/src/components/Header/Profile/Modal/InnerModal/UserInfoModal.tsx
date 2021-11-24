@@ -14,8 +14,8 @@ const UserInfoModal = () => {
   const [imageFile, setImageFile] = useState<File>();
   const dispatch = useDispatch();
   const { userNickName, userProfile, updateSucceed } = useSelector((state: RootState) => state.user);
-  const [userImg, setUserImg] = useState(userProfile as string);
-  const [newName, setNewName] = useState(userNickName as string);
+  const [userImg, setUserImg] = useState<string>(userProfile);
+  const [newName, setNewName] = useState<string>(userNickName);
 
   const closeUserInfoModal = () => {
     dispatch({ type: "CLOSE_MODAL" });

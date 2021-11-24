@@ -174,8 +174,10 @@ function* requestUpdateGroup(action: any) {
 function* requestHashtags(action: any) {
   try {
     const result: ResponseGenerator = yield call(requestHashtagsApi, action.payload);
-    yield put({ type: SET_HASHTAGS, payload: result.data.hashtags });
-  } catch (err) {}
+    yield put({ type: SET_HASHTAGS, payload: { hashTags: result.data.hashtags, hashTagsError: false } });
+  } catch (err) {
+    yield put({ type: SET_HASHTAGS, payload: { hashTags: [], hashTagsError: true } });
+  }
 }
 
 function* watchGroupInfo() {

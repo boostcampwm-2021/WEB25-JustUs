@@ -83,7 +83,7 @@ const SearchContainer = styled.div`
 
 const SearchInput = styled.input`
   height: 100%;
-  width: 80%;
+  width: 100%;
   border: none;
   &:focus-visible {
     outline: none;

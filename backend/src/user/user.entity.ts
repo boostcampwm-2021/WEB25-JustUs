@@ -8,7 +8,7 @@ export class User extends TimeStampEntity {
   @PrimaryGeneratedColumn()
   userId: number;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: "text" })
   profileImage: string;
 
   @Column()

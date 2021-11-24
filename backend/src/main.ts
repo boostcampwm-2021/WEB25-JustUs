@@ -3,6 +3,7 @@ import * as cookieParser from "cookie-parser";
 import { NestFactory } from "@nestjs/core";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import { AppModule } from "./app.module";
+import { HttpExceptionFilter } from "./filter/httpException.filter";
 
 const options = {
   origin: process.env.FRONT_LOCALHOST,
@@ -15,6 +16,7 @@ async function bootstrap() {
   process.env.NODE_ENV === "dev" && app.enableCors(options);
   app.use(cookieParser());
   app.setGlobalPrefix("/api");
+  app.useGlobalFilters(new HttpExceptionFilter());
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,

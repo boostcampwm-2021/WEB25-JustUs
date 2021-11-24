@@ -21,29 +21,30 @@ export class JwtAuthGuard extends AuthGuard("jwt") {
     }
 
     const validationRefreshToken = await this.validateToken(refreshToken);
-    if (!validationRefreshToken) throw new UnauthorizedException("토큰이 존재하지 않습니다.");
+    if (!validationRefreshToken) throw new UnauthorizedException("Expired RefreshToken");
 
-    const { userId } = validationRefreshToken;
+    const { userId, userEmail } = validationRefreshToken;
     const accessTokenExpireTime = "1h";
-    const newAccessToken = this.createToken(userId, accessTokenExpireTime);
+    const newAccessToken = this.createToken(userId, userEmail, accessTokenExpireTime);
     response.cookie("accessToken", newAccessToken);
     request.user = validationRefreshToken;
 
     return true;
   }
 
-  async validateToken(token: string): Promise<{ userId: number }> {
+  async validateToken(token: string): Promise<{ userId: number; userEmail: string }> {
     try {
-      const { userId } = await this.jwtService.verify(token);
-      return { userId: userId };
+      const { userId, userEmail } = await this.jwtService.verify(token);
+      return { userId, userEmail };
     } catch (e) {
       return undefined;
     }
   }
 
-  createToken(userId: number, expire: string): string {
+  createToken(userId: number, userEmail: string, expire: string): string {
     const payload = {
       userId: userId,
+      userEmail: userEmail,
       userToken: "loginToken",
     };
 
