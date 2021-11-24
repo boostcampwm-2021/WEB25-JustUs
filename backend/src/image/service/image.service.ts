@@ -6,6 +6,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { ImageRepository } from "../image.repository";
 import { Post } from "src/post/post.entity";
 import { Image } from "../image.entity";
+import { QueryRunner } from "typeorm";
 
 export const s3 = new AWS.S3({
   endpoint: process.env.NCP_OBJECT_STORAGE_ENDPOINT,
@@ -55,15 +56,22 @@ export class ImageService {
     });
   }
 
-  async updateImages(post: Post, addImages: string[], deleteImagesId: number[]): Promise<void> {
+  async updateImages(
+    post: Post,
+    addImages: string[],
+    deleteImagesId: number[],
+    queryRunner: QueryRunner,
+  ): Promise<void> {
     if (deleteImagesId)
       typeof deleteImagesId === "number"
-        ? this.imageRepository.softRemove({ imageId: deleteImagesId })
-        : deleteImagesId.forEach(imageId => {
-            this.imageRepository.softRemove({ imageId });
-          });
+        ? await queryRunner.manager.getCustomRepository(ImageRepository).softRemove({ imageId: deleteImagesId })
+        : await Promise.all(
+            deleteImagesId.map(async imageId => {
+              await queryRunner.manager.getCustomRepository(ImageRepository).softRemove({ imageId });
+            }),
+          );
     for (const image of addImages) {
-      await this.imageRepository.save({
+      await queryRunner.manager.getCustomRepository(ImageRepository).save({
         imageUrl: image,
         post: post,
       });
