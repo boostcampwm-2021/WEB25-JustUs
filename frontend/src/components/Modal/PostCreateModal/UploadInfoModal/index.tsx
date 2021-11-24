@@ -118,7 +118,7 @@ const UploadInfoModal = ({
   };
 
   const onClickLocationBtn = () => {
-    setIsSubOpened(true);
+    setIsSubOpened((prev) => !prev);
   };
 
   const handleSaveBtn = () => {
