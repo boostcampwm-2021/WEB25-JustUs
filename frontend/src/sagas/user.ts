@@ -1,4 +1,4 @@
-import { all, fork, put, call, takeEvery, select } from "redux-saga/effects";
+import { all, fork, put, call, takeEvery, select, delay } from "redux-saga/effects";
 import {
   USER_INFO_REQUEST,
   USER_INFO_SUCCEED,
@@ -12,6 +12,7 @@ import {
   REQUEST_UPDATE_GROUP_ORDER,
 } from "@src/reducer/UserReducer";
 import axios from "axios";
+import { SET_SUCCEED_TOAST, SET_ERROR_TOAST } from "@src/reducer/ToastReducer";
 import { GET_GROUP_LIST_REQUEST, GET_GROUP_LIST_SUCCEED, GET_GROUP_LIST_FAILED } from "@src/reducer/GroupReducer";
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
@@ -98,8 +99,16 @@ function* updateUserInfo() {
       type: SET_UPDATED_USER_INFO,
       payload: { userNickName: user.updateUserNickName, userProfile: result.data.profileImage },
     });
+    yield put({
+      type: SET_SUCCEED_TOAST,
+      payload: { text: `회원 정보가 수정되었습니다.` },
+    });
   } catch (err: any) {
     yield put({ type: SET_UPDATE_FAIL });
+    yield put({
+      type: SET_ERROR_TOAST,
+      payload: { text: `회원 정보 수정에 실패했습니다.` },
+    });
   }
 }
 

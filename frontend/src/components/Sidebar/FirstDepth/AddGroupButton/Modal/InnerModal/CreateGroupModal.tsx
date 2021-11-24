@@ -5,6 +5,7 @@ import Modal from "@components/Modal";
 import { useDispatch } from "react-redux";
 import COLOR from "@styles/Color";
 import { createGroupAction } from "@src/reducer/GroupReducer";
+import { SET_ERROR_TOAST } from "@src/reducer/ToastReducer";
 
 const CreateGroupModal = () => {
   const uploadBtnRef = useRef<HTMLInputElement>(null);
@@ -46,7 +47,7 @@ const CreateGroupModal = () => {
   const onClickCreateBtn = () => {
     if (!groupNameRef.current) return;
     if (groupNameRef.current.value === "") {
-      alert("그룹 이름은 반드시 입력해야 합니다.");
+      dispatch({ type: SET_ERROR_TOAST, payload: { text: "그룹 이름은 반드시 입력해야 합니다." } });
       return;
     }
 

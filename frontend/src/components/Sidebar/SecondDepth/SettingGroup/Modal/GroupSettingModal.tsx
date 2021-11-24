@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import COLOR from "@styles/Color";
 import { RootState } from "@src/reducer";
 import { updateGroupAction } from "@src/reducer/GroupReducer";
+import { SET_ERROR_TOAST } from "@src/reducer/ToastReducer";
 
 const GroupSettingModal = () => {
   const { selectedGroup, albumList }: any = useSelector((state: RootState) => state.groups);
@@ -22,7 +23,7 @@ const GroupSettingModal = () => {
 
   const onClickUpdateBtn = () => {
     if (!newName) {
-      alert("그룹 이름은 반드시 입력해야 합니다.");
+      dispatch({ type: SET_ERROR_TOAST, payload: { text: "그룹 이름은 반드시 입력해야 합니다." } });
       return;
     }
     updateGroup();

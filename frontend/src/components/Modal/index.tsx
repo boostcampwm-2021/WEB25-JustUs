@@ -40,7 +40,7 @@ const Modal = ({ children, open = true }: ModalProps) => {
     return null;
   }
   modalRootEl.style.display = "flex";
-  modalRootEl.style.zIndex = "6";
+  modalRootEl.style.zIndex = "7";
 
   return ReactDOM.createPortal(children, modalRootEl);
 };

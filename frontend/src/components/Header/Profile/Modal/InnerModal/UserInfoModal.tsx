@@ -7,6 +7,7 @@ import { flexRowCenterAlign } from "@src/styles/StyledComponents";
 import { userInfoUpdateAction, SET_UPDATED_INIT } from "@src/reducer/UserReducer";
 import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
+import { SET_ERROR_TOAST } from "@src/reducer/ToastReducer";
 
 const UserInfoModal = () => {
   const uploadBtnRef = useRef<HTMLInputElement>(null);
@@ -45,13 +46,33 @@ const UserInfoModal = () => {
 
   const onClickUpdateBtn = () => {
     if (!newName) {
-      alert("닉네임은 반드시 입력해야 합니다.");
+      dispatch({ type: SET_ERROR_TOAST, payload: { text: "닉네임은 반드시 입력해야 합니다." } });
       return;
     }
     dispatch(userInfoUpdateAction({ updateUserNickName: newName, updateUserProfile: imageFile }));
     closeUserInfoModal();
   };
 
+  useEffect(() => {
+    const updateSucceeded = () => {
+      closeUserInfoModal();
+      dispatch({ type: SET_UPDATED_INIT });
+    };
+
+    const updateFailed = () => {
+      // alert("회원정보 수정에 실패했습니다.");
+    };
+
+    if (updateSucceed === null) return;
+
+    if (updateSucceed) {
+      updateSucceeded();
+      return;
+    }
+
+    updateFailed();
+  }, [userNickName]);
+  
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setNewName(event.target.value);
   };

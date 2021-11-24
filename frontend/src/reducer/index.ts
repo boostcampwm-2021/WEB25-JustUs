@@ -6,6 +6,7 @@ import AddressReducer from "./AddressReducer";
 import Theme from "./Theme";
 import UserReducer from "./UserReducer";
 import MapReducer from "./MapReducer";
+import ToastReducer from "./ToastReducer";
 import SpinnerReducer from "./SpinnerReducer";
 
 const rootReducer = combineReducers({
@@ -16,6 +17,7 @@ const rootReducer = combineReducers({
   address: AddressReducer,
   user: UserReducer,
   map: MapReducer,
+  toast: ToastReducer,
   spinner: SpinnerReducer,
 });
 

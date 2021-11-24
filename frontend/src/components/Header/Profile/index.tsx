@@ -59,6 +59,7 @@ const ProfileContainer = styled.div`
 const ProfileContent = styled.div`
   display: flex;
   align-items: center;
+  z-index: 5;
 `;
 const ProfileImage = styled.button<{ profile: string }>`
   width: 4vh;
