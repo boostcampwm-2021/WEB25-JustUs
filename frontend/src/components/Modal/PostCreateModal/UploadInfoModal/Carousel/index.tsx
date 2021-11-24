@@ -37,6 +37,9 @@ const Carousel = ({ files, carouselWidth }: CarouselProps) => {
   const loadHandler = (idx: number) => {
     if (idx === 0) dispatch({ type: "SPINNER_CLOSE" });
   };
+  const errorHandler = () => {
+    dispatch({ type: "SPINNER_CLOSE" });
+  };
 
   return (
     <CarouselContainer carouselWidth={carouselWidth} className="carouselContainer">
@@ -56,6 +59,7 @@ const Carousel = ({ files, carouselWidth }: CarouselProps) => {
                       : URL.createObjectURL(fileObject.imageUrl)
                   }
                   onLoad={() => loadHandler(idx)}
+                  onError={errorHandler}
                 ></img>
               </div>
             ))}
