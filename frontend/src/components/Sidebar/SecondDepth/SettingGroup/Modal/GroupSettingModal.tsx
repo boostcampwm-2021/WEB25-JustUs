@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import styled, { keyframes } from "styled-components";
 import { flexRowCenterAlign } from "@src/styles/StyledComponents";
 import Modal from "@components/Modal";
@@ -7,12 +7,13 @@ import COLOR from "@styles/Color";
 import { RootState } from "@src/reducer";
 import { updateGroupAction } from "@src/reducer/GroupReducer";
 import { SET_ERROR_TOAST } from "@src/reducer/ToastReducer";
+import { useResizeFile } from "@src/hooks/useResizeFile";
 
 const GroupSettingModal = () => {
   const { selectedGroup, albumList }: any = useSelector((state: RootState) => state.groups);
   const [nowImg, setNowImg] = useState(selectedGroup.groupImage);
   const [newName, setNewName] = useState(selectedGroup.groupName);
-  const [imageFile, setImageFile] = useState<File>();
+  const { files, addFile, clearFiles } = useResizeFile();
   const uploadBtnRef = useRef<HTMLInputElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
   const dispatch = useDispatch();
@@ -30,12 +31,11 @@ const GroupSettingModal = () => {
   };
 
   const updateGroup = () => {
-    const groupImage = imageFile;
     dispatch(
       updateGroupAction({
         groupId: selectedGroup.groupId,
         groupName: newName,
-        groupImage,
+        groupImage: files[0]?.imageUrl,
         albumList,
         clearImage: nowImg ? 0 : 1,
       }),
@@ -49,27 +49,26 @@ const GroupSettingModal = () => {
   };
 
   const loadImage = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const files = event.target.files;
-    if (!files) return;
-
-    const file = files[0];
+    const newfiles = event.target.files;
+    if (!newfiles) return;
+    const file = newfiles[0];
     const reader = new FileReader();
-
     reader.onload = (e) => {
       if (!e.target) return;
       if (!imageRef.current) return;
       if (!e.target.result) return;
-
-      setNowImg(e.target.result as string);
-      setImageFile(file as File);
+      addFile(file);
     };
-
     reader.readAsDataURL(file);
   };
 
+  useEffect(() => {
+    if (files[0]) setNowImg(URL.createObjectURL(files[0].imageUrl));
+  }, [files]);
+
   const onClickDeleteBtn = () => {
     setNowImg("");
-    setImageFile(undefined);
+    clearFiles();
   };
 
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
