@@ -5,7 +5,6 @@ import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
 import COLOR from "@styles/Color";
 import { flexRowCenterAlign } from "@styles/StyledComponents";
-import { flexColumnCenterAlign } from "@src/styles/StyledComponents";
 
 const UserInfoModal = () => {
   const { selectedTheme } = useSelector((state: RootState) => state.theme);
@@ -21,19 +20,8 @@ const UserInfoModal = () => {
   ];
 
   const radioHandler = (id: number) => {
-    switch (id) {
-      case 1:
-        dispatch({ type: "CHANGE_THEME1" });
-        break;
-      case 2:
-        dispatch({ type: "CHANGE_THEME2" });
-        break;
-      case 3:
-        dispatch({ type: "CHANGE_THEME3" });
-        break;
-      default:
-        break;
-    }
+    localStorage.setItem("themeNumber", id.toString());
+    dispatch({ type: "CHANGE_THEME", selectedTheme: id });
   };
 
   return (

@@ -23,8 +23,10 @@ const Main = () => {
   const { spinnerActivate }: any = useSelector((state: RootState) => state.spinner);
   const { userNickName, userInfoError, userLoggedOut } = useSelector((state: RootState) => state.user);
   const history = useHistory();
+  const themeNumber = Number(localStorage.getItem("themeNumber"));
 
   useEffect(() => {
+    dispatch({ type: "CHANGE_THEME", selectedTheme: themeNumber });
     document.addEventListener("click", (event) => {
       const { target, clientX, clientY } = event;
       dispatch({ type: GroupModalAction.SET_CLICKED_TARGET, payload: { target, clientX, clientY } });
