@@ -139,12 +139,14 @@ function* uploadPost({ post }: { type: string; post: IPost }) {
 }
 
 function* getPost({ postId }: { type: string; postId: number }) {
+  yield put({ type: "SPINNER_OPEN" });
   try {
     const result: ResponseGenerator = yield call(getPostApi, postId);
     yield put({ type: "SELECT_POST_SUCCEED", post: result.data });
     yield put({ type: "OPEN_MODAL", payload: "PostShowModal" });
   } catch (err: unknown) {
     yield put({ type: "SELECT_POST_FAILED" });
+    yield put({ type: "SPINNER_CLOSE" });
   }
 }
 
