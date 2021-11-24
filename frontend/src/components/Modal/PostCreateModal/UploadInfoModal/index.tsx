@@ -11,6 +11,7 @@ import {
   modalTitleFont,
   modalSlideUpAnimation,
   modalHeaderButtonIcon,
+  scrollbar,
 } from "@styles/StyledComponents";
 
 interface FileObject {
@@ -373,16 +374,9 @@ const BackDrop = styled.div`
   ${contentWhiteSpace}
   ${contentFont}
   ${contentSize}
+  ${scrollbar}
   height: 100%;
   position: absolute;
-  overflow-y: scroll;
-  &::-webkit-scrollbar {
-    width: 0.8rem;
-  }
-  &::-webkit-scrollbar-thumb {
-    background-color: ${(props) => props.theme.SECONDARY};
-    border-radius: 1rem;
-  }
 `;
 const HighLights = styled.div`
   ${contentOverflow}
@@ -404,14 +398,7 @@ const InputText = styled.textarea`
   height: 100%;
   resize: none;
   position: relative;
-  overflow-y: scroll;
-  &::-webkit-scrollbar {
-    width: 0.8rem;
-  }
-  &::-webkit-scrollbar-thumb {
-    background-color: ${(props) => props.theme.SECONDARY};
-    border-radius: 1rem;
-  }
+  ${scrollbar}
   background-color: transparent;
   &:focus {
     outline: none;

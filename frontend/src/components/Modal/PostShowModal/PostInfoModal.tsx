@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import COLOR from "@src/styles/Color";
 import Carousel from "@components/Modal/PostCreateModal/UploadInfoModal/Carousel";
-import { flexRowCenterAlign } from "@styles/StyledComponents";
+import { flexRowCenterAlign, scrollbar } from "@styles/StyledComponents";
 import { ReactComponent as MoreVertSVG } from "@styles/icons/more-vert.svg";
 import PostSettingModal from "./Modal";
 import { useState } from "react";
@@ -135,11 +135,11 @@ const MoreIconWrapper = styled.div`
 const ModalContent = styled.div`
   font-size: 2.5rem;
   padding: 1rem 1rem 1rem 1rem;
-  overflow-y: auto;
   font-family: "NanumDaCaeSaRang";
   white-space: pre-line;
   height: 20rem;
   box-sizing: border-box;
+  ${scrollbar}
 
   & mark {
     border-radius: 3px;

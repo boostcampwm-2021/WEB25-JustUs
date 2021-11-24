@@ -47,3 +47,13 @@ export const modalHeaderButtonIcon = css`
   height: 2.4rem;
   cursor: pointer;
 `;
+export const scrollbar = css`
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    width: 0.8rem;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: ${(props) => props.theme.SECONDARY};
+    border-radius: 1rem;
+  }
+`;
