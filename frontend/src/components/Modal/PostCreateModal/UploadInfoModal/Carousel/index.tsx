@@ -1,6 +1,7 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import COLOR from "@styles/Color";
+import { flexRowCenterAlign, flexColumnCenterAlign } from "@styles/StyledComponents";
 
 interface FileObject {
   imageUrl: File | string;
@@ -15,12 +16,12 @@ const Carousel = ({ files, carouselWidth }: CarouselProps) => {
   const carouselRef = useRef<HTMLDivElement>(null);
   const [imageIndex, setImageIndex] = useState(0);
   const showNextImage = () => {
-    if (imageIndex == files.length - 1 || !carouselRef.current) return;
+    if (imageIndex === files.length - 1 || !carouselRef.current) return;
     setImageIndex(imageIndex + 1);
   };
 
   const showPrevImage = () => {
-    if (imageIndex == 0 || !carouselRef.current) return;
+    if (imageIndex === 0 || !carouselRef.current) return;
     setImageIndex(imageIndex - 1);
   };
 
@@ -30,31 +31,34 @@ const Carousel = ({ files, carouselWidth }: CarouselProps) => {
   }, [imageIndex]);
 
   return (
-    <CarouselContainer carouselWidth={carouselWidth}>
-      <ChangeImageButton onClick={showPrevImage} type="button">
-        <img src="/icons/prev.svg" alt="prev image" height="30%"></img>
-      </ChangeImageButton>
-      <CarouselWindow>
-        <CarouselImage ref={carouselRef} carouselWidth={carouselWidth}>
-          {files.map((fileObject, idx) => (
-            <div key={idx}>
-              <img
-                src={
-                  typeof fileObject.imageUrl === "string"
-                    ? fileObject.imageUrl
-                    : URL.createObjectURL(fileObject.imageUrl)
-                }
-              ></img>
-            </div>
-          ))}
-        </CarouselImage>
-      </CarouselWindow>
-      <ChangeImageButton onClick={showNextImage} type="button">
-        <img src="/icons/next.svg" alt="next image" height="30%"></img>
-      </ChangeImageButton>
+    <CarouselContainer carouselWidth={carouselWidth} className="carouselContainer">
+      <CaroselImageContainer>
+        <ChangeImageButton onClick={showPrevImage} type="button" className="prevBtn">
+          <img src="/icons/prev.svg" alt="go prev" height="30%"></img>
+        </ChangeImageButton>
+        <CarouselWindow carouselWidth={carouselWidth}>
+          <CarouselImage className="carouselImage" ref={carouselRef} carouselWidth={carouselWidth}>
+            {files.map((fileObject, idx) => (
+              <div key={idx}>
+                <img
+                  alt={String(fileObject)}
+                  src={
+                    typeof fileObject.imageUrl === "string"
+                      ? fileObject.imageUrl
+                      : URL.createObjectURL(fileObject.imageUrl)
+                  }
+                ></img>
+              </div>
+            ))}
+          </CarouselImage>
+        </CarouselWindow>
+        <ChangeImageButton onClick={showNextImage} type="button" className="nextBtn">
+          <img src="/icons/next.svg" alt="go next" height="30%"></img>
+        </ChangeImageButton>
+      </CaroselImageContainer>
       <DotContainer>
-        {files.map((fileObject, idx) => (
-          <Dot key={idx} color={imageIndex == idx ? COLOR.BLACK : COLOR.GRAY}></Dot>
+        {files.map((_, idx) => (
+          <Dot key={idx} color={imageIndex === idx ? COLOR.BLACK : COLOR.GRAY}></Dot>
         ))}
       </DotContainer>
     </CarouselContainer>
@@ -63,47 +67,54 @@ const Carousel = ({ files, carouselWidth }: CarouselProps) => {
 
 export default Carousel;
 const CarouselContainer = styled.div<{ carouselWidth: number }>`
-  padding: 10px;
   display: grid;
+  width: 100%;
   height: 100%;
-  grid-template-columns: 1fr ${(props) => props.carouselWidth}px 1fr;
-  grid-template-rows: 80% 20%;
-  align-items: center;
-  justify-content: center;
-`;
-
-const CarouselImage = styled.div<{ carouselWidth: number }>`
   display: flex;
-  justify-content: center;
-  align-items: center;
+  ${flexColumnCenterAlign}
+`;
+const CaroselImageContainer = styled.div`
+  width: 100%;
+  height: 80%;
+  ${flexRowCenterAlign}
+`;
+const CarouselWindow = styled.div<{ carouselWidth: number }>`
+  overflow: hidden;
+  display: flex;
+  background-color: ${COLOR.WHITE};
+  width: ${(props) => props.carouselWidth}px;
+  height: 80%;
+  & * {
+    width: 100%;
+  }
+`;
+const CarouselImage = styled.div<{ carouselWidth: number }>`
   transform: translate3d(0, 0, 0);
   transition: transform 0.5s;
-  & div {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: ${(props) => props.carouselWidth}px;
+  display: flex;
+  justify-content: flex-start;
+  & > div {
+    ${flexRowCenterAlign}
+    background-color: ${COLOR.WHITE};
+    border: 1px solid ${COLOR.WHITE};
+    min-width: ${(props) => props.carouselWidth - 2}px;
+    max-width: ${(props) => props.carouselWidth}px;
   }
   & img {
-    max-width: 100%;
-    object-fit: contain;
+    height: ${(props) => props.carouselWidth}px;
+    object-fit: scale-down;
   }
 `;
-
-const CarouselWindow = styled.div`
-  display: grid;
-  overflow: hidden;
-  height: 100%;
-`;
-
 const ChangeImageButton = styled.button`
-  z-index: 2;
-  height: 20%;
+  width: 10%;
+  ${flexRowCenterAlign}
   border: none;
+  display: absolute;
   background: none;
-  cursor: pointer;
+  & > img {
+    cursor: pointer;
+  }
 `;
-
 const DotContainer = styled.div`
   grid-column-start: 2;
   grid-column-end: 3;
@@ -112,7 +123,6 @@ const DotContainer = styled.div`
   justify-content: center;
   align-items: center;
 `;
-
 const Dot = styled.div`
   width: 5px;
   height: 5px;
