@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { flexRowCenterAlign } from "@src/styles/StyledComponents";
+import styled, { css } from "styled-components";
+import { flexRowCenterAlign, iconHover } from "@src/styles/StyledComponents";
 import COLOR from "@src/styles/Color";
 import { useDispatch } from "react-redux";
 const PostSettingModal = () => {
@@ -25,27 +25,24 @@ const PostSettingModal = () => {
 };
 
 const ModalWrapper = styled.div`
-  width: 5rem;
-  height: 16rem;
+  width: 10rem;
+  display: flex;
+  height: 7rem;
+  justify-content: space-around;
+  align-items: center;
   background-color: ${COLOR.WHITE};
   position: absolute;
-  left: 100%;
-  border-radius: 0 10px 10px 0;
-  z-index: 5;
+  right: -10rem;
+  padding-left: 1rem;
+  border-radius: 0 1rem 1rem 0;
+  z-index: -1;
 `;
 const ModalItem = styled.div<{ delete: boolean }>`
   ${flexRowCenterAlign}
   height: 50%;
 
   & > img {
-    &:hover {
-      cursor: pointer;
-      opacity: 0.5;
-    }
-  }
-
-  &: first-child {
-    border-bottom: 0.2rem solid ${COLOR.GRAY};
+    ${iconHover}
   }
 `;
 

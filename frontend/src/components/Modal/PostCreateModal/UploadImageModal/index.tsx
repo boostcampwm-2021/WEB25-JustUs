@@ -8,6 +8,8 @@ import {
   modalTitleFont,
   modalSlideUpAnimation,
   modalHeaderButtonIcon,
+  modalContainerSize,
+  iconHover,
 } from "@styles/StyledComponents";
 import COLOR from "@styles/Color";
 
@@ -99,10 +101,7 @@ const ModalContainer = styled.div`
   display: grid;
   grid-template-rows: 10% 90%;
   background-color: ${COLOR.WHITE};
-  height: 60%;
-  min-height: 460px;
-  min-width: 720px;
-  border-radius: 1rem;
+  ${modalContainerSize};
   box-shadow: 0 2px 3px 0 ${COLOR.SHADOW_BLACK};
   ${modalSlideUpAnimation}
 `;
@@ -128,7 +127,8 @@ const ModalHeaderRigthBtn = styled.button`
   border: none;
   background: none;
   & > img {
-    ${modalHeaderButtonIcon}
+    ${modalHeaderButtonIcon};
+    ${iconHover};
   }
 `;
 const ModalContent = styled.div`
@@ -145,9 +145,9 @@ const uploadImage = css`
   border-radius: 1rem;
   min-height: 15rem;
 
-  margin: 1rem 2rem 2rem 0;
+  margin: 1rem 1rem 1rem 0;
   &:nth-child(3n + 1) {
-    margin-left: 2rem;
+    margin-left: 1rem;
   }
 `;
 

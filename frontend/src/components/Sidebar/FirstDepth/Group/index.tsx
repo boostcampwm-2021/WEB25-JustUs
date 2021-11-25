@@ -46,13 +46,14 @@ const Group = ({ isToggle, setIsToggle, groupId, groupName, groupImage, DragHand
 
 const ButtonWrapper = styled.div<{ selectedGroupID: number; groupId: number; groupImage: string }>`
   ${flexRowCenterAlign}
-  min-width: 3vw;
-  min-height: 3vw;
+  min-width: 3rem;
+  min-height: 3rem;
+  width: 6rem;
+  height: 6rem;
   background-color: ${COLOR.WHITE};
-  margin: 10%;
-  border-radius: 1vw;
-  border: ${(props) =>
-    props.selectedGroupID === props.groupId ? `5px solid ${props.theme.SECONDARY};` : `5px solid ${COLOR.WHITE}`};
+  margin: 1rem auto;
+  border-radius: 1rem;
+  border: ${(props) => (props.selectedGroupID === props.groupId ? `5px solid ${props.theme.SECONDARY};` : ``)};
   background-image: url("${(props) => (props.groupImage ? props.groupImage : "/icons/podo-many.png")}");
   background-size: 100%;
   cursor: pointer;
