@@ -31,7 +31,7 @@ const Carousel = ({ files, carouselWidth }: CarouselProps) => {
 
   useEffect(() => {
     if (!carouselRef.current) return;
-    carouselRef.current.style.transform = `translate3d(-${carouselWidth * imageIndex}px, 0, 0)`;
+    carouselRef.current.style.transform = `translate3d(-${carouselWidth * imageIndex}rem, 0, 0)`;
   }, [imageIndex]);
 
   const loadHandler = (idx: number) => {
@@ -95,7 +95,7 @@ const CarouselWindow = styled.div<{ carouselWidth: number }>`
   overflow: hidden;
   display: flex;
   background-color: ${COLOR.WHITE};
-  width: ${(props) => props.carouselWidth}px;
+  width: ${(props) => props.carouselWidth}rem;
   height: 80%;
   & * {
     width: 100%;
@@ -109,12 +109,12 @@ const CarouselImage = styled.div<{ carouselWidth: number }>`
   & > div {
     ${flexRowCenterAlign}
     background-color: ${COLOR.WHITE};
-    border: 1px solid ${COLOR.WHITE};
-    min-width: ${(props) => props.carouselWidth - 2}px;
-    max-width: ${(props) => props.carouselWidth}px;
+    border: 1rem solid ${COLOR.WHITE};
+    min-width: ${(props) => props.carouselWidth - 2}rem;
+    max-width: ${(props) => props.carouselWidth}rem;
   }
   & img {
-    height: ${(props) => props.carouselWidth}px;
+    height: ${(props) => props.carouselWidth}rem;
     object-fit: scale-down;
   }
 `;

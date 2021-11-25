@@ -77,7 +77,7 @@ const PostInfoModal = () => {
         </ModalHeader>
         <ModalContentWrapper>
           <CarouselWrapper>
-            <Carousel files={selectedPost.images} carouselWidth={250} />
+            <Carousel files={selectedPost.images} carouselWidth={35} />
           </CarouselWrapper>
           <ModalContent>{highlights(selectedPost.postContent)}</ModalContent>
         </ModalContentWrapper>

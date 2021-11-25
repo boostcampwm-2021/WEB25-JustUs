@@ -186,7 +186,7 @@ const UploadInfoModal = ({
         </ModalHeader>
         <ModalContent className="modalContent">
           <ModalLeft className="modalLeft">
-            <Carousel files={files} carouselWidth={250} />
+            <Carousel files={files} carouselWidth={30} />
           </ModalLeft>
           <ModalRight className="modalRight">
             <InputTitle type="text" placeholder="제목" value={title} onChange={handelTitleInput} />
