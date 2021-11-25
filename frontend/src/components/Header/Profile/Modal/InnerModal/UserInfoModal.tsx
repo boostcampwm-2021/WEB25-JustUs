@@ -65,6 +65,10 @@ const UserInfoModal = () => {
     setNewName(event.target.value);
   };
 
+  const onKeyDown = (e: React.KeyboardEvent) => {
+    if (e.code === "Enter") onClickUpdateBtn();
+  };
+
   return (
     <Modal>
       <ModalContainer
@@ -103,7 +107,12 @@ const UserInfoModal = () => {
             </UploadImgBtnWrapper>
           </div>
           <GridRight>
-            <UserNameInputWrapper value={newName} spellCheck={false} onChange={handleNameChange} />
+            <UserNameInputWrapper
+              value={newName}
+              spellCheck={false}
+              onChange={handleNameChange}
+              onKeyDown={onKeyDown}
+            />
             <SaveBtnWrapper onClick={onClickUpdateBtn}>저장하기</SaveBtnWrapper>
           </GridRight>
         </Content>

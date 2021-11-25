@@ -38,9 +38,13 @@ const InputModal = ({ addAlbumModalRef, setIsAddAlbumModalOpened }: InputModalPr
     setAddAlbum(false);
   };
 
+  const onKeyDown = (e: React.KeyboardEvent) => {
+    if (e.code === "Enter") onClickAddAlbum();
+  };
+
   return (
     <AddAlbumModalWrapper ref={addAlbumModalRef} className="add-album-modal">
-      <AlbumCreateInputWrapper placeholder="새 앨범" onChange={onChangeName} spellCheck={false} />
+      <AlbumCreateInputWrapper placeholder="새 앨범" onChange={onChangeName} spellCheck={false} onKeyDown={onKeyDown} />
       <AlbumCreateBtnWrapper onClick={onClickAddAlbum}>생성</AlbumCreateBtnWrapper>
     </AddAlbumModalWrapper>
   );

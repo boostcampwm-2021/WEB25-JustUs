@@ -22,6 +22,10 @@ const JoinGroupModal = () => {
     // dispatch(getGroupListAction());
   };
 
+  const onKeyDown = (e: React.KeyboardEvent) => {
+    if (e.code === "Enter") onClickJoinBtn();
+  };
+
   return (
     <Modal>
       <ModalContainer
@@ -40,7 +44,7 @@ const JoinGroupModal = () => {
           </CloseBtn>
         </Header>
         <Content>
-          <InviteCodeInputWrapper ref={inputRef} spellCheck={false} />
+          <InviteCodeInputWrapper ref={inputRef} spellCheck={false} onKeyDown={onKeyDown} />
           <JoinBtnWrapper onClick={onClickJoinBtn}>참여하기</JoinBtnWrapper>
         </Content>
       </ModalContainer>
