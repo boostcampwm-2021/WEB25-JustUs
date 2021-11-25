@@ -25,6 +25,12 @@ export const modalContainerSize = css`
   ${modalContainerWidth}
   border-radius: 1rem;
 `;
+export const shadow = css`
+  box-shadow: 0 0 3px 0 ${COLOR.SHADOW_BLACK};
+`;
+export const postCardShadow = css`
+  box-shadow: 5px 2px 3px 3px ${COLOR.SHADOW_BLACK};
+`;
 export const iconHover = css`
   &:hover {
     cursor: pointer;

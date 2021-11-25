@@ -1,13 +1,7 @@
 import styled, { css } from "styled-components";
 import COLOR from "@src/styles/Color";
 import Carousel from "@components/Modal/PostCreateModal/UploadInfoModal/Carousel";
-import {
-  flexRowCenterAlign,
-  scrollbarPrimary,
-  modalTitleFont,
-  iconHover,
-  postCardShadow,
-} from "@styles/StyledComponents";
+import { flexRowCenterAlign, scrollbarPrimary, modalTitleFont, iconHover } from "@styles/StyledComponents";
 import { ReactComponent as MoreVertSVG } from "@styles/icons/more-vert.svg";
 import PostSettingModal from "./Modal";
 import { useState } from "react";
