@@ -122,7 +122,7 @@ const EmptyContainer = styled.div`
   background-color: ${(props) => props.theme.SECONDARY};
   padding-top: 5vh;
   overflow: hidden;
-  z-index: 7;
+  z-index: 5;
 `;
 
 const Polaroid = styled.div``;

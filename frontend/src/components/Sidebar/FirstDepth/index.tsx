@@ -16,14 +16,42 @@ interface FirstDepthProps {
 }
 
 const FirstDepth = ({ isToggle, setIsToggle, addGroupBtnRef }: FirstDepthProps) => {
-  const { groups }: any = useSelector((state: RootState) => state.groups);
+  const { groups, deleteGroupSucceed, selectedGroupIdx, addGroupSucceed, joinGroupSucceed }: any = useSelector(
+    (state: RootState) => state.groups,
+  );
   const draggableRef = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch();
 
+  const chooseClickedGroup = (groupIdx: number) => {
+    if (groupIdx < 0 || groupIdx > groups.length - 1) return;
+
+    dispatch(getAlbumListAction(groups[groupIdx]));
+    setIsToggle(true);
+  };
+
+  useEffect(() => {
+    dispatch({ type: "SET_SELECTED_GROUP_IDX", payload: { selectedGroupId: 0 } });
+    dispatch(getAlbumListAction(groups[0]));
+  }, []);
+
   useEffect(() => {
     if (!groups.length) return;
-    dispatch(getAlbumListAction(groups[0]));
-  }, [groups]);
+    if (!deleteGroupSucceed) return;
+    if (deleteGroupSucceed && groups.length >= 2) {
+      chooseClickedGroup(selectedGroupIdx);
+      return;
+    }
+  }, [groups, selectedGroupIdx]);
+
+  useEffect(() => {
+    if (addGroupSucceed) chooseClickedGroup(selectedGroupIdx);
+  }, [selectedGroupIdx, addGroupSucceed]);
+
+  useEffect(() => {
+    if (joinGroupSucceed) {
+      chooseClickedGroup(selectedGroupIdx);
+    }
+  }, [selectedGroupIdx, joinGroupSucceed]);
 
   if (!groups.length) return null;
 

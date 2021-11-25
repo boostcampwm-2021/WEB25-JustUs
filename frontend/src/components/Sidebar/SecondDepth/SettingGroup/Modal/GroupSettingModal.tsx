@@ -79,6 +79,10 @@ const GroupSettingModal = () => {
     setNewName(event.target.value);
   };
 
+  const onKeyDown = (e: React.KeyboardEvent) => {
+    if (e.code === "Enter") onClickUpdateBtn();
+  };
+
   return (
     <Modal>
       <ModalContainer
@@ -119,7 +123,12 @@ const GroupSettingModal = () => {
             </UploadImgBtnWrapper>
           </div>
           <GridRight>
-            <GroupNameInputWrapper value={newName} spellCheck={false} onChange={handleNameChange} />
+            <GroupNameInputWrapper
+              value={newName}
+              spellCheck={false}
+              onChange={handleNameChange}
+              onKeyDown={onKeyDown}
+            />
             <CreateBtnWrapper onClick={onClickUpdateBtn}>수정하기</CreateBtnWrapper>
           </GridRight>
         </Content>

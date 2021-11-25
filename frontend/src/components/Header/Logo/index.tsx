@@ -22,6 +22,7 @@ const LogoContainer = styled.div`
   justify-content: flex-start;
   align-items: center;
   width: 100%;
+  z-index: 7;
 `;
 
 const flipper = keyframes`
