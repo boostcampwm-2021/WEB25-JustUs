@@ -6,14 +6,27 @@ import { FcHighPriority } from "react-icons/fc";
 import { useDispatch } from "react-redux";
 import { CLEAR_TOAST } from "@src/reducer/ToastReducer";
 import shortid from "shortid";
+import { useEffect } from "react";
 
 const Error = ({ text }: { text: string }) => {
   const dispatch = useDispatch();
   const key = shortid.generate();
+  const toastEl = document.getElementById("toast-message") as HTMLElement;
+
+  const setDisplayNone = () => {
+    toastEl.style.display = "none";
+  };
 
   const onClickCloseBtn = () => {
     dispatch({ type: CLEAR_TOAST });
+    setDisplayNone();
   };
+
+  useEffect(() => {
+    setTimeout(() => {
+      setDisplayNone();
+    }, 3000);
+  });
 
   return (
     <Toast>

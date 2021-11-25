@@ -21,7 +21,7 @@ const Main = () => {
   const dispatch = useDispatch();
   const { groups, groupListLoaded }: any = useSelector((state: RootState) => state.groups);
   const { spinnerActivate }: any = useSelector((state: RootState) => state.spinner);
-  const { userNickName, userInfoError, userLoggedOut } = useSelector((state: RootState) => state.user);
+  const { userInfoError, userLoggedOut, userInfoSucceed } = useSelector((state: RootState) => state.user);
   const history = useHistory();
 
   useEffect(() => {
@@ -41,10 +41,10 @@ const Main = () => {
   }, []);
 
   useEffect(() => {
-    if (userNickName) {
+    if (userInfoSucceed) {
       dispatch(getGroupListAction());
     }
-  }, [userNickName]);
+  }, [userInfoSucceed]);
 
   useEffect(() => {
     if (userLoggedOut | userInfoError) {
@@ -52,7 +52,7 @@ const Main = () => {
     }
   }, [userLoggedOut, userInfoError]);
 
-  if (!userNickName || !groupListLoaded) {
+  if (!userInfoSucceed || !groupListLoaded) {
     return <Spinner />;
   }
   return (
