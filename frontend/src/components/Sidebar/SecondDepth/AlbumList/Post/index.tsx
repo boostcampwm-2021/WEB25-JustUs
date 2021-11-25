@@ -2,7 +2,6 @@ import { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
 import COLOR from "@styles/Color";
 import { useDispatch } from "react-redux";
-import dummyPosts from "@components/Map/dummyPosts";
 
 interface PostProps {
   idx: number;
