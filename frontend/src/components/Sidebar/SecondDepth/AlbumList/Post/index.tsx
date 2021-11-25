@@ -46,7 +46,7 @@ const Post = ({
       onDragOver={(e) => e.preventDefault()}
       data-album-id={album.albumId}
     >
-      <PostTitle>{postTitle}</PostTitle>
+      <PostTitle className="postTitle">{postTitle}</PostTitle>
     </PostWrapper>
   );
 };
@@ -65,6 +65,11 @@ const PostWrapper = styled.div<{ idx: number; postSelected: number; theme: any }
 `;
 const PostTitle = styled.div`
   padding: 0.5rem 0 0.5rem 3rem;
+  width: 15rem;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
 export default Post;

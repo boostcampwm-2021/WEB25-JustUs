@@ -38,6 +38,7 @@ export const iconHover = css`
     border-radius: 50%;
   }
 `;
+export const modalIconSize = css``;
 export const modalWidth = css`
   min-width: 720px;
   z-index: 6;
@@ -51,7 +52,7 @@ export const modalHeaderWithOneIcon = css`
   position: relative;
 `;
 export const modalTitleFont = css`
-  font-size: 2rem;
+  font-size: 2.5rem;
   font-weight: bold;
 `;
 const modalSlideUp = keyframes`
@@ -80,6 +81,16 @@ export const scrollbar = css`
   }
   &::-webkit-scrollbar-thumb {
     background-color: ${(props) => props.theme.SECONDARY};
+    border-radius: 1rem;
+  }
+`;
+export const scrollbarPrimary = css`
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    width: 0.8rem;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: ${(props) => props.theme.PRIMARY};
     border-radius: 1rem;
   }
 `;
