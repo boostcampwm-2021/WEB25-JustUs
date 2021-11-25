@@ -12,16 +12,17 @@ import { RootState } from "@src/reducer";
 import { useHistory } from "react-router-dom";
 import { getGroupListAction } from "@src/reducer/GroupReducer";
 import ToastManager from "@src/components/ToastMessage/ToastManager";
-import { SET_RIGHT_CLICK_MODAL } from "@src/reducer/MapReducer";
+import { CLOSE_POST_CREATE_WINDOW, SET_POST_CREATE_WINDOW_OPENED } from "@src/reducer/MapReducer";
 import { SET_PROFILE_WRAPPER_MODAL_OPENED, SET_ALBUM_SETTING_WRAPPER_MODAL_IDX } from "@src/reducer/Modal";
 import Spinner from "@components/Spinner";
+import { CLOSE_CLUSTERING_WINDOW } from "@src/reducer/MapReducer";
 
 const Main = () => {
   const [isToggle, setIsToggle] = useState<boolean>(true);
   const dispatch = useDispatch();
   const { groups, groupListLoaded }: any = useSelector((state: RootState) => state.groups);
   const { spinnerActivate }: any = useSelector((state: RootState) => state.spinner);
-  const { userNickName, userInfoError, userLoggedOut } = useSelector((state: RootState) => state.user);
+  const { userInfoError, userLoggedOut, userInfoSucceed } = useSelector((state: RootState) => state.user);
   const history = useHistory();
   const themeNumber = Number(localStorage.getItem("themeNumber"));
 
@@ -29,11 +30,13 @@ const Main = () => {
     dispatch({ type: "CHANGE_THEME", selectedTheme: themeNumber });
     document.addEventListener("click", (event) => {
       const { target, clientX, clientY } = event;
-      dispatch({ type: GroupModalAction.SET_CLICKED_TARGET, payload: { target, clientX, clientY } });
-      dispatch({ type: SET_RIGHT_CLICK_MODAL, payload: { isRightClickModalOpened: false } });
-
       const isClusteringClicked = (target as HTMLElement).getAttribute("src")?.match(/\/icons\/podo-(three|many).png/);
-      !isClusteringClicked && dispatch({ type: "CLOSE_INFO_WINDOW" });
+      const isPostCreateClicked = (target as HTMLElement).closest("#createPostWindow");
+
+      dispatch({ type: GroupModalAction.SET_CLICKED_TARGET, payload: { target, clientX, clientY } });
+      dispatch({ type: SET_POST_CREATE_WINDOW_OPENED, payload: { isPostCreateWindowOpened: false } });
+      !isClusteringClicked && dispatch({ type: CLOSE_CLUSTERING_WINDOW });
+      !isPostCreateClicked && dispatch({ type: CLOSE_POST_CREATE_WINDOW });
     });
 
     document.addEventListener("contextmenu", () => {
@@ -43,10 +46,10 @@ const Main = () => {
   }, []);
 
   useEffect(() => {
-    if (userNickName) {
+    if (userInfoSucceed) {
       dispatch(getGroupListAction());
     }
-  }, [userNickName]);
+  }, [userInfoSucceed]);
 
   useEffect(() => {
     if (userLoggedOut | userInfoError) {
@@ -54,7 +57,7 @@ const Main = () => {
     }
   }, [userLoggedOut, userInfoError]);
 
-  if (!userNickName || !groupListLoaded) {
+  if (!userInfoSucceed || !groupListLoaded) {
     return <Spinner />;
   }
   return (

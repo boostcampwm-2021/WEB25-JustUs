@@ -90,7 +90,7 @@ export class GroupService {
     if (!user) throw new NotFoundException(`Not found user with the id ${userId}`);
 
     const { users } = group;
-
+    console.log(users);
     if (attend && this.hasUser(userId, users)) throw new UnauthorizedException("You are already a member of a group.");
 
     const { groupOrder } = user;
@@ -100,7 +100,7 @@ export class GroupService {
   }
 
   hasUser(userId: number, users: User[]): boolean {
-    return users.filter(user => user.userId === userId) !== [];
+    return users.some(user => user.userId === userId);
   }
 
   async getGroupInfo(groupId: number): Promise<GetGroupInfoResponseDto> {

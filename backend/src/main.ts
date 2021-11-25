@@ -1,45 +1,19 @@
-import { ValidationPipe } from "@nestjs/common";
-import * as cookieParser from "cookie-parser";
 import { NestFactory } from "@nestjs/core";
-import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
+import { setGlobal, corsOptions, swaggerOption } from "./configs";
+import * as cookieParser from "cookie-parser";
 import { AppModule } from "./app.module";
-import { HttpExceptionFilter } from "./filter/httpException.filter";
-
-const options = {
-  origin: process.env.FRONT_LOCALHOST,
-  credentials: true,
-};
+import { SwaggerModule } from "@nestjs/swagger";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  process.env.NODE_ENV === "dev" && app.enableCors(options);
+  process.env.NODE_ENV === "dev" && app.enableCors(corsOptions);
+
   app.use(cookieParser());
-  app.setGlobalPrefix("/api");
-  app.useGlobalFilters(new HttpExceptionFilter());
-  app.useGlobalPipes(
-    new ValidationPipe({
-      whitelist: true,
-      forbidNonWhitelisted: true,
-      transform: true,
-    }),
-  );
 
-  const config = new DocumentBuilder()
-    .setTitle("JustUs")
-    .setDescription("The JustUs API Document")
-    .setVersion("0.0.1")
-    .addBearerAuth(
-      {
-        type: "http",
-        scheme: "bearer",
-        bearerFormat: "Token",
-      },
-      "accessToken",
-    )
-    .build();
+  setGlobal(app);
 
-  const document = SwaggerModule.createDocument(app, config);
+  const document = SwaggerModule.createDocument(app, swaggerOption);
   SwaggerModule.setup("api", app, document);
 
   await app.listen(5000);
