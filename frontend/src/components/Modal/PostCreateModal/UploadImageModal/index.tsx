@@ -145,9 +145,9 @@ const uploadImage = css`
   border-radius: 1rem;
   min-height: 15rem;
 
-  margin: 1rem 2rem 2rem 0;
+  margin: 1rem 1rem 1rem 0;
   &:nth-child(3n + 1) {
-    margin-left: 2rem;
+    margin-left: 1rem;
   }
 `;
 
