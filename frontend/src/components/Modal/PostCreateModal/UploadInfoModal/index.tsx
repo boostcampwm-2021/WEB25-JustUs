@@ -12,6 +12,7 @@ import {
   modalSlideUpAnimation,
   modalHeaderButtonIcon,
   scrollbar,
+  iconHover,
 } from "@styles/StyledComponents";
 
 interface FileObject {
@@ -312,9 +313,15 @@ const ModalTitle = styled.div`
 const ModalHeaderLeftBtn = styled.button`
   ${headerBtn}
   ${flexColumnCenterAlign}
+  & > img {
+    ${iconHover};
+  }
 `;
 const ModalHeaderRigthBtn = styled.button`
-  ${headerBtn}
+  ${headerBtn};
+  & > img {
+    ${iconHover};
+  }
 `;
 const ModalContent = styled.div`
   display: grid;
@@ -330,6 +337,7 @@ const ModalLeft = styled.div`
   height: 90%;
   min-width: 300px;
   margin-right: 2rem;
+  ${flexRowCenterAlign}
 `;
 const ModalRight = styled.div`
   position: relative;
@@ -448,7 +456,7 @@ const LocationButton = styled.button`
   background: none;
   & > img {
     ${flexRowCenterAlign}
-    cursor: pointer;
+    ${iconHover}
   }
 `;
 const UploadButton = styled.button<{ activate: boolean }>`

@@ -1,7 +1,7 @@
 import styled, { keyframes } from "styled-components";
 import COLOR from "@src/styles/Color";
 import React, { useState, useEffect, Dispatch, SetStateAction } from "react";
-import { flexRowCenterAlign, flexColumnCenterAlign } from "@styles/StyledComponents";
+import { flexRowCenterAlign, flexColumnCenterAlign, iconHover } from "@styles/StyledComponents";
 import SearchResult from "@components/Modal/PostCreateModal/UploadInfoModal/SearchResult";
 import { useDispatch } from "react-redux";
 import { SET_ERROR_TOAST } from "@src/reducer/ToastReducer";
@@ -229,6 +229,9 @@ const CloseBtn = styled.div<{ isToggle: boolean }>`
   z-index: 1;
   animation-name: ${(props) => (props.isToggle ? Opening : "")};
   animation-duration: 1s;
+  & > img {
+    ${iconHover};
+  }
 `;
 
 export default ModalSub;

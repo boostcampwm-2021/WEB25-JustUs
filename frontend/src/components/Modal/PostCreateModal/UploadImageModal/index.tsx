@@ -9,6 +9,7 @@ import {
   modalSlideUpAnimation,
   modalHeaderButtonIcon,
   modalContainerSize,
+  iconHover,
 } from "@styles/StyledComponents";
 import COLOR from "@styles/Color";
 
@@ -126,7 +127,8 @@ const ModalHeaderRigthBtn = styled.button`
   border: none;
   background: none;
   & > img {
-    ${modalHeaderButtonIcon}
+    ${modalHeaderButtonIcon};
+    ${iconHover};
   }
 `;
 const ModalContent = styled.div`
