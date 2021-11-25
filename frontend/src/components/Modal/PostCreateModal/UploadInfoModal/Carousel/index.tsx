@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import COLOR from "@styles/Color";
 import { flexRowCenterAlign, flexColumnCenterAlign } from "@styles/StyledComponents";
@@ -78,7 +78,7 @@ const Carousel = ({ files, carouselWidth }: CarouselProps) => {
   );
 };
 
-export default Carousel;
+export default React.memo(Carousel);
 const CarouselContainer = styled.div<{ carouselWidth: number }>`
   display: grid;
   width: 100%;
