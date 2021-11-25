@@ -117,7 +117,6 @@ const FirstDepth = ({ isToggle, setIsToggle, addGroupBtnRef }: FirstDepthProps) 
 };
 
 const DraggableWrapper = styled.div`
-  width: 100%;
   & > .drag-sort-active {
     background: transparent;
     color: transparent;
