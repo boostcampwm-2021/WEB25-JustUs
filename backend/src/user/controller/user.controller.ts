@@ -8,7 +8,7 @@ import { UpdateGroupOrderRequestDto } from "src/dto/user/updateGroupOrderRequest
 import { GetGroupsResponseDto } from "src/dto/user/getGroupsResponse.dto";
 import { UpdateUserInfoResponseDto } from "src/dto/user/updateUserInfoResponse.dto";
 import { FileInterceptor } from "@nestjs/platform-express";
-import { multerOption } from "src/image/service/image.service";
+import { multerOption } from "src/configs";
 import { SwaggerUpdateUserInfo, SwaggerGetUserInfo, SwaggerUpdateGroupOrder, SwaggerGetGroups } from "../swagger";
 import { CustomController } from "src/custom/decorator/controller.decorator";
 
