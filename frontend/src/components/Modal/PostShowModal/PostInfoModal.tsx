@@ -1,40 +1,41 @@
 import styled from "styled-components";
 import COLOR from "@src/styles/Color";
 import Carousel from "@components/Modal/PostCreateModal/UploadInfoModal/Carousel";
-import { flexRowCenterAlign } from "@styles/StyledComponents";
+import { flexRowCenterAlign, scrollbar } from "@styles/StyledComponents";
 import { ReactComponent as MoreVertSVG } from "@styles/icons/more-vert.svg";
 import PostSettingModal from "./Modal";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
 
-const textSplit = (text: string) => {
-  return text.split("\n");
-};
-
 const highlights = (text: string) => {
   const splited = text.split(/[\u0020]/);
   const makeSpan = (word: string, idx: number) => {
-    if (idx === splited.length - 1)
-      return (
-        <span key={idx}>
-          {word}
-          <br />
-        </span>
-      );
-
-    return <span key={idx}>{word} </span>;
+    if (idx === 0) return word;
+    return `${word} `;
   };
 
-  return splited.map((word, idx) =>
-    word.match(/#([\w|ㄱ-ㅎ|가-힣]+)/) ? (
-      <span key={idx}>
-        <mark>{word}</mark>&nbsp;
-      </span>
-    ) : (
-      makeSpan(word, idx)
-    ),
-  );
+  const makeHashTag = (word: string) => {
+    const hashTagWord = word.split("#");
+    return hashTagWord.length > 1
+      ? hashTagWord.map((tagWord, idx) => {
+          return idx === 0 ? (
+            makeSpan(tagWord, 0)
+          ) : idx === hashTagWord.length - 1 ? (
+            <>
+              <mark>#{tagWord}</mark>
+              <> </>
+            </>
+          ) : (
+            <mark>#{tagWord}</mark>
+          );
+        })
+      : `${hashTagWord[0]} `;
+  };
+
+  return splited.map((word) => {
+    return makeHashTag(word);
+  });
 };
 const exportDateTime = (date: string) => {
   const dateStart = 0;
@@ -74,10 +75,12 @@ const PostInfoModal = () => {
           ) : null}
           {modalOpened && <PostSettingModal />}
         </ModalHeader>
-        <CarouselWrapper>
-          <Carousel files={selectedPost.images} carouselWidth={250} />
-        </CarouselWrapper>
-        <ModalContent>{textSplit(selectedPost.postContent).map((item) => highlights(item))}</ModalContent>
+        <ModalContentWrapper>
+          <CarouselWrapper>
+            <Carousel files={selectedPost.images} carouselWidth={250} />
+          </CarouselWrapper>
+          <ModalContent>{highlights(selectedPost.postContent)}</ModalContent>
+        </ModalContentWrapper>
         <ModalFooter>
           <FooterItem>{exportDateTime(selectedPost.postDate)}</FooterItem>
           <FooterItem>{selectedPost.userNickname}</FooterItem>
@@ -91,6 +94,7 @@ const ModalContainer = styled.div`
   display: flex;
   flex-direction: row;
   background-color: ${COLOR.WHITE};
+  border-radius: 1rem;
   width: 50rem;
   height: 70rem;
 
@@ -103,11 +107,6 @@ const Modal = styled.div`
   flex-direction: column;
   width: 100%;
   height: 100%;
-`;
-const CarouselWrapper = styled.div`
-  border-bottom: 0.2rem solid ${COLOR.GRAY};
-  height: 40rem;
-  box-sizing: border-box;
 `;
 const ModalHeader = styled.div`
   display: grid;
@@ -132,24 +131,29 @@ const MoreIconWrapper = styled.div`
   grid-column-end: 4;
   cursor: pointer;
 `;
+const ModalContentWrapper = styled.div``;
+const CarouselWrapper = styled.div`
+  border-bottom: 0.2rem solid ${COLOR.GRAY};
+  height: 40rem;
+  box-sizing: border-box;
+`;
 const ModalContent = styled.div`
   font-size: 2.5rem;
   padding: 1rem 1rem 1rem 1rem;
-  overflow-y: auto;
   font-family: "NanumDaCaeSaRang";
-  white-space: pre-line;
-  height: 20rem;
+  white-space: pre-wrap;
+  height: 15rem;
   box-sizing: border-box;
+  word-break: break-all;
+  width: 50rem;
+  ${scrollbar}
 
   & mark {
     border-radius: 3px;
     color: ${COLOR.WHITE};
     background-color: ${(props) => props.theme.SECONDARY};
+    padding: 0 1rem 0 0.5rem;
     font-size: 2.5rem;
-    font-family: "NanumDaCaeSaRang";
-  }
-
-  & span {
     font-family: "NanumDaCaeSaRang";
   }
 `;

@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import COLOR from "@styles/Color";
 import React, { Dispatch, SetStateAction, UIEvent, useEffect, useRef } from "react";
+import { scrollbar } from "@src/styles/StyledComponents";
 
 interface IData {
   [key: string]: string;
@@ -61,14 +62,7 @@ const SearchResult = ({ searchResult, setSelectedLocation, page, setPage, lastPa
 const SearchResultWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  overflow-y: scroll;
-  &::-webkit-scrollbar {
-    width: 0.8rem;
-  }
-  &::-webkit-scrollbar-thumb {
-    background-color: ${(props) => props.theme.SECONDARY};
-    border-radius: 1rem;
-  }
+  ${scrollbar}
   height: 100%;
   box-sizing: border-box;
 `;

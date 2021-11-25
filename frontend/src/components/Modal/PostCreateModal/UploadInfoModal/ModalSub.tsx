@@ -221,10 +221,10 @@ const CloseBtn = styled.div<{ isToggle: boolean }>`
   ${flexRowCenterAlign}
   position: absolute;
   left: 95%;
-  width: 3rem;
-  height: 3.71rem;
+  padding: 0 1rem;
   background-color: ${COLOR.WHITE};
-  border-radius: 1rem;
+  border-radius: 0 1rem 1rem 0;
+  height: 6rem;
   cursor: pointer;
   z-index: 1;
   animation-name: ${(props) => (props.isToggle ? Opening : "")};

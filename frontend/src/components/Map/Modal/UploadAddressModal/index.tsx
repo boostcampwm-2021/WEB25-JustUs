@@ -131,6 +131,9 @@ const InsertAddressName = styled.div`
   background-color: ${(props) => props.theme.PRIMARY};
   font-size: 2rem;
   margin-top: 5rem;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 export default UploadAddressModal;
