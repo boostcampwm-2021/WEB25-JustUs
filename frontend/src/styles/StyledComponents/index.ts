@@ -12,7 +12,18 @@ export const flexColumnCenterAlign = css`
   justify-content: center;
   align-items: center;
 `;
-
+export const modalContainerWidth = css`
+  min-width: 720px;
+`;
+export const modalContainerHeight = css`
+  height: 60%;
+  min-height: 460px;
+`;
+export const modalContainerSize = css`
+  ${modalContainerHeight}
+  ${modalContainerWidth}
+  border-radius: 1rem;
+`;
 export const modalWidth = css`
   min-width: 720px;
   z-index: 6;

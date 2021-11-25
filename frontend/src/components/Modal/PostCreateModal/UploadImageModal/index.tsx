@@ -8,6 +8,7 @@ import {
   modalTitleFont,
   modalSlideUpAnimation,
   modalHeaderButtonIcon,
+  modalContainerSize,
 } from "@styles/StyledComponents";
 import COLOR from "@styles/Color";
 
@@ -99,10 +100,7 @@ const ModalContainer = styled.div`
   display: grid;
   grid-template-rows: 10% 90%;
   background-color: ${COLOR.WHITE};
-  height: 60%;
-  min-height: 460px;
-  min-width: 720px;
-  border-radius: 1rem;
+  ${modalContainerSize};
   box-shadow: 0 2px 3px 0 ${COLOR.SHADOW_BLACK};
   ${modalSlideUpAnimation}
 `;
