@@ -122,6 +122,7 @@ const UploadInfoModal = ({
   };
 
   const handleSaveBtn = () => {
+    if (!activate) return;
     if (mode === "create") {
       const post = {
         postTitle: title,
