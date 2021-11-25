@@ -6,14 +6,13 @@ interface FileObject {
 }
 export const useResizeFile = (initFiles: FileObject[] = []) => {
   const [files, setFiles] = useState<FileObject[]>(initFiles);
-  let imageCnt = 0;
 
   const addFile = (file: File) => {
     const MB = 1048567;
     const baseSize = MB * 4;
     const compSize = MB;
     if (file.size <= baseSize) {
-      setFiles((prev) => [...prev, { imageUrl: file, imageId: (imageCnt++).toString() }]);
+      setFiles((prev) => [...prev, { imageUrl: file, imageId: Date.now().toString() }]);
     } else {
       const reader = new FileReader();
       reader.readAsDataURL(file);
@@ -39,7 +38,7 @@ export const useResizeFile = (initFiles: FileObject[] = []) => {
           const tmpThumbFile = new Blob([ab], { type: mimeString });
           setFiles((prev) => [
             ...prev,
-            { imageUrl: new File([tmpThumbFile], file.name), imageId: (imageCnt++).toString() },
+            { imageUrl: new File([tmpThumbFile], file.name), imageId: Date.now().toString() },
           ]);
         };
       };
@@ -47,6 +46,8 @@ export const useResizeFile = (initFiles: FileObject[] = []) => {
   };
 
   const removeFile = (deleteItem: FileObject) => {
+    console.log(files);
+    console.log(deleteItem);
     setFiles(files.filter((file) => file.imageId !== deleteItem.imageId));
   };
 

@@ -37,11 +37,7 @@ const Error = ({ text }: { text: string }) => {
           <IconWrapper>
             <FcHighPriority size="30" />
           </IconWrapper>
-          <Text>
-            {text}
-            <br />
-            다시 시도해주세요.
-          </Text>
+          <Text>{text}</Text>
           <CloseBtn onClick={onClickCloseBtn}>
             <img src="/icons/clear.svg" alt="clear icon" />
           </CloseBtn>
@@ -97,6 +93,7 @@ const IconWrapper = styled.div`
 `;
 const Text = styled.div`
   font-size: 1.6rem;
+  font-weight: bold;
   display: flex;
   align-items: center;
   grid-column-start: 2;
