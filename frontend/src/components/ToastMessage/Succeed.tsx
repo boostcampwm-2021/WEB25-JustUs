@@ -23,10 +23,12 @@ const Succeed = ({ text }: { text: string }) => {
   };
 
   useEffect(() => {
-    setTimeout(() => {
-      setDisplayNone();
-    }, 5000);
-  });
+    return () => {
+      setTimeout(() => {
+        setDisplayNone();
+      }, 5000);
+    };
+  }, []);
 
   return (
     <Toast>
