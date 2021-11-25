@@ -88,7 +88,6 @@ const FirstDepth = ({ isToggle, setIsToggle, addGroupBtnRef }: FirstDepthProps) 
 };
 
 const DraggableWrapper = styled.div`
-  width: 100%;
   & > .drag-sort-active {
     background: transparent;
     color: transparent;
@@ -97,26 +96,26 @@ const DraggableWrapper = styled.div`
 `;
 
 const FirstDepthWrapper = styled.div`
+  position: absolute;
   width: 5vw;
   height: 95vh;
   background-color: ${(props) => props.theme.PRIMARY};
   display: flex;
   flex-direction: column;
-  align-items: center;
-  overflow-x: hidden;
-  overflow-y: auto;
-  padding: 0.5vw 0;
-  box-sizing: border-box;
+  align-items: flex-start;
+  box-sizing: content-box;
   z-index: 7;
-
-  &::-webkit-scrollbar {
-    background: transparent;
-    width: 10px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background-color: ${COLOR.SCROLL};
-    border-radius: 10px;
+  overflow: hidden;
+  &:hover {
+    margin-right: 0.1rem;
+    overflow-y: scroll;
+    &::-webkit-scrollbar {
+      width: 0.8rem;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: ${(props) => props.theme.SECONDARY};
+      border-radius: 1rem;
+    }
   }
 `;
 
