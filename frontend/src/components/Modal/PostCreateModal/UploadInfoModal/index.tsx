@@ -5,7 +5,14 @@ import { useDispatch, useSelector } from "react-redux";
 import Carousel from "@components/Modal/PostCreateModal/UploadInfoModal/Carousel";
 import { RootState } from "@src/reducer";
 import ModalSub from "./ModalSub";
-import { flexRowCenterAlign, flexColumnCenterAlign } from "@styles/StyledComponents";
+import {
+  flexRowCenterAlign,
+  flexColumnCenterAlign,
+  modalTitleFont,
+  modalSlideUpAnimation,
+  modalHeaderButtonIcon,
+  scrollbar,
+} from "@styles/StyledComponents";
 
 interface FileObject {
   imageUrl: File | string;
@@ -111,7 +118,7 @@ const UploadInfoModal = ({
   };
 
   const onClickLocationBtn = () => {
-    setIsSubOpened(true);
+    setIsSubOpened((prev) => !prev);
   };
 
   const handleSaveBtn = () => {
@@ -170,12 +177,12 @@ const UploadInfoModal = ({
       <ModalMain isSubOpened={isSubOpened} className="modalMain">
         <ModalHeader className="modalHeader">
           <ModalTitle>{mode === "create" ? "새 게시물 만들기" : "게시물 수정"}</ModalTitle>
-          <ModalHeaderRigthBtn onClick={closeModal}>
-            <img src="/icons/x.svg" alt="close"></img>
-          </ModalHeaderRigthBtn>
           <ModalHeaderLeftBtn onClick={changeMode}>
             <img src="/icons/prev.svg" alt="prev modal"></img>
           </ModalHeaderLeftBtn>
+          <ModalHeaderRigthBtn onClick={closeModal}>
+            <img src="/icons/x.svg" alt="close"></img>
+          </ModalHeaderRigthBtn>
         </ModalHeader>
         <ModalContent className="modalContent">
           <ModalLeft className="modalLeft">
@@ -262,7 +269,7 @@ const headerBtn = css`
   border: none;
   background: none;
   & > img {
-    cursor: pointer;
+    ${modalHeaderButtonIcon}
   }
 `;
 const ModalContainer = styled.div<{ isSubOpened: boolean }>`
@@ -272,7 +279,8 @@ const ModalContainer = styled.div<{ isSubOpened: boolean }>`
   height: 60%;
   min-height: 460px;
   border-radius: 1rem;
-  box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
+  box-shadow: 0 2px 3px 0 ${COLOR.SHADOW_BLACK};
+  ${modalSlideUpAnimation}
 
   &::-webkit-scrollbar {
     display: none;
@@ -295,11 +303,11 @@ const ModalHeader = styled.div`
 `;
 const ModalTitle = styled.div`
   ${flexRowCenterAlign}
+  ${modalTitleFont}
   grid-column-start: 2;
   grid-column-end: 3;
   grid-row-start: 1;
   grid-row-end: 2;
-  font-size: 2.5rem;
 `;
 const ModalHeaderLeftBtn = styled.button`
   ${headerBtn}
@@ -328,7 +336,7 @@ const ModalRight = styled.div`
   display: grid;
   height: 90%;
   margin-left: 2rem;
-  grid-template-rows: 15% 40% 30% 15%;
+  grid-template-rows: 15% 45% 25% 15%;
   & mark {
     ${contentOverflow}
     ${contentWhiteSpace}
@@ -359,21 +367,16 @@ const InputTitle = styled.input`
 const ContentWrap = styled.div`
   position: relative;
   width: 100%;
+  height: 100%;
 `;
 const BackDrop = styled.div`
   ${contentOverflow}
   ${contentWhiteSpace}
   ${contentFont}
   ${contentSize}
+  ${scrollbar}
+  height: 100%;
   position: absolute;
-  overflow-y: scroll;
-  &::-webkit-scrollbar {
-    width: 0.8rem;
-  }
-  &::-webkit-scrollbar-thumb {
-    background-color: ${(props) => props.theme.SECONDARY};
-    border-radius: 1rem;
-  }
 `;
 const HighLights = styled.div`
   ${contentOverflow}
@@ -382,6 +385,7 @@ const HighLights = styled.div`
   ${contentSize}
   position: absolute;
   overflow-y: scroll;
+  height: 100%;
   &::-webkit-scrollbar {
     width: 0;
   }
@@ -391,24 +395,16 @@ const InputText = styled.textarea`
   ${contentWhiteSpace}
   ${contentFont}
   ${contentSize}
+  height: 100%;
   resize: none;
-  border: none;
   position: relative;
-  overflow-y: scroll;
-  &::-webkit-scrollbar {
-    width: 0.8rem;
-  }
-  &::-webkit-scrollbar-thumb {
-    background-color: ${(props) => props.theme.SECONDARY};
-    border-radius: 1rem;
-  }
+  ${scrollbar}
   background-color: transparent;
   &:focus {
     outline: none;
   }
 `;
 const InputBottom = styled.div`
-  position: relative;
   display: flex;
   flex-direction: column;
   max-height: 5rem;
