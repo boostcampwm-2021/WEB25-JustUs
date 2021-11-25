@@ -67,7 +67,7 @@ const GroupSettingModal = () => {
   };
 
   useEffect(() => {
-    if (files[0]) setNowImg(URL.createObjectURL(files[0].imageUrl));
+    if (files[0] && typeof files[0].imageUrl !== "string") setNowImg(URL.createObjectURL(files[0].imageUrl as Blob));
   }, [files]);
 
   const onClickDeleteBtn = () => {
