@@ -28,7 +28,7 @@ const BackGround = styled.div`
   ${flexRowCenterAlign}
   width: 100%;
   height: 100%;
-  background-color: ${COLOR.SHADOW_BLACK};
+  background-color: ${COLOR.SPINNER_BACK};
   z-index: 20;
 
   & img {

@@ -15,6 +15,24 @@ const initState: { selectedTheme: number; nowTheme: ThemeType } = {
 
 const ThemeReducer = (state = initState, action: any) => {
   switch (action.type) {
+    case "CHANGE_THEME":
+      let nowTheme;
+      switch (action.selectedTheme) {
+        case 1:
+          nowTheme = COLOR.THEME1;
+          break;
+        case 2:
+          nowTheme = COLOR.THEME2;
+          break;
+        case 3:
+          nowTheme = COLOR.THEME3;
+          break;
+      }
+      return {
+        ...state,
+        nowTheme,
+        selectedTheme: action.selectedTheme,
+      };
     case "CHANGE_THEME1":
       return {
         ...state,

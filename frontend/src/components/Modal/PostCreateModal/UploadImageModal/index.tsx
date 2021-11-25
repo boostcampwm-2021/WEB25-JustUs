@@ -18,10 +18,11 @@ interface FileObject {
 interface UploadImageModalProps {
   changeMode: () => void;
   files: FileObject[];
-  setFiles: React.Dispatch<React.SetStateAction<FileObject[]>>;
+  addFile: Function;
+  removeFile: Function;
 }
 
-const UploadImageModal = ({ changeMode, files, setFiles }: UploadImageModalProps) => {
+const UploadImageModal = ({ changeMode, files, addFile, removeFile }: UploadImageModalProps) => {
   const inputImagaRef = useRef<HTMLInputElement>(null);
   const MAX_IMAGE = 5;
   const dispatch = useDispatch();
@@ -37,16 +38,11 @@ const UploadImageModal = ({ changeMode, files, setFiles }: UploadImageModalProps
 
   const changeImage: React.ChangeEventHandler<HTMLInputElement> = (event) => {
     if (!event.target.files) return;
-    const file = event.target.files[0];
-    setFiles([...files, { imageUrl: file, imageId: shortid.generate() + "!" }]);
+    addFile(event.target.files[0]);
   };
 
   const nextModal = () => {
     changeMode();
-  };
-
-  const deleteImage = (deleteItem: FileObject) => {
-    setFiles(files.filter((file) => file.imageId !== deleteItem.imageId));
   };
 
   return (
@@ -78,7 +74,7 @@ const UploadImageModal = ({ changeMode, files, setFiles }: UploadImageModalProps
         {files.map(
           (fileObject) => (
             <ImagePreview key={shortid.generate()}>
-              <DeleteImageBtn onClick={() => deleteImage(fileObject)}>
+              <DeleteImageBtn onClick={() => removeFile(fileObject)}>
                 <img src="/icons/delete.svg" alt="delete" width="100%"></img>
               </DeleteImageBtn>
               <img

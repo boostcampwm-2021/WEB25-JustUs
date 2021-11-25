@@ -24,8 +24,10 @@ const Main = () => {
   const { spinnerActivate }: any = useSelector((state: RootState) => state.spinner);
   const { userInfoError, userLoggedOut, userInfoSucceed } = useSelector((state: RootState) => state.user);
   const history = useHistory();
+  const themeNumber = Number(localStorage.getItem("themeNumber"));
 
   useEffect(() => {
+    dispatch({ type: "CHANGE_THEME", selectedTheme: themeNumber });
     document.addEventListener("click", (event) => {
       const { target, clientX, clientY } = event;
       const isClusteringClicked = (target as HTMLElement).getAttribute("src")?.match(/\/icons\/podo-(three|many).png/);

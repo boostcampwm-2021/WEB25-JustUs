@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import styled, { keyframes } from "styled-components";
 import Modal from "@components/Modal";
 import { useDispatch } from "react-redux";
@@ -8,11 +8,12 @@ import { userInfoUpdateAction } from "@src/reducer/UserReducer";
 import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
 import { SET_ERROR_TOAST } from "@src/reducer/ToastReducer";
+import { useResizeFile } from "@src/hooks/useResizeFile";
 
 const UserInfoModal = () => {
   const uploadBtnRef = useRef<HTMLInputElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
-  const [imageFile, setImageFile] = useState<File>();
+  const { files, addFile, clearFiles } = useResizeFile();
   const dispatch = useDispatch();
   const { userNickName, userProfile } = useSelector((state: RootState) => state.user);
   const [userImg, setUserImg] = useState<string>(userProfile);
@@ -26,22 +27,29 @@ const UserInfoModal = () => {
     uploadBtnRef.current.click();
   };
   const loadImage = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const files = event.target.files;
-    if (!files) return;
-    const file = files[0];
+    const newfiles = event.target.files;
+    if (!newfiles) return;
+    const file = newfiles[0];
     const reader = new FileReader();
     reader.onload = (e) => {
       if (!e.target) return;
       if (!imageRef.current) return;
       if (!e.target.result) return;
-      setUserImg(e.target.result as string);
-      setImageFile(file as File);
+      setUserImg("");
+      clearFiles();
+      addFile(file);
+      event.target.value = "";
     };
-    reader.readAsDataURL(file);
+    if (file) reader.readAsDataURL(file);
   };
+
+  useEffect(() => {
+    if (files[0]) setUserImg(URL.createObjectURL(files[0].imageUrl));
+  }, [files]);
 
   const onClickDeleteBtn = () => {
     setUserImg("");
+    clearFiles();
   };
 
   const onClickUpdateBtn = () => {
@@ -49,7 +57,7 @@ const UserInfoModal = () => {
       dispatch({ type: SET_ERROR_TOAST, payload: { text: "닉네임은 반드시 입력해야 합니다." } });
       return;
     }
-    dispatch(userInfoUpdateAction({ updateUserNickName: newName, updateUserProfile: imageFile }));
+    dispatch(userInfoUpdateAction({ updateUserNickName: newName, updateUserProfile: files[0]?.imageUrl }));
     closeUserInfoModal();
   };
 

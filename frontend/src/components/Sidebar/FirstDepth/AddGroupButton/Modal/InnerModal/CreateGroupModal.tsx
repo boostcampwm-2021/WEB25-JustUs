@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled, { keyframes } from "styled-components";
 import { flexRowCenterAlign } from "@styles/StyledComponents";
 import Modal from "@components/Modal";
@@ -6,13 +6,14 @@ import { useDispatch } from "react-redux";
 import COLOR from "@styles/Color";
 import { createGroupAction } from "@src/reducer/GroupReducer";
 import { SET_ERROR_TOAST } from "@src/reducer/ToastReducer";
+import { useResizeFile } from "@src/hooks/useResizeFile";
 
 const CreateGroupModal = () => {
   const uploadBtnRef = useRef<HTMLInputElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
   const groupNameRef = useRef<HTMLInputElement>(null);
   const [groupImg, setGroupImg] = useState<string>("");
-  const [imageFile, setImageFile] = useState<File>();
+  const { files, addFile, clearFiles } = useResizeFile();
   const dispatch = useDispatch();
 
   const closeModal = () => {
@@ -24,24 +25,29 @@ const CreateGroupModal = () => {
     uploadBtnRef.current.click();
   };
   const loadImage = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const files = event.target.files;
-    if (!files) return;
-    const file = files[0];
+    const newfiles = event.target.files;
+    if (!newfiles) return;
+    const file = newfiles[0];
     const reader = new FileReader();
-
     reader.onload = (e) => {
       if (!e.target) return;
       if (!imageRef.current) return;
       if (!e.target.result) return;
-      setGroupImg(e.target.result as string);
-      setImageFile(file as File);
+      setGroupImg("");
+      clearFiles();
+      addFile(file);
+      event.target.value = "";
     };
-
     reader.readAsDataURL(file);
   };
 
+  useEffect(() => {
+    if (files[0]) setGroupImg(URL.createObjectURL(files[0].imageUrl));
+  }, [files]);
+
   const onClickDeleteBtn = () => {
     setGroupImg("");
+    clearFiles();
   };
 
   const onClickCreateBtn = () => {
@@ -58,7 +64,7 @@ const CreateGroupModal = () => {
     if (!groupNameRef.current) return;
     const groupName = groupNameRef.current.value;
 
-    dispatch(createGroupAction({ groupName, groupImage: imageFile }));
+    dispatch(createGroupAction({ groupName, groupImage: files[0]?.imageUrl }));
 
     closeModal();
   };

@@ -1,14 +1,11 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Modal from "../";
 import UploadImageModal from "../PostCreateModal/UploadImageModal";
 import UploadInfoModal from "../PostCreateModal/UploadInfoModal";
 import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
+import { useResizeFile } from "@src/hooks/useResizeFile";
 
-interface FileObject {
-  imageUrl: File | string;
-  imageId: string;
-}
 interface IPost {
   userId: number;
   userNickname: string;
@@ -25,7 +22,7 @@ interface IPost {
 const PostUpdateModal = () => {
   const [mode, setMode] = useState<string>("image");
   const { selectedPost }: { selectedPost: IPost } = useSelector((state: RootState) => state.modal);
-  const [files, setFiles] = useState<FileObject[]>(selectedPost.images);
+  const { files, addFile, removeFile } = useResizeFile(selectedPost.images);
   const prevLocation = {
     placeName: selectedPost.postLocation,
     x: selectedPost.postLongitude,
@@ -39,7 +36,7 @@ const PostUpdateModal = () => {
   return (
     <Modal>
       {mode === "image" ? (
-        <UploadImageModal files={files} setFiles={setFiles} changeMode={changeMode} />
+        <UploadImageModal files={files} addFile={addFile} removeFile={removeFile} changeMode={changeMode} />
       ) : (
         <UploadInfoModal
           mode="update"

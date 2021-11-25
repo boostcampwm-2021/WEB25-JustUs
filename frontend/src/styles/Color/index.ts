@@ -9,6 +9,7 @@ const COLOR = {
   RED: "#D32F2F",
   WRAP: "#FFFFFF90",
   SHADOW_BLACK: "#00000040",
+  SPINNER_BACK: "#cacaca3f",
   BLUR: "#DFDFDF33",
   THEME1: {
     PRIMARY: "#52734D",

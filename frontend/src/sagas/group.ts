@@ -127,6 +127,7 @@ function* createGroup({ payload }: any) {
 }
 
 function* getAlbumList(action: any) {
+  yield put({ type: "SPINNER_OPEN" });
   try {
     const result: ResponseGenerator = yield call(getAlbumListApi, action.payload);
     const { albums } = result.data;
@@ -134,7 +135,10 @@ function* getAlbumList(action: any) {
     yield put({ type: "SET_ALBUM_LIST", payload: albums });
     const { albumList }: { albumList: IAlbum[] } = yield select((state) => state.groups);
     yield put({ type: "SET_SELECTED_GROUP", payload: { groupId, groupName, groupImage, albumList } });
-  } catch (err: any) {}
+  } catch (err: any) {
+  } finally {
+    yield put({ type: "SPINNER_CLOSE" });
+  }
 }
 
 function* deleteGroup(action: any) {
