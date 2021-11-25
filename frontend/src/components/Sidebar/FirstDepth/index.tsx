@@ -7,6 +7,7 @@ import AddGroupButton from "./AddGroupButton";
 import COLOR from "@styles/Color";
 import { updateGroupOrderAction } from "@src/reducer/UserReducer";
 import { getAlbumListAction } from "@src/reducer/GroupReducer";
+import { scrollbar } from "@src/styles/StyledComponents";
 
 interface FirstDepthProps {
   isToggle: boolean;
@@ -97,26 +98,20 @@ const DraggableWrapper = styled.div`
 `;
 
 const FirstDepthWrapper = styled.div`
-  width: 5vw;
+  width: 9rem;
   height: 95vh;
   background-color: ${(props) => props.theme.PRIMARY};
   display: flex;
   flex-direction: column;
   align-items: center;
-  overflow-x: hidden;
-  overflow-y: auto;
-  padding: 0.5vw 0;
   box-sizing: border-box;
   z-index: 7;
-
-  &::-webkit-scrollbar {
-    background: transparent;
-    width: 10px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background-color: ${COLOR.SCROLL};
-    border-radius: 10px;
+  overflow: hidden;
+  &:hover {
+    overflow-y: scroll;
+    &::-webkit-scrollbar {
+      width: 0;
+    }
   }
 `;
 

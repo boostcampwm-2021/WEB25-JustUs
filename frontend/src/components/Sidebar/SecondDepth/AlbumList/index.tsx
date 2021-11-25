@@ -155,7 +155,7 @@ const AlbumList = () => {
 };
 
 const DraggableWrapper = styled.div`
-  margin-right: 0.9rem;
+  margin: 1rem 0.9rem 0 0;
   & .post-hover {
     border: 2px dotted ${(props) => props.theme.MENUTEXT};
   }
@@ -178,7 +178,7 @@ const DraggableWrapper = styled.div`
 const AlbumWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  width: 100%;
+  width: 99%;
   margin: 1rem 0;
 `;
 

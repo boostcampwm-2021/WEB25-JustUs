@@ -1,4 +1,5 @@
 import { css, keyframes } from "styled-components";
+import COLOR from "@styles/Color";
 
 export const flexRowCenterAlign = css`
   display: flex;
@@ -12,7 +13,32 @@ export const flexColumnCenterAlign = css`
   justify-content: center;
   align-items: center;
 `;
-
+export const modalContainerWidth = css`
+  min-width: 720px;
+`;
+export const modalContainerHeight = css`
+  height: 60%;
+  min-height: 460px;
+`;
+export const modalContainerSize = css`
+  ${modalContainerHeight}
+  ${modalContainerWidth}
+  border-radius: 1rem;
+`;
+export const shadow = css`
+  box-shadow: 0 0 3px 0 ${COLOR.SHADOW_BLACK};
+`;
+export const postCardShadow = css`
+  box-shadow: 5px 2px 3px 3px ${COLOR.SHADOW_BLACK};
+`;
+export const iconHover = css`
+  &:hover {
+    cursor: pointer;
+    background-color: ${COLOR.GRAY};
+    border-radius: 50%;
+  }
+`;
+export const modalIconSize = css``;
 export const modalWidth = css`
   min-width: 720px;
   z-index: 6;
@@ -26,7 +52,7 @@ export const modalHeaderWithOneIcon = css`
   position: relative;
 `;
 export const modalTitleFont = css`
-  font-size: 2rem;
+  font-size: 2.5rem;
   font-weight: bold;
 `;
 const modalSlideUp = keyframes`
@@ -55,6 +81,16 @@ export const scrollbar = css`
   }
   &::-webkit-scrollbar-thumb {
     background-color: ${(props) => props.theme.SECONDARY};
+    border-radius: 1rem;
+  }
+`;
+export const scrollbarPrimary = css`
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    width: 0.8rem;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: ${(props) => props.theme.PRIMARY};
     border-radius: 1rem;
   }
 `;

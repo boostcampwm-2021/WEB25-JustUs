@@ -1,7 +1,7 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import COLOR from "@src/styles/Color";
 import Carousel from "@components/Modal/PostCreateModal/UploadInfoModal/Carousel";
-import { flexRowCenterAlign, scrollbar } from "@styles/StyledComponents";
+import { flexRowCenterAlign, scrollbarPrimary, modalTitleFont, iconHover } from "@styles/StyledComponents";
 import { ReactComponent as MoreVertSVG } from "@styles/icons/more-vert.svg";
 import PostSettingModal from "./Modal";
 import { useState } from "react";
@@ -56,63 +56,64 @@ const PostInfoModal = () => {
         event.nativeEvent.stopImmediatePropagation();
       }}
     >
-      <Modal>
-        <ModalHeader>
+      <Modal className="modal">
+        <ModalHeader className="modalHeader">
           <PostTitle>
             {selectedPost.postTitle.length > 20
               ? selectedPost.postTitle.substring(0, 20).concat("...")
               : selectedPost.postTitle}
           </PostTitle>
           {selectedPost.userId === userId ? (
-            <MoreIconWrapper
-              className="more-icon"
-              onClick={() => {
-                setModalOpened((prev) => !prev);
-              }}
-            >
-              <MoreVertSVG fill={COLOR.BLACK} />
+            <MoreIconWrapper className="more-icon">
+              <MoreVertSVG
+                fill={COLOR.BLACK}
+                onClick={() => {
+                  setModalOpened((prev) => !prev);
+                }}
+              />
             </MoreIconWrapper>
           ) : null}
           {modalOpened && <PostSettingModal />}
         </ModalHeader>
-        <ModalContentWrapper>
+        <ModalContentWrapper className="modalContentWrapper">
           <CarouselWrapper>
-            <Carousel files={selectedPost.images} carouselWidth={250} />
+            <Carousel files={selectedPost.images} carouselWidth={35} />
           </CarouselWrapper>
           <ModalContent>{highlights(selectedPost.postContent)}</ModalContent>
         </ModalContentWrapper>
-        <ModalFooter>
+        <ModalFooter className="modalFooter">
           <FooterItem>{exportDateTime(selectedPost.postDate)}</FooterItem>
-          <FooterItem>{selectedPost.userNickname}</FooterItem>
+          <FooterItem>{selectedPost.userNickname}🖊</FooterItem>
         </ModalFooter>
       </Modal>
     </ModalContainer>
   );
 };
 
+const postInfoModalWidth = css`
+  width: 50rem;
+`;
 const ModalContainer = styled.div`
   display: flex;
   flex-direction: row;
   background-color: ${COLOR.WHITE};
   border-radius: 1rem;
-  width: 50rem;
+  ${postInfoModalWidth};
   height: 70rem;
-
   &::-webkit-scrollbar {
     display: none;
   }
 `;
 const Modal = styled.div`
-  display: flex;
-  flex-direction: column;
+  display: grid;
   width: 100%;
   height: 100%;
+  border-radius: 1rem;
 `;
 const ModalHeader = styled.div`
   display: grid;
   grid-template-columns: 10% 80% 10%;
-  font-size: 1.2rem;
-  font-weight: bold;
+  height: 7rem;
   width: 100%;
   position: relative;
   border-bottom: 0.2rem solid ${COLOR.GRAY};
@@ -123,30 +124,36 @@ const PostTitle = styled.div`
   grid-column-end: 3;
   font-family: "NanumDaCaeSaRang";
   font-size: 3rem;
-  height: 8rem;
+  font-weight: bold;
 `;
 const MoreIconWrapper = styled.div`
   ${flexRowCenterAlign}
   grid-column-start: 3;
   grid-column-end: 4;
-  cursor: pointer;
+  & svg {
+    ${iconHover}
+  }
 `;
-const ModalContentWrapper = styled.div``;
+const ModalContentWrapper = styled.div`
+  width: 100%;
+  overflow: hidden;
+`;
 const CarouselWrapper = styled.div`
   border-bottom: 0.2rem solid ${COLOR.GRAY};
-  height: 40rem;
   box-sizing: border-box;
 `;
 const ModalContent = styled.div`
-  font-size: 2.5rem;
-  padding: 1rem 1rem 1rem 1rem;
+  ${modalTitleFont};
+  font-weight: normal;
+  padding: 2rem;
   font-family: "NanumDaCaeSaRang";
   white-space: pre-wrap;
-  height: 15rem;
+  height: 20rem;
   box-sizing: border-box;
   word-break: break-all;
+  line-height: 130%;
   width: 50rem;
-  ${scrollbar}
+  ${scrollbarPrimary}
 
   & mark {
     border-radius: 3px;
@@ -155,12 +162,19 @@ const ModalContent = styled.div`
     padding: 0 1rem 0 0.5rem;
     font-size: 2.5rem;
     font-family: "NanumDaCaeSaRang";
+    &:hover {
+      cursor: pointer;
+      background-color: ${(props) => props.theme.PRIMARY};
+    }
   }
 `;
 const ModalFooter = styled.div`
-  padding-top: 1rem;
-  color: ${COLOR.DARKGRAY};
-  font-size: 2.5rem;
+  padding: 1rem 0;
+  background-color: ${COLOR.DARKGRAY};
+  border-radius: 0 0 1rem 1rem;
+  ${modalTitleFont}
+  color: ${COLOR.WHITE};
+  font-weight: 300;
   display: flex;
   justify-content: flex-end;
   vertical-align: bottom;
