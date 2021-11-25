@@ -15,7 +15,9 @@ interface FirstDepthProps {
 }
 
 const FirstDepth = ({ isToggle, setIsToggle, addGroupBtnRef }: FirstDepthProps) => {
-  const { groups, deleteGroupSucceed, selectedGroupIdx }: any = useSelector((state: RootState) => state.groups);
+  const { groups, deleteGroupSucceed, selectedGroupIdx, addGroupSucceed, joinGroupSucceed }: any = useSelector(
+    (state: RootState) => state.groups,
+  );
   const draggableRef = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch();
 
@@ -39,6 +41,16 @@ const FirstDepth = ({ isToggle, setIsToggle, addGroupBtnRef }: FirstDepthProps) 
       return;
     }
   }, [groups, selectedGroupIdx]);
+
+  useEffect(() => {
+    if (addGroupSucceed) chooseClickedGroup(selectedGroupIdx);
+  }, [selectedGroupIdx, addGroupSucceed]);
+
+  useEffect(() => {
+    if (joinGroupSucceed) {
+      chooseClickedGroup(selectedGroupIdx);
+    }
+  }, [selectedGroupIdx, joinGroupSucceed]);
 
   if (!groups.length) return null;
 

@@ -32,6 +32,8 @@ interface IInitState {
   isPostDeleting: boolean;
   groups: Array<GroupType>;
   selectedGroupIdx: number;
+  addGroupSucceed: boolean;
+  joinGroupSucceed: boolean;
   deleteGroupSucceed: boolean;
   newAlbumLoading: boolean;
   newAlbumSucceed: boolean;
@@ -56,6 +58,8 @@ const initState: IInitState = {
   isLoading: true,
   groups: [],
   selectedGroupIdx: 0,
+  addGroupSucceed: false,
+  joinGroupSucceed: false,
   deleteGroupSucceed: false,
   albumList: [{ albumId: 0, albumName: "", posts: [], base: false }],
   isPostUploading: false,
@@ -227,6 +231,7 @@ const groupReducer = (state = initState, action: any) => {
       return {
         ...state,
         groups: [...state.groups, action.payload],
+        addGroupSucceed: action.payload.addGroupSucceed,
       };
     case GroupAction.SET_SELECTED_GROUP:
       return {
@@ -565,6 +570,12 @@ const groupReducer = (state = initState, action: any) => {
       return {
         ...state,
         selectedGroupIdx: action.payload.selectedGroupIdx,
+      };
+    }
+    case "SET_JOIN_GROUP_SUCCEED": {
+      return {
+        ...state,
+        joinGroupSucceed: action.payload.joinGroupSucceed,
       };
     }
     default:
