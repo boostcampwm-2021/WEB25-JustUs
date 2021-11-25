@@ -50,16 +50,16 @@ const Succeed = ({ text }: { text: string }) => {
 
 const up = keyframes`
   0% {
-    z-index: 6;
+    z-index: 8;
   }
   50% {
     transform: translateY(-10rem);
     visibility: visible;
-    z-index: 6;
+    z-index: 8;
   }
   100% {
     transform: translateY(10rem);
-    z-index: 6;
+    z-index: 8;
   }
 `;
 const progress = ({ theme }: { theme: { PRIMARY: string; SECONDARY: string; MENUTEXT: string } }) => keyframes`
