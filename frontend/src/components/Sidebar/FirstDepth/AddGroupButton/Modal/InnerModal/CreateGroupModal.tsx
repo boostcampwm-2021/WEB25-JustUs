@@ -23,6 +23,7 @@ const CreateGroupModal = () => {
   const onClickUploadBtn = () => {
     if (uploadBtnRef.current === null) return;
     uploadBtnRef.current.click();
+    (groupNameRef.current as HTMLInputElement).focus();
   };
   const loadImage = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newfiles = event.target.files;
@@ -69,6 +70,10 @@ const CreateGroupModal = () => {
     closeModal();
   };
 
+  const onKeyDown = (e: React.KeyboardEvent) => {
+    if (e.code === "Enter") onClickCreateBtn();
+  };
+
   return (
     <Modal>
       <ModalContainer
@@ -109,7 +114,7 @@ const CreateGroupModal = () => {
             </UploadImgBtnWrapper>
           </div>
           <GridRight>
-            <GroupNameInputWrapper placeholder="그룹 이름을 입력해주세요" ref={groupNameRef} />
+            <GroupNameInputWrapper placeholder="그룹 이름을 입력해주세요" ref={groupNameRef} onKeyDown={onKeyDown} />
             <CreateBtnWrapper onClick={onClickCreateBtn}>생성하기</CreateBtnWrapper>
           </GridRight>
         </Content>

@@ -6,15 +6,13 @@ import { useDispatch, useSelector } from "react-redux";
 import COLOR from "@styles/Color";
 import { RootState } from "@src/reducer";
 import { deleteGroupAction } from "@src/reducer/GroupReducer";
+import { FcInspection } from "react-icons/fc";
+import { SET_SUCCEED_TOAST } from "@src/reducer/ToastReducer";
 
 interface SettingGroupModalProps {
   setIsToggle: Dispatch<SetStateAction<boolean>>;
 }
-const clickGroupCode = (e: React.MouseEvent<HTMLDivElement>) => {
-  if (!e.target) return;
-  navigator.clipboard.writeText((e.target as HTMLElement).innerText);
-  alert("복사되었습니다.");
-};
+
 const GroupInfoModal = ({ setIsToggle }: SettingGroupModalProps) => {
   const [clickedDropBtn, setClickedDropclickedDropBtn] = useState(false);
   const { selectedGroup }: any = useSelector((state: RootState) => state.groups);
@@ -37,6 +35,12 @@ const GroupInfoModal = ({ setIsToggle }: SettingGroupModalProps) => {
 
   const onClickCancelBtn = () => {
     setClickedDropclickedDropBtn(false);
+  };
+
+  const clickGroupCode = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!e.target) return;
+    navigator.clipboard.writeText((e.target as HTMLElement).innerText);
+    dispatch({ type: SET_SUCCEED_TOAST, payload: { text: "클립보드에 복사되었습니다." } });
   };
 
   return (
@@ -72,7 +76,12 @@ const GroupInfoModal = ({ setIsToggle }: SettingGroupModalProps) => {
           </GridItem>
           <GridItem>
             <JoinCodeGuide>초대 코드</JoinCodeGuide>
-            <JoinCode onClick={clickGroupCode}>{selectedGroup.groupCode}</JoinCode>
+            <JoinCode onClick={clickGroupCode}>
+              <FcInspectionWrapper>
+                <FcInspection />
+              </FcInspectionWrapper>
+              {selectedGroup.groupCode}
+            </JoinCode>
             <DropGuideWrapper>그룹 탈퇴</DropGuideWrapper>
             <GroupDropWrapper>
               {!clickedDropBtn && <DropGroupButtonWrapper onClick={onClickDropBtn}>탈퇴</DropGroupButtonWrapper>}
@@ -177,9 +186,14 @@ const JoinCode = styled.div`
   cursor: pointer;
   box-sizing: border-box;
   height: 3.5rem;
+  display: flex;
+  align-items: center;
   &:hover {
     color: ${(props) => props.theme.PRIMARY};
   }
+`;
+const FcInspectionWrapper = styled.div`
+  ${flexRowCenterAlign}
 `;
 const GroupMemberListWrapper = styled.div`
   width: 100%;

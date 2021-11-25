@@ -23,10 +23,12 @@ const Error = ({ text }: { text: string }) => {
   };
 
   useEffect(() => {
-    setTimeout(() => {
-      setDisplayNone();
-    }, 3000);
-  });
+    return () => {
+      setTimeout(() => {
+        setDisplayNone();
+      }, 3000);
+    };
+  }, []);
 
   return (
     <Toast>
