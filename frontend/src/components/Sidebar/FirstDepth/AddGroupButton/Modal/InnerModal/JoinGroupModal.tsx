@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import styled, { keyframes } from "styled-components";
 import { flexColumnCenterAlign, flexRowCenterAlign } from "@styles/StyledComponents";
 import Modal from "@components/Modal";
@@ -26,6 +26,9 @@ const JoinGroupModal = () => {
     if (e.code === "Enter") onClickJoinBtn();
   };
 
+  useEffect(() => {
+    (inputRef.current as HTMLInputElement).focus();
+  }, []);
   return (
     <Modal>
       <ModalContainer

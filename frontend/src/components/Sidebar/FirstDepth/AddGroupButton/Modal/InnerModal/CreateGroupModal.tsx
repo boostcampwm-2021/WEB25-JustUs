@@ -23,6 +23,7 @@ const CreateGroupModal = () => {
   const onClickUploadBtn = () => {
     if (uploadBtnRef.current === null) return;
     uploadBtnRef.current.click();
+    (groupNameRef.current as HTMLInputElement).focus();
   };
   const loadImage = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newfiles = event.target.files;

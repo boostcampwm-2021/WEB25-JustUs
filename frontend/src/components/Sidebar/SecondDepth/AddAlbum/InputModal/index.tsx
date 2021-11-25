@@ -17,6 +17,11 @@ const InputModal = ({ addAlbumModalRef, setIsAddAlbumModalOpened }: InputModalPr
   const [addAlbum, setAddAlbum] = useState(true);
   const { selectedGroup }: any = useSelector((state: RootState) => state.groups);
   const dispatch = useDispatch();
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    (inputRef.current as HTMLElement).focus();
+  }, []);
 
   useEffect(() => {
     if (addAlbum) {
@@ -44,7 +49,13 @@ const InputModal = ({ addAlbumModalRef, setIsAddAlbumModalOpened }: InputModalPr
 
   return (
     <AddAlbumModalWrapper ref={addAlbumModalRef} className="add-album-modal">
-      <AlbumCreateInputWrapper placeholder="새 앨범" onChange={onChangeName} spellCheck={false} onKeyDown={onKeyDown} />
+      <AlbumCreateInputWrapper
+        placeholder="새 앨범"
+        onChange={onChangeName}
+        spellCheck={false}
+        onKeyDown={onKeyDown}
+        ref={inputRef}
+      />
       <AlbumCreateBtnWrapper onClick={onClickAddAlbum}>생성</AlbumCreateBtnWrapper>
     </AddAlbumModalWrapper>
   );

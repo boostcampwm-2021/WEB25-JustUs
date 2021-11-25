@@ -1,4 +1,4 @@
-import { useState, ChangeEvent } from "react";
+import { useState, ChangeEvent, useEffect, useRef } from "react";
 import styled, { keyframes } from "styled-components";
 import { flexRowCenterAlign } from "@styles/StyledComponents";
 import Modal from "@components/Modal";
@@ -15,6 +15,8 @@ const UpdateAlbumModal = () => {
   const originAlbumName = selectedAlbum.albumName;
   const [newAlbumName, setNewAlbumName] = useState(originAlbumName);
   const { selectedGroup }: any = useSelector((state: RootState) => state.groups);
+  const inputRef = useRef<HTMLInputElement>(null);
+
   const closeModal = () => {
     dispatch({ type: "CLOSE_MODAL" });
   };
@@ -34,6 +36,10 @@ const UpdateAlbumModal = () => {
     closeModal();
   };
 
+  useEffect(() => {
+    (inputRef.current as HTMLInputElement).focus();
+  }, []);
+
   return (
     <Modal>
       <ModalContainer
@@ -50,7 +56,7 @@ const UpdateAlbumModal = () => {
           </CloseBtn>
         </Header>
         <Content>
-          <AlbumNameInputWrapper onChange={onChangeName} value={newAlbumName} spellCheck={false} />
+          <AlbumNameInputWrapper onChange={onChangeName} value={newAlbumName} spellCheck={false} ref={inputRef} />
           <SaveBtnWrapper onClick={onClickSave}>저장하기</SaveBtnWrapper>
         </Content>
       </ModalContainer>
