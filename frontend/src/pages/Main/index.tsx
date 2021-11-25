@@ -27,7 +27,8 @@ const Main = () => {
   const themeNumber = Number(localStorage.getItem("themeNumber"));
 
   useEffect(() => {
-    dispatch({ type: "CHANGE_THEME", selectedTheme: themeNumber });
+    if (themeNumber) dispatch({ type: "CHANGE_THEME", selectedTheme: themeNumber });
+
     document.addEventListener("click", (event) => {
       const { target, clientX, clientY } = event;
       const isClusteringClicked = (target as HTMLElement).getAttribute("src")?.match(/\/icons\/podo-(three|many).png/);
