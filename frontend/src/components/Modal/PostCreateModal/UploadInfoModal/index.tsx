@@ -1,9 +1,10 @@
 import React, { useEffect, useState, useRef } from "react";
-import styled, { css } from "styled-components";
+import styled, { css, keyframes } from "styled-components";
 import COLOR from "@styles/Color";
 import { useDispatch, useSelector } from "react-redux";
 import Carousel from "@components/Modal/PostCreateModal/UploadInfoModal/Carousel";
 import { RootState } from "@src/reducer";
+import { SET_ERROR_TOAST } from "@src/reducer/ToastReducer";
 import ModalSub from "./ModalSub";
 import {
   flexRowCenterAlign,
@@ -122,7 +123,6 @@ const UploadInfoModal = ({
   };
 
   const handleSaveBtn = () => {
-    if (!activate) return;
     if (mode === "create") {
       const post = {
         postTitle: title,
@@ -160,6 +160,16 @@ const UploadInfoModal = ({
     }
 
     closeModal();
+  };
+
+  const showToast = () => {
+    if (!title.length) {
+      dispatch({ type: SET_ERROR_TOAST, payload: { text: "제목을 입력해 주세요." } });
+    } else if (!date.length) {
+      dispatch({ type: SET_ERROR_TOAST, payload: { text: "날짜를 선택해 주세요." } });
+    } else if (selectedLocation.y === -1) {
+      dispatch({ type: SET_ERROR_TOAST, payload: { text: "장소를 입력해 주세요." } });
+    }
   };
 
   useEffect(() => {
@@ -212,7 +222,7 @@ const UploadInfoModal = ({
                   setDate(e.target.value);
                 }}
               />
-              <InputPlace>
+              <InputPlace onClick={address === "" ? onClickLocationBtn : () => null}>
                 {address === "" ? (
                   <InputPlaceName>
                     {selectedLocation.placeName === "" ? "장소를 선택하세요." : selectedLocation.placeName}
@@ -220,12 +230,12 @@ const UploadInfoModal = ({
                 ) : (
                   <InputPlaceName>{address}</InputPlaceName>
                 )}
-                <LocationButton onClick={address === "" ? onClickLocationBtn : () => null}>
+                <LocationButton>
                   <img src="/icons/location.svg" alt="location" width="100%" />
                 </LocationButton>
               </InputPlace>
             </InputBottom>
-            <UploadButton activate={activate} onClick={handleSaveBtn}>
+            <UploadButton activate={activate} onClick={activate ? handleSaveBtn : showToast}>
               {mode === "create" ? "게시하기" : "수정하기"}
             </UploadButton>
           </ModalRight>
@@ -408,11 +418,10 @@ const InputText = styled.textarea`
 const InputBottom = styled.div`
   display: flex;
   flex-direction: column;
-  max-height: 5rem;
-  justify-content: space-between;
+  height: 100%;
+  justify-content: flex-start;
   align-items: flex-end;
   border-top: 1px solid ${COLOR.LIGHTGRAY1};
-  min-height: 10rem;
   & > input[type="date"] {
     font-family: "NanumGothic", sans-serif;
     overflow: hidden;
@@ -420,19 +429,23 @@ const InputBottom = styled.div`
   }
 `;
 const InputDate = styled.input`
-  flex-basis: 20vh;
   border: none;
   font-size: 1.6rem;
   z-index: 3;
 `;
 const InputPlace = styled.div`
   display: flex;
+  height: 4rem;
   width: 100%;
   z-index: 3;
+  cursor: pointer;
 `;
 const InputPlaceName = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
   border: 1px solid black;
-  height: 4vh;
+  height: 100%;
   line-height: 4vh;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -444,9 +457,11 @@ const InputPlaceName = styled.div`
   color: ${COLOR.DARKGRAY};
   font-size: 1.6rem;
 `;
+
 const LocationButton = styled.button`
   border: none;
   background: none;
+  width: 3.4rem;
   & > img {
     ${flexRowCenterAlign}
     cursor: pointer;
@@ -455,17 +470,20 @@ const LocationButton = styled.button`
 const UploadButton = styled.button<{ activate: boolean }>`
   background-color: ${(props) => {
     if (props.activate) return props.theme.PRIMARY;
-    else return props.theme.SECONDARY;
+    else return "transparent";
   }};
-  border: none;
+  border: ${(props) => {
+    if (props.activate) return "none";
+    else return `1px solid ${props.theme.SECONDARY}`;
+  }};
   border-radius: 1rem;
   flex-basis: 3rem;
-  color: ${COLOR.WHITE};
-  font-size: 1.6rem;
-  cursor: ${(props) => {
-    if (props.activate) return "pointer";
-    else return "not-allowed";
+  color: ${(props) => {
+    if (props.activate) return COLOR.WHITE;
+    else return "none";
   }};
+  font-size: 1.6rem;
+  cursor: pointer;
 `;
 
 export default UploadInfoModal;
