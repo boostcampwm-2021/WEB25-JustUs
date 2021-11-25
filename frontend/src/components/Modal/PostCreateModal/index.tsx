@@ -2,17 +2,13 @@ import React, { useState } from "react";
 import Modal from "../";
 import UploadImageModal from "./UploadImageModal";
 import UploadInfoModal from "./UploadInfoModal";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
-
-interface FileObject {
-  imageUrl: File | string;
-  imageId: string;
-}
+import { useResizeFile } from "@src/hooks/useResizeFile";
 
 const PostCreateModal = () => {
   const [mode, setMode] = useState<string>("image");
-  const [files, setFiles] = useState<FileObject[]>([]);
+  const { files, addFile, removeFile } = useResizeFile();
   const { address, position }: { address: string; position: { x: number; y: number } } = useSelector(
     (state: RootState) => state.address,
   );
@@ -24,7 +20,7 @@ const PostCreateModal = () => {
   return (
     <Modal>
       {mode === "image" ? (
-        <UploadImageModal files={files} setFiles={setFiles} changeMode={changeMode} />
+        <UploadImageModal files={files} addFile={addFile} removeFile={removeFile} changeMode={changeMode} />
       ) : (
         <UploadInfoModal
           mode="create"

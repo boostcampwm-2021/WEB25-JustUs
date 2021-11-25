@@ -119,6 +119,7 @@ async function getPostsByHashtagApi(hashtagId: number) {
 }
 
 function* uploadPost({ post }: { type: string; post: IPost }) {
+  yield put({ type: "SPINNER_OPEN" });
   try {
     const result: ResponseGenerator = yield call(uploadPostApi, post);
     yield put({ type: "UPLOAD_POST_SUCCEED", post: { ...post, postId: result.data } });
@@ -132,16 +133,20 @@ function* uploadPost({ post }: { type: string; post: IPost }) {
       type: SET_ERROR_TOAST,
       payload: { text: `게시글 생성에 실패했습니다.` },
     });
+  } finally {
+    yield put({ type: "SPINNER_CLOSE" });
   }
 }
 
 function* getPost({ postId }: { type: string; postId: number }) {
+  yield put({ type: "SPINNER_OPEN" });
   try {
     const result: ResponseGenerator = yield call(getPostApi, postId);
     yield put({ type: "SELECT_POST_SUCCEED", post: result.data });
     yield put({ type: "OPEN_MODAL", payload: "PostShowModal" });
   } catch (err: unknown) {
     yield put({ type: "SELECT_POST_FAILED" });
+    yield put({ type: "SPINNER_CLOSE" });
   }
 }
 
@@ -164,6 +169,7 @@ function* deletePost({ postId }: { type: string; postId: number }) {
 }
 
 function* updatePost({ post }: { type: string; post: IUpdatePost }) {
+  yield put({ type: "SPINNER_OPEN" });
   try {
     const result: ResponseGenerator = yield call(updatePostApi, post);
     yield put({ type: "UPDATE_POST_SUCCEED", post });
@@ -177,6 +183,8 @@ function* updatePost({ post }: { type: string; post: IUpdatePost }) {
       type: SET_ERROR_TOAST,
       payload: { text: `게시글 수정에 실패했습니다.` },
     });
+  } finally {
+    yield put({ type: "SPINNER_CLOSE" });
   }
 }
 

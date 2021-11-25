@@ -2,7 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import COLOR from "@styles/Color";
 import { flexRowCenterAlign, flexColumnCenterAlign } from "@styles/StyledComponents";
-
+import { useSelector } from "react-redux";
+import { RootState } from "@src/reducer";
+import { useDispatch } from "react-redux";
 interface FileObject {
   imageUrl: File | string;
   imageId: string;
@@ -15,6 +17,8 @@ interface CarouselProps {
 const Carousel = ({ files, carouselWidth }: CarouselProps) => {
   const carouselRef = useRef<HTMLDivElement>(null);
   const [imageIndex, setImageIndex] = useState(0);
+  const { isPostLoading } = useSelector((state: RootState) => state.modal);
+  const dispatch = useDispatch();
   const showNextImage = () => {
     if (imageIndex === files.length - 1 || !carouselRef.current) return;
     setImageIndex(imageIndex + 1);
@@ -29,6 +33,13 @@ const Carousel = ({ files, carouselWidth }: CarouselProps) => {
     if (!carouselRef.current) return;
     carouselRef.current.style.transform = `translate3d(-${carouselWidth * imageIndex}px, 0, 0)`;
   }, [imageIndex]);
+
+  const loadHandler = (idx: number) => {
+    if (idx === 0) dispatch({ type: "SPINNER_CLOSE" });
+  };
+  const errorHandler = () => {
+    dispatch({ type: "SPINNER_CLOSE" });
+  };
 
   return (
     <CarouselContainer carouselWidth={carouselWidth} className="carouselContainer">
@@ -47,6 +58,8 @@ const Carousel = ({ files, carouselWidth }: CarouselProps) => {
                       ? fileObject.imageUrl
                       : URL.createObjectURL(fileObject.imageUrl)
                   }
+                  onLoad={() => loadHandler(idx)}
+                  onError={errorHandler}
                 ></img>
               </div>
             ))}
