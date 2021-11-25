@@ -45,12 +45,11 @@ function getLogOutApi() {
 
 async function updateUserInfoApi(user: IUser) {
   const formData = new FormData();
-  const res = await fetch("http://localhost:3000/img/person.png");
-  const blob = await res.blob();
-  const baseImage = new File([blob], "base-person-image", { type: "image/png" });
 
   formData.append("userNickname", user.updateUserNickName);
-  formData.append("profileImage", user.updateUserProfile ? user.updateUserProfile : baseImage);
+  if (user.updateUserProfile) {
+    formData.append("profileImage", user.updateUserProfile);
+  }
 
   const result = await axios.put(`${SERVER_URL}/api/user`, formData, {
     withCredentials: true,
