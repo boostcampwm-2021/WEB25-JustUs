@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { flexRowCenterAlign } from "@src/styles/StyledComponents";
+import { flexRowCenterAlign, iconHover } from "@src/styles/StyledComponents";
 import COLOR from "@src/styles/Color";
 import { useDispatch } from "react-redux";
 const PostSettingModal = () => {
@@ -38,10 +38,7 @@ const ModalItem = styled.div<{ delete: boolean }>`
   height: 50%;
 
   & > img {
-    &:hover {
-      cursor: pointer;
-      opacity: 0.5;
-    }
+    ${iconHover}
   }
 
   &: first-child {

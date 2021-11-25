@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import COLOR from "@styles/Color";
-import { flexRowCenterAlign, flexColumnCenterAlign } from "@styles/StyledComponents";
+import { flexRowCenterAlign, flexColumnCenterAlign, iconHover } from "@styles/StyledComponents";
 import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
 import { useDispatch } from "react-redux";
@@ -125,7 +125,7 @@ const ChangeImageButton = styled.button`
   display: absolute;
   background: none;
   & > img {
-    cursor: pointer;
+    ${iconHover};
   }
 `;
 const DotContainer = styled.div`

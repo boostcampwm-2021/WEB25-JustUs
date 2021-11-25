@@ -1,7 +1,13 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import COLOR from "@src/styles/Color";
 import Carousel from "@components/Modal/PostCreateModal/UploadInfoModal/Carousel";
-import { flexRowCenterAlign, scrollbar } from "@styles/StyledComponents";
+import {
+  flexRowCenterAlign,
+  scrollbarPrimary,
+  modalTitleFont,
+  iconHover,
+  postCardShadow,
+} from "@styles/StyledComponents";
 import { ReactComponent as MoreVertSVG } from "@styles/icons/more-vert.svg";
 import PostSettingModal from "./Modal";
 import { useState } from "react";
@@ -64,13 +70,13 @@ const PostInfoModal = () => {
               : selectedPost.postTitle}
           </PostTitle>
           {selectedPost.userId === userId ? (
-            <MoreIconWrapper
-              className="more-icon"
-              onClick={() => {
-                setModalOpened((prev) => !prev);
-              }}
-            >
-              <MoreVertSVG fill={COLOR.BLACK} />
+            <MoreIconWrapper className="more-icon">
+              <MoreVertSVG
+                fill={COLOR.BLACK}
+                onClick={() => {
+                  setModalOpened((prev) => !prev);
+                }}
+              />
             </MoreIconWrapper>
           ) : null}
           {modalOpened && <PostSettingModal />}
@@ -129,7 +135,14 @@ const MoreIconWrapper = styled.div`
   ${flexRowCenterAlign}
   grid-column-start: 3;
   grid-column-end: 4;
-  cursor: pointer;
+  & svg {
+    ${iconHover}
+  }
+`;
+const ModalContentWrapper = styled.div`
+  /* background-color: red; */
+  width: 100%;
+  overflow: hidden;
 `;
 const ModalContentWrapper = styled.div``;
 const CarouselWrapper = styled.div`

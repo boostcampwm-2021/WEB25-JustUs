@@ -1,4 +1,5 @@
 import { css, keyframes } from "styled-components";
+import COLOR from "@styles/Color";
 
 export const flexRowCenterAlign = css`
   display: flex;
@@ -23,6 +24,13 @@ export const modalContainerSize = css`
   ${modalContainerHeight}
   ${modalContainerWidth}
   border-radius: 1rem;
+`;
+export const iconHover = css`
+  &:hover {
+    cursor: pointer;
+    background-color: ${COLOR.GRAY};
+    border-radius: 50%;
+  }
 `;
 export const modalWidth = css`
   min-width: 720px;
