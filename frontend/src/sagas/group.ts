@@ -170,14 +170,14 @@ function* getGroupMemberList(action: any) {
 function* requestJoinGroup(action: any) {
   try {
     yield call(requestJoinGroupApi, action.payload);
-    yield delay(1000);
+    yield put({ type: "CLOSE_MODAL" });
+    yield delay(300);
 
     const result: ResponseGenerator = yield call(getGroupListApi);
     const { groups } = result.data;
 
     yield put({ type: "SET_JOIN_GROUP_SUCCEED", payload: { joinGroupSucceed: true } });
     yield put({ type: GET_GROUP_LIST_SUCCEED, payload: groups });
-    yield put({ type: "CLOSE_MODAL" });
     yield put({ type: SET_SUCCEED_TOAST, payload: { text: `그룹에 참여했습니다.` } });
     yield put({ type: "SET_SELECTED_GROUP_IDX", payload: { selectedGroupIdx: groups.length - 1 } });
   } catch (err) {
