@@ -18,13 +18,15 @@ interface GroupProps {
 
 const Group = ({ isToggle, setIsToggle, groupId, groupName, groupImage, DragHandler, DragEndHandler }: GroupProps) => {
   const dispatch = useDispatch();
-  const { selectedGroup }: any = useSelector((state: RootState) => state.groups);
+  const { selectedGroup, groups }: any = useSelector((state: RootState) => state.groups);
 
   const onClickGroup = () => {
     if (selectedGroup?.groupId === groupId && isToggle) {
       setIsToggle(false);
     } else {
+      const selectedGroupIdx = groups.findIndex((group: GroupProps) => group.groupId === groupId);
       dispatch(getAlbumListAction({ groupId, groupName, groupImage }));
+      dispatch({ type: "SET_SELECTED_GROUP_IDX", payload: { selectedGroupIdx } });
       setIsToggle(true);
     }
   };
