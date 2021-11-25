@@ -80,15 +80,10 @@ const Carousel = ({ files, carouselWidth }: CarouselProps) => {
 
 export default Carousel;
 const CarouselContainer = styled.div<{ carouselWidth: number }>`
-  display: grid;
-  width: 100%;
-  height: 100%;
-  display: flex;
   ${flexColumnCenterAlign}
 `;
 const CaroselImageContainer = styled.div`
   width: 100%;
-  height: 80%;
   ${flexRowCenterAlign}
 `;
 const CarouselWindow = styled.div<{ carouselWidth: number }>`
