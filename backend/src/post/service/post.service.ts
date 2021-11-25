@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, UnauthorizedException } from "@nestjs/common";
+import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from "@nestjs/common";
 import { ImageService } from "src/image/service/image.service";
 import { InjectRepository } from "@nestjs/typeorm";
 import { PostRepository } from "../post.repository";
@@ -14,6 +14,7 @@ import { HashTagService } from "src/hashtag/service/hashtag.service";
 import { HashTag } from "src/hashtag/hashtag.entity";
 import { Post } from "src/post/post.entity";
 import { HashTagRepository } from "src/hashtag/hashtag.repository";
+import { Connection } from "typeorm";
 
 @Injectable()
 export class PostService {
@@ -22,13 +23,14 @@ export class PostService {
     private readonly albumService: AlbumService,
     private readonly hashTagService: HashTagService,
     @InjectRepository(PostRepository)
-    private postRepository: PostRepository,
+    private readonly postRepository: PostRepository,
     @InjectRepository(UserRepository)
-    private userRepository: UserRepository,
+    private readonly userRepository: UserRepository,
     @InjectRepository(AlbumRepository)
-    private albumRepository: AlbumRepository,
+    private readonly albumRepository: AlbumRepository,
     @InjectRepository(HashTagRepository)
-    private hashTagRepository: HashTagRepository,
+    private readonly hashTagRepository: HashTagRepository,
+    private readonly connection: Connection,
   ) {}
 
   async createPost(
@@ -124,34 +126,60 @@ export class PostService {
     const newTags = this.removeTags(postContent);
     const differenceTags = oldTags.filter(tag => !newTags.includes(tag));
 
-    await this.hashTagService.deleteHashTags(differenceTags, postId);
-
     const hashtags = await this.getHashTag(postContent, groupId);
 
-    post.hashtags = hashtags;
-    await this.postRepository.save(post);
+    const queryRunner = this.connection.createQueryRunner();
+    queryRunner.startTransaction();
 
-    await this.postRepository.update(postId, {
-      postTitle,
-      postContent,
-      postDate,
-      postLocation,
-      postLatitude,
-      postLongitude,
-    });
+    try {
+      await this.hashTagService.deleteHashTags(differenceTags, postId, queryRunner);
 
-    this.imageService.updateImages(post, addImages, deleteImagesId);
+      post.hashtags = hashtags;
+      await queryRunner.manager.getRepository(Post).save(post);
 
-    return "PostInfo update success!!";
+      await queryRunner.manager.getRepository(Post).update(postId, {
+        postTitle,
+        postContent,
+        postDate,
+        postLocation,
+        postLatitude,
+        postLongitude,
+      });
+
+      await this.imageService.updateImages(post, addImages, deleteImagesId, queryRunner);
+
+      await queryRunner.commitTransaction();
+
+      return "PostInfo update success!!";
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      throw new BadRequestException(error);
+    } finally {
+      await queryRunner.release();
+    }
   }
 
   async deletePost(userId: number, postId: number): Promise<string> {
     const relations = ["user", "images"];
     const post = await this.validateUserAuthor(userId, postId, relations);
-    const deleteTags = this.removeTags(post.postContent);
-    await this.hashTagService.deleteHashTags(deleteTags, postId);
 
-    this.postRepository.softRemove(post);
+    const deleteTags = this.removeTags(post.postContent);
+
+    const queryRunner = this.connection.createQueryRunner();
+    queryRunner.startTransaction();
+
+    try {
+      await this.hashTagService.deleteHashTags(deleteTags, postId, queryRunner);
+
+      await queryRunner.manager.getCustomRepository(PostRepository).softRemove(post);
+
+      await queryRunner.commitTransaction();
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      throw new BadRequestException(error);
+    } finally {
+      await queryRunner.release();
+    }
 
     return "Post delete success!!";
   }
