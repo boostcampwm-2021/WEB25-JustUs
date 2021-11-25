@@ -90,7 +90,6 @@ export class GroupService {
     if (!user) throw new NotFoundException(`Not found user with the id ${userId}`);
 
     const { users } = group;
-    console.log(users);
     if (attend && this.hasUser(userId, users)) throw new UnauthorizedException("You are already a member of a group.");
 
     const { groupOrder } = user;

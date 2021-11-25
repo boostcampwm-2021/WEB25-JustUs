@@ -8,6 +8,7 @@ import { useHistory } from "react-router-dom";
 const Login = () => {
   const SERVER_URL = process.env.REACT_APP_SERVER_URL;
   const LOGIN_URL = `${SERVER_URL}/api/auth/login`;
+  const TEST_URL = "http://justus.kr/api/auth/demo/login";
   const { userProfile, userInfoLoading } = useSelector((state: RootState) => state.user);
   const history = useHistory();
 
@@ -33,6 +34,9 @@ const Login = () => {
               </div>
               <a href={LOGIN_URL}>
                 <img src="/img/btnG_완성형.png" alt="naver social login" width="350px" />
+              </a>
+              <a href={TEST_URL}>
+                <TestLoginBtn>테스트 계정으로 로그인</TestLoginBtn>
               </a>
             </LeftSide>
             <div id="right-side">
@@ -89,6 +93,7 @@ const LeftSide = styled.div`
 
   & > a {
     width: 350px;
+    text-decoration-line: none;
   }
 `;
 
@@ -144,6 +149,18 @@ const FooterContent = styled.div`
       padding-left: 10px;
     }
   }
+`;
+const TestLoginBtn = styled.div`
+  width: 100%;
+  height: 100%;
+  height: 70px;
+  font-size: 25px;
+  color: ${COLOR.WHITE};
+  background-color: ${COLOR.THEME3.PRIMARY};
+  cursor: pointer;
+  border-radius: 4px;
+  user-select: none;
+  ${flexRowCenterAlign};
 `;
 
 export default Login;
