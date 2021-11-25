@@ -18,6 +18,7 @@ const UserInfoModal = () => {
   const { userNickName, userProfile } = useSelector((state: RootState) => state.user);
   const [userImg, setUserImg] = useState<string>(userProfile);
   const [newName, setNewName] = useState<string>(userNickName);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const closeUserInfoModal = () => {
     dispatch({ type: "CLOSE_MODAL" });
@@ -25,6 +26,7 @@ const UserInfoModal = () => {
   const onClickUploadBtn = () => {
     if (uploadBtnRef.current === null) return;
     uploadBtnRef.current.click();
+    (inputRef.current as HTMLInputElement).focus();
   };
   const loadImage = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newfiles = event.target.files;
@@ -65,6 +67,10 @@ const UserInfoModal = () => {
     setNewName(event.target.value);
   };
 
+  const onKeyDown = (e: React.KeyboardEvent) => {
+    if (e.code === "Enter") onClickUpdateBtn();
+  };
+
   return (
     <Modal>
       <ModalContainer
@@ -103,7 +109,13 @@ const UserInfoModal = () => {
             </UploadImgBtnWrapper>
           </div>
           <GridRight>
-            <UserNameInputWrapper value={newName} spellCheck={false} onChange={handleNameChange} />
+            <UserNameInputWrapper
+              value={newName}
+              spellCheck={false}
+              onChange={handleNameChange}
+              onKeyDown={onKeyDown}
+              ref={inputRef}
+            />
             <SaveBtnWrapper onClick={onClickUpdateBtn}>저장하기</SaveBtnWrapper>
           </GridRight>
         </Content>

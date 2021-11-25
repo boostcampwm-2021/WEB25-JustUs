@@ -13,6 +13,7 @@ import {
   modalSlideUpAnimation,
   modalHeaderButtonIcon,
   scrollbar,
+  iconHover,
 } from "@styles/StyledComponents";
 
 interface FileObject {
@@ -197,7 +198,7 @@ const UploadInfoModal = ({
         </ModalHeader>
         <ModalContent className="modalContent">
           <ModalLeft className="modalLeft">
-            <Carousel files={files} carouselWidth={250} />
+            <Carousel files={files} carouselWidth={30} />
           </ModalLeft>
           <ModalRight className="modalRight">
             <InputTitle type="text" placeholder="제목" value={title} onChange={handelTitleInput} />
@@ -323,9 +324,15 @@ const ModalTitle = styled.div`
 const ModalHeaderLeftBtn = styled.button`
   ${headerBtn}
   ${flexColumnCenterAlign}
+  & > img {
+    ${iconHover};
+  }
 `;
 const ModalHeaderRigthBtn = styled.button`
-  ${headerBtn}
+  ${headerBtn};
+  & > img {
+    ${iconHover};
+  }
 `;
 const ModalContent = styled.div`
   display: grid;
@@ -341,6 +348,7 @@ const ModalLeft = styled.div`
   height: 90%;
   min-width: 300px;
   margin-right: 2rem;
+  ${flexRowCenterAlign}
 `;
 const ModalRight = styled.div`
   position: relative;
@@ -464,7 +472,7 @@ const LocationButton = styled.button`
   width: 3.4rem;
   & > img {
     ${flexRowCenterAlign}
-    cursor: pointer;
+    ${iconHover}
   }
 `;
 const UploadButton = styled.button<{ activate: boolean }>`

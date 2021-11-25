@@ -49,6 +49,7 @@ const Main = () => {
   useEffect(() => {
     if (userInfoSucceed) {
       dispatch(getGroupListAction());
+      dispatch({ type: "SET_UPDATED_INIT" });
     }
   }, [userInfoSucceed]);
 

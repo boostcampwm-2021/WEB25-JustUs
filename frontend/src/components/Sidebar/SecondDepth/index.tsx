@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useEffect } from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
 import styled, { keyframes } from "styled-components";
@@ -65,7 +65,7 @@ const SecondDepthWrapper = styled.div<{ isToggle: boolean }>`
   grid-template-rows: 6vh 1fr 16vh;
   border-left: 1px ${COLOR.WHITE} solid;
   position: absolute;
-  left: 5vw;
+  left: 9rem;
   z-index: ${(props) => (props.isToggle ? 6 : 0)};
   animation-name: ${(props) => (props.isToggle ? SidebarOpen : SidebarHide)};
   animation-duration: 1s;

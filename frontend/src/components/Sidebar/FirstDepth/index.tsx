@@ -7,6 +7,7 @@ import AddGroupButton from "./AddGroupButton";
 import COLOR from "@styles/Color";
 import { updateGroupOrderAction } from "@src/reducer/UserReducer";
 import { getAlbumListAction } from "@src/reducer/GroupReducer";
+import { scrollbar } from "@src/styles/StyledComponents";
 
 interface FirstDepthProps {
   isToggle: boolean;
@@ -15,14 +16,42 @@ interface FirstDepthProps {
 }
 
 const FirstDepth = ({ isToggle, setIsToggle, addGroupBtnRef }: FirstDepthProps) => {
-  const { groups }: any = useSelector((state: RootState) => state.groups);
+  const { groups, deleteGroupSucceed, selectedGroupIdx, addGroupSucceed, joinGroupSucceed }: any = useSelector(
+    (state: RootState) => state.groups,
+  );
   const draggableRef = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch();
 
+  const chooseClickedGroup = (groupIdx: number) => {
+    if (groupIdx < 0 || groupIdx > groups.length - 1) return;
+
+    dispatch(getAlbumListAction(groups[groupIdx]));
+    setIsToggle(true);
+  };
+
+  useEffect(() => {
+    dispatch({ type: "SET_SELECTED_GROUP_IDX", payload: { selectedGroupId: 0 } });
+    dispatch(getAlbumListAction(groups[0]));
+  }, []);
+
   useEffect(() => {
     if (!groups.length) return;
-    dispatch(getAlbumListAction(groups[0]));
-  }, [groups]);
+    if (!deleteGroupSucceed) return;
+    if (deleteGroupSucceed && groups.length >= 2) {
+      chooseClickedGroup(selectedGroupIdx);
+      return;
+    }
+  }, [groups, selectedGroupIdx]);
+
+  useEffect(() => {
+    if (addGroupSucceed) chooseClickedGroup(selectedGroupIdx);
+  }, [selectedGroupIdx, addGroupSucceed]);
+
+  useEffect(() => {
+    if (joinGroupSucceed) {
+      chooseClickedGroup(selectedGroupIdx);
+    }
+  }, [selectedGroupIdx, joinGroupSucceed]);
 
   if (!groups.length) return null;
 
@@ -96,25 +125,19 @@ const DraggableWrapper = styled.div`
 `;
 
 const FirstDepthWrapper = styled.div`
-  position: absolute;
-  width: 5vw;
+  width: 9rem;
   height: 95vh;
   background-color: ${(props) => props.theme.PRIMARY};
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  box-sizing: content-box;
+  align-items: center;
+  box-sizing: border-box;
   z-index: 7;
   overflow: hidden;
   &:hover {
-    margin-right: 0.1rem;
     overflow-y: scroll;
     &::-webkit-scrollbar {
-      width: 0.8rem;
-    }
-    &::-webkit-scrollbar-thumb {
-      background-color: ${(props) => props.theme.SECONDARY};
-      border-radius: 1rem;
+      width: 0;
     }
   }
 `;

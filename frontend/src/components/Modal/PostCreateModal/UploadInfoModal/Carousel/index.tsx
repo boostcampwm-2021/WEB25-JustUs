@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import COLOR from "@styles/Color";
-import { flexRowCenterAlign, flexColumnCenterAlign } from "@styles/StyledComponents";
+import { flexRowCenterAlign, flexColumnCenterAlign, iconHover } from "@styles/StyledComponents";
 import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
 import { useDispatch } from "react-redux";
@@ -31,7 +31,7 @@ const Carousel = ({ files, carouselWidth }: CarouselProps) => {
 
   useEffect(() => {
     if (!carouselRef.current) return;
-    carouselRef.current.style.transform = `translate3d(-${carouselWidth * imageIndex}px, 0, 0)`;
+    carouselRef.current.style.transform = `translate3d(-${carouselWidth * imageIndex}rem, 0, 0)`;
   }, [imageIndex]);
 
   const loadHandler = (idx: number) => {
@@ -80,22 +80,17 @@ const Carousel = ({ files, carouselWidth }: CarouselProps) => {
 
 export default React.memo(Carousel);
 const CarouselContainer = styled.div<{ carouselWidth: number }>`
-  display: grid;
-  width: 100%;
-  height: 100%;
-  display: flex;
   ${flexColumnCenterAlign}
 `;
 const CaroselImageContainer = styled.div`
   width: 100%;
-  height: 80%;
   ${flexRowCenterAlign}
 `;
 const CarouselWindow = styled.div<{ carouselWidth: number }>`
   overflow: hidden;
   display: flex;
   background-color: ${COLOR.WHITE};
-  width: ${(props) => props.carouselWidth}px;
+  width: ${(props) => props.carouselWidth}rem;
   height: 80%;
   & * {
     width: 100%;
@@ -109,12 +104,12 @@ const CarouselImage = styled.div<{ carouselWidth: number }>`
   & > div {
     ${flexRowCenterAlign}
     background-color: ${COLOR.WHITE};
-    border: 1px solid ${COLOR.WHITE};
-    min-width: ${(props) => props.carouselWidth - 2}px;
-    max-width: ${(props) => props.carouselWidth}px;
+    border: 1rem solid ${COLOR.WHITE};
+    min-width: ${(props) => props.carouselWidth - 2}rem;
+    max-width: ${(props) => props.carouselWidth}rem;
   }
   & img {
-    height: ${(props) => props.carouselWidth}px;
+    height: ${(props) => props.carouselWidth}rem;
     object-fit: scale-down;
   }
 `;
@@ -125,7 +120,7 @@ const ChangeImageButton = styled.button`
   display: absolute;
   background: none;
   & > img {
-    cursor: pointer;
+    ${iconHover};
   }
 `;
 const DotContainer = styled.div`
