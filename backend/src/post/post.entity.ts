@@ -22,7 +22,7 @@ export class Post extends TimeStampEntity {
   @Column()
   postTitle: string;
 
-  @Column()
+  @Column({ type: "text" })
   postContent: string;
 
   @Column()
