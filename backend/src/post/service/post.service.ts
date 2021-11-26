@@ -39,6 +39,7 @@ export class PostService {
     createPostRequestDto: CreatePostRequestDto,
   ): Promise<number> {
     const postImages = this.imageService.getImagesUrl(files);
+
     const { postTitle, postContent, postDate, postLocation, postLatitude, postLongitude, groupId } =
       createPostRequestDto;
 
@@ -199,7 +200,19 @@ export class PostService {
     const album = await this.albumRepository.findOne(albumId);
     if (!album) throw new NotFoundException(`Not found album with the id ${albumId}`);
 
-    this.postRepository.update(postId, { album });
+    const queryRunner = this.connection.createQueryRunner();
+    queryRunner.startTransaction();
+
+    try {
+      await queryRunner.manager.getCustomRepository(PostRepository).update(postId, { album });
+
+      await queryRunner.commitTransaction();
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      throw new BadRequestException(error);
+    } finally {
+      await queryRunner.release();
+    }
 
     return "Post Shift success!!";
   }
