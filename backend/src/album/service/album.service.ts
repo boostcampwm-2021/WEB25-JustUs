@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { Injectable, NotFoundException, BadRequestException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { AlbumRepository } from "../album.repository";
 import { GroupRepository } from "src/group/group.repository";
@@ -7,6 +7,9 @@ import { UpdateAlbumInfoRequestDto } from "src/dto/album/updateAlbumInfoRequest.
 import { CreateAlbumResponseDto } from "src/dto/album/createAlbumResponse.dto";
 import { Album } from "../album.entity";
 import { PostRepository } from "src/post/post.repository";
+import { Connection, QueryRunner } from "typeorm";
+import { Group } from "src/group/group.entity";
+import { Post } from "src/post/post.entity";
 
 @Injectable()
 export class AlbumService {
@@ -17,6 +20,7 @@ export class AlbumService {
     private groupRepository: GroupRepository,
     @InjectRepository(PostRepository)
     private postRepository: PostRepository,
+    private readonly connection: Connection,
   ) {}
 
   async createAlbum(createAlbumRequestDto: CreateAlbumRequestDto): Promise<CreateAlbumResponseDto> {
@@ -24,18 +28,30 @@ export class AlbumService {
     const group = await this.groupRepository.findOne({ groupId });
     if (!group) throw new NotFoundException(`Not found group with the id ${groupId}`);
 
-    const album = await this.albumRepository.save({
-      albumName: albumName,
-      base: false,
-      group: group,
-    });
-    const { albumId } = album;
+    const queryRunner = this.connection.createQueryRunner();
+    queryRunner.startTransaction();
 
-    const { albumOrder } = group;
-    const newAlbumOrder = `${albumId},${albumOrder}`;
-    await this.groupRepository.update(groupId, { albumOrder: newAlbumOrder });
+    try {
+      const album = await queryRunner.manager.getRepository(Album).save({
+        albumName: albumName,
+        base: false,
+        group: group,
+      });
+      const { albumId } = album;
 
-    return { albumId };
+      const { albumOrder } = group;
+      const newAlbumOrder = `${albumId},${albumOrder}`;
+      await queryRunner.manager.getRepository(Group).update(groupId, { albumOrder: newAlbumOrder });
+
+      await queryRunner.commitTransaction();
+
+      return { albumId };
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      throw new BadRequestException(error);
+    } finally {
+      await queryRunner.release();
+    }
   }
 
   async updateAlbumInfo(albumId: number, updateAlbumInfoRequestDto: UpdateAlbumInfoRequestDto): Promise<string> {
@@ -43,7 +59,7 @@ export class AlbumService {
     const album = await this.albumRepository.findOne({ albumId });
     if (!album) throw new NotFoundException(`Not found album with the id ${albumId}`);
 
-    this.albumRepository.update(albumId, { albumName });
+    await this.albumRepository.update(albumId, { albumName });
 
     return "AlbumInfo update success!!";
   }
@@ -56,16 +72,29 @@ export class AlbumService {
     if (base) throw new NotFoundException("It cannot be deleted because it is baseAlbum.");
     const { groupId } = group;
     const baseAlbum = await this.getBaseAlbumId(groupId);
-    await this.movePosts(albumId, baseAlbum);
 
-    this.albumRepository.softRemove(album);
+    const queryRunner = this.connection.createQueryRunner();
+    queryRunner.startTransaction();
 
-    const { albumOrder } = group;
-    const reArrangedOrder = this.reArrangeAlbums(albumOrder, albumId);
+    try {
+      await this.movePosts(albumId, baseAlbum, queryRunner);
 
-    await this.groupRepository.update(groupId, { albumOrder: reArrangedOrder });
+      await queryRunner.manager.getRepository(Album).softRemove(album);
 
-    return "Album delete success!!";
+      const { albumOrder } = group;
+      const reArrangedOrder = this.reArrangeAlbums(albumOrder, albumId);
+
+      await queryRunner.manager.getRepository(Group).update(groupId, { albumOrder: reArrangedOrder });
+
+      await queryRunner.commitTransaction();
+
+      return "Album delete success!!";
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      throw new BadRequestException(error);
+    } finally {
+      await queryRunner.release();
+    }
   }
 
   reArrangeAlbums(albumOrder: string, albumId: number): string {
@@ -82,17 +111,17 @@ export class AlbumService {
     return baseAlbumId;
   }
 
-  async movePosts(albumId: number, baseAlbum: Album): Promise<void> {
-    const { posts } = await this.getMovePosts(albumId);
+  async movePosts(albumId: number, baseAlbum: Album, queryRunner: QueryRunner): Promise<void> {
+    const { posts } = await this.getMovePosts(albumId, queryRunner);
 
-    posts.forEach(post => {
+    posts.forEach(async post => {
       const postId = post.postId;
-      this.postRepository.update(postId, { album: baseAlbum });
+      await queryRunner.manager.getRepository(Post).update(postId, { album: baseAlbum });
     });
   }
 
-  async getMovePosts(albumId: number): Promise<Album> {
-    const album = await this.albumRepository.getDeletePostIdQuery(albumId);
+  async getMovePosts(albumId: number, queryRunner: QueryRunner): Promise<Album> {
+    const album = await queryRunner.manager.getCustomRepository(AlbumRepository).getDeletePostIdQuery(albumId);
     if (!album) throw new NotFoundException(`Not found album with the id ${albumId}`);
 
     return album;
