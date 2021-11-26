@@ -46,7 +46,7 @@ export class UserService {
   ): Promise<UpdateUserInfoResponseDto> {
     const profileImage = this.imageService.getImageUrl(file);
     const { userNickname, clearImage } = updateUserInfoRequestDto;
-    console.log(userNickname, profileImage);
+
     const user = await this.userRepository.findOne({ userId });
     if (!user) throw new NotFoundException(`Not found user with the id ${userId}`);
 
@@ -54,18 +54,18 @@ export class UserService {
       clearImage === 1 ? { profileImage: process.env.JUSTUS_USER_BASE_IMG, userNickname } : { userNickname };
     const updateObject = profileImage === undefined ? checkClearImage : { profileImage, userNickname };
 
-    this.userRepository.update(userId, updateObject);
+    await this.userRepository.update(userId, updateObject);
 
     return { profileImage };
   }
 
   async updateToken(userId: number, refreshToken: string): Promise<UpdateResult> {
-    return this.userRepository.update(userId, { refreshToken });
+    return await this.userRepository.update(userId, { refreshToken });
   }
 
   async updateGroupOrder(userId: number, updateGroupOrderRequestDto: UpdateGroupOrderRequestDto): Promise<string> {
     const { groupOrder } = updateGroupOrderRequestDto;
-    this.userRepository.update(userId, { groupOrder });
+    await this.userRepository.update(userId, { groupOrder });
 
     return "GroupOrder update success!!";
   }
