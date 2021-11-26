@@ -172,17 +172,17 @@ export class PostService {
     try {
       await this.hashTagService.deleteHashTags(deleteTags, postId, queryRunner);
 
-      await queryRunner.manager.getCustomRepository(PostRepository).softRemove(post);
+      await queryRunner.manager.getRepository(Post).softRemove(post);
 
       await queryRunner.commitTransaction();
+
+      return "Post delete success!!";
     } catch (error) {
       await queryRunner.rollbackTransaction();
       throw new BadRequestException(error);
     } finally {
       await queryRunner.release();
     }
-
-    return "Post delete success!!";
   }
 
   async validateUserAuthor(userId: number, postId: number, relations: Array<string>): Promise<Post> {
@@ -200,19 +200,7 @@ export class PostService {
     const album = await this.albumRepository.findOne(albumId);
     if (!album) throw new NotFoundException(`Not found album with the id ${albumId}`);
 
-    const queryRunner = this.connection.createQueryRunner();
-    queryRunner.startTransaction();
-
-    try {
-      await queryRunner.manager.getCustomRepository(PostRepository).update(postId, { album });
-
-      await queryRunner.commitTransaction();
-    } catch (error) {
-      await queryRunner.rollbackTransaction();
-      throw new BadRequestException(error);
-    } finally {
-      await queryRunner.release();
-    }
+    await this.postRepository.update(postId, { album });
 
     return "Post Shift success!!";
   }

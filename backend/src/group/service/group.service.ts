@@ -1,8 +1,6 @@
-import { Injectable, NotFoundException, UnauthorizedException } from "@nestjs/common";
+import { Injectable, NotFoundException, UnauthorizedException, BadRequestException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { GroupRepository } from "../group.repository";
-import { UserRepository } from "src/user/user.repository";
-import { AlbumRepository } from "src/album/album.repository";
 import { Group } from "../group.entity";
 import { CustomFile } from "src/custom/myFile/customFile";
 import { CreateGroupRequestDto } from "src/dto/group/createGroupRequest.dto";
@@ -17,6 +15,8 @@ import { GetHashTagsResponseDto } from "src/dto/group/getHashTagsResponse.dto";
 import { AlbumService } from "src/album/service/album.service";
 import { ImageService } from "src/image/service/image.service";
 import { User } from "src/user/user.entity";
+import { Connection, QueryRunner } from "typeorm";
+import { Album } from "src/album/album.entity";
 
 @Injectable()
 export class GroupService {
@@ -25,10 +25,7 @@ export class GroupService {
     private imageService: ImageService,
     @InjectRepository(GroupRepository)
     private groupRepository: GroupRepository,
-    @InjectRepository(UserRepository)
-    private userRepository: UserRepository,
-    @InjectRepository(AlbumRepository)
-    private albumRepository: AlbumRepository,
+    private readonly connection: Connection,
   ) {}
 
   async createGroup(
@@ -45,21 +42,33 @@ export class GroupService {
         ? { groupImage: process.env.JUSTUS_GROUP_BASE_IMG, groupName, groupCode }
         : { groupImage, groupName, groupCode };
 
-    const group = await this.groupRepository.save(saveObject);
-    const { groupId } = group;
+    const queryRunner = this.connection.createQueryRunner();
+    queryRunner.startTransaction();
 
-    const album = await this.albumRepository.save({
-      albumName: "기본 앨범",
-      base: true,
-      group: group,
-    });
-    const { albumId } = album;
+    try {
+      const group = await queryRunner.manager.getRepository(Group).save(saveObject);
+      const { groupId } = group;
 
-    await this.groupRepository.update(groupId, { albumOrder: String(albumId) });
+      const album = await queryRunner.manager.getRepository(Album).save({
+        albumName: "기본 앨범",
+        base: true,
+        group: group,
+      });
+      const { albumId } = album;
 
-    await this.applyUserEntity(userId, groupId, group, false);
+      await queryRunner.manager.getRepository(Group).update(groupId, { albumOrder: String(albumId) });
 
-    return { groupId, groupImage };
+      await this.applyUserEntity(userId, groupId, group, false, queryRunner);
+
+      await queryRunner.commitTransaction();
+
+      return { groupId, groupImage };
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      throw new BadRequestException(error);
+    } finally {
+      await queryRunner.release();
+    }
   }
 
   async createInvitaionCode(): Promise<string> {
@@ -80,13 +89,31 @@ export class GroupService {
     if (!group) throw new NotFoundException(`Not found group with the code ${code}`);
     const { groupId } = group;
 
-    await this.applyUserEntity(userId, groupId, group, true);
+    const queryRunner = this.connection.createQueryRunner();
+    queryRunner.startTransaction();
 
-    return group.groupId;
+    try {
+      await this.applyUserEntity(userId, groupId, group, true, queryRunner);
+
+      await queryRunner.commitTransaction();
+
+      return group.groupId;
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      throw new BadRequestException(error);
+    } finally {
+      await queryRunner.release();
+    }
   }
 
-  async applyUserEntity(userId: number, groupId: number, group: Group, attend: boolean): Promise<void> {
-    const user = await this.userRepository.findOne(userId, { relations: ["groups"] });
+  async applyUserEntity(
+    userId: number,
+    groupId: number,
+    group: Group,
+    attend: boolean,
+    queryRunner: QueryRunner,
+  ): Promise<void> {
+    const user = await queryRunner.manager.getRepository(User).findOne(userId, { relations: ["groups"] });
     if (!user) throw new NotFoundException(`Not found user with the id ${userId}`);
 
     const { users } = group;
@@ -95,7 +122,8 @@ export class GroupService {
     const { groupOrder } = user;
     user.groupOrder = groupOrder === "" ? `${groupId}` : `${groupOrder},${groupId}`;
     user.groups.push(group);
-    this.userRepository.save(user);
+
+    await queryRunner.manager.getRepository(User).save(user);
   }
 
   hasUser(userId: number, users: User[]): boolean {
@@ -125,28 +153,40 @@ export class GroupService {
       clearImage === 1 ? { groupImage: process.env.JUSTUS_GROUP_BASE_IMG, groupName } : { groupName };
     const updateObject = groupImage === undefined ? checkClearImage : { groupImage, groupName };
 
-    this.groupRepository.update(groupId, updateObject);
+    await this.groupRepository.update(groupId, updateObject);
 
     return { groupImage };
   }
 
   async leaveGroup(userId: number, groupId: number): Promise<string> {
-    const result = await this.groupRepository.leaveGroupQuery(groupId, userId);
-    if (!result.affected) throw new NotFoundException("그룹에 해당 유저가 없습니다.");
+    const queryRunner = this.connection.createQueryRunner();
+    queryRunner.startTransaction();
 
-    const group = await this.groupRepository.findOne(groupId, { relations: ["users"] });
-    if (!group) throw new NotFoundException(`Not found group with the id ${groupId}`);
-    const { users } = group;
+    try {
+      const result = await queryRunner.manager.getCustomRepository(GroupRepository).leaveGroupQuery(groupId, userId);
+      if (!result.affected) throw new NotFoundException("그룹에 해당 유저가 없습니다.");
 
-    if (!users.length) this.groupRepository.softRemove(group);
+      const group = await queryRunner.manager.getRepository(Group).findOne(groupId, { relations: ["users"] });
+      if (!group) throw new NotFoundException(`Not found group with the id ${groupId}`);
+      const { users } = group;
 
-    const user = await this.userRepository.findOne(userId);
-    const { groupOrder } = user;
-    const reArrangedOrder = this.reArrangeGroups(groupOrder, groupId);
+      if (!users.length) await queryRunner.manager.getRepository(Group).softRemove(group);
 
-    await this.userRepository.update(userId, { groupOrder: reArrangedOrder });
+      const user = await queryRunner.manager.getRepository(User).findOne(userId);
+      const { groupOrder } = user;
+      const reArrangedOrder = this.reArrangeGroups(groupOrder, groupId);
 
-    return "Group leave success!!";
+      await queryRunner.manager.getRepository(User).update(userId, { groupOrder: reArrangedOrder });
+
+      await queryRunner.commitTransaction();
+
+      return "Group leave success!!";
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      throw new BadRequestException(error);
+    } finally {
+      await queryRunner.release();
+    }
   }
 
   reArrangeGroups(groupOrder: string, groupId: number): string {
@@ -180,7 +220,7 @@ export class GroupService {
 
   async updateAlbumOrder(groupId: number, updateAlbumOrderRequestDto: UpdateAlbumOrderRequestDto): Promise<string> {
     const { albumOrder } = updateAlbumOrderRequestDto;
-    this.groupRepository.update(groupId, { albumOrder });
+    await this.groupRepository.update(groupId, { albumOrder });
 
     return "Album Order update success!!";
   }

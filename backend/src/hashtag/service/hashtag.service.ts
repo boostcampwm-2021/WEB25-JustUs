@@ -48,7 +48,7 @@ export class HashTagService {
     await Promise.all(
       hashTags?.map(async e => {
         const hashtag = await queryRunner.manager
-          .getCustomRepository(HashTagRepository)
+          .getRepository(HashTag)
           .findOne({ hashtagContent: e }, { relations: ["posts"] });
         if (!hashtag) throw new NotFoundException(`Not found hashtag with the content ${e}`);
 
