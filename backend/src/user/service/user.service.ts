@@ -45,11 +45,15 @@ export class UserService {
     updateUserInfoRequestDto: UpdateUserInfoRequestDto,
   ): Promise<UpdateUserInfoResponseDto> {
     const profileImage = this.imageService.getImageUrl(file);
-    const { userNickname } = updateUserInfoRequestDto;
+    const { userNickname, clearImage } = updateUserInfoRequestDto;
+    console.log(userNickname, profileImage);
     const user = await this.userRepository.findOne({ userId });
     if (!user) throw new NotFoundException(`Not found user with the id ${userId}`);
 
-    const updateObject = profileImage === undefined ? { userNickname } : { profileImage, userNickname };
+    const checkClearImage =
+      clearImage === 1 ? { profileImage: process.env.JUSTUS_USER_BASE_IMG, userNickname } : { userNickname };
+    const updateObject = profileImage === undefined ? checkClearImage : { profileImage, userNickname };
+
     this.userRepository.update(userId, updateObject);
 
     return { profileImage };

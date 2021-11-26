@@ -42,7 +42,7 @@ export class GroupService {
 
     const saveObject =
       groupImage === undefined
-        ? { groupImage: process.env.JUSTUS_BASE_IMG, groupName, groupCode }
+        ? { groupImage: process.env.JUSTUS_GROUP_BASE_IMG, groupName, groupCode }
         : { groupImage, groupName, groupCode };
 
     const group = await this.groupRepository.save(saveObject);
@@ -121,7 +121,8 @@ export class GroupService {
     const group = await this.groupRepository.findOne({ groupId });
     if (!group) throw new NotFoundException(`Not found group with the id ${groupId}`);
 
-    const checkClearImage = clearImage === 1 ? { groupImage: process.env.JUSTUS_BASE_IMG, groupName } : { groupName };
+    const checkClearImage =
+      clearImage === 1 ? { groupImage: process.env.JUSTUS_GROUP_BASE_IMG, groupName } : { groupName };
     const updateObject = groupImage === undefined ? checkClearImage : { groupImage, groupName };
 
     this.groupRepository.update(groupId, updateObject);

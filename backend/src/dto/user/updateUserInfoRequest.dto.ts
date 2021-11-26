@@ -1,5 +1,6 @@
-import { IsString, IsNotEmpty, IsOptional } from "class-validator";
+import { IsString, IsNotEmpty, IsOptional, IsNumber } from "class-validator";
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
+import { Transform } from "class-transformer";
 
 export class UpdateUserInfoRequestDto {
   @IsString()
@@ -10,4 +11,10 @@ export class UpdateUserInfoRequestDto {
   @IsOptional()
   @ApiPropertyOptional({ type: "file" })
   profileImage: any;
+
+  @IsNumber()
+  @IsNotEmpty()
+  @Transform(({ value }) => Number(value))
+  @ApiProperty()
+  clearImage: number;
 }
