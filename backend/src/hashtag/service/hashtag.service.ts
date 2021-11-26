@@ -14,12 +14,12 @@ export class HashTagService {
     private groupRepository: GroupRepository,
   ) {}
 
-  async makeHashTag(groupId: number, hashTags: string[]): Promise<HashTag[]> {
+  async makeHashTag(groupId: number, hashTagContents: string[]): Promise<HashTag[]> {
     const group = await this.groupRepository.findOne(groupId);
     if (!group) throw new NotFoundException(`Not found group with the id ${groupId}`);
 
-    return await Promise.all(
-      hashTags?.map(async e => {
+    const hashTags = await Promise.all(
+      hashTagContents?.map(async e => {
         const hashtagContent = e;
 
         const exits = await this.hashTagRepository.findOne({ hashtagContent, group });
@@ -34,6 +34,14 @@ export class HashTagService {
         return exits;
       }),
     );
+
+    return hashTags.filter((item1, idx) => {
+      return (
+        hashTags.findIndex(item2 => {
+          return item1.hashtagContent === item2.hashtagContent;
+        }) === idx
+      );
+    });
   }
 
   async deleteHashTags(hashTags: string[], postId: number, queryRunner: QueryRunner): Promise<void> {
