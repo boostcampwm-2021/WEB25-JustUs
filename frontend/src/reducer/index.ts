@@ -1,7 +1,7 @@
 import { combineReducers } from "redux";
 import GroupModalReducer from "./GroupModalReducer";
 import groupReducer from "./GroupReducer";
-import ModalReducer from "./Modal";
+import ModalReducer from "./ModalReducer";
 import AddressReducer from "./AddressReducer";
 import Theme from "./Theme";
 import UserReducer from "./UserReducer";

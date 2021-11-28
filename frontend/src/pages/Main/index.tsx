@@ -13,7 +13,7 @@ import { useHistory } from "react-router-dom";
 import { GroupAction } from "@src/action";
 import ToastManager from "@src/components/ToastMessage/ToastManager";
 import { CLOSE_POST_CREATE_WINDOW, SET_POST_CREATE_WINDOW_OPENED } from "@src/reducer/MapReducer";
-import { SET_PROFILE_WRAPPER_MODAL_OPENED, SET_ALBUM_SETTING_WRAPPER_MODAL_IDX } from "@src/reducer/Modal";
+import { ModalAction } from "@src/action";
 import Spinner from "@components/Spinner";
 import { CLOSE_CLUSTERING_WINDOW } from "@src/reducer/MapReducer";
 
@@ -41,8 +41,8 @@ const Main = () => {
     });
 
     document.addEventListener("contextmenu", () => {
-      dispatch({ type: SET_PROFILE_WRAPPER_MODAL_OPENED, payload: { isProfileWrapperModalOpened: false } });
-      dispatch({ type: SET_ALBUM_SETTING_WRAPPER_MODAL_IDX, payload: { albumSettingWrapperModalIdx: -1 } });
+      dispatch({ type: ModalAction.SET_PROFILE_WRAPPER_MODAL_OPENED, payload: { isProfileWrapperModalOpened: false } });
+      dispatch({ type: ModalAction.SET_ALBUM_SETTING_WRAPPER_MODAL_IDX, payload: { albumSettingWrapperModalIdx: -1 } });
     });
   }, []);
 
