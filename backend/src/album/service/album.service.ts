@@ -10,6 +10,7 @@ import { PostRepository } from "src/post/post.repository";
 import { Connection, QueryRunner } from "typeorm";
 import { Group } from "src/group/group.entity";
 import { Post } from "src/post/post.entity";
+import { deleteOrder } from "src/common/changeObject";
 
 @Injectable()
 export class AlbumService {
@@ -19,7 +20,6 @@ export class AlbumService {
     @InjectRepository(GroupRepository)
     private groupRepository: GroupRepository,
     @InjectRepository(PostRepository)
-    private postRepository: PostRepository,
     private readonly connection: Connection,
   ) {}
 
@@ -82,7 +82,7 @@ export class AlbumService {
       await queryRunner.manager.getRepository(Album).softRemove(album);
 
       const { albumOrder } = group;
-      const reArrangedOrder = this.reArrangeAlbums(albumOrder, albumId);
+      const reArrangedOrder = deleteOrder(albumOrder, albumId);
 
       await queryRunner.manager.getRepository(Group).update(groupId, { albumOrder: reArrangedOrder });
 
@@ -95,12 +95,6 @@ export class AlbumService {
     } finally {
       await queryRunner.release();
     }
-  }
-
-  reArrangeAlbums(albumOrder: string, albumId: number): string {
-    const order = albumOrder.split(",");
-
-    return order.filter(e => +e !== albumId).join(",");
   }
 
   async getBaseAlbumId(groupId: number): Promise<Album> {
@@ -125,14 +119,5 @@ export class AlbumService {
     if (!album) throw new NotFoundException(`Not found album with the id ${albumId}`);
 
     return album;
-  }
-
-  ArrayToObject(albums: Album[]): object {
-    const result = albums.reduce((target, key) => {
-      target[key.albumId] = key;
-      return target;
-    }, {});
-
-    return result;
   }
 }

@@ -10,13 +10,12 @@ import { UpdateGroupOrderRequestDto } from "src/dto/user/updateGroupOrderRequest
 import { GetGroupsResponseDto } from "src/dto/user/getGroupsResponse.dto";
 import { UpdateUserInfoResponseDto } from "src/dto/user/updateUserInfoResponse.dto";
 import { UpdateResult } from "typeorm";
-import { GroupService } from "src/group/service/group.service";
 import { getImageUrl } from "src/common/imageUrl";
+import { ArrayToObject, reArrange } from "src/common/changeObject";
 
 @Injectable()
 export class UserService {
   constructor(
-    private groupService: GroupService,
     @InjectRepository(UserRepository)
     private userRepository: UserRepository,
   ) {}
@@ -75,20 +74,10 @@ export class UserService {
 
     const { groupOrder, groups } = groupsInfo;
 
-    const groupsObject = this.groupService.ArrayToObject(groups);
+    const groupsObject = ArrayToObject(groups, "groupId");
 
-    const reArrangedGroups = this.reArrangeGroups(groupOrder, groupsObject);
+    const reArrangedGroups = reArrange(groupOrder, groupsObject);
 
     return { groups: reArrangedGroups };
-  }
-
-  reArrangeGroups(groupOrder: string, groupsObejct: object): any[] {
-    const order = groupOrder.split(",");
-
-    const orderGroup = order.map(e => {
-      return groupsObejct[e];
-    });
-
-    return orderGroup;
   }
 }

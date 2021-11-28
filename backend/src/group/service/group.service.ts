@@ -12,16 +12,15 @@ import { UpdateAlbumOrderRequestDto } from "src/dto/group/updateAlbumOrderReques
 import { CreateGroupResponseDto } from "src/dto/group/createGroupResponse.dto";
 import { UpdateGroupInfoResponseDto } from "src/dto/group/updateGroupInfoResponse.dto";
 import { GetHashTagsResponseDto } from "src/dto/group/getHashTagsResponse.dto";
-import { AlbumService } from "src/album/service/album.service";
 import { getImageUrl } from "src/common/imageUrl";
 import { User } from "src/user/user.entity";
 import { Connection, QueryRunner } from "typeorm";
 import { Album } from "src/album/album.entity";
+import { ArrayToObject, reArrange, deleteOrder } from "src/common/changeObject";
 
 @Injectable()
 export class GroupService {
   constructor(
-    private albumService: AlbumService,
     @InjectRepository(GroupRepository)
     private groupRepository: GroupRepository,
     private readonly connection: Connection,
@@ -173,7 +172,7 @@ export class GroupService {
 
       const user = await queryRunner.manager.getRepository(User).findOne(userId);
       const { groupOrder } = user;
-      const reArrangedOrder = this.reArrangeGroups(groupOrder, groupId);
+      const reArrangedOrder = deleteOrder(groupOrder, groupId);
 
       await queryRunner.manager.getRepository(User).update(userId, { groupOrder: reArrangedOrder });
 
@@ -188,33 +187,17 @@ export class GroupService {
     }
   }
 
-  reArrangeGroups(groupOrder: string, groupId: number): string {
-    const order = groupOrder.split(",");
-
-    return order.filter(e => +e !== groupId).join(",");
-  }
-
   async getAlbums(groupId: number): Promise<GetAlbumsResponseDto> {
     const albumsInfo = await this.groupRepository.getAlbumsQuery(groupId);
     if (!albumsInfo) throw new NotFoundException(`Not found group with the id ${groupId}`);
 
     const { albumOrder, albums } = albumsInfo;
 
-    const albumsObject = this.albumService.ArrayToObject(albums);
+    const albumsObject = ArrayToObject(albums, "albumId");
 
-    const reArrangedAlbums = this.reArrangeAlbums(albumOrder, albumsObject);
+    const reArrangedAlbums = reArrange(albumOrder, albumsObject);
 
     return { albums: reArrangedAlbums };
-  }
-
-  reArrangeAlbums(albumOrder: string, albumsObject: object): any[] {
-    const order = albumOrder.split(",");
-
-    const orderAlbum = order.map(e => {
-      return albumsObject[e];
-    });
-
-    return orderAlbum;
   }
 
   async updateAlbumOrder(groupId: number, updateAlbumOrderRequestDto: UpdateAlbumOrderRequestDto): Promise<string> {
@@ -222,15 +205,6 @@ export class GroupService {
     await this.groupRepository.update(groupId, { albumOrder });
 
     return "Album Order update success!!";
-  }
-
-  ArrayToObject(groups: Group[]): object {
-    const result = groups.reduce((target, key) => {
-      target[key.groupId] = key;
-      return target;
-    }, {});
-
-    return result;
   }
 
   async getHashTags(groupId: number): Promise<GetHashTagsResponseDto> {
