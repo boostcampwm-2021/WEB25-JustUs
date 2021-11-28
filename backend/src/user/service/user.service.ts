@@ -11,13 +11,12 @@ import { GetGroupsResponseDto } from "src/dto/user/getGroupsResponse.dto";
 import { UpdateUserInfoResponseDto } from "src/dto/user/updateUserInfoResponse.dto";
 import { UpdateResult } from "typeorm";
 import { GroupService } from "src/group/service/group.service";
-import { ImageService } from "src/image/service/image.service";
+import { getImageUrl } from "src/common/imageUrl";
 
 @Injectable()
 export class UserService {
   constructor(
     private groupService: GroupService,
-    private imageService: ImageService,
     @InjectRepository(UserRepository)
     private userRepository: UserRepository,
   ) {}
@@ -44,7 +43,7 @@ export class UserService {
     file: CustomFile,
     updateUserInfoRequestDto: UpdateUserInfoRequestDto,
   ): Promise<UpdateUserInfoResponseDto> {
-    const profileImage = this.imageService.getImageUrl(file);
+    const profileImage = getImageUrl(file);
     const { userNickname, clearImage } = updateUserInfoRequestDto;
 
     const user = await this.userRepository.findOne({ userId });

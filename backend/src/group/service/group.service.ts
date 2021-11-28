@@ -13,7 +13,7 @@ import { CreateGroupResponseDto } from "src/dto/group/createGroupResponse.dto";
 import { UpdateGroupInfoResponseDto } from "src/dto/group/updateGroupInfoResponse.dto";
 import { GetHashTagsResponseDto } from "src/dto/group/getHashTagsResponse.dto";
 import { AlbumService } from "src/album/service/album.service";
-import { ImageService } from "src/image/service/image.service";
+import { getImageUrl } from "src/common/imageUrl";
 import { User } from "src/user/user.entity";
 import { Connection, QueryRunner } from "typeorm";
 import { Album } from "src/album/album.entity";
@@ -22,7 +22,6 @@ import { Album } from "src/album/album.entity";
 export class GroupService {
   constructor(
     private albumService: AlbumService,
-    private imageService: ImageService,
     @InjectRepository(GroupRepository)
     private groupRepository: GroupRepository,
     private readonly connection: Connection,
@@ -33,7 +32,7 @@ export class GroupService {
     file: CustomFile,
     createGroupRequestDto: CreateGroupRequestDto,
   ): Promise<CreateGroupResponseDto> {
-    const groupImage = this.imageService.getImageUrl(file);
+    const groupImage = getImageUrl(file);
     const { groupName } = createGroupRequestDto;
     const groupCode = await this.createInvitaionCode();
 
@@ -143,7 +142,7 @@ export class GroupService {
     file: CustomFile,
     updateGroupInfoRequestDto: UpdateGroupInfoRequestDto,
   ): Promise<UpdateGroupInfoResponseDto> {
-    const groupImage = this.imageService.getImageUrl(file);
+    const groupImage = getImageUrl(file);
     const { groupName, clearImage } = updateGroupInfoRequestDto;
 
     const group = await this.groupRepository.findOne({ groupId });

@@ -1,5 +1,6 @@
 import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from "@nestjs/common";
 import { ImageService } from "src/image/service/image.service";
+import { getImagesUrl } from "src/common/imageUrl";
 import { InjectRepository } from "@nestjs/typeorm";
 import { PostRepository } from "../post.repository";
 import { UserRepository } from "src/user/user.repository";
@@ -38,7 +39,7 @@ export class PostService {
     files: Express.Multer.File[],
     createPostRequestDto: CreatePostRequestDto,
   ): Promise<number> {
-    const postImages = this.imageService.getImagesUrl(files);
+    const postImages = getImagesUrl(files);
 
     const { postTitle, postContent, postDate, postLocation, postLatitude, postLongitude, groupId } =
       createPostRequestDto;
@@ -115,7 +116,7 @@ export class PostService {
     files: Express.Multer.File[],
     updatePostInfoRequestDto: UpdatePostInfoRequestDto,
   ): Promise<string> {
-    const addImages = this.imageService.getImagesUrl(files);
+    const addImages = getImagesUrl(files);
 
     const { postTitle, postContent, deleteImagesId, postDate, postLocation, postLatitude, postLongitude, groupId } =
       updatePostInfoRequestDto;
