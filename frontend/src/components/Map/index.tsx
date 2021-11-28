@@ -15,6 +15,7 @@ import {
   SET_POST_CREATE_WINDOW,
   SET_POST_CREATE_WINDOW_OPENED,
 } from "@src/reducer/MapReducer";
+import { AddressAction } from "@src/action";
 
 declare const MarkerClustering: any;
 declare global {
@@ -138,8 +139,8 @@ const setMap = (
 
     const modalOpen = (x: number, y: number) => {
       dispatch({ type: SET_POST_CREATE_WINDOW_OPENED, payload: { isPostCreateWindowOpened: false } });
-      dispatch({ type: "SET_ADDRESS", payload: "" });
-      dispatch({ type: "SET_POSITION", payload: { x, y } });
+      dispatch(AddressAction.setAddressAction(""));
+      dispatch(AddressAction.setPositionAction({ x, y }));
       dispatch({ type: "OPEN_MODAL", payload: "UploadAddressModal" });
     };
 
@@ -272,7 +273,7 @@ const Map = () => {
   }, [selectedPost]);
 
   const modalOpen = () => {
-    dispatch({ type: "SET_ADDRESS", payload: "" });
+    dispatch(AddressAction.setAddressAction(""));
     dispatch({ type: "OPEN_MODAL", payload: "PostCreateModal" });
   };
 
