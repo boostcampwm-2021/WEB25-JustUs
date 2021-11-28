@@ -123,18 +123,12 @@ export class PostService {
     const relations = ["user", "hashtags"];
     const post = await this.validateUserAuthor(userId, postId, relations);
 
-    const oldTags = this.removeTags(post.postContent);
-    const newTags = this.removeTags(postContent);
-    const differenceTags = oldTags.filter(tag => !newTags.includes(tag));
-
     const hashtags = await this.getHashTag(postContent, groupId);
 
     const queryRunner = this.connection.createQueryRunner();
     queryRunner.startTransaction();
 
     try {
-      await this.hashTagService.deleteHashTags(differenceTags, postId, queryRunner);
-
       post.hashtags = hashtags;
       await queryRunner.manager.getRepository(Post).save(post);
 
@@ -170,9 +164,9 @@ export class PostService {
     queryRunner.startTransaction();
 
     try {
-      await this.hashTagService.deleteHashTags(deleteTags, postId, queryRunner);
-
       await queryRunner.manager.getRepository(Post).softRemove(post);
+
+      await this.hashTagService.deleteHashTags(deleteTags, postId, queryRunner);
 
       await queryRunner.commitTransaction();
 
@@ -207,6 +201,7 @@ export class PostService {
 
   async getSearchPost(hashtagId: number): Promise<GetSearchPostResponse> {
     const { posts } = await this.hashTagRepository.getSearchPosts(hashtagId);
+    if (!posts) throw new NotFoundException(`Not found hashtag with the id ${hashtagId}`);
 
     return { posts };
   }
