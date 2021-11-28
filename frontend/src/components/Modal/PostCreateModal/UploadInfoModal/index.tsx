@@ -4,7 +4,7 @@ import COLOR from "@styles/Color";
 import { useDispatch, useSelector } from "react-redux";
 import Carousel from "@components/Modal/PostCreateModal/UploadInfoModal/Carousel";
 import { RootState } from "@src/reducer";
-import { SET_ERROR_TOAST } from "@src/reducer/ToastReducer";
+import { ToastAction } from "@src/action";
 import ModalSub from "./ModalSub";
 import {
   flexRowCenterAlign,
@@ -165,11 +165,11 @@ const UploadInfoModal = ({
 
   const showToast = () => {
     if (!title.length) {
-      dispatch({ type: SET_ERROR_TOAST, payload: { text: "제목을 입력해 주세요." } });
+      dispatch(ToastAction.setErrorToastAction({ text: "제목을 입력해 주세요." }));
     } else if (!date.length) {
-      dispatch({ type: SET_ERROR_TOAST, payload: { text: "날짜를 선택해 주세요." } });
+      dispatch(ToastAction.setErrorToastAction({ text: "날짜를 선택해 주세요." }));
     } else if (selectedLocation.y === -1) {
-      dispatch({ type: SET_ERROR_TOAST, payload: { text: "장소를 입력해 주세요." } });
+      dispatch(ToastAction.setErrorToastAction({ text: "장소를 입력해 주세요." }));
     }
   };
 

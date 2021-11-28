@@ -4,8 +4,7 @@ import { flexRowCenterAlign } from "@styles/StyledComponents";
 import Modal from "@components/Modal";
 import { useDispatch } from "react-redux";
 import COLOR from "@styles/Color";
-import { GroupAction } from "@src/action";
-import { SET_ERROR_TOAST } from "@src/reducer/ToastReducer";
+import { GroupAction, ToastAction } from "@src/action";
 import { useResizeFile } from "@src/hooks/useResizeFile";
 
 const CreateGroupModal = () => {
@@ -54,7 +53,7 @@ const CreateGroupModal = () => {
   const onClickCreateBtn = () => {
     if (!groupNameRef.current) return;
     if (groupNameRef.current.value === "") {
-      dispatch({ type: SET_ERROR_TOAST, payload: { text: "그룹 이름은 반드시 입력해야 합니다." } });
+      dispatch(ToastAction.setErrorToastAction({ text: "그룹 이름은 반드시 입력해야 합니다." }));
       return;
     }
 

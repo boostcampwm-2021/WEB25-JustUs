@@ -4,7 +4,7 @@ import React, { useState, useEffect, Dispatch, SetStateAction } from "react";
 import { flexRowCenterAlign, flexColumnCenterAlign, iconHover } from "@styles/StyledComponents";
 import SearchResult from "@components/Modal/PostCreateModal/UploadInfoModal/SearchResult";
 import { useDispatch } from "react-redux";
-import { SET_ERROR_TOAST } from "@src/reducer/ToastReducer";
+import { ToastAction } from "@src/action";
 
 interface IData {
   [key: string]: string;
@@ -76,7 +76,7 @@ const ModalSub = ({
     const ps = new window.kakao.maps.services.Places();
     const placesSearchCB = (data: IData[], status: number, pagination: IPagination) => {
       if (status === window.kakao.maps.services.Status.ZERO_RESULT) {
-        dispatch({ type: SET_ERROR_TOAST, payload: { text: "검색 결과가 존재하지 않습니다." } });
+        dispatch(ToastAction.setErrorToastAction({ text: "검색 결과가 존재하지 않습니다." }));
         return;
       }
 

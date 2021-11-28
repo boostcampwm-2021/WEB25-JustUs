@@ -5,9 +5,8 @@ import Modal from "@components/Modal";
 import { useDispatch, useSelector } from "react-redux";
 import COLOR from "@styles/Color";
 import { RootState } from "@src/reducer";
-import { GroupAction } from "@src/action";
+import { GroupAction, ToastAction } from "@src/action";
 import { FcInspection } from "react-icons/fc";
-import { SET_SUCCEED_TOAST } from "@src/reducer/ToastReducer";
 
 interface SettingGroupModalProps {
   setIsToggle: Dispatch<SetStateAction<boolean>>;
@@ -40,7 +39,7 @@ const GroupInfoModal = ({ setIsToggle }: SettingGroupModalProps) => {
   const clickGroupCode = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!e.target) return;
     navigator.clipboard.writeText((e.target as HTMLElement).innerText);
-    dispatch({ type: SET_SUCCEED_TOAST, payload: { text: "클립보드에 복사되었습니다." } });
+    dispatch(ToastAction.setSucceedToastAction({ text: "클립보드에 복사되었습니다." }));
   };
 
   return (

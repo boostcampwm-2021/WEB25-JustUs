@@ -5,5 +5,6 @@ import ThemeAction from "./ThemeAction";
 import AddressAction from "./AddressAction";
 import UserAction from "./UserAction";
 import MapAction from "./MapAction";
+import ToastAction from "./ToastAction";
 
-export { GroupModalAction, GroupAction, ModalAction, ThemeAction, AddressAction, UserAction, MapAction };
+export { GroupModalAction, GroupAction, ModalAction, ThemeAction, AddressAction, UserAction, MapAction, ToastAction };

@@ -1,6 +1,5 @@
 import { all, fork, put, call, takeLatest } from "redux-saga/effects";
-import { GroupAction } from "@src/action";
-import { SET_SUCCEED_TOAST, SET_ERROR_TOAST } from "@src/reducer/ToastReducer";
+import { GroupAction, ToastAction } from "@src/action";
 import axios from "axios";
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
@@ -41,13 +40,13 @@ function* createAlbum({ payload }: any) {
     const result: ResponseGenerator = yield call(createAlbumApi, albumName, groupId);
     yield put({ type: GroupAction.NEW_ALBUM_SUCCEED, payload: { albumName, groupId, albumId: result.data.albumId } });
     yield put({
-      type: SET_SUCCEED_TOAST,
+      type: ToastAction.SET_SUCCEED_TOAST,
       payload: { text: `${albumName} 앨범이 생성되었습니다.` },
     });
   } catch (err: any) {
     yield put({ type: GroupAction.NEW_ALBUM_FAILED });
     yield put({
-      type: SET_ERROR_TOAST,
+      type: ToastAction.SET_ERROR_TOAST,
       payload: { text: `앨범 생성에 실패했습니다.` },
     });
   }
@@ -59,13 +58,13 @@ function* updateAlbum({ payload }: any) {
     yield call(updateAlbumApi, albumName, albumId);
     yield put({ type: GroupAction.UPDATE_ALBUM_SUCCEED, payload: { albumName, albumId } });
     yield put({
-      type: SET_SUCCEED_TOAST,
+      type: ToastAction.SET_SUCCEED_TOAST,
       payload: { text: `앨범 정보가 수정되었습니다.` },
     });
   } catch (err: any) {
     yield put({ type: GroupAction.UPDATE_ALBUM_FAILED });
     yield put({
-      type: SET_ERROR_TOAST,
+      type: ToastAction.SET_ERROR_TOAST,
       payload: { text: `앨범 수정에 실패했습니다.` },
     });
   }
@@ -77,13 +76,13 @@ function* deleteAlbum({ payload }: any) {
     yield call(deleteAlbumApi, albumId);
     yield put({ type: GroupAction.DELETE_ALBUM_SUCCEED, payload: { albumId } });
     yield put({
-      type: SET_SUCCEED_TOAST,
+      type: ToastAction.SET_SUCCEED_TOAST,
       payload: { text: `앨범이 삭제되었습니다.` },
     });
   } catch (err: any) {
     yield put({ type: GroupAction.DELETE_ALBUM_FAILED });
     yield put({
-      type: SET_ERROR_TOAST,
+      type: ToastAction.SET_ERROR_TOAST,
       payload: { text: `앨범 삭제에 실패했습니다.` },
     });
   }
