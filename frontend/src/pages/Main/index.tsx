@@ -34,7 +34,7 @@ const Main = () => {
       const isClusteringClicked = (target as HTMLElement).getAttribute("src")?.match(/\/icons\/podo-(three|many).png/);
       const isPostCreateClicked = (target as HTMLElement).closest("#createPostWindow");
 
-      dispatch({ type: GroupModalAction.SET_CLICKED_TARGET, payload: { target, clientX, clientY } });
+      dispatch(GroupModalAction.setClickedTargetAction({ target, clientX, clientY }));
       dispatch({ type: SET_POST_CREATE_WINDOW_OPENED, payload: { isPostCreateWindowOpened: false } });
       !isClusteringClicked && dispatch({ type: CLOSE_CLUSTERING_WINDOW });
       !isPostCreateClicked && dispatch({ type: CLOSE_POST_CREATE_WINDOW });
