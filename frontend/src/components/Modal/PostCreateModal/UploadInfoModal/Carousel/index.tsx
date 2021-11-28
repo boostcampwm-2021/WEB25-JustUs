@@ -5,6 +5,8 @@ import { flexRowCenterAlign, flexColumnCenterAlign, iconHover } from "@styles/St
 import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
 import { useDispatch } from "react-redux";
+import { SpinnerAction } from "@src/action";
+
 interface FileObject {
   imageUrl: File | string;
   imageId: string;
@@ -35,10 +37,10 @@ const Carousel = ({ files, carouselWidth }: CarouselProps) => {
   }, [imageIndex]);
 
   const loadHandler = (idx: number) => {
-    if (idx === 0) dispatch({ type: "SPINNER_CLOSE" });
+    if (idx === 0) dispatch(SpinnerAction.setSpinnerCloseAction());
   };
   const errorHandler = () => {
-    dispatch({ type: "SPINNER_CLOSE" });
+    dispatch(SpinnerAction.setSpinnerCloseAction());
   };
 
   return (

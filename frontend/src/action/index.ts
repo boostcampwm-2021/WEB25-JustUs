@@ -6,5 +6,16 @@ import AddressAction from "./AddressAction";
 import UserAction from "./UserAction";
 import MapAction from "./MapAction";
 import ToastAction from "./ToastAction";
+import SpinnerAction from "./SpinnerAction";
 
-export { GroupModalAction, GroupAction, ModalAction, ThemeAction, AddressAction, UserAction, MapAction, ToastAction };
+export {
+  GroupModalAction,
+  GroupAction,
+  ModalAction,
+  ThemeAction,
+  AddressAction,
+  UserAction,
+  MapAction,
+  ToastAction,
+  SpinnerAction,
+};
