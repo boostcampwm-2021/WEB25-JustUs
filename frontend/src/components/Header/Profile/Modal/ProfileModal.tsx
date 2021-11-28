@@ -27,15 +27,14 @@ const ProfileModal = () => {
   const dispatch = useDispatch();
   const { isProfileWrapperModalOpened } = useSelector((state: RootState) => state.modal);
   const onClickProfileItem = ({ payload, id }: ModalListItem) => {
-    dispatch({
-      type: ModalAction.SET_PROFILE_WRAPPER_MODAL_OPENED,
-      payload: { isProfileWrapperModalOpened: !isProfileWrapperModalOpened },
-    });
+    dispatch(
+      ModalAction.setProfileWrapperModalOpenedAction({ isProfileWrapperModalOpened: !isProfileWrapperModalOpened }),
+    );
     if (id === 2) {
       dispatch(UserAction.logoutRequestAction());
     } else {
       const type = "OPEN_MODAL";
-      dispatch({ type, payload });
+      dispatch(ModalAction.openModalAction(payload));
     }
   };
 

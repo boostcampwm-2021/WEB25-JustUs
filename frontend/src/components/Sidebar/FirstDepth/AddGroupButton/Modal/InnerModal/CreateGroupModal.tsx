@@ -4,7 +4,7 @@ import { flexRowCenterAlign } from "@styles/StyledComponents";
 import Modal from "@components/Modal";
 import { useDispatch } from "react-redux";
 import COLOR from "@styles/Color";
-import { GroupAction, ToastAction } from "@src/action";
+import { GroupAction, ToastAction, ModalAction } from "@src/action";
 import { useResizeFile } from "@src/hooks/useResizeFile";
 
 const CreateGroupModal = () => {
@@ -16,7 +16,7 @@ const CreateGroupModal = () => {
   const dispatch = useDispatch();
 
   const closeModal = () => {
-    dispatch({ type: "CLOSE_MODAL" });
+    dispatch(ModalAction.closeModalAction());
   };
 
   const onClickUploadBtn = () => {

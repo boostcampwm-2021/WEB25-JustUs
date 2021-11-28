@@ -26,7 +26,7 @@ const Group = ({ isToggle, setIsToggle, groupId, groupName, groupImage, DragHand
     } else {
       const selectedGroupIdx = groups.findIndex((group: GroupProps) => group.groupId === groupId);
       dispatch(GroupAction.getAlbumListAction({ groupId, groupName, groupImage }));
-      dispatch({ type: "SET_SELECTED_GROUP_IDX", payload: { selectedGroupIdx } });
+      dispatch(GroupAction.setSelectedGroupIdxAction({ selectedGroupIdx }));
       setIsToggle(true);
     }
   };

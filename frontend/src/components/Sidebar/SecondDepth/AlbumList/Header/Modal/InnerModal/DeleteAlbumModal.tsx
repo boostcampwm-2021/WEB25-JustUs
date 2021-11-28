@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import COLOR from "@styles/Color";
 import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
-import { GroupAction } from "@src/action";
+import { GroupAction, ModalAction } from "@src/action";
 
 const DeleteAlbumModal = () => {
   const dispatch = useDispatch();
@@ -13,7 +13,7 @@ const DeleteAlbumModal = () => {
   const { selectedGroup, albumList }: any = useSelector((state: RootState) => state.groups);
 
   const closeModal = () => {
-    dispatch({ type: "CLOSE_MODAL" });
+    dispatch(ModalAction.closeModalAction());
   };
 
   const onClickCancelBtn = () => {

@@ -1,3 +1,30 @@
+interface FileObject {
+  imageUrl: File | string;
+  imageId: string;
+}
+interface IPost {
+  postTitle: string;
+  postContent: string;
+  postDate: string;
+  postLocation: string;
+  postLatitude: number;
+  postLongitude: number;
+  groupId: number;
+  postImage: FileObject[];
+}
+interface IUpdatePost {
+  postTitle: string;
+  postContent: string;
+  postDate: string;
+  postLocation: string;
+  postLatitude: number;
+  postLongitude: number;
+  groupId: number;
+  postId: number;
+  addImages: FileObject[];
+  deleteImagesId: string[];
+}
+
 const groupAction = {
   ADD_GROUP: "ADD_GROUP",
   SET_SELECTED_GROUP: "SET_SELECTED_GROUP",
@@ -136,6 +163,14 @@ const groupAction = {
 
   requestPostsByHashtag: (payload: any) => ({
     type: groupAction.REQUEST_POSTS_BY_HASHTAG,
+    payload,
+  }),
+
+  uploadPostRequestAction: (post: IPost) => ({ type: groupAction.UPLOAD_POST_REQUEST, post }),
+  updatePostRequestAction: (post: IUpdatePost) => ({ type: groupAction.UPDATE_POST_REQUEST, post }),
+  deletePostRequestAction: (postId: number) => ({ type: groupAction.DELETE_POST_REQUEST, postId }),
+  setSelectedGroupIdxAction: (payload: { selectedGroupIdx: number }) => ({
+    type: groupAction.SET_SELECTED_GROUP_IDX,
     payload,
   }),
 };

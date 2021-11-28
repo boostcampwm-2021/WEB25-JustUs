@@ -4,7 +4,7 @@ import COLOR from "@styles/Color";
 import { useDispatch, useSelector } from "react-redux";
 import Carousel from "@components/Modal/PostCreateModal/UploadInfoModal/Carousel";
 import { RootState } from "@src/reducer";
-import { ToastAction } from "@src/action";
+import { ToastAction, ModalAction, GroupAction } from "@src/action";
 import ModalSub from "./ModalSub";
 import {
   flexRowCenterAlign,
@@ -90,7 +90,7 @@ const UploadInfoModal = ({
   }, []);
 
   const closeModal = () => {
-    dispatch({ type: "CLOSE_MODAL" });
+    dispatch(ModalAction.closeModalAction());
   };
 
   const handelTitleInput = (event: React.FormEvent<HTMLInputElement>) => {
@@ -136,7 +136,7 @@ const UploadInfoModal = ({
         postImage: files,
       };
 
-      dispatch({ type: "UPLOAD_POST_REQUEST", post });
+      dispatch(GroupAction.uploadPostRequestAction(post));
     } else if (mode === "update") {
       const newFileList = files.filter((file) => typeof file.imageUrl !== "string");
       const oldFileList = files.filter((file) => typeof file.imageUrl === "string").map((item) => item.imageId);
@@ -157,7 +157,7 @@ const UploadInfoModal = ({
         groupId: selectedGroup.groupId,
       };
 
-      dispatch({ type: "UPDATE_POST_REQUEST", post: updatePost });
+      dispatch(GroupAction.updatePostRequestAction(updatePost));
     }
 
     closeModal();

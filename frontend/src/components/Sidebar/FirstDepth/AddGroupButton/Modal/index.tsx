@@ -4,14 +4,16 @@ import COLOR from "@styles/Color";
 import { useDispatch } from "react-redux";
 import Modal from "@components/Modal";
 import React from "react";
+import { ModalAction } from "@src/action";
+
 const AddGroupModal = () => {
   const dispatch = useDispatch();
   const onClickCreateGroupBtn = (e: React.MouseEvent<HTMLButtonElement>) => {
-    dispatch({ type: "OPEN_MODAL", payload: "CreateGroupModal" });
+    dispatch(ModalAction.openModalAction("CreateGroupModal"));
   };
 
   const onClickJoinGroupBtn = () => {
-    dispatch({ type: "OPEN_MODAL", payload: "JoinGroupModal" });
+    dispatch(ModalAction.openModalAction("JoinGroupModal"));
   };
 
   return (

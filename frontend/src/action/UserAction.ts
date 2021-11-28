@@ -29,6 +29,9 @@ const userAction = {
     type: userAction.REQUEST_UPDATE_GROUP_ORDER,
     payload,
   }),
+
+  userInfoInitAction: () => ({ type: userAction.USER_INFO_INIT }),
+  setUpdatedInitAction: () => ({ type: userAction.SET_UPDATED_INIT }),
 };
 
 export default userAction;

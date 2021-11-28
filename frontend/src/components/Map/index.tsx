@@ -9,7 +9,7 @@ import MapLayerPostModal from "./Modal";
 import SetClustering from "@components/Map/SetClustering";
 import ReactDOM from "react-dom";
 import PostListModal from "@components/Modal/PostListModal";
-import { MapAction } from "@src/action";
+import { MapAction, ModalAction } from "@src/action";
 import { AddressAction } from "@src/action";
 
 declare const MarkerClustering: any;
@@ -136,7 +136,7 @@ const setMap = (
       dispatch(MapAction.setPostCreateWindowOpenedAction({ isPostCreateWindowOpened: false }));
       dispatch(AddressAction.setAddressAction(""));
       dispatch(AddressAction.setPositionAction({ x, y }));
-      dispatch({ type: "OPEN_MODAL", payload: "UploadAddressModal" });
+      dispatch(ModalAction.openModalAction("UploadAddressModal"));
     };
 
     ReactDOM.render(
@@ -201,7 +201,7 @@ const Map = () => {
         if (postCreateWindow) postCreateWindow.close();
 
         dispatch(MapAction.setPostCreateWindowOpenedAction({ isPostCreateWindowOpened: false }));
-        dispatch({ type: "SELECT_POST_REQUEST", postId: clickedPostID });
+        dispatch(ModalAction.selectPostRequestAction(clickedPostID));
       };
 
       const markers = postsList.map((post: PostType) => {
@@ -269,7 +269,7 @@ const Map = () => {
 
   const modalOpen = () => {
     dispatch(AddressAction.setAddressAction(""));
-    dispatch({ type: "OPEN_MODAL", payload: "PostCreateModal" });
+    dispatch(ModalAction.openModalAction("PostCreateModal"));
   };
 
   return (

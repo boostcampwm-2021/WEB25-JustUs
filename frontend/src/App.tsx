@@ -11,7 +11,7 @@ function App() {
   const { nowTheme } = useSelector((state: RootState) => state.theme);
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch({ type: "USER_INFO_INIT" });
+    dispatch(UserAction.userInfoInitAction());
     dispatch(UserAction.userInfoRequestAction());
   }, []);
   return (

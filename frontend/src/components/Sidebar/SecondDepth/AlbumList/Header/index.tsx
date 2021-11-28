@@ -27,10 +27,7 @@ const Header = ({ albumId, albumName, postToggle, setPostToggle, AlbumDragHandle
   };
 
   const onClickMoreBtn = () => {
-    dispatch({
-      type: ModalAction.SET_ALBUM_SETTING_WRAPPER_MODAL_IDX,
-      payload: { albumSettingWrapperModalIdx: albumId },
-    });
+    dispatch(ModalAction.setAlbumSettingWrapperModalIdxAction({ albumSettingWrapperModalIdx: albumId }));
   };
 
   return (

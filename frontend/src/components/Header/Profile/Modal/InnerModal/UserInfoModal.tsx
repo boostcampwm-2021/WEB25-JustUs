@@ -4,7 +4,7 @@ import Modal from "@components/Modal";
 import { useDispatch } from "react-redux";
 import COLOR from "@styles/Color";
 import { flexRowCenterAlign } from "@src/styles/StyledComponents";
-import { UserAction, ToastAction } from "@src/action";
+import { UserAction, ToastAction, ModalAction } from "@src/action";
 import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
 import { useResizeFile } from "@src/hooks/useResizeFile";
@@ -20,7 +20,7 @@ const UserInfoModal = () => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const closeUserInfoModal = () => {
-    dispatch({ type: "CLOSE_MODAL" });
+    dispatch(ModalAction.closeModalAction());
   };
   const onClickUploadBtn = () => {
     if (uploadBtnRef.current === null) return;

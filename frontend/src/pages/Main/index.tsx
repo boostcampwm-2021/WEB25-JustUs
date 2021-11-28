@@ -6,14 +6,11 @@ import Sidebar from "@components/Sidebar";
 import ModalManager from "@components/Modal/ModalManager";
 import Map from "@components/Map";
 import Empty from "@components/Empty";
-import { GroupModalAction } from "@src/action";
+import { GroupModalAction, ThemeAction, UserAction, GroupAction, MapAction, ModalAction } from "@src/action";
 import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
 import { useHistory } from "react-router-dom";
-import { GroupAction } from "@src/action";
 import ToastManager from "@src/components/ToastMessage/ToastManager";
-import { MapAction } from "@src/action";
-import { ModalAction } from "@src/action";
 import Spinner from "@components/Spinner";
 
 const Main = () => {
@@ -26,7 +23,7 @@ const Main = () => {
   const themeNumber = Number(localStorage.getItem("themeNumber"));
 
   useEffect(() => {
-    if (themeNumber) dispatch({ type: "CHANGE_THEME", selectedTheme: themeNumber });
+    if (themeNumber) dispatch(ThemeAction.changeThemeAction(themeNumber));
 
     document.addEventListener("click", (event) => {
       const { target, clientX, clientY } = event;
@@ -40,15 +37,15 @@ const Main = () => {
     });
 
     document.addEventListener("contextmenu", () => {
-      dispatch({ type: ModalAction.SET_PROFILE_WRAPPER_MODAL_OPENED, payload: { isProfileWrapperModalOpened: false } });
-      dispatch({ type: ModalAction.SET_ALBUM_SETTING_WRAPPER_MODAL_IDX, payload: { albumSettingWrapperModalIdx: -1 } });
+      dispatch(ModalAction.setProfileWrapperModalOpenedAction({ isProfileWrapperModalOpened: false }));
+      dispatch(ModalAction.setAlbumSettingWrapperModalIdxAction({ albumSettingWrapperModalIdx: -1 }));
     });
   }, []);
 
   useEffect(() => {
     if (userInfoSucceed) {
       dispatch(GroupAction.getGroupListAction());
-      dispatch({ type: "SET_UPDATED_INIT" });
+      dispatch(UserAction.setUpdatedInitAction());
     }
   }, [userInfoSucceed]);
 

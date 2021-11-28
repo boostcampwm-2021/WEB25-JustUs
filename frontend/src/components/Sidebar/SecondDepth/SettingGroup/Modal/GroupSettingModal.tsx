@@ -5,7 +5,7 @@ import Modal from "@components/Modal";
 import { useDispatch, useSelector } from "react-redux";
 import COLOR from "@styles/Color";
 import { RootState } from "@src/reducer";
-import { GroupAction, ToastAction } from "@src/action";
+import { GroupAction, ToastAction, ModalAction } from "@src/action";
 import { useResizeFile } from "@src/hooks/useResizeFile";
 
 const GroupSettingModal = () => {
@@ -19,7 +19,7 @@ const GroupSettingModal = () => {
   const defaultImageURL = "https://kr.object.ncloudstorage.com/justus/base/podo-many.png";
 
   const closeModal = () => {
-    dispatch({ type: "CLOSE_MODAL" });
+    dispatch(ModalAction.closeModalAction());
   };
 
   const onClickUpdateBtn = () => {

@@ -114,17 +114,11 @@ const AlbumList = () => {
     const clickHandler = () => {
       if (!clickedTarget.target) return;
       if (!clickedTarget.target.closest(".modifying-album-btn")) {
-        dispatch({
-          type: ModalAction.SET_ALBUM_SETTING_WRAPPER_MODAL_IDX,
-          payload: { albumSettingWrapperModalIdx: -1 },
-        });
+        dispatch(ModalAction.setAlbumSettingWrapperModalIdxAction({ albumSettingWrapperModalIdx: -1 }));
       }
 
       if (clickedTarget.target.closest(".update-album-btn") || clickedTarget.target.closest(".delete-album-btn")) {
-        dispatch({
-          type: ModalAction.SET_ALBUM_SETTING_WRAPPER_MODAL_IDX,
-          payload: { albumSettingWrapperModalIdx: -1 },
-        });
+        dispatch(ModalAction.setAlbumSettingWrapperModalIdxAction({ albumSettingWrapperModalIdx: -1 }));
       }
     };
 

@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import COLOR from "@styles/Color";
 import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
-import { GroupAction } from "@src/action";
+import { GroupAction, ModalAction } from "@src/action";
 
 const UpdateAlbumModal = () => {
   const dispatch = useDispatch();
@@ -18,7 +18,7 @@ const UpdateAlbumModal = () => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const closeModal = () => {
-    dispatch({ type: "CLOSE_MODAL" });
+    dispatch(ModalAction.closeModalAction());
   };
 
   const onChangeName = (e: ChangeEvent<HTMLInputElement>) => {
