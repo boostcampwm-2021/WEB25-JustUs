@@ -12,10 +12,9 @@ import { RootState } from "@src/reducer";
 import { useHistory } from "react-router-dom";
 import { GroupAction } from "@src/action";
 import ToastManager from "@src/components/ToastMessage/ToastManager";
-import { CLOSE_POST_CREATE_WINDOW, SET_POST_CREATE_WINDOW_OPENED } from "@src/reducer/MapReducer";
+import { MapAction } from "@src/action";
 import { ModalAction } from "@src/action";
 import Spinner from "@components/Spinner";
-import { CLOSE_CLUSTERING_WINDOW } from "@src/reducer/MapReducer";
 
 const Main = () => {
   const [isToggle, setIsToggle] = useState<boolean>(true);
@@ -35,9 +34,9 @@ const Main = () => {
       const isPostCreateClicked = (target as HTMLElement).closest("#createPostWindow");
 
       dispatch(GroupModalAction.setClickedTargetAction({ target, clientX, clientY }));
-      dispatch({ type: SET_POST_CREATE_WINDOW_OPENED, payload: { isPostCreateWindowOpened: false } });
-      !isClusteringClicked && dispatch({ type: CLOSE_CLUSTERING_WINDOW });
-      !isPostCreateClicked && dispatch({ type: CLOSE_POST_CREATE_WINDOW });
+      dispatch(MapAction.setPostCreateWindowOpenedAction({ isPostCreateWindowOpened: false }));
+      !isClusteringClicked && dispatch(MapAction.closeClusteringWindowAction());
+      !isPostCreateClicked && dispatch(MapAction.closePostCreateWindowAction());
     });
 
     document.addEventListener("contextmenu", () => {
