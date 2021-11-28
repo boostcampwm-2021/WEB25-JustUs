@@ -12,18 +12,6 @@ export class ImageService {
     private imageRepository: ImageRepository,
   ) {}
 
-  // getImagesUrl(images: Express.Multer.File[]): string[] {
-  //   const urls = images.map((e: CustomFile) => {
-  //     return e?.transforms[0].location;
-  //   });
-
-  //   return urls;
-  // }
-
-  // getImageUrl(image: CustomFile): string {
-  //   return image?.transforms[0].location;
-  // }
-
   saveImage(images: string[]): Image[] {
     return images.map(e => {
       const image = new Image();
