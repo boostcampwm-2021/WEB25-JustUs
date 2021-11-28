@@ -1,16 +1,5 @@
 import { all, fork, put, call, takeEvery, select, delay } from "redux-saga/effects";
-import {
-  USER_INFO_REQUEST,
-  USER_INFO_SUCCEED,
-  USER_INFO_FAILED,
-  LOG_OUT_REQUEST,
-  LOG_OUT_SUCCEED,
-  LOG_OUT_FAILED,
-  USER_INFO_UPDATE,
-  SET_UPDATED_USER_INFO,
-  SET_UPDATE_FAIL,
-  REQUEST_UPDATE_GROUP_ORDER,
-} from "@src/reducer/UserReducer";
+import { UserAction } from "@src/action";
 import axios from "axios";
 import { SET_SUCCEED_TOAST, SET_ERROR_TOAST } from "@src/reducer/ToastReducer";
 import { GroupAction } from "@src/action";
@@ -73,18 +62,18 @@ async function updateGroupOrderApi(payload: any) {
 function* getUserInfo() {
   try {
     const result: ResponseGenerator = yield call(getUserInfoApi);
-    yield put({ type: USER_INFO_SUCCEED, data: result.data });
+    yield put({ type: UserAction.USER_INFO_SUCCEED, data: result.data });
   } catch (err: any) {
-    yield put({ type: USER_INFO_FAILED });
+    yield put({ type: UserAction.USER_INFO_FAILED });
   }
 }
 
 function* getLogOut() {
   try {
     yield call(getLogOutApi);
-    yield put({ type: LOG_OUT_SUCCEED });
+    yield put({ type: UserAction.LOG_OUT_SUCCEED });
   } catch (err: any) {
-    yield put({ type: LOG_OUT_FAILED });
+    yield put({ type: UserAction.LOG_OUT_FAILED });
   }
 }
 
@@ -95,7 +84,7 @@ function* updateUserInfo() {
     const result: ResponseGenerator = yield call(updateUserInfoApi, user);
 
     yield put({
-      type: SET_UPDATED_USER_INFO,
+      type: UserAction.SET_UPDATED_USER_INFO,
       payload: { userNickName: user.updateUserNickName, userProfile: result.data.profileImage },
     });
     yield put({
@@ -103,7 +92,7 @@ function* updateUserInfo() {
       payload: { text: `회원 정보가 수정되었습니다.` },
     });
   } catch (err: any) {
-    yield put({ type: SET_UPDATE_FAIL });
+    yield put({ type: UserAction.SET_UPDATE_FAIL });
     yield put({
       type: SET_ERROR_TOAST,
       payload: { text: `회원 정보 수정에 실패했습니다.` },
@@ -131,15 +120,15 @@ function* updateGroupOrder(action: any) {
 }
 
 function* watchUserInfo() {
-  yield takeEvery(USER_INFO_REQUEST, getUserInfo);
+  yield takeEvery(UserAction.USER_INFO_REQUEST, getUserInfo);
 }
 
 function* watchLogOut() {
-  yield takeEvery(LOG_OUT_REQUEST, getLogOut);
+  yield takeEvery(UserAction.LOG_OUT_REQUEST, getLogOut);
 }
 
 function* watchUpdateUserInfo() {
-  yield takeEvery(USER_INFO_UPDATE, updateUserInfo);
+  yield takeEvery(UserAction.USER_INFO_UPDATE, updateUserInfo);
 }
 
 function* watchGetGroupList() {
@@ -147,7 +136,7 @@ function* watchGetGroupList() {
 }
 
 function* watchUpdateGroupOrder() {
-  yield takeEvery(REQUEST_UPDATE_GROUP_ORDER, updateGroupOrder);
+  yield takeEvery(UserAction.REQUEST_UPDATE_GROUP_ORDER, updateGroupOrder);
 }
 
 export default function* userSaga() {

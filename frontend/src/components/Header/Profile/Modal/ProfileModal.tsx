@@ -3,7 +3,7 @@ import styled from "styled-components";
 import COLOR from "@src/styles/Color";
 import { RootState } from "@src/reducer";
 import { useDispatch, useSelector } from "react-redux";
-import { logoutRequestAction } from "@src/reducer/UserReducer";
+import { UserAction } from "@src/action";
 import { ModalAction } from "@src/action";
 
 interface ProfileModalProps {
@@ -32,7 +32,7 @@ const ProfileModal = () => {
       payload: { isProfileWrapperModalOpened: !isProfileWrapperModalOpened },
     });
     if (id === 2) {
-      dispatch(logoutRequestAction());
+      dispatch(UserAction.logoutRequestAction());
     } else {
       const type = "OPEN_MODAL";
       dispatch({ type, payload });

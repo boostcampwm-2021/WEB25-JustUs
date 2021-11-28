@@ -4,7 +4,7 @@ import Modal from "@components/Modal";
 import { useDispatch } from "react-redux";
 import COLOR from "@styles/Color";
 import { flexRowCenterAlign } from "@src/styles/StyledComponents";
-import { userInfoUpdateAction } from "@src/reducer/UserReducer";
+import { UserAction } from "@src/action";
 import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
 import { SET_ERROR_TOAST } from "@src/reducer/ToastReducer";
@@ -59,7 +59,7 @@ const UserInfoModal = () => {
       dispatch({ type: SET_ERROR_TOAST, payload: { text: "닉네임은 반드시 입력해야 합니다." } });
       return;
     }
-    dispatch(userInfoUpdateAction({ updateUserNickName: newName, updateUserProfile: files[0]?.imageUrl }));
+    dispatch(UserAction.userInfoUpdateAction({ updateUserNickName: newName, updateUserProfile: files[0]?.imageUrl }));
     closeUserInfoModal();
   };
 

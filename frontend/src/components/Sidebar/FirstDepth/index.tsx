@@ -5,7 +5,7 @@ import styled from "styled-components";
 import Group from "./Group";
 import AddGroupButton from "./AddGroupButton";
 import COLOR from "@styles/Color";
-import { updateGroupOrderAction } from "@src/reducer/UserReducer";
+import { UserAction } from "@src/action";
 import { GroupAction } from "@src/action";
 
 interface FirstDepthProps {
@@ -84,7 +84,7 @@ const FirstDepth = ({ isToggle, setIsToggle, addGroupBtnRef }: FirstDepthProps) 
       groupOrder.push(Number(groupId));
     });
 
-    dispatch(updateGroupOrderAction({ groupOrder }));
+    dispatch(UserAction.updateGroupOrderAction({ groupOrder }));
 
     const item = ev.target as HTMLElement;
     item.classList.remove("drag-sort-active");
