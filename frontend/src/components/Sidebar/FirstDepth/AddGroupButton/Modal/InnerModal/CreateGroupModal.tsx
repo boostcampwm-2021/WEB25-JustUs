@@ -4,7 +4,7 @@ import { flexRowCenterAlign } from "@styles/StyledComponents";
 import Modal from "@components/Modal";
 import { useDispatch } from "react-redux";
 import COLOR from "@styles/Color";
-import { createGroupAction } from "@src/reducer/GroupReducer";
+import { GroupAction } from "@src/action";
 import { SET_ERROR_TOAST } from "@src/reducer/ToastReducer";
 import { useResizeFile } from "@src/hooks/useResizeFile";
 
@@ -65,7 +65,7 @@ const CreateGroupModal = () => {
     if (!groupNameRef.current) return;
     const groupName = groupNameRef.current.value;
 
-    dispatch(createGroupAction({ groupName, groupImage: files[0]?.imageUrl }));
+    dispatch(GroupAction.createGroupAction({ groupName, groupImage: files[0]?.imageUrl }));
 
     closeModal();
   };

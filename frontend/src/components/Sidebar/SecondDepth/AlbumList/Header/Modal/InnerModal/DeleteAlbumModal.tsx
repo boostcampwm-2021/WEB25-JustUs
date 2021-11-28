@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import COLOR from "@styles/Color";
 import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
-import { deleteAlbumRequestAction } from "@src/reducer/GroupReducer";
+import { GroupAction } from "@src/action";
 
 const DeleteAlbumModal = () => {
   const dispatch = useDispatch();
@@ -22,7 +22,7 @@ const DeleteAlbumModal = () => {
 
   const onClickDeleteBtn = () => {
     const albumId = selectedAlbum.albumId;
-    dispatch(deleteAlbumRequestAction(albumId));
+    dispatch(GroupAction.deleteAlbumRequestAction(albumId));
     closeModal();
   };
 

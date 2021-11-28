@@ -5,7 +5,7 @@ import COLOR from "@styles/Color";
 import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
 import { useDispatch } from "react-redux";
-import { newAlbumRequestAction } from "@src/reducer/GroupReducer";
+import { GroupAction } from "@src/action";
 
 interface InputModalProps {
   addAlbumModalRef: React.RefObject<HTMLDivElement>;
@@ -33,7 +33,7 @@ const InputModal = ({ addAlbumModalRef, setIsAddAlbumModalOpened }: InputModalPr
     if (!albumName) return;
     const selectedGroupId = selectedGroup.groupId;
 
-    dispatch(newAlbumRequestAction(albumName, selectedGroupId));
+    dispatch(GroupAction.newAlbumRequestAction(albumName, selectedGroupId));
     setAddAlbum(true);
     setIsAddAlbumModalOpened(false);
   };

@@ -5,7 +5,7 @@ import Modal from "@components/Modal";
 import { useDispatch, useSelector } from "react-redux";
 import COLOR from "@styles/Color";
 import { RootState } from "@src/reducer";
-import { updateGroupAction } from "@src/reducer/GroupReducer";
+import { GroupAction } from "@src/action";
 import { SET_ERROR_TOAST } from "@src/reducer/ToastReducer";
 import { useResizeFile } from "@src/hooks/useResizeFile";
 
@@ -33,7 +33,7 @@ const GroupSettingModal = () => {
 
   const updateGroup = () => {
     dispatch(
-      updateGroupAction({
+      GroupAction.updateGroupAction({
         groupId: selectedGroup.groupId,
         groupName: newName,
         groupImage: files[0]?.imageUrl,

@@ -1,7 +1,7 @@
 import { all, fork, put, call, takeEvery, select } from "redux-saga/effects";
 import axios from "axios";
 import { SET_SUCCEED_TOAST, SET_ERROR_TOAST } from "@src/reducer/ToastReducer";
-import { SET_SEARCHLIST } from "@src/reducer/GroupReducer";
+import { GroupAction } from "@src/action";
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
@@ -194,7 +194,7 @@ function* getPostsByHashtag({ type, payload }: { type: string; payload: { hashta
   try {
     const result: ResponseGenerator = yield call(getPostsByHashtagApi, hashtagId);
     const { posts } = result.data;
-    yield put({ type: SET_SEARCHLIST, payload: { searchList: posts } });
+    yield put({ type: GroupAction.SET_SEARCHLIST, payload: { searchList: posts } });
   } catch (err) {}
 }
 

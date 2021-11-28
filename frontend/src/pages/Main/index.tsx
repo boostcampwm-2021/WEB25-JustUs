@@ -10,7 +10,7 @@ import { GroupModalAction } from "@src/action";
 import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
 import { useHistory } from "react-router-dom";
-import { getGroupListAction } from "@src/reducer/GroupReducer";
+import { GroupAction } from "@src/action";
 import ToastManager from "@src/components/ToastMessage/ToastManager";
 import { CLOSE_POST_CREATE_WINDOW, SET_POST_CREATE_WINDOW_OPENED } from "@src/reducer/MapReducer";
 import { SET_PROFILE_WRAPPER_MODAL_OPENED, SET_ALBUM_SETTING_WRAPPER_MODAL_IDX } from "@src/reducer/Modal";
@@ -48,7 +48,7 @@ const Main = () => {
 
   useEffect(() => {
     if (userInfoSucceed) {
-      dispatch(getGroupListAction());
+      dispatch(GroupAction.getGroupListAction());
       dispatch({ type: "SET_UPDATED_INIT" });
     }
   }, [userInfoSucceed]);

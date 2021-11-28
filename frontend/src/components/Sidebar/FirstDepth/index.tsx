@@ -6,8 +6,7 @@ import Group from "./Group";
 import AddGroupButton from "./AddGroupButton";
 import COLOR from "@styles/Color";
 import { updateGroupOrderAction } from "@src/reducer/UserReducer";
-import { getAlbumListAction } from "@src/reducer/GroupReducer";
-import { scrollbar } from "@src/styles/StyledComponents";
+import { GroupAction } from "@src/action";
 
 interface FirstDepthProps {
   isToggle: boolean;
@@ -25,13 +24,13 @@ const FirstDepth = ({ isToggle, setIsToggle, addGroupBtnRef }: FirstDepthProps) 
   const chooseClickedGroup = (groupIdx: number) => {
     if (groupIdx < 0 || groupIdx > groups.length - 1) return;
 
-    dispatch(getAlbumListAction(groups[groupIdx]));
+    dispatch(GroupAction.getAlbumListAction(groups[groupIdx]));
     setIsToggle(true);
   };
 
   useEffect(() => {
     dispatch({ type: "SET_SELECTED_GROUP_IDX", payload: { selectedGroupId: 0 } });
-    dispatch(getAlbumListAction(groups[0]));
+    dispatch(GroupAction.getAlbumListAction(groups[0]));
   }, []);
 
   useEffect(() => {

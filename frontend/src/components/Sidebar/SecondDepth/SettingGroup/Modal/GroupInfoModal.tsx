@@ -5,7 +5,7 @@ import Modal from "@components/Modal";
 import { useDispatch, useSelector } from "react-redux";
 import COLOR from "@styles/Color";
 import { RootState } from "@src/reducer";
-import { deleteGroupAction } from "@src/reducer/GroupReducer";
+import { GroupAction } from "@src/action";
 import { FcInspection } from "react-icons/fc";
 import { SET_SUCCEED_TOAST } from "@src/reducer/ToastReducer";
 
@@ -28,7 +28,7 @@ const GroupInfoModal = ({ setIsToggle }: SettingGroupModalProps) => {
   const onClickConfirmBtn = () => {
     const { groupId, groupName } = selectedGroup;
 
-    dispatch(deleteGroupAction({ groupId, groupName }));
+    dispatch(GroupAction.deleteGroupAction({ groupId, groupName }));
     closeModal();
     setIsToggle(false);
   };

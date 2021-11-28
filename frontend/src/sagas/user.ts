@@ -13,7 +13,7 @@ import {
 } from "@src/reducer/UserReducer";
 import axios from "axios";
 import { SET_SUCCEED_TOAST, SET_ERROR_TOAST } from "@src/reducer/ToastReducer";
-import { GET_GROUP_LIST_REQUEST, GET_GROUP_LIST_SUCCEED, GET_GROUP_LIST_FAILED } from "@src/reducer/GroupReducer";
+import { GroupAction } from "@src/action";
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
@@ -116,9 +116,9 @@ function* getGroupList() {
   try {
     const result: ResponseGenerator = yield call(getGroupListApi);
     const { groups } = result.data;
-    yield put({ type: GET_GROUP_LIST_SUCCEED, payload: groups });
+    yield put({ type: GroupAction.GET_GROUP_LIST_SUCCEED, payload: groups });
   } catch {
-    yield put({ type: GET_GROUP_LIST_FAILED });
+    yield put({ type: GroupAction.GET_GROUP_LIST_FAILED });
   } finally {
     yield put({ type: "SPINNER_CLOSE" });
   }
@@ -143,7 +143,7 @@ function* watchUpdateUserInfo() {
 }
 
 function* watchGetGroupList() {
-  yield takeEvery(GET_GROUP_LIST_REQUEST, getGroupList);
+  yield takeEvery(GroupAction.GET_GROUP_LIST_REQUEST, getGroupList);
 }
 
 function* watchUpdateGroupOrder() {

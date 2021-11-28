@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
 import { ReactComponent as SettingsSVG } from "@styles/icons/settings.svg";
 import { ReactComponent as InfoSVG } from "@styles/icons/info.svg";
-import { getGroupMemberListAction } from "@src/reducer/GroupReducer";
+import { GroupAction } from "@src/action";
 import { flexRowCenterAlign } from "@src/styles/StyledComponents";
 
 const SettingGroup = () => {
@@ -14,7 +14,7 @@ const SettingGroup = () => {
   const { nowTheme }: any = useSelector((state: RootState) => state.theme);
 
   const onClickShowGroupInfo = () => {
-    dispatch(getGroupMemberListAction({ groupId: selectedGroup.groupId }));
+    dispatch(GroupAction.getGroupMemberListAction({ groupId: selectedGroup.groupId }));
   };
   const onClickSettingGroup = async () => {
     dispatch({ type: "OPEN_MODAL", payload: "GroupSettingModal" });

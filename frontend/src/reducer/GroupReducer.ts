@@ -84,144 +84,19 @@ const initState: IInitState = {
   groupListLoaded: false,
 };
 
-export const CREATE_GROUP = "CREATE_GROUP";
-export const GET_ALBUM_LIST = "GET_ALBUM_LIST";
-export const REQUEST_DELETE = "REQUEST_DELETE";
-export const DELETE_GROUP = "DELETE_GROUP";
-export const GET_GROUP_MEMBER_LIST = "GET_GROUP_MEMBER_LIST";
-export const GET_GROUP_LIST_REQUEST = "GET_GROUP_LIST_REQUEST";
-export const GET_GROUP_LIST_SUCCEED = "GET_GROUP_LIST_SUCCEED";
-export const GET_GROUP_LIST_FAILED = "GET_GROUP_LIST_FAILED";
-
-export const REQUEST_JOIN_GROUP = "REQUEST_JOIN_GROUP";
-export const REQUEST_UPDATE_GROUP = "REQUEST_UPDATE_GROUP";
-export const NEW_ALBUM_REQUEST = "NEW_ALBUM_REQUEST";
-export const NEW_ALBUM_SUCCEED = "NEW_ALBUM_SUCCEED";
-export const NEW_ALBUM_FAILED = "NEW_ALBUM_FAILED";
-export const UPDATE_ALBUM_REQUEST = "UPDATE_ALBUM_REQUEST";
-export const UPDATE_ALBUM_SUCCEED = "UPDATE_ALBUM_SUCCEED";
-export const UPDATE_ALBUM_FAILED = "UPDATE_ALBUM_FAILED";
-export const DELETE_ALBUM_REQUEST = "DELETE_ALBUM_REQUEST";
-export const DELETE_ALBUM_SUCCEED = "DELETE_ALBUM_SUCCEED";
-export const DELETE_ALBUM_FAILED = "DELETE_ALBUM_FAILED";
-export const UPDATE_ALBUM_ORDER_REQUEST = "UPDATE_ALBUM_ORDER_REQUEST";
-export const UPDATE_ALBUM_ORDER_SUCCEED = "UPDATE_ALBUM_ORDER_SUCCEED";
-export const UPDATE_ALBUM_ORDER_FAILED = "UPDATE_ALBUM_ORDER_FAILED";
-export const POST_SHIFT_ALBUM_REQUEST = "POST_SHIFT_ALBUM_REQUEST";
-export const POST_SHIFT_ALBUM_SUCCEED = "POST_SHIFT_ALBUM_SUCCEED";
-export const POST_SHIFT_ALBUM_FAILED = "POST_SHIFT_ALBUM_FAILED";
-export const REQUEST_HASHTAGS = "REQUEST_HASHTAGS";
-export const SET_HASHTAGS = "SET_HASHTAGS";
-export const REQUEST_POSTS_BY_HASHTAG = "REQUEST_POSTS_BY_HASHTAG";
-export const SET_SEARCHLIST = "SET_SEARCHLIST";
-
-export const createGroupAction = (payload: any) => ({
-  type: CREATE_GROUP,
-  payload,
-});
-
-export const getAlbumListAction = (payload: any) => ({
-  type: GET_ALBUM_LIST,
-  payload,
-});
-
-export const deleteGroupAction = (payload: any) => ({
-  type: REQUEST_DELETE,
-  payload,
-});
-
-export const getGroupMemberListAction = (payload: any) => ({
-  type: GET_GROUP_MEMBER_LIST,
-  payload,
-});
-
-export const getGroupListAction = () => ({
-  type: GET_GROUP_LIST_REQUEST,
-});
-
-export const requestJoinGroupAction = (payload: any) => ({
-  type: REQUEST_JOIN_GROUP,
-  payload,
-});
-
-export const newAlbumRequestAction = (albumName: string, groupId: number) => ({
-  type: NEW_ALBUM_REQUEST,
-  payload: {
-    albumName,
-    groupId,
-  },
-});
-
-export const updateAlbumRequestAction = (albumName: string, albumId: number) => {
-  return {
-    type: UPDATE_ALBUM_REQUEST,
-    payload: {
-      albumName,
-      albumId,
-    },
-  };
-};
-
-export const deleteAlbumRequestAction = (albumId: number) => {
-  return {
-    type: DELETE_ALBUM_REQUEST,
-    payload: {
-      albumId,
-    },
-  };
-};
-
-export const updateAlbumOrderAction = (groupId: number, albumOrder: string) => {
-  return {
-    type: UPDATE_ALBUM_ORDER_REQUEST,
-    payload: {
-      groupId,
-      albumOrder,
-    },
-  };
-};
-
-export const postShiftAlbumAction = (
-  postInfo: { postId: number; postTitle: string; albumId: number },
-  albumId: number,
-) => {
-  return {
-    type: POST_SHIFT_ALBUM_REQUEST,
-    payload: {
-      postInfo,
-      albumId,
-    },
-  };
-};
-
-export const updateGroupAction = (payload: any) => ({
-  type: REQUEST_UPDATE_GROUP,
-  payload,
-});
-
-export const requestHashtagsAction = (payload: any) => ({
-  type: REQUEST_HASHTAGS,
-  payload,
-});
-
-export const requestPostsByHashtag = (payload: any) => ({
-  type: REQUEST_POSTS_BY_HASHTAG,
-  payload,
-});
-
 const groupReducer = (state = initState, action: any) => {
   switch (action.type) {
-    case "REQUEST_GROUP_INFO":
+    case GroupAction.REQUEST_GROUP_INFO:
       return {
         ...state,
         isLoading: true,
       };
-    case "SUCCESS_GROUP_INFO":
+    case GroupAction.SUCCESS_GROUP_INFO:
       return {
         ...state,
         isLoading: false,
       };
-    case "FAILURE_GROUP_INFO":
+    case GroupAction.FAILURE_GROUP_INFO:
       return {
         ...state,
         isLoading: false,
@@ -260,12 +135,12 @@ const groupReducer = (state = initState, action: any) => {
         postsList: [],
         deleteGroupSucceed: true,
       };
-    case "UPLOAD_POST_REQUEST":
+    case GroupAction.UPLOAD_POST_REQUEST:
       return {
         ...state,
         isPostUploading: true,
       };
-    case "UPLOAD_POST_SUCCEED":
+    case GroupAction.UPLOAD_POST_SUCCEED:
       const updateAlbumList = state.albumList.map((album: AlbumListItemType, idx) => {
         if (!album.base) return album;
         const updateAlbum: AlbumListItemType = {
@@ -291,17 +166,17 @@ const groupReducer = (state = initState, action: any) => {
         postsList: updatePostsList,
         isPostUploading: false,
       };
-    case "UPLOAD_POST_FAILED":
+    case GroupAction.UPLOAD_POST_FAILED:
       return {
         ...state,
         isPostUploading: false,
       };
-    case "UPDATE_POST_REQUEST":
+    case GroupAction.UPDATE_POST_REQUEST:
       return {
         ...state,
         isPostUpdateing: true,
       };
-    case "UPDATE_POST_SUCCEED":
+    case GroupAction.UPDATE_POST_SUCCEED:
       const renewAlbumList = state.albumList.map((album: AlbumListItemType, idx) => {
         if (!album.posts.some((item) => item.postId === action.post.postId)) {
           return album;
@@ -333,18 +208,18 @@ const groupReducer = (state = initState, action: any) => {
         postsList: renewPostsList,
         isPostUpdateing: false,
       };
-    case "UPDATE_POST_FAILED":
+    case GroupAction.UPDATE_POST_FAILED:
       return {
         ...state,
         isPostUpdateing: false,
       };
 
-    case "DELETE_POST_REQUEST":
+    case GroupAction.DELETE_POST_REQUEST:
       return {
         ...state,
         isPostDeleting: true,
       };
-    case "DELETE_POST_SUCCEED":
+    case GroupAction.DELETE_POST_SUCCEED:
       const afterDeleteAlbumList = state.albumList.map((album: AlbumListItemType, idx) => {
         if (!album.posts.some((item) => item.postId === action.postId)) {
           return album;
@@ -365,17 +240,17 @@ const groupReducer = (state = initState, action: any) => {
         postsList: afterDeleteList,
         isPostDeleting: false,
       };
-    case "DELETE_POST_FAILED":
+    case GroupAction.DELETE_POST_FAILED:
       return {
         ...state,
         isPostDeleting: false,
       };
-    case "SET_ALBUM_LIST":
+    case GroupAction.SET_ALBUM_LIST:
       return {
         ...state,
         albumList: action.payload,
       };
-    case "GET_GROUP_MEMBER_LIST_SUCCEED":
+    case GroupAction.GET_GROUP_MEMBER_LIST_SUCCEED:
       return {
         ...state,
         selectedGroup: {
@@ -384,30 +259,30 @@ const groupReducer = (state = initState, action: any) => {
           users: action.payload.users,
         },
       };
-    case "GET_GROUP_LIST_REQUEST":
+    case GroupAction.GET_GROUP_LIST_REQUEST:
       return {
         ...state,
       };
-    case "GET_GROUP_LIST_SUCCEED":
+    case GroupAction.GET_GROUP_LIST_SUCCEED:
       return {
         ...state,
         groups: !action.payload[0] ? [] : action.payload,
         groupListLoaded: true,
       };
-    case "GET_GROUP_LIST_FAILED":
+    case GroupAction.GET_GROUP_LIST_FAILED:
       if (!action.payload[0]) return { ...state };
       return {
         ...state,
         groupListLoaded: true,
       };
-    case NEW_ALBUM_REQUEST:
+    case GroupAction.NEW_ALBUM_REQUEST:
       return {
         ...state,
         newAlbumLoading: true,
         newAlbumSucceed: false,
         newAlbumError: false,
       };
-    case NEW_ALBUM_SUCCEED:
+    case GroupAction.NEW_ALBUM_SUCCEED:
       const newAlbum: AlbumListItemType = {
         albumId: action.payload.albumId,
         albumName: action.payload.albumName,
@@ -421,21 +296,21 @@ const groupReducer = (state = initState, action: any) => {
         newAlbumError: false,
         albumList: [newAlbum, ...state.albumList],
       };
-    case NEW_ALBUM_FAILED:
+    case GroupAction.NEW_ALBUM_FAILED:
       return {
         ...state,
         newAlbumLoading: false,
         newAlbumSucceed: false,
         newAlbumError: true,
       };
-    case UPDATE_ALBUM_REQUEST:
+    case GroupAction.UPDATE_ALBUM_REQUEST:
       return {
         ...state,
         updateAlbumLoading: true,
         updateAlbumSucceed: false,
         updateAlbumError: false,
       };
-    case UPDATE_ALBUM_SUCCEED:
+    case GroupAction.UPDATE_ALBUM_SUCCEED:
       const updateAlbumListWhenSucceed = state.albumList.map((album: AlbumListItemType) => {
         if (album.albumId !== action.payload.albumId) return album;
         const updateAlbumName: AlbumListItemType = {
@@ -453,7 +328,7 @@ const groupReducer = (state = initState, action: any) => {
         updateAlbumError: false,
         albumList: updateAlbumListWhenSucceed,
       };
-    case UPDATE_ALBUM_FAILED:
+    case GroupAction.UPDATE_ALBUM_FAILED:
       return {
         ...state,
         updateAlbumLoading: false,
@@ -461,14 +336,14 @@ const groupReducer = (state = initState, action: any) => {
         updateAlbumError: true,
         groups: state.groups,
       };
-    case DELETE_ALBUM_REQUEST:
+    case GroupAction.DELETE_ALBUM_REQUEST:
       return {
         ...state,
         deleteAlbumLoading: true,
         deleteAlbumSucceed: false,
         deleteAlbumError: false,
       };
-    case DELETE_ALBUM_SUCCEED:
+    case GroupAction.DELETE_ALBUM_SUCCEED:
       const afterDeleteAlbum = state.albumList.filter(
         (album: AlbumListItemType) => album.albumId !== action.payload.albumId,
       );
@@ -486,42 +361,42 @@ const groupReducer = (state = initState, action: any) => {
         deleteAlbumError: false,
         albumList: afterDeleteAlbum,
       };
-    case DELETE_ALBUM_FAILED:
+    case GroupAction.DELETE_ALBUM_FAILED:
       return {
         ...state,
         deleteAlbumLoading: false,
         deleteAlbumSucceed: false,
         deleteAlbumError: true,
       };
-    case UPDATE_ALBUM_ORDER_REQUEST:
+    case GroupAction.UPDATE_ALBUM_ORDER_REQUEST:
       return {
         ...state,
         updateAlbumOrderLoading: true,
         updateAlbumOrderSucceed: false,
         updateAlbumOrderError: false,
       };
-    case UPDATE_ALBUM_ORDER_SUCCEED:
+    case GroupAction.UPDATE_ALBUM_ORDER_SUCCEED:
       return {
         ...state,
         updateAlbumOrderLoading: false,
         updateAlbumOrderSucceed: true,
         updateAlbumOrderError: false,
       };
-    case UPDATE_ALBUM_ORDER_FAILED:
+    case GroupAction.UPDATE_ALBUM_ORDER_FAILED:
       return {
         ...state,
         updateAlbumOrderLoading: false,
         updateAlbumOrderSucceed: false,
         updateAlbumOrderError: true,
       };
-    case POST_SHIFT_ALBUM_REQUEST:
+    case GroupAction.POST_SHIFT_ALBUM_REQUEST:
       return {
         ...state,
         postShiftAlbumLoading: true,
         postShiftAlbumSucceed: false,
         postShiftAlbumError: false,
       };
-    case POST_SHIFT_ALBUM_SUCCEED:
+    case GroupAction.POST_SHIFT_ALBUM_SUCCEED:
       const { postInfo, albumId } = action.payload;
       const newAlbumList = state.albumList.map((album: AlbumListItemType) => {
         if (album.albumId !== postInfo.albumId && album.albumId !== albumId) return album;
@@ -548,31 +423,31 @@ const groupReducer = (state = initState, action: any) => {
         postShiftAlbumError: false,
         albumList: newAlbumList,
       };
-    case POST_SHIFT_ALBUM_FAILED:
+    case GroupAction.POST_SHIFT_ALBUM_FAILED:
       return {
         ...state,
         postShiftAlbumLoading: false,
         postShiftAlbumSucceed: false,
         postShiftAlbumError: true,
       };
-    case SET_HASHTAGS:
+    case GroupAction.SET_HASHTAGS:
       return {
         ...state,
         hashTags: action.payload.hashTags,
         hashTagsError: action.payload.hashTagsError,
       };
-    case SET_SEARCHLIST:
+    case GroupAction.SET_SEARCHLIST:
       return {
         ...state,
         searchList: action.payload.searchList,
       };
-    case "SET_SELECTED_GROUP_IDX": {
+    case GroupAction.SET_SELECTED_GROUP_IDX: {
       return {
         ...state,
         selectedGroupIdx: action.payload.selectedGroupIdx,
       };
     }
-    case "SET_JOIN_GROUP_SUCCEED": {
+    case GroupAction.SET_JOIN_GROUP_SUCCEED: {
       return {
         ...state,
         joinGroupSucceed: action.payload.joinGroupSucceed,

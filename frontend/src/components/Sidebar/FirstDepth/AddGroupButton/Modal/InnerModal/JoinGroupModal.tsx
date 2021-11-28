@@ -4,7 +4,7 @@ import { flexColumnCenterAlign, flexRowCenterAlign } from "@styles/StyledCompone
 import Modal from "@components/Modal";
 import { useDispatch } from "react-redux";
 import COLOR from "@styles/Color";
-import { requestJoinGroupAction, getGroupListAction } from "@src/reducer/GroupReducer";
+import { GroupAction } from "@src/action";
 
 const JoinGroupModal = () => {
   const dispatch = useDispatch();
@@ -18,8 +18,7 @@ const JoinGroupModal = () => {
     if (!inputRef.current) return;
     const code = inputRef.current.value;
 
-    dispatch(requestJoinGroupAction({ code }));
-    // dispatch(getGroupListAction());
+    dispatch(GroupAction.requestJoinGroupAction({ code }));
   };
 
   const onKeyDown = (e: React.KeyboardEvent) => {
