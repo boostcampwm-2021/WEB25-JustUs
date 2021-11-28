@@ -1,4 +1,5 @@
 import COLOR from "@styles/Color";
+import { ThemeAction } from "@src/action";
 
 interface ThemeType {
   [Key: string]: string;
@@ -15,7 +16,7 @@ const initState: { selectedTheme: number; nowTheme: ThemeType } = {
 
 const ThemeReducer = (state = initState, action: any) => {
   switch (action.type) {
-    case "CHANGE_THEME":
+    case ThemeAction.CHANGE_THEME:
       let nowTheme;
       switch (action.selectedTheme) {
         case 1:
@@ -33,19 +34,19 @@ const ThemeReducer = (state = initState, action: any) => {
         nowTheme,
         selectedTheme: action.selectedTheme,
       };
-    case "CHANGE_THEME1":
+    case ThemeAction.CHANGE_THEME1:
       return {
         ...state,
         nowTheme: COLOR.THEME1,
         selectedTheme: 1,
       };
-    case "CHANGE_THEME2":
+    case ThemeAction.CHANGE_THEME2:
       return {
         ...state,
         nowTheme: COLOR.THEME2,
         selectedTheme: 2,
       };
-    case "CHANGE_THEME3":
+    case ThemeAction.CHANGE_THEME3:
       return {
         ...state,
         nowTheme: COLOR.THEME3,

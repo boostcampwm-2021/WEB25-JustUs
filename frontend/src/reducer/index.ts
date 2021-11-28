@@ -1,9 +1,9 @@
 import { combineReducers } from "redux";
 import GroupModalReducer from "./GroupModalReducer";
-import groupReducer from "./GroupReducer";
+import GroupReducer from "./GroupReducer";
 import ModalReducer from "./ModalReducer";
 import AddressReducer from "./AddressReducer";
-import Theme from "./Theme";
+import ThemeReducer from "./ThemeReducer";
 import UserReducer from "./UserReducer";
 import MapReducer from "./MapReducer";
 import ToastReducer from "./ToastReducer";
@@ -11,9 +11,9 @@ import SpinnerReducer from "./SpinnerReducer";
 
 const rootReducer = combineReducers({
   groupModal: GroupModalReducer,
-  groups: groupReducer,
+  groups: GroupReducer,
   modal: ModalReducer,
-  theme: Theme,
+  theme: ThemeReducer,
   address: AddressReducer,
   user: UserReducer,
   map: MapReducer,
