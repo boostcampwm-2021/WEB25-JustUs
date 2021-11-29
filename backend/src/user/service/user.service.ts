@@ -80,4 +80,8 @@ export class UserService {
 
     return { groups: reArrangedGroups };
   }
+
+  async findById(userId: number): Promise<User> {
+    return await this.userRepository.findOne(userId);
+  }
 }

@@ -24,11 +24,10 @@ export const multerOption = {
           const url = `${process.env.NCP_OBJECT_STORAGE_PATH}/${groupId}/${encodeURI(Date.now().toString())} - ${
             file.originalname
           }`;
-
           callback(null, url);
         },
         transform: async function (request, file, callback) {
-          callback(null, sharp().webp({ quality: 50 })); // 추후 리사이징 필요시 수정
+          callback(null, sharp().webp({ quality: 80 }));
         },
       },
     ],

@@ -47,11 +47,12 @@ export class GroupRepository extends Repository<Group> {
       .getOne();
   }
 
-  async getHashTagsQuery(groupId: number): Promise<Group> {
+  async getHashTagsQuery(groupId: number): Promise<Group | undefined> {
     return await this.createQueryBuilder("group")
       .leftJoin("group.hashtags", "hashtag")
+      .leftJoin("hashtag.posts", "post")
       .select(["group.groupId", "hashtag.hashtagId", "hashtag.hashtagContent"])
-      .where("group.groupId=:id", { id: groupId })
+      .where("group.groupId=:id AND post.postId is not null", { id: groupId })
       .getOne();
   }
 }
