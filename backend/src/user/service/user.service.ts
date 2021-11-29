@@ -10,14 +10,12 @@ import { UpdateGroupOrderRequestDto } from "src/dto/user/updateGroupOrderRequest
 import { GetGroupsResponseDto } from "src/dto/user/getGroupsResponse.dto";
 import { UpdateUserInfoResponseDto } from "src/dto/user/updateUserInfoResponse.dto";
 import { UpdateResult } from "typeorm";
-import { GroupService } from "src/group/service/group.service";
-import { ImageService } from "src/image/service/image.service";
+import { getImageUrl } from "src/common/imageUrl";
+import { ArrayToObject, reArrange } from "src/common/changeObject";
 
 @Injectable()
 export class UserService {
   constructor(
-    private groupService: GroupService,
-    private imageService: ImageService,
     @InjectRepository(UserRepository)
     private userRepository: UserRepository,
   ) {}
@@ -44,24 +42,28 @@ export class UserService {
     file: CustomFile,
     updateUserInfoRequestDto: UpdateUserInfoRequestDto,
   ): Promise<UpdateUserInfoResponseDto> {
-    const profileImage = this.imageService.getImageUrl(file);
-    const { userNickname } = updateUserInfoRequestDto;
+    const profileImage = getImageUrl(file);
+    const { userNickname, clearImage } = updateUserInfoRequestDto;
+
     const user = await this.userRepository.findOne({ userId });
     if (!user) throw new NotFoundException(`Not found user with the id ${userId}`);
 
-    const updateObject = profileImage === undefined ? { userNickname } : { profileImage, userNickname };
-    this.userRepository.update(userId, updateObject);
+    const checkClearImage =
+      clearImage === 1 ? { profileImage: process.env.JUSTUS_USER_BASE_IMG, userNickname } : { userNickname };
+    const updateObject = profileImage === undefined ? checkClearImage : { profileImage, userNickname };
+
+    await this.userRepository.update(userId, updateObject);
 
     return { profileImage };
   }
 
   async updateToken(userId: number, refreshToken: string): Promise<UpdateResult> {
-    return this.userRepository.update(userId, { refreshToken });
+    return await this.userRepository.update(userId, { refreshToken });
   }
 
   async updateGroupOrder(userId: number, updateGroupOrderRequestDto: UpdateGroupOrderRequestDto): Promise<string> {
     const { groupOrder } = updateGroupOrderRequestDto;
-    this.userRepository.update(userId, { groupOrder });
+    await this.userRepository.update(userId, { groupOrder });
 
     return "GroupOrder update success!!";
   }
@@ -72,20 +74,10 @@ export class UserService {
 
     const { groupOrder, groups } = groupsInfo;
 
-    const groupsObject = this.groupService.ArrayToObject(groups);
+    const groupsObject = ArrayToObject(groups, "groupId");
 
-    const reArrangedGroups = this.reArrangeGroups(groupOrder, groupsObject);
+    const reArrangedGroups = reArrange(groupOrder, groupsObject);
 
     return { groups: reArrangedGroups };
-  }
-
-  reArrangeGroups(groupOrder: string, groupsObejct: object): any[] {
-    const order = groupOrder.split(",");
-
-    const orderGroup = order.map(e => {
-      return groupsObejct[e];
-    });
-
-    return orderGroup;
   }
 }
