@@ -104,8 +104,9 @@ const GroupInfoModal = ({ setIsToggle }: SettingGroupModalProps) => {
 
 const GridItem = styled.div`
   display: flex;
+  position: relative;
   flex-direction: column;
-  height: 80%;
+  height: 29rem;
   width: 90%;
 `;
 
@@ -169,12 +170,12 @@ const Content = styled.div`
   align-items: center;
   justify-items: center;
   font-size: 1.5rem;
-
   height: 35rem;
 `;
 const JoinCodeGuide = styled.div`
   font-weight: bold;
   border-bottom: 1px solid ${COLOR.GRAY};
+  padding-bottom: 1rem;
 `;
 
 const JoinCode = styled.div`
@@ -199,7 +200,6 @@ const GroupMemberListWrapper = styled.div`
   width: 100%;
   display: flex;
   margin-top: 1rem;
-  height: 90%;
   border-bottom: 1px solid ${COLOR.GRAY};
   overflow-y: scroll;
   overflow-x: hidden;
@@ -254,6 +254,7 @@ const GroupDropWrapper = styled.div`
 const DropGuideWrapper = styled.div`
   width: 100%;
   font-weight: bold;
+  padding-bottom: 1rem;
   border-bottom: 1px solid ${COLOR.GRAY};
   margin-top: 3rem;
 `;
