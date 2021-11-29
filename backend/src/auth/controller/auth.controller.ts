@@ -27,8 +27,8 @@ export class AuthController {
   async naverAuthRedirect(@Req() { user }: CustomRequest, @Res() res: Response) {
     const { accessToken, refreshToken } = user;
 
-    res.cookie("accessToken", accessToken);
-    res.cookie("refreshToken", refreshToken);
+    res.cookie("accessToken", accessToken, { httpOnly: true });
+    res.cookie("refreshToken", refreshToken, { httpOnly: true });
 
     const redirectUrl = process.env.NODE_ENV === "dev" ? process.env.DEV_REDIRECT_URL : process.env.PROD_REDIRECT_URL;
 

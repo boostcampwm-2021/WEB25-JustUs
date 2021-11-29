@@ -21,8 +21,8 @@ export class JwtRefreshTokenAuthGuard extends AuthGuard("jwt") {
 
     const { userId, userEmail } = validationRefreshToken;
     const accessTokenExpireTime = "30m";
-    const newAccessToken = this.authService.createToken(userId, userEmail, accessTokenExpireTime);
-    response.cookie("accessToken", newAccessToken);
+    const newAccessToken = this.authService.createToken(userId, userEmail, accessTokenExpireTime, "accessToken");
+    response.cookie("accessToken", newAccessToken, { httpOnly: true });
     request.user = validationRefreshToken;
 
     return true;

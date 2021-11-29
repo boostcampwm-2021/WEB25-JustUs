@@ -24,11 +24,11 @@ export class AuthService {
     }
   }
 
-  createToken(userId: number, userEmail: string, expire: string): string {
+  createToken(userId: number, userEmail: string, expire: string, token: string): string {
     const payload = {
       userId: userId,
       userEmail: userEmail,
-      userToken: "loginToken",
+      Token: token,
     };
 
     return this.jwtService.sign(payload, { expiresIn: expire });
