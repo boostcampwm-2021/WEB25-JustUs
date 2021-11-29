@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import COLOR from "@styles/Color";
 import { GroupAction, ToastAction, ModalAction } from "@src/action";
 import { useResizeFile } from "@src/hooks/useResizeFile";
+import { toastMessage } from "@src/constants";
 
 const CreateGroupModal = () => {
   const uploadBtnRef = useRef<HTMLInputElement>(null);
@@ -53,7 +54,7 @@ const CreateGroupModal = () => {
   const onClickCreateBtn = () => {
     if (!groupNameRef.current) return;
     if (groupNameRef.current.value === "") {
-      dispatch(ToastAction.setErrorToastAction({ text: "그룹 이름은 반드시 입력해야 합니다." }));
+      dispatch(ToastAction.setErrorToastAction({ text: toastMessage.requiredGroupName }));
       return;
     }
 

@@ -7,6 +7,7 @@ import COLOR from "@styles/Color";
 import { RootState } from "@src/reducer";
 import { GroupAction, ToastAction, ModalAction } from "@src/action";
 import { FcInspection } from "react-icons/fc";
+import { toastMessage } from "@src/constants";
 
 interface SettingGroupModalProps {
   setIsToggle: Dispatch<SetStateAction<boolean>>;
@@ -39,7 +40,7 @@ const GroupInfoModal = ({ setIsToggle }: SettingGroupModalProps) => {
   const clickGroupCode = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!e.target) return;
     navigator.clipboard.writeText((e.target as HTMLElement).innerText);
-    dispatch(ToastAction.setSucceedToastAction({ text: "클립보드에 복사되었습니다." }));
+    dispatch(ToastAction.setSucceedToastAction({ text: toastMessage.clipboardSuccess }));
   };
 
   return (

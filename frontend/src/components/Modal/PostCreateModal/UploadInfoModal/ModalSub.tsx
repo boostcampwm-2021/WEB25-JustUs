@@ -5,6 +5,7 @@ import { flexRowCenterAlign, flexColumnCenterAlign, iconHover } from "@styles/St
 import SearchResult from "@components/Modal/PostCreateModal/UploadInfoModal/SearchResult";
 import { useDispatch } from "react-redux";
 import { ToastAction } from "@src/action";
+import { toastMessage } from "@src/constants";
 
 interface IData {
   [key: string]: string;
@@ -76,7 +77,7 @@ const ModalSub = ({
     const ps = new window.kakao.maps.services.Places();
     const placesSearchCB = (data: IData[], status: number, pagination: IPagination) => {
       if (status === window.kakao.maps.services.Status.ZERO_RESULT) {
-        dispatch(ToastAction.setErrorToastAction({ text: "검색 결과가 존재하지 않습니다." }));
+        dispatch(ToastAction.setErrorToastAction({ text: toastMessage.noSearchList }));
         return;
       }
 

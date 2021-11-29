@@ -1,6 +1,7 @@
 import { all, fork, put, call, takeLatest } from "redux-saga/effects";
 import { GroupAction, ToastAction } from "@src/action";
 import axios from "axios";
+import { toastMessage } from "@src/constants";
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
@@ -41,13 +42,13 @@ function* createAlbum({ payload }: any) {
     yield put({ type: GroupAction.NEW_ALBUM_SUCCEED, payload: { albumName, groupId, albumId: result.data.albumId } });
     yield put({
       type: ToastAction.SET_SUCCEED_TOAST,
-      payload: { text: `${albumName} 앨범이 생성되었습니다.` },
+      payload: { text: toastMessage.succeedMakeAlbum(albumName) },
     });
   } catch (err: any) {
     yield put({ type: GroupAction.NEW_ALBUM_FAILED });
     yield put({
       type: ToastAction.SET_ERROR_TOAST,
-      payload: { text: `앨범 생성에 실패했습니다.` },
+      payload: { text: toastMessage.failedMakeAlbum },
     });
   }
 }
@@ -59,13 +60,13 @@ function* updateAlbum({ payload }: any) {
     yield put({ type: GroupAction.UPDATE_ALBUM_SUCCEED, payload: { albumName, albumId } });
     yield put({
       type: ToastAction.SET_SUCCEED_TOAST,
-      payload: { text: `앨범 정보가 수정되었습니다.` },
+      payload: { text: toastMessage.succeedUpdateAlbum },
     });
   } catch (err: any) {
     yield put({ type: GroupAction.UPDATE_ALBUM_FAILED });
     yield put({
       type: ToastAction.SET_ERROR_TOAST,
-      payload: { text: `앨범 수정에 실패했습니다.` },
+      payload: { text: toastMessage.failedUpdateAlbum },
     });
   }
 }
@@ -77,13 +78,13 @@ function* deleteAlbum({ payload }: any) {
     yield put({ type: GroupAction.DELETE_ALBUM_SUCCEED, payload: { albumId } });
     yield put({
       type: ToastAction.SET_SUCCEED_TOAST,
-      payload: { text: `앨범이 삭제되었습니다.` },
+      payload: { text: toastMessage.succeedRemoveAlbum },
     });
   } catch (err: any) {
     yield put({ type: GroupAction.DELETE_ALBUM_FAILED });
     yield put({
       type: ToastAction.SET_ERROR_TOAST,
-      payload: { text: `앨범 삭제에 실패했습니다.` },
+      payload: { text: toastMessage.failedRemoveAlbum },
     });
   }
 }

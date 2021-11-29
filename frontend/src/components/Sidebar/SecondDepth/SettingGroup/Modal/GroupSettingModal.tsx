@@ -7,6 +7,7 @@ import COLOR from "@styles/Color";
 import { RootState } from "@src/reducer";
 import { GroupAction, ToastAction, ModalAction } from "@src/action";
 import { useResizeFile } from "@src/hooks/useResizeFile";
+import { toastMessage } from "@src/constants";
 
 const GroupSettingModal = () => {
   const { selectedGroup, albumList }: any = useSelector((state: RootState) => state.groups);
@@ -24,7 +25,7 @@ const GroupSettingModal = () => {
 
   const onClickUpdateBtn = () => {
     if (!newName) {
-      dispatch(ToastAction.setErrorToastAction({ text: "그룹 이름은 반드시 입력해야 합니다." }));
+      dispatch(ToastAction.setErrorToastAction({ text: toastMessage.requiredGroupName }));
       return;
     }
     updateGroup();

@@ -15,6 +15,7 @@ import {
   scrollbar,
   iconHover,
 } from "@styles/StyledComponents";
+import { toastMessage } from "@src/constants";
 
 interface FileObject {
   imageUrl: File | string;
@@ -165,11 +166,11 @@ const UploadInfoModal = ({
 
   const showToast = () => {
     if (!title.length) {
-      dispatch(ToastAction.setErrorToastAction({ text: "제목을 입력해 주세요." }));
+      dispatch(ToastAction.setErrorToastAction({ text: toastMessage.requiredTitle }));
     } else if (!date.length) {
-      dispatch(ToastAction.setErrorToastAction({ text: "날짜를 선택해 주세요." }));
+      dispatch(ToastAction.setErrorToastAction({ text: toastMessage.requiredDate }));
     } else if (selectedLocation.y === -1) {
-      dispatch(ToastAction.setErrorToastAction({ text: "장소를 입력해 주세요." }));
+      dispatch(ToastAction.setErrorToastAction({ text: toastMessage.requiredLocate }));
     }
   };
 

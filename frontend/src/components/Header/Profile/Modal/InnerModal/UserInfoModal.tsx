@@ -8,6 +8,7 @@ import { UserAction, ToastAction, ModalAction } from "@src/action";
 import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
 import { useResizeFile } from "@src/hooks/useResizeFile";
+import { toastMessage } from "@src/constants/";
 
 const UserInfoModal = () => {
   const uploadBtnRef = useRef<HTMLInputElement>(null);
@@ -55,7 +56,7 @@ const UserInfoModal = () => {
 
   const onClickUpdateBtn = () => {
     if (!newName) {
-      dispatch(ToastAction.setErrorToastAction({ text: "닉네임은 반드시 입력해야 합니다." }));
+      dispatch(ToastAction.setErrorToastAction({ text: toastMessage.requiredUserName }));
       return;
     }
     dispatch(UserAction.userInfoUpdateAction({ updateUserNickName: newName, updateUserProfile: files[0]?.imageUrl }));

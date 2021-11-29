@@ -1,6 +1,7 @@
 import { all, fork, put, call, takeEvery, select, delay } from "redux-saga/effects";
 import axios from "axios";
 import { UserAction, GroupAction, ToastAction } from "@src/action";
+import { toastMessage } from "@src/constants";
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
@@ -87,13 +88,13 @@ function* updateUserInfo() {
     });
     yield put({
       type: ToastAction.SET_SUCCEED_TOAST,
-      payload: { text: `회원 정보가 수정되었습니다.` },
+      payload: { text: toastMessage.succeedUpdateProfile },
     });
   } catch (err: any) {
     yield put({ type: UserAction.SET_UPDATE_FAIL });
     yield put({
       type: ToastAction.SET_ERROR_TOAST,
-      payload: { text: `회원 정보 수정에 실패했습니다.` },
+      payload: { text: toastMessage.failedUpdateProfile },
     });
   }
 }

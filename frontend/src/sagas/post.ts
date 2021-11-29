@@ -1,6 +1,7 @@
 import { all, fork, put, call, takeEvery, select } from "redux-saga/effects";
 import axios from "axios";
 import { GroupAction, ToastAction } from "@src/action";
+import { toastMessage } from "@src/constants";
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
@@ -124,13 +125,13 @@ function* uploadPost({ post }: { type: string; post: IPost }) {
     yield put({ type: "UPLOAD_POST_SUCCEED", post: { ...post, postId: result.data } });
     yield put({
       type: ToastAction.SET_SUCCEED_TOAST,
-      payload: { text: `게시글이 생성되었습니다.` },
+      payload: { text: toastMessage.succeedMakePost },
     });
   } catch (err: unknown) {
     yield put({ type: "UPLOAD_POST_FAILED" });
     yield put({
       type: ToastAction.SET_ERROR_TOAST,
-      payload: { text: `게시글 생성에 실패했습니다.` },
+      payload: { text: toastMessage.failedMakePost },
     });
   } finally {
     yield put({ type: "SPINNER_CLOSE" });
@@ -156,13 +157,13 @@ function* deletePost({ postId }: { type: string; postId: number }) {
     yield put({ type: "CLOSE_MODAL" });
     yield put({
       type: ToastAction.SET_SUCCEED_TOAST,
-      payload: { text: `게시글이 삭제되었습니다.` },
+      payload: { text: toastMessage.succeedRemovePost },
     });
   } catch (err: unknown) {
     yield put({ type: "SELECT_POST_FAILED" });
     yield put({
       type: ToastAction.SET_ERROR_TOAST,
-      payload: { text: `게시글 삭제에 실패했습니다.` },
+      payload: { text: toastMessage.failedRemovePost },
     });
   }
 }
@@ -174,13 +175,13 @@ function* updatePost({ post }: { type: string; post: IUpdatePost }) {
     yield put({ type: "UPDATE_POST_SUCCEED", post });
     yield put({
       type: ToastAction.SET_SUCCEED_TOAST,
-      payload: { text: `게시글이 수정되었습니다.` },
+      payload: { text: toastMessage.succeedUpdatePost },
     });
   } catch (err: unknown) {
     yield put({ type: "UPDATE_POST_FAILED" });
     yield put({
       type: ToastAction.SET_ERROR_TOAST,
-      payload: { text: `게시글 수정에 실패했습니다.` },
+      payload: { text: toastMessage.failedUpdatePost },
     });
   } finally {
     yield put({ type: "SPINNER_CLOSE" });
