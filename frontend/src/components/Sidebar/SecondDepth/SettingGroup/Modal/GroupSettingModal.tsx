@@ -7,7 +7,7 @@ import COLOR from "@styles/Color";
 import { RootState } from "@src/reducer";
 import { GroupAction, ToastAction, ModalAction } from "@src/action";
 import { useResizeFile } from "@src/hooks/useResizeFile";
-import { toastMessage } from "@src/constants";
+import { icon, toastMessage } from "@src/constants";
 
 const GroupSettingModal = () => {
   const { selectedGroup, albumList }: any = useSelector((state: RootState) => state.groups);
@@ -96,7 +96,7 @@ const GroupSettingModal = () => {
           </TitleWrapper>
           <CloseBtn>
             <button type="button" onClick={closeModal}>
-              <img src="/icons/clear.svg" alt="clear icon" />
+              <img src={icon.clear} alt="clear icon" />
             </button>
           </CloseBtn>
         </Header>
@@ -104,7 +104,7 @@ const GroupSettingModal = () => {
           <div>
             <ImageBackground>
               <img
-                src={nowImg ? nowImg : "/icons/podo-many-high.png"}
+                src={nowImg ? nowImg : icon.podoManyHigh}
                 alt="default icon"
                 ref={imageRef}
                 width="100%"
@@ -112,13 +112,13 @@ const GroupSettingModal = () => {
               />
               {nowImg && nowImg != defaultImageURL ? (
                 <DeleteImgBtnWrapper onClick={onClickDeleteBtn}>
-                  <img src="/icons/delete.svg" alt="delete button"></img>
+                  <img src={icon.delete} alt="delete button"></img>
                 </DeleteImgBtnWrapper>
               ) : null}
             </ImageBackground>
             <UploadImgBtnWrapper onClick={onClickUploadBtn}>
               <input type="file" accept="image/*" hidden ref={uploadBtnRef} onChange={loadImage} />
-              <img src="/icons/add-photo.svg" alt="add Photo" width={"20rem"}></img>
+              <img src={icon.addPhoto} alt="add Photo" width={"20rem"}></img>
               사진 찾기
             </UploadImgBtnWrapper>
           </div>

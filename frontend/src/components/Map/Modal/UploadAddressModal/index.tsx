@@ -5,7 +5,7 @@ import Modal from "@components/Modal";
 import { useDispatch } from "react-redux";
 import COLOR from "@styles/Color";
 import { AddressAction, ModalAction } from "@src/action";
-import { modal } from "@src/constants";
+import { icon, modal } from "@src/constants";
 
 const UploadAddressModal = () => {
   const dispatch = useDispatch();
@@ -33,7 +33,7 @@ const UploadAddressModal = () => {
           <Title>추가할 장소명을 입력하세요.</Title>
           <CloseBtn>
             <button type="button" onClick={closeModal}>
-              <img src="/icons/clear.svg" alt="clear icon" />
+              <img src={icon.clear} alt="clear icon" />
             </button>
           </CloseBtn>
         </Header>

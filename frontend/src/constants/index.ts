@@ -44,3 +44,24 @@ export const modal = {
   GroupInfoModal: "GroupInfoModal",
   PostShowModal: "PostShowModal",
 };
+
+export const icon = {
+  podoManyHigh: "/icons/podo-many-high.png",
+  podoMany: "/icons/podo-many.png",
+  clear: "/icons/clear.svg",
+  person: "/icons/person.jpeg",
+  delete: "/icons/delete.svg",
+  addPhoto: "/icons/add-photo.svg",
+  search: "/icons/search.svg",
+  podo: "/icons/podo.png",
+  podoThree: "/icons/podo-three.png",
+  x: "/icons/x.svg",
+  next: "/icons/next.svg",
+  prev: "/icons/prev.svg",
+  location: "/icons/location.svg",
+  arrowLeft: "/icons/arrow-left.svg",
+  update: "icons/update.svg",
+  trash: "icons/trash.svg",
+  addGroup: "/icons/add-group.svg",
+  cryingPodo: "/icons/crying-podo.png",
+};

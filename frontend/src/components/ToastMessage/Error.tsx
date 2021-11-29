@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import { ToastAction } from "@src/action";
 import shortid from "shortid";
 import { useEffect } from "react";
+import { icon } from "@src/constants";
 
 const Error = ({ text }: { text: string }) => {
   const dispatch = useDispatch();
@@ -39,7 +40,7 @@ const Error = ({ text }: { text: string }) => {
           </IconWrapper>
           <Text>{text}</Text>
           <CloseBtn onClick={onClickCloseBtn}>
-            <img src="/icons/clear.svg" alt="clear icon" />
+            <img src={icon.clear} alt="clear icon" />
           </CloseBtn>
         </Content>
       </ToastWrapper>

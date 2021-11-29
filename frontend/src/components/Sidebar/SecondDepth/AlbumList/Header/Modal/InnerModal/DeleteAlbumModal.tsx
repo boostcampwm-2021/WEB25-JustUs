@@ -6,6 +6,7 @@ import COLOR from "@styles/Color";
 import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
 import { GroupAction, ModalAction } from "@src/action";
+import { icon } from "@src/constants";
 
 const DeleteAlbumModal = () => {
   const dispatch = useDispatch();
@@ -36,7 +37,7 @@ const DeleteAlbumModal = () => {
         <Header>
           <CloseBtn>
             <button type="button" onClick={closeModal}>
-              <img src="/icons/clear.svg" alt="clear icon" />
+              <img src={icon.clear} alt="clear icon" />
             </button>
           </CloseBtn>
           <Title>삭제 확인</Title>

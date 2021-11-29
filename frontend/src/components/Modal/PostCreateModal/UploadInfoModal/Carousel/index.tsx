@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
 import { useDispatch } from "react-redux";
 import { SpinnerAction } from "@src/action";
+import { icon } from "@src/constants";
 
 interface FileObject {
   imageUrl: File | string;
@@ -47,7 +48,7 @@ const Carousel = ({ files, carouselWidth }: CarouselProps) => {
     <CarouselContainer carouselWidth={carouselWidth} className="carouselContainer">
       <CaroselImageContainer>
         <ChangeImageButton onClick={showPrevImage} type="button" className="prevBtn">
-          <img src="/icons/prev.svg" alt="go prev" height="30%"></img>
+          <img src={icon.prev} alt="go prev" height="30%"></img>
         </ChangeImageButton>
         <CarouselWindow carouselWidth={carouselWidth}>
           <CarouselImage className="carouselImage" ref={carouselRef} carouselWidth={carouselWidth}>
@@ -68,7 +69,7 @@ const Carousel = ({ files, carouselWidth }: CarouselProps) => {
           </CarouselImage>
         </CarouselWindow>
         <ChangeImageButton onClick={showNextImage} type="button" className="nextBtn">
-          <img src="/icons/next.svg" alt="go next" height="30%"></img>
+          <img src={icon.next} alt="go next" height="30%"></img>
         </ChangeImageButton>
       </CaroselImageContainer>
       <DotContainer>

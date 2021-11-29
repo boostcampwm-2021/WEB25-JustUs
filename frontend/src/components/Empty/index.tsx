@@ -4,7 +4,7 @@ import { flexRowCenterAlign, flexColumnCenterAlign } from "@src/styles/StyledCom
 import COLOR from "@styles/Color";
 import React from "react";
 import { ModalAction } from "@src/action";
-import { modal } from "@src/constants";
+import { icon, modal } from "@src/constants";
 
 const Empty = () => {
   const dispatch = useDispatch();
@@ -330,7 +330,7 @@ const Cache = styled.div`
   background-repeat: no-repeat;
   background-size: 50%;
   background-position: center;
-  background-image: url("/icons/podo-many-high.png");
+  background-image: url(${icon.podoManyHigh});
 `;
 
 export default Empty;

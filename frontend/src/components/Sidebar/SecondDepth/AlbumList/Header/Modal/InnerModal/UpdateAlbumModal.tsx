@@ -7,6 +7,7 @@ import COLOR from "@styles/Color";
 import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
 import { GroupAction, ModalAction } from "@src/action";
+import { icon } from "@src/constants";
 
 const UpdateAlbumModal = () => {
   const dispatch = useDispatch();
@@ -51,7 +52,7 @@ const UpdateAlbumModal = () => {
           <Title>앨범 이름 변경</Title>
           <CloseBtn>
             <button type="button" onClick={closeModal}>
-              <img src="/icons/clear.svg" alt="clear icon" />
+              <img src={icon.clear} alt="clear icon" />
             </button>
           </CloseBtn>
         </Header>

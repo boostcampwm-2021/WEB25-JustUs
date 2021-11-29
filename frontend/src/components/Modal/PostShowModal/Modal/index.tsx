@@ -3,7 +3,7 @@ import { flexRowCenterAlign, iconHover } from "@src/styles/StyledComponents";
 import COLOR from "@src/styles/Color";
 import { useDispatch } from "react-redux";
 import { ModalAction } from "@src/action";
-import { modal } from "@src/constants";
+import { icon, modal } from "@src/constants";
 const PostSettingModal = () => {
   const dispatch = useDispatch();
   const onClickUpdatePost = () => {
@@ -17,10 +17,10 @@ const PostSettingModal = () => {
   return (
     <ModalWrapper>
       <ModalItem delete={false} onClick={onClickUpdatePost} className="update-post-btn">
-        <img src="icons/update.svg" alt="update icon" />
+        <img src={icon.update} alt="update icon" />
       </ModalItem>
       <ModalItem delete={true} onClick={onClickDeletePost} className="delete-delete-btn">
-        <img src="icons/trash.svg" alt="trash icon" />
+        <img src={icon.trash} alt="trash icon" />
       </ModalItem>
     </ModalWrapper>
   );

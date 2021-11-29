@@ -15,7 +15,7 @@ import {
   scrollbar,
   iconHover,
 } from "@styles/StyledComponents";
-import { toastMessage } from "@src/constants";
+import { icon, toastMessage } from "@src/constants";
 
 interface FileObject {
   imageUrl: File | string;
@@ -191,10 +191,10 @@ const UploadInfoModal = ({
         <ModalHeader className="modalHeader">
           <ModalTitle>{mode === "create" ? "새 게시물 만들기" : "게시물 수정"}</ModalTitle>
           <ModalHeaderLeftBtn onClick={changeMode}>
-            <img src="/icons/prev.svg" alt="prev modal"></img>
+            <img src={icon.prev} alt="prev modal"></img>
           </ModalHeaderLeftBtn>
           <ModalHeaderRigthBtn onClick={closeModal}>
-            <img src="/icons/x.svg" alt="close"></img>
+            <img src={icon.x} alt="close"></img>
           </ModalHeaderRigthBtn>
         </ModalHeader>
         <ModalContent className="modalContent">
@@ -233,7 +233,7 @@ const UploadInfoModal = ({
                   <InputPlaceName>{address}</InputPlaceName>
                 )}
                 <LocationButton>
-                  <img src="/icons/location.svg" alt="location" width="100%" />
+                  <img src={icon.location} alt="location" width="100%" />
                 </LocationButton>
               </InputPlace>
             </InputBottom>

@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
 import { useDispatch } from "react-redux";
 import { GroupAction, ModalAction } from "@src/action";
+import { icon } from "@src/constants";
 
 const PostDeleteModal = () => {
   const dispatch = useDispatch();
@@ -31,7 +32,7 @@ const PostDeleteModal = () => {
           <Title>삭제 확인</Title>
           <CloseBtn>
             <button type="button" onClick={closeModal}>
-              <img src="/icons/clear.svg" alt="clear icon" />
+              <img src={icon.clear} alt="clear icon" />
             </button>
           </CloseBtn>
         </Header>

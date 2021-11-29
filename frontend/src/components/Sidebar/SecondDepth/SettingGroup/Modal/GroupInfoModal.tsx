@@ -7,7 +7,7 @@ import COLOR from "@styles/Color";
 import { RootState } from "@src/reducer";
 import { GroupAction, ToastAction, ModalAction } from "@src/action";
 import { FcInspection } from "react-icons/fc";
-import { toastMessage } from "@src/constants";
+import { icon, toastMessage } from "@src/constants";
 
 interface SettingGroupModalProps {
   setIsToggle: Dispatch<SetStateAction<boolean>>;
@@ -54,7 +54,7 @@ const GroupInfoModal = ({ setIsToggle }: SettingGroupModalProps) => {
           <TitleWrapper>그룹 정보</TitleWrapper>
           <CloseBtn>
             <button type="button" onClick={closeModal}>
-              <img src="/icons/clear.svg" alt="clear icon" />
+              <img src={icon.clear} alt="clear icon" />
             </button>
           </CloseBtn>
         </Header>

@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import COLOR from "@styles/Color";
 import { GroupAction, ToastAction, ModalAction } from "@src/action";
 import { useResizeFile } from "@src/hooks/useResizeFile";
-import { toastMessage } from "@src/constants";
+import { icon, toastMessage } from "@src/constants";
 
 const CreateGroupModal = () => {
   const uploadBtnRef = useRef<HTMLInputElement>(null);
@@ -87,7 +87,7 @@ const CreateGroupModal = () => {
           </TitleWrapper>
           <CloseBtn>
             <button type="button" onClick={closeModal}>
-              <img src="/icons/clear.svg" alt="clear icon" />
+              <img src={icon.clear} alt="clear icon" />
             </button>
           </CloseBtn>
         </Header>
@@ -95,7 +95,7 @@ const CreateGroupModal = () => {
           <div>
             <ImageBackground>
               <img
-                src={groupImg ? groupImg : "/icons/podo-many-high.png"}
+                src={groupImg ? groupImg : icon.podoManyHigh}
                 alt="default icon"
                 ref={imageRef}
                 width="100%"
@@ -103,13 +103,13 @@ const CreateGroupModal = () => {
               />
               {groupImg ? (
                 <DeleteImgBtnWrapper onClick={onClickDeleteBtn}>
-                  <img src="/icons/delete.svg" alt="delete button"></img>
+                  <img src={icon.delete} alt="delete button"></img>
                 </DeleteImgBtnWrapper>
               ) : null}
             </ImageBackground>
             <UploadImgBtnWrapper onClick={onClickUploadBtn}>
               <input type="file" accept="image/*" hidden ref={uploadBtnRef} onChange={loadImage} />
-              <img src="/icons/add-photo.svg" alt="add Photo" width={"20rem"}></img>
+              <img src={icon.addPhoto} alt="add Photo" width={"20rem"}></img>
               사진 찾기
             </UploadImgBtnWrapper>
           </div>

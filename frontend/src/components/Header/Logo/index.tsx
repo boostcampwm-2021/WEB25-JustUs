@@ -1,6 +1,7 @@
 import styled, { keyframes } from "styled-components";
 import { flexRowCenterAlign } from "@src/styles/StyledComponents";
 import COLOR from "@styles/Color";
+import { icon } from "@src/constants";
 const Logo = () => {
   return (
     <LogoContainer>
@@ -55,7 +56,7 @@ const TextLogo = styled.a`
       animation: ${flipper} 1s cubic-bezier(0.68, -0.55, 0.26, 1.55) 0.6s both, ${fadeIn} 1s both;
     }
     &:nth-child(5) {
-      background-image: url("/icons/podo-many.png");
+      background-image: url(${icon.podoMany});
       background-size: 2.1rem;
       background-repeat: no-repeat;
       animation: ${flipper} 1s cubic-bezier(0.68, -0.55, 0.26, 1.55) 0.8s both, ${fadeIn} 1s both;

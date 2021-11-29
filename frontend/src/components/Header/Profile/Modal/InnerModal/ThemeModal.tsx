@@ -6,6 +6,7 @@ import { RootState } from "@src/reducer";
 import COLOR from "@styles/Color";
 import { flexRowCenterAlign } from "@styles/StyledComponents";
 import { ThemeAction, ModalAction } from "@src/action";
+import { icon } from "@src/constants";
 
 const UserInfoModal = () => {
   const { selectedTheme } = useSelector((state: RootState) => state.theme);
@@ -35,7 +36,7 @@ const UserInfoModal = () => {
         <ModalHeader>
           <ModalTitle>테마 설정</ModalTitle>
           <ModalHeaderRigthBtn onClick={closeUserInfoModal}>
-            <img src="/icons/clear.svg" alt="next"></img>
+            <img src={icon.clear} alt="next"></img>
           </ModalHeaderRigthBtn>
         </ModalHeader>
         <Container>

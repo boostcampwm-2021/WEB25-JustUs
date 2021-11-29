@@ -5,7 +5,7 @@ import { flexRowCenterAlign, flexColumnCenterAlign, iconHover } from "@styles/St
 import SearchResult from "@components/Modal/PostCreateModal/UploadInfoModal/SearchResult";
 import { useDispatch } from "react-redux";
 import { ToastAction } from "@src/action";
-import { toastMessage } from "@src/constants";
+import { icon, toastMessage } from "@src/constants";
 
 interface IData {
   [key: string]: string;
@@ -52,8 +52,6 @@ const ModalSub = ({
 }: ModalSubProps) => {
   const [input, setInput] = useState<string>("");
   const dispatch = useDispatch();
-  const SEARCH_ICON = "/icons/search.svg";
-  const SEARCH_PART_CLOSE_ICON = "/icons/arrow-left.svg";
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key !== "Enter") return;
@@ -118,7 +116,7 @@ const ModalSub = ({
     <ModalSubWrapper isToggle={isSubOpened}>
       <ModalHeader className="header-sub">
         <SearchContainer>
-          <img src={SEARCH_ICON} height="90%" alt="search" />
+          <img src={icon.search} height="90%" alt="search" />
           <SearchInput
             type="text"
             placeholder="지역명을 입력하세요."
@@ -139,7 +137,7 @@ const ModalSub = ({
         />
       )}
       <CloseBtn onClick={onClickCloseBtn} isToggle={isSubOpened}>
-        <img src={SEARCH_PART_CLOSE_ICON} alt="search part close" />
+        <img src={icon.arrowLeft} alt="search part close" />
       </CloseBtn>
     </ModalSubWrapper>
   );

@@ -3,7 +3,7 @@ import COLOR from "@styles/Color";
 import { flexRowCenterAlign } from "@src/styles/StyledComponents";
 import { useDispatch } from "react-redux";
 import { ModalAction } from "@src/action";
-import { modal } from "@src/constants";
+import { icon, modal } from "@src/constants";
 interface AddGroupButtonProps {
   addGroupBtnRef: React.RefObject<HTMLDivElement>;
 }
@@ -20,7 +20,7 @@ const ButtonWrapper = styled.div`
   min-width: 3vw;
   min-height: 3vw;
   background: ${(props) => props.theme.PRIMARY};
-  background-image: url("/icons/add-group.svg");
+  background-image: url(${icon.addGroup});
   ${flexRowCenterAlign}
   border: 1px solid  ${(props) => props.theme.SECONDARY};
   margin: 10%;
