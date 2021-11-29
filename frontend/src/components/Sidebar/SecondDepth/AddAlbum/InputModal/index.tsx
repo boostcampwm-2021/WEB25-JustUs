@@ -7,11 +7,7 @@ import { RootState } from "@src/reducer";
 import { useDispatch } from "react-redux";
 import { GroupAction, ModalAction } from "@src/action";
 
-interface InputModalProps {
-  addAlbumModalRef: React.RefObject<HTMLDivElement>;
-}
-
-const InputModal = ({ addAlbumModalRef }: InputModalProps) => {
+const InputModal = () => {
   const [albumName, setAlbumName] = useState("");
   const [addAlbum, setAddAlbum] = useState(true);
   const { selectedGroup }: any = useSelector((state: RootState) => state.groups);
@@ -48,7 +44,7 @@ const InputModal = ({ addAlbumModalRef }: InputModalProps) => {
   };
 
   return (
-    <AddAlbumModalWrapper ref={addAlbumModalRef} className="add-album-modal">
+    <AddAlbumModalWrapper className="add-album-modal">
       <AlbumCreateInputWrapper
         placeholder="새 앨범"
         onChange={onChangeName}

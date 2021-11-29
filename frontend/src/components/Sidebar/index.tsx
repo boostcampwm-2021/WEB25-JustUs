@@ -11,13 +11,11 @@ interface SidebarProps {
 
 const Sidebar = ({ isToggle, setIsToggle }: SidebarProps) => {
   const addGroupBtnRef = useRef<HTMLDivElement>(null);
-  const addAlbumBtnRef = useRef<HTMLDivElement>(null);
-  const addAlbumModalRef = useRef<HTMLDivElement>(null);
 
   return (
     <SidebarWrapper>
       <FirstDepth isToggle={isToggle} setIsToggle={setIsToggle} addGroupBtnRef={addGroupBtnRef} />
-      <SecondDepth isToggle={isToggle} addAlbumBtnRef={addAlbumBtnRef} addAlbumModalRef={addAlbumModalRef} />
+      <SecondDepth isToggle={isToggle} />
     </SidebarWrapper>
   );
 };

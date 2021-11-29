@@ -7,11 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
 import { ModalAction } from "@src/action";
 
-interface AddAlbumProps {
-  addAlbumBtnRef: React.RefObject<HTMLDivElement>;
-}
-
-const AddAlbum = ({ addAlbumBtnRef }: AddAlbumProps) => {
+const AddAlbum = () => {
   const { nowTheme }: any = useSelector((state: RootState) => state.theme);
   const { isAddAlbumModalOpened }: any = useSelector((state: RootState) => state.modal);
   const dispatch = useDispatch();
@@ -22,7 +18,7 @@ const AddAlbum = ({ addAlbumBtnRef }: AddAlbumProps) => {
 
   return (
     <AddAlbumWrapper>
-      <AddAblumBtnWrapper onClick={onClickAddAlbum} className="add-album-btn" ref={addAlbumBtnRef}>
+      <AddAblumBtnWrapper onClick={onClickAddAlbum} className="add-album-btn">
         <AddAlbumSVG fill={nowTheme.MENUTEXT} />
         <GuideWrapper>Add Album</GuideWrapper>
       </AddAblumBtnWrapper>
