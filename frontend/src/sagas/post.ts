@@ -1,7 +1,9 @@
 import { all, fork, put, call, takeEvery, select } from "redux-saga/effects";
 import axios from "axios";
-import { GroupAction, ToastAction } from "@src/action";
-import { toastMessage } from "@src/constants";
+import { GroupAction, SpinnerAction, ToastAction } from "@src/action";
+import { modal, toastMessage } from "@src/constants";
+import modalAction from "@src/action/ModalAction";
+import groupAction from "@src/action/GroupAction";
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
@@ -119,48 +121,48 @@ async function getPostsByHashtagApi(hashtagId: number) {
 }
 
 function* uploadPost({ post }: { type: string; post: IPost }) {
-  yield put({ type: "SPINNER_OPEN" });
+  yield put({ type: SpinnerAction.SPINNER_OPEN });
   try {
     const result: ResponseGenerator = yield call(uploadPostApi, post);
-    yield put({ type: "UPLOAD_POST_SUCCEED", post: { ...post, postId: result.data } });
+    yield put({ type: groupAction.UPLOAD_POST_SUCCEED, post: { ...post, postId: result.data } });
     yield put({
       type: ToastAction.SET_SUCCEED_TOAST,
       payload: { text: toastMessage.succeedMakePost },
     });
   } catch (err: unknown) {
-    yield put({ type: "UPLOAD_POST_FAILED" });
+    yield put({ type: groupAction.UPLOAD_POST_FAILED });
     yield put({
       type: ToastAction.SET_ERROR_TOAST,
       payload: { text: toastMessage.failedMakePost },
     });
   } finally {
-    yield put({ type: "SPINNER_CLOSE" });
+    yield put({ type: SpinnerAction.SPINNER_CLOSE });
   }
 }
 
 function* getPost({ postId }: { type: string; postId: number }) {
-  yield put({ type: "SPINNER_OPEN" });
+  yield put({ type: SpinnerAction.SPINNER_OPEN });
   try {
     const result: ResponseGenerator = yield call(getPostApi, postId);
-    yield put({ type: "SELECT_POST_SUCCEED", post: result.data });
-    yield put({ type: "OPEN_MODAL", payload: "PostShowModal" });
+    yield put({ type: modalAction.SELECT_POST_SUCCEED, post: result.data });
+    yield put(modalAction.openModalAction(modal.PostShowModal));
   } catch (err: unknown) {
-    yield put({ type: "SELECT_POST_FAILED" });
-    yield put({ type: "SPINNER_CLOSE" });
+    yield put({ type: modalAction.SELECT_POST_FAILED });
+    yield put({ type: SpinnerAction.SPINNER_CLOSE });
   }
 }
 
 function* deletePost({ postId }: { type: string; postId: number }) {
   try {
     const result: ResponseGenerator = yield call(deletePostApi, postId);
-    yield put({ type: "DELETE_POST_SUCCEED", postId: postId });
-    yield put({ type: "CLOSE_MODAL" });
+    yield put({ type: groupAction.DELETE_POST_SUCCEED, postId: postId });
+    yield put({ type: modalAction.CLOSE_MODAL });
     yield put({
       type: ToastAction.SET_SUCCEED_TOAST,
       payload: { text: toastMessage.succeedRemovePost },
     });
   } catch (err: unknown) {
-    yield put({ type: "SELECT_POST_FAILED" });
+    yield put({ type: modalAction.SELECT_POST_FAILED });
     yield put({
       type: ToastAction.SET_ERROR_TOAST,
       payload: { text: toastMessage.failedRemovePost },
@@ -169,22 +171,22 @@ function* deletePost({ postId }: { type: string; postId: number }) {
 }
 
 function* updatePost({ post }: { type: string; post: IUpdatePost }) {
-  yield put({ type: "SPINNER_OPEN" });
+  yield put({ type: SpinnerAction.SPINNER_OPEN });
   try {
     const result: ResponseGenerator = yield call(updatePostApi, post);
-    yield put({ type: "UPDATE_POST_SUCCEED", post });
+    yield put({ type: groupAction.UPDATE_POST_SUCCEED, post });
     yield put({
       type: ToastAction.SET_SUCCEED_TOAST,
       payload: { text: toastMessage.succeedUpdatePost },
     });
   } catch (err: unknown) {
-    yield put({ type: "UPDATE_POST_FAILED" });
+    yield put({ type: groupAction.UPDATE_POST_FAILED });
     yield put({
       type: ToastAction.SET_ERROR_TOAST,
       payload: { text: toastMessage.failedUpdatePost },
     });
   } finally {
-    yield put({ type: "SPINNER_CLOSE" });
+    yield put({ type: SpinnerAction.SPINNER_CLOSE });
   }
 }
 
@@ -199,19 +201,19 @@ function* getPostsByHashtag({ type, payload }: { type: string; payload: { hashta
 }
 
 function* watchUploadPost() {
-  yield takeEvery("UPLOAD_POST_REQUEST", uploadPost);
+  yield takeEvery(groupAction.UPLOAD_POST_REQUEST, uploadPost);
 }
 function* watchDeletePost() {
-  yield takeEvery("DELETE_POST_REQUEST", deletePost);
+  yield takeEvery(groupAction.DELETE_POST_REQUEST, deletePost);
 }
 function* watchSelectPost() {
-  yield takeEvery("SELECT_POST_REQUEST", getPost);
+  yield takeEvery(modalAction.SELECT_POST_REQUEST, getPost);
 }
 function* watchUpdatePost() {
-  yield takeEvery("UPDATE_POST_REQUEST", updatePost);
+  yield takeEvery(groupAction.UPDATE_POST_REQUEST, updatePost);
 }
 function* watchRequestPostsByHashtag() {
-  yield takeEvery("REQUEST_POSTS_BY_HASHTAG", getPostsByHashtag);
+  yield takeEvery(groupAction.REQUEST_POSTS_BY_HASHTAG, getPostsByHashtag);
 }
 
 export default function* userSaga() {

@@ -5,6 +5,7 @@ import Modal from "@components/Modal";
 import { useDispatch } from "react-redux";
 import COLOR from "@styles/Color";
 import { AddressAction, ModalAction } from "@src/action";
+import { modal } from "@src/constants";
 
 const UploadAddressModal = () => {
   const dispatch = useDispatch();
@@ -18,7 +19,7 @@ const UploadAddressModal = () => {
     if (addressInputRef.current === null) return;
     if (addressInputRef.current.value === "") return;
     dispatch(AddressAction.setAddressAction(addressInputRef.current.value));
-    dispatch(ModalAction.openModalAction("PostCreateModal"));
+    dispatch(ModalAction.openModalAction(modal.PostCreateModal));
   };
 
   return (

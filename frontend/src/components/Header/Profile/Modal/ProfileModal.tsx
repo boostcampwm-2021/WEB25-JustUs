@@ -33,7 +33,6 @@ const ProfileModal = () => {
     if (id === 2) {
       dispatch(UserAction.logoutRequestAction());
     } else {
-      const type = "OPEN_MODAL";
       dispatch(ModalAction.openModalAction(payload));
     }
   };

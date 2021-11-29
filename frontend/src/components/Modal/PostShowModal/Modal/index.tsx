@@ -3,14 +3,15 @@ import { flexRowCenterAlign, iconHover } from "@src/styles/StyledComponents";
 import COLOR from "@src/styles/Color";
 import { useDispatch } from "react-redux";
 import { ModalAction } from "@src/action";
+import { modal } from "@src/constants";
 const PostSettingModal = () => {
   const dispatch = useDispatch();
   const onClickUpdatePost = () => {
-    dispatch(ModalAction.openModalAction("PostUpdateModal"));
+    dispatch(ModalAction.openModalAction(modal.PostUpdateModal));
   };
 
   const onClickDeletePost = () => {
-    dispatch(ModalAction.openModalAction("PostDeleteModal"));
+    dispatch(ModalAction.openModalAction(modal.PostDeleteModal));
   };
 
   return (

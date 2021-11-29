@@ -3,6 +3,7 @@ import { flexRowCenterAlign } from "@styles/StyledComponents";
 import COLOR from "@styles/Color";
 import { useDispatch } from "react-redux";
 import { ModalAction } from "@src/action";
+import { modal } from "@src/constants";
 
 interface AlbumSettingModalProps {
   albumId: number;
@@ -14,12 +15,12 @@ const AlbumSettingModal = ({ albumId, albumName }: AlbumSettingModalProps) => {
 
   const onClickUpdateAlbum = () => {
     dispatch(ModalAction.setSelectedAlbumAction({ albumId, albumName }));
-    dispatch(ModalAction.openModalAction("UpdateAlbumModal"));
+    dispatch(ModalAction.openModalAction(modal.UpdateAlbumModal));
   };
 
   const onClickDeleteAlbum = () => {
     dispatch(ModalAction.setSelectedAlbumAction({ albumId, albumName }));
-    dispatch(ModalAction.openModalAction("DeleteAlbumModal"));
+    dispatch(ModalAction.openModalAction(modal.DeleteAlbumModal));
   };
 
   return (

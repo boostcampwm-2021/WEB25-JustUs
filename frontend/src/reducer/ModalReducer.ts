@@ -74,7 +74,7 @@ const ModalReducer = (state = initState, action: any) => {
       };
     case ModalAction.SELECT_POST_REQUEST:
       return { ...state, isPostLoading: true };
-    case "SELECT_POST_SUCCEED":
+    case ModalAction.SELECT_POST_SUCCEED:
       return {
         ...state,
         selectedPost: action.post,

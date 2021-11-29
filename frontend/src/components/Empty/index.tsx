@@ -4,15 +4,16 @@ import { flexRowCenterAlign, flexColumnCenterAlign } from "@src/styles/StyledCom
 import COLOR from "@styles/Color";
 import React from "react";
 import { ModalAction } from "@src/action";
+import { modal } from "@src/constants";
 
 const Empty = () => {
   const dispatch = useDispatch();
   const onClickCreateGroupBtn = (e: React.MouseEvent<HTMLButtonElement>) => {
-    dispatch(ModalAction.openModalAction("CreateGroupModal"));
+    dispatch(ModalAction.openModalAction(modal.CreateGroupModal));
   };
 
   const onClickJoinGroupBtn = () => {
-    dispatch(ModalAction.openModalAction("JoinGroupModal"));
+    dispatch(ModalAction.openModalAction(modal.JoinGroupModal));
   };
 
   const enterMouse = (e: React.MouseEvent<HTMLButtonElement>) => {

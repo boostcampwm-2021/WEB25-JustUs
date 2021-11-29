@@ -29,3 +29,18 @@ export const toastMessage = {
   succeedUpdateProfile: "회원 정보가 수정되었습니다.",
   failedUpdateProfile: "회원 정보 수정에 실패했습니다.",
 };
+
+export const modal = {
+  CreateGroupModal: "CreateGroupModal",
+  JoinGroupModal: "JoinGroupModal",
+  UploadAddressModal: "UploadAddressModal",
+  PostCreateModal: "PostCreateModal",
+  PostUpdateModal: "PostUpdateModal",
+  PostDeleteModal: "PostDeleteModal",
+  AddGroupModal: "AddGroupModal",
+  UpdateAlbumModal: "UpdateAlbumModal",
+  DeleteAlbumModal: "DeleteAlbumModal",
+  GroupSettingModal: "GroupSettingModal",
+  GroupInfoModal: "GroupInfoModal",
+  PostShowModal: "PostShowModal",
+};

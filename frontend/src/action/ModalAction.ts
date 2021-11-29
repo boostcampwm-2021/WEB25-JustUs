@@ -7,6 +7,7 @@ const modalAction = {
   SET_CLUSTERED_MARKER: "SET_CLUSTERED_MARKER",
   SET_PROFILE_WRAPPER_MODAL_OPENED: "SET_PROFILE_WRAPPER_MODAL_OPENED",
   SET_ALBUM_SETTING_WRAPPER_MODAL_IDX: "SET_ALBUM_SETTING_WRAPPER_MODAL_IDX",
+  SELECT_POST_SUCCEED: "SELECT_POST_SUCCEED",
 
   openModalAction: (payload: string) => ({ type: modalAction.OPEN_MODAL, payload }),
   closeModalAction: () => ({ type: modalAction.CLOSE_MODAL }),

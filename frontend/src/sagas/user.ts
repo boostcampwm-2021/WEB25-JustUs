@@ -1,6 +1,6 @@
 import { all, fork, put, call, takeEvery, select, delay } from "redux-saga/effects";
 import axios from "axios";
-import { UserAction, GroupAction, ToastAction } from "@src/action";
+import { UserAction, GroupAction, ToastAction, SpinnerAction } from "@src/action";
 import { toastMessage } from "@src/constants";
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
@@ -100,7 +100,7 @@ function* updateUserInfo() {
 }
 
 function* getGroupList() {
-  yield put({ type: "SPINNER_OPEN" });
+  yield put({ type: SpinnerAction.SPINNER_OPEN });
   try {
     const result: ResponseGenerator = yield call(getGroupListApi);
     const { groups } = result.data;
@@ -108,7 +108,7 @@ function* getGroupList() {
   } catch {
     yield put({ type: GroupAction.GET_GROUP_LIST_FAILED });
   } finally {
-    yield put({ type: "SPINNER_CLOSE" });
+    yield put({ type: SpinnerAction.SPINNER_CLOSE });
   }
 }
 
