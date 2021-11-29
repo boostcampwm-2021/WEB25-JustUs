@@ -1,6 +1,7 @@
 import { all, fork, put, call, takeLatest } from "redux-saga/effects";
 import { GroupAction, ToastAction } from "@src/action";
 import { AlbumAPI } from "@src/api";
+import { refresh } from "./index";
 
 interface ResponseGenerator {
   config?: any;
@@ -42,11 +43,13 @@ function* createAlbum({ payload }: any) {
       payload: { text: `${albumName} 앨범이 생성되었습니다.` },
     });
   } catch (err: any) {
-    yield put({ type: GroupAction.NEW_ALBUM_FAILED });
-    yield put({
-      type: ToastAction.SET_ERROR_TOAST,
-      payload: { text: `앨범 생성에 실패했습니다.` },
-    });
+    const { status, statusText } = err.response;
+    if (status === 401) {
+      if (statusText === "Unauthorized") {
+        yield refresh();
+        yield put({ type: GroupAction.NEW_ALBUM_REQUEST, payload });
+      }
+    }
   }
 }
 
@@ -60,11 +63,19 @@ function* updateAlbum({ payload }: any) {
       payload: { text: `앨범 정보가 수정되었습니다.` },
     });
   } catch (err: any) {
-    yield put({ type: GroupAction.UPDATE_ALBUM_FAILED });
-    yield put({
-      type: ToastAction.SET_ERROR_TOAST,
-      payload: { text: `앨범 수정에 실패했습니다.` },
-    });
+    const { status, statusText } = err.response;
+    if (status === 401) {
+      if (statusText === "Unauthorized") {
+        yield refresh();
+        yield put({ type: GroupAction.UPDATE_ALBUM_REQUEST, payload });
+      }
+    } else {
+      yield put({ type: GroupAction.UPDATE_ALBUM_FAILED });
+      yield put({
+        type: ToastAction.SET_ERROR_TOAST,
+        payload: { text: `앨범 수정에 실패했습니다.` },
+      });
+    }
   }
 }
 
@@ -78,11 +89,19 @@ function* deleteAlbum({ payload }: any) {
       payload: { text: `앨범이 삭제되었습니다.` },
     });
   } catch (err: any) {
-    yield put({ type: GroupAction.DELETE_ALBUM_FAILED });
-    yield put({
-      type: ToastAction.SET_ERROR_TOAST,
-      payload: { text: `앨범 삭제에 실패했습니다.` },
-    });
+    const { status, statusText } = err.response;
+    if (status === 401) {
+      if (statusText === "Unauthorized") {
+        yield refresh();
+        yield put({ type: GroupAction.DELETE_ALBUM_REQUEST, payload });
+      }
+    } else {
+      yield put({ type: GroupAction.DELETE_ALBUM_FAILED });
+      yield put({
+        type: ToastAction.SET_ERROR_TOAST,
+        payload: { text: `앨범 삭제에 실패했습니다.` },
+      });
+    }
   }
 }
 
@@ -92,7 +111,15 @@ function* updateAlbumOrder({ payload }: any) {
     yield call(updateAlbumOrderApi, groupId, albumOrder);
     yield put({ type: GroupAction.UPDATE_ALBUM_ORDER_SUCCEED, payload: { groupId, albumOrder } });
   } catch (err: any) {
-    yield put({ type: GroupAction.UPDATE_ALBUM_ORDER_FAILED });
+    const { status, statusText } = err.response;
+    if (status === 401) {
+      if (statusText === "Unauthorized") {
+        yield refresh();
+        yield put({ type: GroupAction.UPDATE_ALBUM_ORDER_REQUEST, payload });
+      }
+    } else {
+      yield put({ type: GroupAction.UPDATE_ALBUM_ORDER_FAILED });
+    }
   }
 }
 
@@ -103,7 +130,15 @@ function* postShiftAlbum({ payload }: any) {
     yield call(postShiftAlbumApi, postId, albumId);
     yield put({ type: GroupAction.POST_SHIFT_ALBUM_SUCCEED, payload: { postInfo, albumId } });
   } catch (err: any) {
-    yield put({ type: GroupAction.POST_SHIFT_ALBUM_FAILED });
+    const { status, statusText } = err.response;
+    if (status === 401) {
+      if (statusText === "Unauthorized") {
+        yield refresh();
+        yield put({ type: GroupAction.POST_SHIFT_ALBUM_REQUEST, payload });
+      }
+    } else {
+      yield put({ type: GroupAction.POST_SHIFT_ALBUM_FAILED });
+    }
   }
 }
 

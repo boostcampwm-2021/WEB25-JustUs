@@ -1,6 +1,7 @@
 import { all, fork, put, call, takeEvery, select } from "redux-saga/effects";
 import { GroupAction, ToastAction } from "@src/action";
 import { PostAPI } from "@src/api";
+import { refresh } from "./";
 
 interface ResponseGenerator {
   config?: any;
@@ -68,7 +69,14 @@ function* uploadPost({ post }: { type: string; post: IPost }) {
       type: ToastAction.SET_SUCCEED_TOAST,
       payload: { text: `게시글이 생성되었습니다.` },
     });
-  } catch (err: unknown) {
+  } catch (err: any) {
+    const { status, statusText } = err.response;
+    if (status === 401) {
+      if (statusText === "Unauthorized") {
+        yield refresh();
+        yield put({ type: GroupAction.UPLOAD_POST_REQUEST, payload: { post } });
+      }
+    }
     yield put({ type: "UPLOAD_POST_FAILED" });
     yield put({
       type: ToastAction.SET_ERROR_TOAST,
@@ -85,7 +93,14 @@ function* getPost({ postId }: { type: string; postId: number }) {
     const result: ResponseGenerator = yield call(getPostApi, postId);
     yield put({ type: "SELECT_POST_SUCCEED", post: result.data });
     yield put({ type: "OPEN_MODAL", payload: "PostShowModal" });
-  } catch (err: unknown) {
+  } catch (err: any) {
+    const { status, statusText } = err.response;
+    if (status === 401) {
+      if (statusText === "Unauthorized") {
+        yield refresh();
+        yield put({ type: GroupAction, postId });
+      }
+    }
     yield put({ type: "SELECT_POST_FAILED" });
     yield put({ type: "SPINNER_CLOSE" });
   }
@@ -100,12 +115,20 @@ function* deletePost({ postId }: { type: string; postId: number }) {
       type: ToastAction.SET_SUCCEED_TOAST,
       payload: { text: `게시글이 삭제되었습니다.` },
     });
-  } catch (err: unknown) {
-    yield put({ type: "SELECT_POST_FAILED" });
-    yield put({
-      type: ToastAction.SET_ERROR_TOAST,
-      payload: { text: `게시글 삭제에 실패했습니다.` },
-    });
+  } catch (err: any) {
+    const { status, statusText } = err.response;
+    if (status === 401) {
+      if (statusText === "Unauthorized") {
+        yield refresh();
+        yield put({ type: GroupAction.DELETE_POST_REQUEST, postId });
+      }
+    } else {
+      yield put({ type: "SELECT_POST_FAILED" });
+      yield put({
+        type: ToastAction.SET_ERROR_TOAST,
+        payload: { text: `게시글 삭제에 실패했습니다.` },
+      });
+    }
   }
 }
 
@@ -118,12 +141,20 @@ function* updatePost({ post }: { type: string; post: IUpdatePost }) {
       type: ToastAction.SET_SUCCEED_TOAST,
       payload: { text: `게시글이 수정되었습니다.` },
     });
-  } catch (err: unknown) {
-    yield put({ type: "UPDATE_POST_FAILED" });
-    yield put({
-      type: ToastAction.SET_ERROR_TOAST,
-      payload: { text: `게시글 수정에 실패했습니다.` },
-    });
+  } catch (err: any) {
+    const { status, statusText } = err.response;
+    if (status === 401) {
+      if (statusText === "Unauthorized") {
+        yield refresh();
+        yield put({ type: GroupAction.UPDATE_POST_REQUEST, post });
+      }
+    } else {
+      yield put({ type: "UPDATE_POST_FAILED" });
+      yield put({
+        type: ToastAction.SET_ERROR_TOAST,
+        payload: { text: `게시글 수정에 실패했습니다.` },
+      });
+    }
   } finally {
     yield put({ type: "SPINNER_CLOSE" });
   }
@@ -136,7 +167,15 @@ function* getPostsByHashtag({ type, payload }: { type: string; payload: { hashta
     const result: ResponseGenerator = yield call(getPostsByHashtagApi, hashtagId);
     const { posts } = result.data;
     yield put({ type: GroupAction.SET_SEARCHLIST, payload: { searchList: posts } });
-  } catch (err) {}
+  } catch (err: any) {
+    const { status, statusText } = err.response;
+    if (status === 401) {
+      if (statusText === "Unauthorized") {
+        yield refresh();
+        yield put({ type: GroupAction.REQUEST_POSTS_BY_HASHTAG, payload });
+      }
+    }
+  }
 }
 
 function* watchUploadPost() {
