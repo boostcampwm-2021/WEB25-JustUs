@@ -20,9 +20,10 @@ const Sidebar = ({ isToggle, setIsToggle }: SidebarProps) => {
   );
 };
 
-const SidebarWrapper = styled.div`
-  display: flex;
+const SidebarWrapper = styled.nav`
+  display: inline-flex;
   font-size: 1.6rem;
+  width: 29rem;
 `;
 
 export default Sidebar;

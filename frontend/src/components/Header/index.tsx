@@ -16,7 +16,7 @@ const Header = () => {
   );
 };
 
-const HeaderContainer = styled.div<{ groups: any }>`
+const HeaderContainer = styled.header<{ groups: any }>`
   height: 5vh;
   background-color: ${(props) => props.theme.PRIMARY};
   box-sizing: border-box;
