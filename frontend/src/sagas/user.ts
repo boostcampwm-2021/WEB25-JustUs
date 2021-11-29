@@ -34,9 +34,8 @@ async function updateUserInfoApi(user: IUser) {
   const formData = new FormData();
 
   formData.append("userNickname", user.updateUserNickName);
-  if (user.updateUserProfile) {
-    formData.append("profileImage", user.updateUserProfile);
-  }
+  formData.append("clearImage", user.updateUserProfile === "deleted" ? "1" : "0");
+  if (user.updateUserProfile) formData.append("profileImage", user.updateUserProfile);
 
   const result = await axios.put(`${SERVER_URL}/api/user`, formData, {
     withCredentials: true,
