@@ -42,7 +42,7 @@ const UserInfoModal = () => {
           <ThemeListGroup>
             {themes.map(({ id, themeColor, name, src }) => {
               return (
-                <ThemeList key={id} onClick={() => radioHandler(id)}>
+                <ThemeList key={id} onClick={() => radioHandler(id)} checked={selectedTheme === id}>
                   <img src={src} alt={themeColor} height="70%" />
                   <ThemeListInfo>
                     <input type="radio" name="theme" value={themeColor} checked={selectedTheme == id ? true : false} />
@@ -76,12 +76,12 @@ const ThemeListInfo = styled.div`
   }
 `;
 
-const ThemeList = styled.li`
+const ThemeList = styled.li<{ checked: boolean }>`
   display: flex;
   margin: 2.5%;
   flex-basis: 45%;
   flex-direction: column;
-  border: 1px solid ${COLOR.LIGHTGRAY1};
+  border: ${(props) => (props.checked ? `2px solid ${COLOR.RADIO_CHECK}` : `1px solid ${COLOR.LIGHTGRAY1}`)};
   box-sizing: border-box;
   border-radius: 2rem;
   overflow: hidden;
@@ -91,6 +91,7 @@ const ThemeList = styled.li`
   & > img {
     width: 100%;
     height: 80%;
+    border-bottom: ${(props) => (props.checked ? `2px solid ${COLOR.RADIO_CHECK}` : ``)};
   }
 `;
 const ThemeListGroup = styled.ul`
