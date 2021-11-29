@@ -65,3 +65,15 @@ export const icon = {
   addGroup: "/icons/add-group.svg",
   cryingPodo: "/icons/crying-podo.png",
 };
+
+export const image = {
+  greenTheme: "/img/greenTheme.png",
+  yellowTheme: "/img/yellowTheme.png",
+  mintTheme: "/img/mintTheme.png",
+  sand: "/img/sand.jpg",
+  podo: "/img/podo.png",
+  naverLogin: "/img/btnG_완성형.png",
+  glass: "/img/glass.jpg",
+  lifeIsTravel: "/img/life_is_travel.png",
+  githubIcon: "/img/github_icon.png",
+};

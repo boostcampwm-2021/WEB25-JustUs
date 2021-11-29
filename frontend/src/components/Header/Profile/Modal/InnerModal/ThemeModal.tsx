@@ -6,7 +6,7 @@ import { RootState } from "@src/reducer";
 import COLOR from "@styles/Color";
 import { flexRowCenterAlign } from "@styles/StyledComponents";
 import { ThemeAction, ModalAction } from "@src/action";
-import { icon } from "@src/constants";
+import { icon, image } from "@src/constants";
 
 const UserInfoModal = () => {
   const { selectedTheme } = useSelector((state: RootState) => state.theme);
@@ -16,9 +16,9 @@ const UserInfoModal = () => {
     dispatch(ModalAction.closeModalAction());
   };
   const themes = [
-    { id: 1, themeColor: "green", name: "보성 녹차 테마", src: "/img/greenTheme.png", isChecked: true },
-    { id: 2, themeColor: "yellow", name: "고개 숙인 벼 테마", src: "/img/yellowTheme.png", isChecked: false },
-    { id: 3, themeColor: "mint", name: "민트 초코 테마", src: "/img/mintTheme.png", isChecked: false },
+    { id: 1, themeColor: "green", name: "보성 녹차 테마", src: image.greenTheme, isChecked: true },
+    { id: 2, themeColor: "yellow", name: "고개 숙인 벼 테마", src: image.yellowTheme, isChecked: false },
+    { id: 3, themeColor: "mint", name: "민트 초코 테마", src: image.mintTheme, isChecked: false },
   ];
 
   const radioHandler = (id: number) => {
