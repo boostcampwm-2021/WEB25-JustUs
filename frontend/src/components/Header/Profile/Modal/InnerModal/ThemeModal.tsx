@@ -71,6 +71,11 @@ const modalSlideUp = keyframes`
 const ThemeListInfo = styled.div`
   display: flex;
   padding: 10px;
+
+  & > input {
+    margin: 0;
+  }
+
   & > label {
     margin-left: 10px;
   }
