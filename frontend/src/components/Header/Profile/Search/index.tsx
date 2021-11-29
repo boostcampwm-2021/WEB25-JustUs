@@ -86,6 +86,12 @@ const SearchInput = styled.input`
   height: 100%;
   width: 100%;
   border: none;
+  font-size: 1.5rem;
+  line-height: 100%;
+  &::placeholder {
+    font-size: 1.5rem;
+  }
+
   &:focus-visible {
     outline: none;
   }
