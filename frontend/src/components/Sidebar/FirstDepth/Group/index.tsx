@@ -4,7 +4,7 @@ import { flexRowCenterAlign } from "@styles/StyledComponents";
 import COLOR from "@styles/Color";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
-import { getAlbumListAction } from "@src/reducer/GroupReducer";
+import { GroupAction } from "@src/action";
 
 interface GroupProps {
   isToggle: boolean;
@@ -25,8 +25,8 @@ const Group = ({ isToggle, setIsToggle, groupId, groupName, groupImage, DragHand
       setIsToggle(false);
     } else {
       const selectedGroupIdx = groups.findIndex((group: GroupProps) => group.groupId === groupId);
-      dispatch(getAlbumListAction({ groupId, groupName, groupImage }));
-      dispatch({ type: "SET_SELECTED_GROUP_IDX", payload: { selectedGroupIdx } });
+      dispatch(GroupAction.getAlbumListAction({ groupId, groupName, groupImage }));
+      dispatch(GroupAction.setSelectedGroupIdxAction({ selectedGroupIdx }));
       setIsToggle(true);
     }
   };

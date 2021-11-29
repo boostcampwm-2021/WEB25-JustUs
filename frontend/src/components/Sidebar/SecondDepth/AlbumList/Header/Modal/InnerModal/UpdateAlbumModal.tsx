@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import COLOR from "@styles/Color";
 import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
-import { updateAlbumRequestAction } from "@src/reducer/GroupReducer";
+import { GroupAction, ModalAction } from "@src/action";
 
 const UpdateAlbumModal = () => {
   const dispatch = useDispatch();
@@ -18,7 +18,7 @@ const UpdateAlbumModal = () => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const closeModal = () => {
-    dispatch({ type: "CLOSE_MODAL" });
+    dispatch(ModalAction.closeModalAction());
   };
 
   const onChangeName = (e: ChangeEvent<HTMLInputElement>) => {
@@ -32,7 +32,7 @@ const UpdateAlbumModal = () => {
       return;
     }
     const albumId = selectedAlbum.albumId;
-    dispatch(updateAlbumRequestAction(newAlbumName, albumId));
+    dispatch(GroupAction.updateAlbumRequestAction(newAlbumName, albumId));
     closeModal();
   };
 

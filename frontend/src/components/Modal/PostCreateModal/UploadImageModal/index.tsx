@@ -1,7 +1,6 @@
 import React, { useRef } from "react";
 import { useDispatch } from "react-redux";
 import shortid from "shortid";
-
 import styled, { css } from "styled-components";
 import {
   flexRowCenterAlign,
@@ -12,6 +11,7 @@ import {
   iconHover,
 } from "@styles/StyledComponents";
 import COLOR from "@styles/Color";
+import { ModalAction } from "@src/action";
 
 interface FileObject {
   imageUrl: File | string;
@@ -29,7 +29,7 @@ const UploadImageModal = ({ changeMode, files, addFile, removeFile }: UploadImag
   const MAX_IMAGE = 5;
   const dispatch = useDispatch();
   const closeModal = () => {
-    dispatch({ type: "CLOSE_MODAL" });
+    dispatch(ModalAction.closeModalAction());
   };
 
   const clickInputTag = () => {

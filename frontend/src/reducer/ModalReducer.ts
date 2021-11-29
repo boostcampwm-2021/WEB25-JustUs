@@ -1,3 +1,5 @@
+import { ModalAction } from "@src/action";
+
 interface Imarker {
   postTitle: string;
   postId: number;
@@ -15,9 +17,6 @@ interface IPost {
   postLongitude: number;
   postLocation: string;
 }
-
-export const SET_PROFILE_WRAPPER_MODAL_OPENED = "SET_PROFILE_WRAPPER_MODAL_OPENED";
-export const SET_ALBUM_SETTING_WRAPPER_MODAL_IDX = "SET_ALBUM_SETTING_WRAPPER_MODAL_IDX";
 
 const initState: {
   nowModal: string;
@@ -55,17 +54,17 @@ const initState: {
 
 const ModalReducer = (state = initState, action: any) => {
   switch (action.type) {
-    case "OPEN_MODAL":
+    case ModalAction.OPEN_MODAL:
       return {
         ...state,
         nowModal: action.payload,
       };
-    case "CLOSE_MODAL":
+    case ModalAction.CLOSE_MODAL:
       return {
         ...state,
         nowModal: "",
       };
-    case "SET_SELECTED_ALBUM":
+    case ModalAction.SET_SELECTED_ALBUM:
       return {
         ...state,
         selectedAlbum: {
@@ -73,7 +72,7 @@ const ModalReducer = (state = initState, action: any) => {
           albumName: action.payload.albumName,
         },
       };
-    case "SELECT_POST_REQUEST":
+    case ModalAction.SELECT_POST_REQUEST:
       return { ...state, isPostLoading: true };
     case "SELECT_POST_SUCCEED":
       return {
@@ -81,27 +80,27 @@ const ModalReducer = (state = initState, action: any) => {
         selectedPost: action.post,
         isPostLoading: false,
       };
-    case "SELECT_POST_FAILED":
+    case ModalAction.SELECT_POST_FAILED:
       return { ...state, isPostLoading: false };
-    case "SET_CLUSTERED_MARKER":
+    case ModalAction.SET_CLUSTERED_MARKER:
       return {
         ...state,
         clusteredMarker: action.payload,
       };
-    default:
-      return state;
-    case SET_PROFILE_WRAPPER_MODAL_OPENED: {
+    case ModalAction.SET_PROFILE_WRAPPER_MODAL_OPENED: {
       return {
         ...state,
         isProfileWrapperModalOpened: action.payload.isProfileWrapperModalOpened,
       };
     }
-    case SET_ALBUM_SETTING_WRAPPER_MODAL_IDX: {
+    case ModalAction.SET_ALBUM_SETTING_WRAPPER_MODAL_IDX: {
       return {
         ...state,
         albumSettingWrapperModalIdx: action.payload.albumSettingWrapperModalIdx,
       };
     }
+    default:
+      return state;
   }
 };
 

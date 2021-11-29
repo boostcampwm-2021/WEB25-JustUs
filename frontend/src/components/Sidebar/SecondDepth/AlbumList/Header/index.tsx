@@ -6,7 +6,7 @@ import { ReactComponent as MoreVertSVG } from "@styles/icons/more-vert.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
 import { flexRowCenterAlign } from "@src/styles/StyledComponents";
-import { SET_ALBUM_SETTING_WRAPPER_MODAL_IDX } from "@src/reducer/Modal";
+import { ModalAction } from "@src/action";
 
 interface HeaderProps {
   albumId: number;
@@ -27,7 +27,7 @@ const Header = ({ albumId, albumName, postToggle, setPostToggle, AlbumDragHandle
   };
 
   const onClickMoreBtn = () => {
-    dispatch({ type: SET_ALBUM_SETTING_WRAPPER_MODAL_IDX, payload: { albumSettingWrapperModalIdx: albumId } });
+    dispatch(ModalAction.setAlbumSettingWrapperModalIdxAction({ albumSettingWrapperModalIdx: albumId }));
   };
 
   return (

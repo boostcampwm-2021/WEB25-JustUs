@@ -2,6 +2,7 @@ import React, { ReactNode, useEffect } from "react";
 import ReactDOM from "react-dom";
 import COLOR from "@styles/Color";
 import { useDispatch } from "react-redux";
+import { ModalAction } from "@src/action";
 
 const modalRootEl = document.getElementById("modal");
 if (modalRootEl) {
@@ -25,7 +26,7 @@ const Modal = ({ children, open = true }: ModalProps) => {
   const dispatch = useDispatch();
 
   const closeModal = () => {
-    dispatch({ type: "CLOSE_MODAL" });
+    dispatch(ModalAction.closeModalAction());
   };
   useEffect(() => {
     modalRootEl?.addEventListener("click", closeModal);

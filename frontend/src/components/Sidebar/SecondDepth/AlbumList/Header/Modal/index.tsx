@@ -2,6 +2,7 @@ import styled, { keyframes } from "styled-components";
 import { flexRowCenterAlign } from "@styles/StyledComponents";
 import COLOR from "@styles/Color";
 import { useDispatch } from "react-redux";
+import { ModalAction } from "@src/action";
 
 interface AlbumSettingModalProps {
   albumId: number;
@@ -12,13 +13,13 @@ const AlbumSettingModal = ({ albumId, albumName }: AlbumSettingModalProps) => {
   const dispatch = useDispatch();
 
   const onClickUpdateAlbum = () => {
-    dispatch({ type: "SET_SELECTED_ALBUM", payload: { albumId, albumName } });
-    dispatch({ type: "OPEN_MODAL", payload: "UpdateAlbumModal" });
+    dispatch(ModalAction.setSelectedAlbumAction({ albumId, albumName }));
+    dispatch(ModalAction.openModalAction("UpdateAlbumModal"));
   };
 
   const onClickDeleteAlbum = () => {
-    dispatch({ type: "SET_SELECTED_ALBUM", payload: { albumId, albumName } });
-    dispatch({ type: "OPEN_MODAL", payload: "DeleteAlbumModal" });
+    dispatch(ModalAction.setSelectedAlbumAction({ albumId, albumName }));
+    dispatch(ModalAction.openModalAction("DeleteAlbumModal"));
   };
 
   return (

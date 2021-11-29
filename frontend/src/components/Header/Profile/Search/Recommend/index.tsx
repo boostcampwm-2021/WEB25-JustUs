@@ -1,7 +1,8 @@
 import { Dispatch, SetStateAction, useState, useEffect } from "react";
 import COLOR from "@src/styles/Color";
 import styled from "styled-components";
-import { GroupType, IHashtag, requestHashtagsAction } from "@src/reducer/GroupReducer";
+import { GroupType, IHashtag } from "@src/reducer/GroupReducer";
+import { GroupAction } from "@src/action";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
 import { flexRowCenterAlign } from "@src/styles/StyledComponents";
@@ -36,7 +37,7 @@ const Recommend = ({ inputKeyword, setSearchKeyword, doSearch }: RecommendProps)
   };
 
   useEffect(() => {
-    selectedGroup && dispatch(requestHashtagsAction({ groupId: selectedGroup.groupId }));
+    selectedGroup && dispatch(GroupAction.requestHashtagsAction({ groupId: selectedGroup.groupId }));
   }, []);
 
   useEffect(() => {

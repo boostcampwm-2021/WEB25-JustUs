@@ -5,13 +5,14 @@ import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
 import COLOR from "@styles/Color";
 import { flexRowCenterAlign } from "@styles/StyledComponents";
+import { ThemeAction, ModalAction } from "@src/action";
 
 const UserInfoModal = () => {
   const { selectedTheme } = useSelector((state: RootState) => state.theme);
 
   const dispatch = useDispatch();
   const closeUserInfoModal = () => {
-    dispatch({ type: "CLOSE_MODAL" });
+    dispatch(ModalAction.closeModalAction());
   };
   const themes = [
     { id: 1, themeColor: "green", name: "보성 녹차 테마", src: "/img/greenTheme.png", isChecked: true },
@@ -21,7 +22,7 @@ const UserInfoModal = () => {
 
   const radioHandler = (id: number) => {
     localStorage.setItem("themeNumber", id.toString());
-    dispatch({ type: "CHANGE_THEME", selectedTheme: id });
+    dispatch(ThemeAction.changeThemeAction(id));
   };
 
   return (

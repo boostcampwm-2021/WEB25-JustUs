@@ -5,6 +5,7 @@ import COLOR from "@styles/Color";
 import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
 import { useDispatch } from "react-redux";
+import { GroupAction, ModalAction } from "@src/action";
 
 const PostDeleteModal = () => {
   const dispatch = useDispatch();
@@ -12,11 +13,11 @@ const PostDeleteModal = () => {
   const { selectedGroup, albumList }: any = useSelector((state: RootState) => state.groups);
 
   const closeModal = () => {
-    dispatch({ type: "CLOSE_MODAL" });
+    dispatch(ModalAction.closeModalAction());
   };
 
   const onClickDeleteBtn = () => {
-    dispatch({ type: "DELETE_POST_REQUEST", postId: selectedPost.postId });
+    dispatch(GroupAction.deletePostRequestAction(selectedPost.postId));
   };
 
   return (

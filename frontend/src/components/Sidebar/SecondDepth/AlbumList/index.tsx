@@ -5,8 +5,8 @@ import { RootState } from "@src/reducer";
 import Album from "./Album";
 import COLOR from "@styles/Color";
 import { useDispatch } from "react-redux";
-import { updateAlbumOrderAction, postShiftAlbumAction } from "@src/reducer/GroupReducer";
-import { SET_ALBUM_SETTING_WRAPPER_MODAL_IDX } from "@src/reducer/Modal";
+import { GroupAction } from "@src/action";
+import { ModalAction } from "@src/action";
 
 const AlbumList = () => {
   const dispatch = useDispatch();
@@ -63,7 +63,7 @@ const AlbumList = () => {
         return Number(albumId);
       })
       .join(",");
-    dispatch(updateAlbumOrderAction(selectedGroup.groupId, albumOrder));
+    dispatch(GroupAction.updateAlbumOrderAction(selectedGroup.groupId, albumOrder));
   }
 
   function onPostDragEndHandler(ev: React.DragEvent<HTMLDivElement>) {
@@ -81,7 +81,7 @@ const AlbumList = () => {
     const postAlbumId: number = Number(target.dataset.albumId);
     const postInfo = { postId, postTitle, albumId: postAlbumId };
     const albumId: number = Number(nowParent.dataset.albumId);
-    dispatch(postShiftAlbumAction(postInfo, albumId));
+    dispatch(GroupAction.postShiftAlbumAction(postInfo, albumId));
   }
 
   function onPostDragHandler(ev: React.DragEvent<HTMLDivElement>) {
@@ -114,11 +114,11 @@ const AlbumList = () => {
     const clickHandler = () => {
       if (!clickedTarget.target) return;
       if (!clickedTarget.target.closest(".modifying-album-btn")) {
-        dispatch({ type: SET_ALBUM_SETTING_WRAPPER_MODAL_IDX, payload: { albumSettingWrapperModalIdx: -1 } });
+        dispatch(ModalAction.setAlbumSettingWrapperModalIdxAction({ albumSettingWrapperModalIdx: -1 }));
       }
 
       if (clickedTarget.target.closest(".update-album-btn") || clickedTarget.target.closest(".delete-album-btn")) {
-        dispatch({ type: SET_ALBUM_SETTING_WRAPPER_MODAL_IDX, payload: { albumSettingWrapperModalIdx: -1 } });
+        dispatch(ModalAction.setAlbumSettingWrapperModalIdxAction({ albumSettingWrapperModalIdx: -1 }));
       }
     };
 

@@ -6,16 +6,12 @@ import Sidebar from "@components/Sidebar";
 import ModalManager from "@components/Modal/ModalManager";
 import Map from "@components/Map";
 import Empty from "@components/Empty";
-import { GroupModalAction } from "@src/action";
+import { GroupModalAction, ThemeAction, UserAction, GroupAction, MapAction, ModalAction } from "@src/action";
 import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
 import { useHistory } from "react-router-dom";
-import { getGroupListAction } from "@src/reducer/GroupReducer";
 import ToastManager from "@src/components/ToastMessage/ToastManager";
-import { CLOSE_POST_CREATE_WINDOW, SET_POST_CREATE_WINDOW_OPENED } from "@src/reducer/MapReducer";
-import { SET_PROFILE_WRAPPER_MODAL_OPENED, SET_ALBUM_SETTING_WRAPPER_MODAL_IDX } from "@src/reducer/Modal";
 import Spinner from "@components/Spinner";
-import { CLOSE_CLUSTERING_WINDOW } from "@src/reducer/MapReducer";
 
 const Main = () => {
   const [isToggle, setIsToggle] = useState<boolean>(true);
@@ -27,29 +23,29 @@ const Main = () => {
   const themeNumber = Number(localStorage.getItem("themeNumber"));
 
   useEffect(() => {
-    if (themeNumber) dispatch({ type: "CHANGE_THEME", selectedTheme: themeNumber });
+    if (themeNumber) dispatch(ThemeAction.changeThemeAction(themeNumber));
 
     document.addEventListener("click", (event) => {
       const { target, clientX, clientY } = event;
       const isClusteringClicked = (target as HTMLElement).getAttribute("src")?.match(/\/icons\/podo-(three|many).png/);
       const isPostCreateClicked = (target as HTMLElement).closest("#createPostWindow");
 
-      dispatch({ type: GroupModalAction.SET_CLICKED_TARGET, payload: { target, clientX, clientY } });
-      dispatch({ type: SET_POST_CREATE_WINDOW_OPENED, payload: { isPostCreateWindowOpened: false } });
-      !isClusteringClicked && dispatch({ type: CLOSE_CLUSTERING_WINDOW });
-      !isPostCreateClicked && dispatch({ type: CLOSE_POST_CREATE_WINDOW });
+      dispatch(GroupModalAction.setClickedTargetAction({ target, clientX, clientY }));
+      dispatch(MapAction.setPostCreateWindowOpenedAction({ isPostCreateWindowOpened: false }));
+      !isClusteringClicked && dispatch(MapAction.closeClusteringWindowAction());
+      !isPostCreateClicked && dispatch(MapAction.closePostCreateWindowAction());
     });
 
     document.addEventListener("contextmenu", () => {
-      dispatch({ type: SET_PROFILE_WRAPPER_MODAL_OPENED, payload: { isProfileWrapperModalOpened: false } });
-      dispatch({ type: SET_ALBUM_SETTING_WRAPPER_MODAL_IDX, payload: { albumSettingWrapperModalIdx: -1 } });
+      dispatch(ModalAction.setProfileWrapperModalOpenedAction({ isProfileWrapperModalOpened: false }));
+      dispatch(ModalAction.setAlbumSettingWrapperModalIdxAction({ albumSettingWrapperModalIdx: -1 }));
     });
   }, []);
 
   useEffect(() => {
     if (userInfoSucceed) {
-      dispatch(getGroupListAction());
-      dispatch({ type: "SET_UPDATED_INIT" });
+      dispatch(GroupAction.getGroupListAction());
+      dispatch(UserAction.setUpdatedInitAction());
     }
   }, [userInfoSucceed]);
 

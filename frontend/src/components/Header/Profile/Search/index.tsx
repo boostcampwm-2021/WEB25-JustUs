@@ -4,7 +4,7 @@ import styled from "styled-components";
 import SearchList from "@components/Header/Profile/Search/SearchList";
 import Recommend from "@components/Header/Profile/Search/Recommend";
 import { useDispatch } from "react-redux";
-import { requestPostsByHashtag } from "@src/reducer/GroupReducer";
+import { GroupAction } from "@src/action";
 
 const Search = () => {
   const [searchKeyword, setSearchKeyword] = useState<string>("");
@@ -19,7 +19,7 @@ const Search = () => {
   const doSearch = (hashtagId: number) => {
     setIsSearchListOpened(true);
     setIsRecommendOpened(false);
-    dispatch(requestPostsByHashtag({ hashtagId }));
+    dispatch(GroupAction.requestPostsByHashtag({ hashtagId }));
   };
 
   const onFocusInput = () => {

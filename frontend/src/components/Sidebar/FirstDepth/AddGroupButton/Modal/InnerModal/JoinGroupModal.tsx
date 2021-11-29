@@ -4,22 +4,21 @@ import { flexColumnCenterAlign, flexRowCenterAlign } from "@styles/StyledCompone
 import Modal from "@components/Modal";
 import { useDispatch } from "react-redux";
 import COLOR from "@styles/Color";
-import { requestJoinGroupAction, getGroupListAction } from "@src/reducer/GroupReducer";
+import { GroupAction, ModalAction } from "@src/action";
 
 const JoinGroupModal = () => {
   const dispatch = useDispatch();
   const inputRef = useRef<HTMLInputElement>(null);
 
   const closeModal = () => {
-    dispatch({ type: "CLOSE_MODAL" });
+    dispatch(ModalAction.closeModalAction());
   };
 
   const onClickJoinBtn = () => {
     if (!inputRef.current) return;
     const code = inputRef.current.value;
 
-    dispatch(requestJoinGroupAction({ code }));
-    // dispatch(getGroupListAction());
+    dispatch(GroupAction.requestJoinGroupAction({ code }));
   };
 
   const onKeyDown = (e: React.KeyboardEvent) => {

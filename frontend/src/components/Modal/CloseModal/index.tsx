@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import Modal from "../";
+import { ModalAction } from "@src/action";
 
 const CloseModal = () => {
   const dispatch = useDispatch();
   const closeModal = () => {
-    dispatch({ type: "CLOSE_MODAL" });
+    dispatch(ModalAction.closeModalAction());
   };
   return (
     <Modal open={false}>

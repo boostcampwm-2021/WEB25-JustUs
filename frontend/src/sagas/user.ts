@@ -1,19 +1,6 @@
 import { all, fork, put, call, takeEvery, select, delay } from "redux-saga/effects";
-import {
-  USER_INFO_REQUEST,
-  USER_INFO_SUCCEED,
-  USER_INFO_FAILED,
-  LOG_OUT_REQUEST,
-  LOG_OUT_SUCCEED,
-  LOG_OUT_FAILED,
-  USER_INFO_UPDATE,
-  SET_UPDATED_USER_INFO,
-  SET_UPDATE_FAIL,
-  REQUEST_UPDATE_GROUP_ORDER,
-} from "@src/reducer/UserReducer";
 import axios from "axios";
-import { SET_SUCCEED_TOAST, SET_ERROR_TOAST } from "@src/reducer/ToastReducer";
-import { GET_GROUP_LIST_REQUEST, GET_GROUP_LIST_SUCCEED, GET_GROUP_LIST_FAILED } from "@src/reducer/GroupReducer";
+import { UserAction, GroupAction, ToastAction } from "@src/action";
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
@@ -73,18 +60,18 @@ async function updateGroupOrderApi(payload: any) {
 function* getUserInfo() {
   try {
     const result: ResponseGenerator = yield call(getUserInfoApi);
-    yield put({ type: USER_INFO_SUCCEED, data: result.data });
+    yield put({ type: UserAction.USER_INFO_SUCCEED, data: result.data });
   } catch (err: any) {
-    yield put({ type: USER_INFO_FAILED });
+    yield put({ type: UserAction.USER_INFO_FAILED });
   }
 }
 
 function* getLogOut() {
   try {
     yield call(getLogOutApi);
-    yield put({ type: LOG_OUT_SUCCEED });
+    yield put({ type: UserAction.LOG_OUT_SUCCEED });
   } catch (err: any) {
-    yield put({ type: LOG_OUT_FAILED });
+    yield put({ type: UserAction.LOG_OUT_FAILED });
   }
 }
 
@@ -95,17 +82,17 @@ function* updateUserInfo() {
     const result: ResponseGenerator = yield call(updateUserInfoApi, user);
 
     yield put({
-      type: SET_UPDATED_USER_INFO,
+      type: UserAction.SET_UPDATED_USER_INFO,
       payload: { userNickName: user.updateUserNickName, userProfile: result.data.profileImage },
     });
     yield put({
-      type: SET_SUCCEED_TOAST,
+      type: ToastAction.SET_SUCCEED_TOAST,
       payload: { text: `회원 정보가 수정되었습니다.` },
     });
   } catch (err: any) {
-    yield put({ type: SET_UPDATE_FAIL });
+    yield put({ type: UserAction.SET_UPDATE_FAIL });
     yield put({
-      type: SET_ERROR_TOAST,
+      type: ToastAction.SET_ERROR_TOAST,
       payload: { text: `회원 정보 수정에 실패했습니다.` },
     });
   }
@@ -116,9 +103,9 @@ function* getGroupList() {
   try {
     const result: ResponseGenerator = yield call(getGroupListApi);
     const { groups } = result.data;
-    yield put({ type: GET_GROUP_LIST_SUCCEED, payload: groups });
+    yield put({ type: GroupAction.GET_GROUP_LIST_SUCCEED, payload: groups });
   } catch {
-    yield put({ type: GET_GROUP_LIST_FAILED });
+    yield put({ type: GroupAction.GET_GROUP_LIST_FAILED });
   } finally {
     yield put({ type: "SPINNER_CLOSE" });
   }
@@ -131,23 +118,23 @@ function* updateGroupOrder(action: any) {
 }
 
 function* watchUserInfo() {
-  yield takeEvery(USER_INFO_REQUEST, getUserInfo);
+  yield takeEvery(UserAction.USER_INFO_REQUEST, getUserInfo);
 }
 
 function* watchLogOut() {
-  yield takeEvery(LOG_OUT_REQUEST, getLogOut);
+  yield takeEvery(UserAction.LOG_OUT_REQUEST, getLogOut);
 }
 
 function* watchUpdateUserInfo() {
-  yield takeEvery(USER_INFO_UPDATE, updateUserInfo);
+  yield takeEvery(UserAction.USER_INFO_UPDATE, updateUserInfo);
 }
 
 function* watchGetGroupList() {
-  yield takeEvery(GET_GROUP_LIST_REQUEST, getGroupList);
+  yield takeEvery(GroupAction.GET_GROUP_LIST_REQUEST, getGroupList);
 }
 
 function* watchUpdateGroupOrder() {
-  yield takeEvery(REQUEST_UPDATE_GROUP_ORDER, updateGroupOrder);
+  yield takeEvery(UserAction.REQUEST_UPDATE_GROUP_ORDER, updateGroupOrder);
 }
 
 export default function* userSaga() {

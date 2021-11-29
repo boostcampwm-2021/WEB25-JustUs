@@ -4,7 +4,7 @@ import COLOR from "@styles/Color";
 import { flexRowCenterAlign } from "@src/styles/StyledComponents";
 import { FcOk } from "react-icons/fc";
 import { useDispatch } from "react-redux";
-import { CLEAR_TOAST } from "@src/reducer/ToastReducer";
+import { ToastAction } from "@src/action";
 import shortid from "shortid";
 import { useEffect } from "react";
 
@@ -18,7 +18,7 @@ const Succeed = ({ text }: { text: string }) => {
   };
 
   const onClickCloseBtn = () => {
-    dispatch({ type: CLEAR_TOAST });
+    dispatch(ToastAction.clearToastAction());
     setDisplayNone();
   };
 
