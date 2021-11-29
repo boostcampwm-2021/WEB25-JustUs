@@ -127,8 +127,12 @@ const AlbumList = () => {
     setPostSelected(selectedPost.postId);
   }, [selectedPost]);
 
+  const scrollHandler = () => {
+    dispatch(ModalAction.setAlbumSettingWrapperModalIdxAction({ albumSettingWrapperModalIdx: -1 }));
+  };
+
   return (
-    <DraggableWrapper ref={draggableRef}>
+    <DraggableWrapper ref={draggableRef} onScroll={scrollHandler}>
       {albumList &&
         albumList.map((album: any, idx: number) => {
           return (

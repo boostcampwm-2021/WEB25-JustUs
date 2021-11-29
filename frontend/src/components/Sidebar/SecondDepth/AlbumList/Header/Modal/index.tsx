@@ -8,9 +8,11 @@ import { modal } from "@src/constants";
 interface AlbumSettingModalProps {
   albumId: number;
   albumName: string;
+  x: number;
+  y: number;
 }
 
-const AlbumSettingModal = ({ albumId, albumName }: AlbumSettingModalProps) => {
+const AlbumSettingModal = ({ albumId, albumName, x, y }: AlbumSettingModalProps) => {
   const dispatch = useDispatch();
 
   const onClickUpdateAlbum = () => {
@@ -24,7 +26,7 @@ const AlbumSettingModal = ({ albumId, albumName }: AlbumSettingModalProps) => {
   };
 
   return (
-    <ModalWrapper>
+    <ModalWrapper x={x} y={y}>
       <ModalItem delete={false} onClick={onClickUpdateAlbum} className="update-album-btn">
         이름 변경
       </ModalItem>
@@ -46,11 +48,13 @@ const modalSlideUp = keyframes`
     transform: translateY(0);
   }
 `;
-const ModalWrapper = styled.div`
+const ModalWrapper = styled.div<{ x: number; y: number }>`
   width: 110px;
   height: 100px;
   background-color: ${COLOR.WHITE};
-  position: absolute;
+  position: fixed;
+  left: ${(props) => `${props.x}px`};
+  top: ${(props) => `${props.y}px`};
   border-radius: 1rem;
   z-index: 5;
   animation-name: ${modalSlideUp};
