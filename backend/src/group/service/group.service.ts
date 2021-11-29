@@ -208,8 +208,8 @@ export class GroupService {
   }
 
   async getHashTags(groupId: number): Promise<GetHashTagsResponseDto> {
-    const { hashtags } = await this.groupRepository.getHashTagsQuery(groupId);
+    const result = await this.groupRepository.getHashTagsQuery(groupId);
 
-    return { hashtags };
+    return result === undefined ? { hashtags: [] } : { hashtags: result.hashtags };
   }
 }
