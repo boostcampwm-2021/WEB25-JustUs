@@ -1,9 +1,8 @@
 import { all, fork, put, call, takeLatest, select, delay } from "redux-saga/effects";
-import axios from "axios";
 import { getGroupListApi } from "@src/sagas/user";
 import { GroupType } from "@src/reducer/GroupReducer";
 import { GroupAction, ToastAction } from "@src/action";
-const SERVER_URL = process.env.REACT_APP_SERVER_URL;
+import { GroupAPI } from "@src/api";
 
 interface ResponseGenerator {
   config?: any;
@@ -25,76 +24,37 @@ interface IAlbum {
   albumName: string;
   posts: PostType[];
 }
+
 function getGroupInfoApi(params: any) {
-  const URL = "/api/groups";
-  const option = {
-    method: "GET",
-    header: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      groupId: params.groupId,
-    }),
-  };
-  return fetch(URL, option);
+  return GroupAPI.getGroupInfoApi(params);
 }
 
 async function createGroupApi(payload: any) {
-  const formData = new FormData();
-  if (payload.groupImage) {
-    formData.append("groupImage", payload.groupImage);
-  }
-  formData.append("groupName", payload.groupName);
-
-  const result = await axios.post(`${SERVER_URL}/api/groups`, formData, {
-    withCredentials: true,
-    headers: { "Content-Type": "multipart/form-data" },
-  });
-
-  return result;
+  return GroupAPI.createGroup(payload);
 }
 
 async function getAlbumListApi(payload: any) {
-  const result = await axios.get(`${SERVER_URL}/api/groups/${payload.groupId}/albums`, { withCredentials: true });
-
-  return result;
+  return GroupAPI.getAlbumList(payload);
 }
 
 async function deleteGroupApi(payload: any) {
-  const result = await axios.delete(`${SERVER_URL}/api/groups/${payload.groupId}`, { withCredentials: true });
-  return result;
+  return GroupAPI.deleteGroup(payload);
 }
 
 async function getGroupMemberListApi(payload: any) {
-  const result = await axios.get(`${SERVER_URL}/api/groups/${payload.groupId}`, { withCredentials: true });
-  return result;
+  return GroupAPI.getGroupMemberList(payload);
 }
 
 async function requestJoinGroupApi(payload: any) {
-  const { code } = payload;
-
-  const result = await axios.post(`${SERVER_URL}/api/groups/join`, { code }, { withCredentials: true });
-
-  return result;
+  return GroupAPI.joinGroup(payload);
 }
 
 async function requestUpdateGroupApi(payload: any) {
-  const formData = new FormData();
-  formData.append("groupName", payload.groupName);
-  if (payload.groupImage) formData.append("groupImage", payload.groupImage);
-  formData.append("clearImage", payload.clearImage);
-
-  const result = await axios.put(`${SERVER_URL}/api/groups/${payload.groupId}`, formData, {
-    withCredentials: true,
-    headers: { "Content-Type": "multipart/form-data" },
-  });
-
-  return result;
+  return GroupAPI.updateGroup(payload);
 }
 
 async function requestHashtagsApi(payload: any) {
-  const result = await axios.get(`${SERVER_URL}/api/groups/${payload.groupId}/hashtags`, { withCredentials: true });
-  return result;
+  return GroupAPI.getHashtags(payload);
 }
 
 function* getGroupInfo(action: any) {

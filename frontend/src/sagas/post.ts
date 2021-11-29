@@ -1,8 +1,6 @@
 import { all, fork, put, call, takeEvery, select } from "redux-saga/effects";
-import axios from "axios";
 import { GroupAction, ToastAction } from "@src/action";
-
-const SERVER_URL = process.env.REACT_APP_SERVER_URL;
+import { PostAPI } from "@src/api";
 
 interface ResponseGenerator {
   config?: any;
@@ -42,79 +40,23 @@ interface IUpdatePost {
 }
 
 function uploadPostApi(newPost: IPost) {
-  const { postTitle, postContent, postDate, postLocation, postLatitude, postLongitude, groupId, postImage } = newPost;
-  const formData = new FormData();
-  formData.append("postTitle", postTitle);
-  formData.append("postContent", postContent);
-  formData.append("postDate", postDate);
-  formData.append("postLocation", postLocation);
-  formData.append("postLatitude", postLatitude);
-  formData.append("postLongitude", postLongitude);
-  formData.append("groupId", groupId);
-  postImage.forEach((image) => formData.append("postImages", image.imageUrl));
-
-  return axios({
-    method: "post",
-    url: `${SERVER_URL}/api/posts`,
-    data: formData,
-    headers: { "Content-Type": "multipart/form-data" },
-    withCredentials: true,
-  });
+  return PostAPI.uploadPost(newPost);
 }
 
 function getPostApi(postId: number) {
-  return axios({
-    method: "get",
-    url: `${SERVER_URL}/api/posts/${postId}`,
-    withCredentials: true,
-  });
+  return PostAPI.getPost(postId);
 }
 
 function deletePostApi(postId: number) {
-  return axios({
-    method: "delete",
-    url: `${SERVER_URL}/api/posts/${postId}`,
-    withCredentials: true,
-  });
+  return PostAPI.deletePost(postId);
 }
 
 function updatePostApi(newPost: IUpdatePost) {
-  const {
-    postId,
-    postTitle,
-    postContent,
-    postDate,
-    postLocation,
-    postLatitude,
-    postLongitude,
-    addImages,
-    deleteImagesId,
-    groupId,
-  } = newPost;
-
-  const formData = new FormData();
-  formData.append("postTitle", postTitle);
-  formData.append("postContent", postContent);
-  formData.append("postDate", postDate);
-  formData.append("postLocation", postLocation);
-  formData.append("postLatitude", postLatitude);
-  formData.append("postLongitude", postLongitude);
-  formData.append("groupId", groupId);
-  addImages.forEach((image) => formData.append("addImages", image.imageUrl));
-  deleteImagesId.forEach((id) => formData.append("deleteImagesId", id));
-
-  return axios({
-    method: "put",
-    url: `${SERVER_URL}/api/posts/${postId}`,
-    data: formData,
-    headers: { "Content-Type": "multipart/form-data" },
-    withCredentials: true,
-  });
+  return PostAPI.updatePost(newPost);
 }
 
 async function getPostsByHashtagApi(hashtagId: number) {
-  const result = await axios.get(`${SERVER_URL}/api/posts/search?hashtagId=${hashtagId}`, { withCredentials: true });
-  return result;
+  return PostAPI.getPostsByHashtag(hashtagId);
 }
 
 function* uploadPost({ post }: { type: string; post: IPost }) {

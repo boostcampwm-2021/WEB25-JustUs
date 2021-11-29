@@ -1,8 +1,6 @@
 import { all, fork, put, call, takeEvery, select, delay } from "redux-saga/effects";
-import axios from "axios";
 import { UserAction, GroupAction, ToastAction } from "@src/action";
-
-const SERVER_URL = process.env.REACT_APP_SERVER_URL;
+import { UserAPI } from "@src/api";
 
 interface ResponseGenerator {
   config?: any;
@@ -23,37 +21,23 @@ interface IUser {
   updateUserProfile: string;
 }
 function getUserInfoApi() {
-  return axios.get(`${SERVER_URL}/api/user`, { withCredentials: true });
+  return UserAPI.getUserInfo();
 }
 
 function getLogOutApi() {
-  return axios.post(`${SERVER_URL}/api/auth/logout`, {}, { withCredentials: true });
+  return UserAPI.getLogOut();
 }
 
 async function updateUserInfoApi(user: IUser) {
-  const formData = new FormData();
-
-  formData.append("userNickname", user.updateUserNickName);
-  formData.append("clearImage", user.updateUserProfile === "deleted" ? "1" : "0");
-  if (user.updateUserProfile) formData.append("profileImage", user.updateUserProfile);
-
-  const result = await axios.put(`${SERVER_URL}/api/user`, formData, {
-    withCredentials: true,
-    headers: { "Content-Type": "multipart/form-data" },
-  });
-
-  return result;
+  return UserAPI.updateUserInfo(user);
 }
 
 export async function getGroupListApi() {
-  const result = await axios.get(`${SERVER_URL}/api/user/groups`, { withCredentials: true });
-  return result;
+  return UserAPI.getGroupList();
 }
 
 async function updateGroupOrderApi(payload: any) {
-  const { groupOrder } = payload;
-  const result = axios.put(`${SERVER_URL}/api/user/grouporder`, { groupOrder }, { withCredentials: true });
-  return result;
+  return UserAPI.updateGroupOrder(payload);
 }
 
 function* getUserInfo() {
