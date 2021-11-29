@@ -31,8 +31,8 @@ export class NaverStrategy extends PassportStrategy(Strategy, "naver") {
 
     const { userId, userEmail } = user;
 
-    const accessTokenExpireTime = "1h";
-    const refreshTokenExpireTime = "7d";
+    const accessTokenExpireTime = "30m";
+    const refreshTokenExpireTime = "14d";
     const accessToken = this.authService.createToken(userId, userEmail, accessTokenExpireTime);
     const refreshToken = this.authService.createToken(userId, userEmail, refreshTokenExpireTime);
 

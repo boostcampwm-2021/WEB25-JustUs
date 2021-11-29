@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { UserInfo } from "src/dto/user/userInfo.dto";
 import { JwtService } from "@nestjs/jwt";
 import { UserService } from "src/user/service/user.service";
@@ -12,6 +12,16 @@ export class AuthService {
     const user = await this.userService.registeredUser(registerUserDto);
 
     return user;
+  }
+
+  async validateToken(token: string, message: string): Promise<User> {
+    try {
+      const { userId } = await this.jwtService.verify(token);
+
+      return await this.userService.findById(userId);
+    } catch (e) {
+      throw new UnauthorizedException(`Expired AccessToken ${message}`);
+    }
   }
 
   createToken(userId: number, userEmail: string, expire: string): string {
