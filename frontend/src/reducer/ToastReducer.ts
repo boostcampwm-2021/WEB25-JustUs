@@ -1,16 +1,14 @@
+import { ToastAction } from "@src/action";
+
 const initState = {
   text: "",
   isSucceed: false,
   isError: false,
 };
 
-export const SET_SUCCEED_TOAST = "SET_SUCCEED_TOAST";
-export const SET_ERROR_TOAST = "SET_ERROR_TOAST";
-export const CLEAR_TOAST = "CLEAR_TOAST";
-
 const toastReducer = (state = initState, action: any) => {
   switch (action.type) {
-    case SET_SUCCEED_TOAST: {
+    case ToastAction.SET_SUCCEED_TOAST: {
       return {
         ...state,
         text: action.payload.text,
@@ -18,7 +16,7 @@ const toastReducer = (state = initState, action: any) => {
         isError: false,
       };
     }
-    case SET_ERROR_TOAST: {
+    case ToastAction.SET_ERROR_TOAST: {
       return {
         ...state,
         text: action.payload.text,
@@ -26,7 +24,7 @@ const toastReducer = (state = initState, action: any) => {
         isError: true,
       };
     }
-    case CLEAR_TOAST: {
+    case ToastAction.CLEAR_TOAST: {
       return {
         ...state,
         text: "",

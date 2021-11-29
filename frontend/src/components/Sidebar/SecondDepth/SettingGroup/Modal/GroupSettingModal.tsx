@@ -5,8 +5,7 @@ import Modal from "@components/Modal";
 import { useDispatch, useSelector } from "react-redux";
 import COLOR from "@styles/Color";
 import { RootState } from "@src/reducer";
-import { updateGroupAction } from "@src/reducer/GroupReducer";
-import { SET_ERROR_TOAST } from "@src/reducer/ToastReducer";
+import { GroupAction, ToastAction, ModalAction } from "@src/action";
 import { useResizeFile } from "@src/hooks/useResizeFile";
 
 const GroupSettingModal = () => {
@@ -20,12 +19,12 @@ const GroupSettingModal = () => {
   const defaultImageURL = "https://kr.object.ncloudstorage.com/justus/base/podo-many.png";
 
   const closeModal = () => {
-    dispatch({ type: "CLOSE_MODAL" });
+    dispatch(ModalAction.closeModalAction());
   };
 
   const onClickUpdateBtn = () => {
     if (!newName) {
-      dispatch({ type: SET_ERROR_TOAST, payload: { text: "그룹 이름은 반드시 입력해야 합니다." } });
+      dispatch(ToastAction.setErrorToastAction({ text: "그룹 이름은 반드시 입력해야 합니다." }));
       return;
     }
     updateGroup();
@@ -33,7 +32,7 @@ const GroupSettingModal = () => {
 
   const updateGroup = () => {
     dispatch(
-      updateGroupAction({
+      GroupAction.updateGroupAction({
         groupId: selectedGroup.groupId,
         groupName: newName,
         groupImage: files[0]?.imageUrl,

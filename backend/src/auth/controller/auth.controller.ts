@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Req, Res, UseGuards } from "@nestjs/common";
+import { Controller, Get, Post, Req, Res, UseFilters, UseGuards } from "@nestjs/common";
 import { ApiTags, ApiBearerAuth } from "@nestjs/swagger";
 import { Response } from "express";
 import { NaverOauthGuard } from "../guard/naver-auth.guard";
@@ -6,6 +6,7 @@ import { JwtAuthGuard } from "../guard/jwt-auth-guard";
 import { CustomRequest } from "src/custom/myRequest/customRequest";
 import { UserService } from "src/user/service/user.service";
 import { AuthService } from "../service/auth.service";
+import { NaverFilter } from "src/filter/naver.filter";
 
 @ApiTags("auth API")
 @ApiBearerAuth()
@@ -20,6 +21,7 @@ export class AuthController {
   }
 
   @Get("/login/oauth/callback")
+  @UseFilters(NaverFilter)
   @UseGuards(NaverOauthGuard)
   async naverAuthRedirect(@Req() { user }: CustomRequest, @Res() res: Response) {
     const { accessToken, refreshToken } = user;

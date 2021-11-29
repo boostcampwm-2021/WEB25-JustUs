@@ -1,9 +1,8 @@
 import { all, fork, put, call, takeLatest, select, delay } from "redux-saga/effects";
 import axios from "axios";
 import { getGroupListApi } from "@src/sagas/user";
-import { SET_SUCCEED_TOAST, SET_ERROR_TOAST } from "@src/reducer/ToastReducer";
-import { GET_GROUP_LIST_SUCCEED, SET_HASHTAGS, GroupType } from "@src/reducer/GroupReducer";
-
+import { GroupType } from "@src/reducer/GroupReducer";
+import { GroupAction, ToastAction } from "@src/action";
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 interface ResponseGenerator {
@@ -115,10 +114,10 @@ function* createGroup({ payload }: any) {
     const { groupName } = payload;
 
     yield put({ type: "ADD_GROUP", payload: { groupId, groupName, groupImage, addGroupSucceed: true } });
-    yield put({ type: SET_SUCCEED_TOAST, payload: { text: `${groupName} 그룹 생성에 성공했습니다.` } });
+    yield put({ type: ToastAction.SET_SUCCEED_TOAST, payload: { text: `${groupName} 그룹 생성에 성공했습니다.` } });
     yield put({ type: "SET_SELECTED_GROUP_IDX", payload: { selectedGroupIdx: groups.length } });
   } catch (err: any) {
-    yield put({ type: SET_ERROR_TOAST, payload: { text: `그룹 생성에 실패했습니다.` } });
+    yield put({ type: ToastAction.SET_ERROR_TOAST, payload: { text: `그룹 생성에 실패했습니다.` } });
   }
 }
 
@@ -147,12 +146,12 @@ function* deleteGroup(action: any) {
     });
     yield put({ type: "DELETE_GROUP", payload: action.payload });
     yield put({
-      type: SET_SUCCEED_TOAST,
+      type: ToastAction.SET_SUCCEED_TOAST,
       payload: { text: `${action.payload.groupName} 그룹에서 탈퇴했습니다.` },
     });
   } catch (err) {
     yield put({
-      type: SET_ERROR_TOAST,
+      type: ToastAction.SET_ERROR_TOAST,
       payload: { text: `그룹 탈퇴에 실패했습니다.` },
     });
   }
@@ -177,11 +176,11 @@ function* requestJoinGroup(action: any) {
     const { groups } = result.data;
 
     yield put({ type: "SET_JOIN_GROUP_SUCCEED", payload: { joinGroupSucceed: true } });
-    yield put({ type: GET_GROUP_LIST_SUCCEED, payload: groups });
-    yield put({ type: SET_SUCCEED_TOAST, payload: { text: `그룹에 참여했습니다.` } });
+    yield put({ type: GroupAction.GET_GROUP_LIST_SUCCEED, payload: groups });
+    yield put({ type: ToastAction.SET_SUCCEED_TOAST, payload: { text: `그룹에 참여했습니다.` } });
     yield put({ type: "SET_SELECTED_GROUP_IDX", payload: { selectedGroupIdx: groups.length - 1 } });
   } catch (err) {
-    yield put({ type: SET_ERROR_TOAST, payload: { text: `그룹 참여에 실패했습니다.` } });
+    yield put({ type: ToastAction.SET_ERROR_TOAST, payload: { text: `그룹 참여에 실패했습니다.` } });
   }
 }
 
@@ -194,15 +193,15 @@ function* requestUpdateGroup(action: any) {
     const result2: ResponseGenerator = yield call(getGroupListApi);
     const { groups } = result2.data;
 
-    yield put({ type: GET_GROUP_LIST_SUCCEED, payload: groups });
+    yield put({ type: GroupAction.GET_GROUP_LIST_SUCCEED, payload: groups });
     yield put({ type: "SET_SELECTED_GROUP", payload: { groupId, groupName, groupImage, albumList } });
     yield put({
-      type: SET_SUCCEED_TOAST,
+      type: ToastAction.SET_SUCCEED_TOAST,
       payload: { text: `그룹 정보가 수정되었습니다.` },
     });
   } catch (err) {
     yield put({
-      type: SET_ERROR_TOAST,
+      type: ToastAction.SET_ERROR_TOAST,
       payload: { text: `그룹 정보 수정에 실패했습니다.` },
     });
   }
@@ -211,9 +210,9 @@ function* requestUpdateGroup(action: any) {
 function* requestHashtags(action: any) {
   try {
     const result: ResponseGenerator = yield call(requestHashtagsApi, action.payload);
-    yield put({ type: SET_HASHTAGS, payload: { hashTags: result.data.hashtags, hashTagsError: false } });
+    yield put({ type: GroupAction.SET_HASHTAGS, payload: { hashTags: result.data.hashtags, hashTagsError: false } });
   } catch (err) {
-    yield put({ type: SET_HASHTAGS, payload: { hashTags: [], hashTagsError: true } });
+    yield put({ type: GroupAction.SET_HASHTAGS, payload: { hashTags: [], hashTagsError: true } });
   }
 }
 

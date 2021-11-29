@@ -3,14 +3,16 @@ import styled, { keyframes } from "styled-components";
 import { flexRowCenterAlign, flexColumnCenterAlign } from "@src/styles/StyledComponents";
 import COLOR from "@styles/Color";
 import React from "react";
+import { ModalAction } from "@src/action";
+
 const Empty = () => {
   const dispatch = useDispatch();
   const onClickCreateGroupBtn = (e: React.MouseEvent<HTMLButtonElement>) => {
-    dispatch({ type: "OPEN_MODAL", payload: "CreateGroupModal" });
+    dispatch(ModalAction.openModalAction("CreateGroupModal"));
   };
 
   const onClickJoinGroupBtn = () => {
-    dispatch({ type: "OPEN_MODAL", payload: "JoinGroupModal" });
+    dispatch(ModalAction.openModalAction("JoinGroupModal"));
   };
 
   const enterMouse = (e: React.MouseEvent<HTMLButtonElement>) => {

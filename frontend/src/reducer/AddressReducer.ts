@@ -1,3 +1,5 @@
+import { AddressAction } from "@src/action";
+
 const initState: {
   address: string;
   position: { x: number; y: number };
@@ -8,12 +10,12 @@ const initState: {
 
 const AddressReducer = (state = initState, action: any) => {
   switch (action.type) {
-    case "SET_ADDRESS":
+    case AddressAction.SET_ADDRESS:
       return {
         ...state,
         address: action.payload,
       };
-    case "SET_POSITION":
+    case AddressAction.SET_POSITION:
       return {
         ...state,
         position: action.payload,

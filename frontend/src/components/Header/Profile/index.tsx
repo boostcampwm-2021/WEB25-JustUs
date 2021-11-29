@@ -4,6 +4,7 @@ import ProfileModal from "@components/Header/Profile/Modal/ProfileModal";
 import { RootState } from "@src/reducer";
 import { useSelector, useDispatch } from "react-redux";
 import COLOR from "@src/styles/Color";
+import { ModalAction } from "@src/action";
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -14,16 +15,14 @@ const Profile = () => {
   const { clickedTarget } = useSelector((state: RootState) => state.groupModal);
 
   const handleProfileBtnClick = () => {
-    dispatch({
-      type: "SET_PROFILE_WRAPPER_MODAL_OPENED",
-      payload: { isProfileWrapperModalOpened: !isProfileWrapperModalOpened },
-    });
+    dispatch(
+      ModalAction.setProfileWrapperModalOpenedAction({ isProfileWrapperModalOpened: !isProfileWrapperModalOpened }),
+    );
   };
 
   useEffect(() => {
     const target = clickedTarget.target.closest("#profile");
-    if (!target)
-      dispatch({ type: "SET_PROFILE_WRAPPER_MODAL_OPENED", payload: { isProfileWrapperModalOpened: false } });
+    if (!target) ModalAction.setProfileWrapperModalOpenedAction({ isProfileWrapperModalOpened: false });
   }, [clickedTarget]);
 
   return (

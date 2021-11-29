@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
 import { PostType } from "@src/reducer/GroupReducer";
+import { ModalAction } from "@src/action";
 
 interface SearchListContent {
   postId: number;
@@ -20,7 +21,7 @@ const SearchList = ({ setSearchKeyword, setIsSearchListOpened }: SearchListProps
   const dispatch = useDispatch();
 
   const onClickPost = (postId: number) => {
-    dispatch({ type: "SELECT_POST_REQUEST", postId });
+    dispatch(ModalAction.selectPostRequestAction(postId));
     setIsSearchListOpened(false);
   };
 

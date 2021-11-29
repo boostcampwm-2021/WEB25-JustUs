@@ -5,14 +5,14 @@ import { ThemeProvider } from "styled-components";
 import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
 import { useDispatch } from "react-redux";
-import { userInfoRequestAction } from "@src/reducer/UserReducer";
+import { UserAction } from "@src/action";
 
 function App() {
   const { nowTheme } = useSelector((state: RootState) => state.theme);
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch({ type: "USER_INFO_INIT" });
-    dispatch(userInfoRequestAction());
+    dispatch(UserAction.userInfoInitAction());
+    dispatch(UserAction.userInfoRequestAction());
   }, []);
   return (
     <>

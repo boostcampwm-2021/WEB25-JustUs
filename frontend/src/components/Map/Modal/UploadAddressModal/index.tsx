@@ -4,20 +4,21 @@ import { flexRowCenterAlign } from "@styles/StyledComponents";
 import Modal from "@components/Modal";
 import { useDispatch } from "react-redux";
 import COLOR from "@styles/Color";
+import { AddressAction, ModalAction } from "@src/action";
 
 const UploadAddressModal = () => {
   const dispatch = useDispatch();
   const addressInputRef = useRef<HTMLInputElement>(null);
 
   const closeModal = () => {
-    dispatch({ type: "CLOSE_MODAL" });
+    dispatch(ModalAction.closeModalAction());
   };
 
   const nextModal = () => {
     if (addressInputRef.current === null) return;
     if (addressInputRef.current.value === "") return;
-    dispatch({ type: "SET_ADDRESS", payload: addressInputRef.current.value });
-    dispatch({ type: "OPEN_MODAL", payload: "PostCreateModal" });
+    dispatch(AddressAction.setAddressAction(addressInputRef.current.value));
+    dispatch(ModalAction.openModalAction("PostCreateModal"));
   };
 
   return (

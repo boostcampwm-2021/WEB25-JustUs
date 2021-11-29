@@ -2,6 +2,7 @@ import { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
 import COLOR from "@styles/Color";
 import { useDispatch } from "react-redux";
+import { ModalAction } from "@src/action";
 
 interface PostProps {
   idx: number;
@@ -28,8 +29,7 @@ const Post = ({
 
   const onClickPost = () => {
     setPostSelected(idx);
-    // 아래 로직은 나중에 백엔드 API 요청을 통해 클릭한 게시글의 상세 정보를 가져온다.
-    dispatch({ type: "SELECT_POST_REQUEST", postId: idx });
+    dispatch(ModalAction.selectPostRequestAction(idx));
   };
 
   return (
