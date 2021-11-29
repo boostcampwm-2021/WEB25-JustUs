@@ -22,7 +22,7 @@ export class Post extends TimeStampEntity {
   @Column()
   postTitle: string;
 
-  @Column()
+  @Column({ type: "text" })
   postContent: string;
 
   @Column()
@@ -48,7 +48,7 @@ export class Post extends TimeStampEntity {
   @OneToMany(() => Image, image => image.post, { cascade: true })
   images: Image[];
 
-  @ManyToMany(() => HashTag, { cascade: true })
+  @ManyToMany(() => HashTag, { cascade: ["insert", "update"] })
   @JoinTable({ name: "posts_hashtags" })
   hashtags: HashTag[];
 }
