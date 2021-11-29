@@ -39,6 +39,7 @@ const Main = () => {
     document.addEventListener("contextmenu", () => {
       dispatch(ModalAction.setProfileWrapperModalOpenedAction({ isProfileWrapperModalOpened: false }));
       dispatch(ModalAction.setAlbumSettingWrapperModalIdxAction({ albumSettingWrapperModalIdx: -1 }));
+      dispatch(ModalAction.setAddAlbumModalOpened({ isAddAlbumModalOpened: false }));
     });
   }, []);
 

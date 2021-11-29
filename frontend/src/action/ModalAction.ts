@@ -7,6 +7,7 @@ const modalAction = {
   SET_CLUSTERED_MARKER: "SET_CLUSTERED_MARKER",
   SET_PROFILE_WRAPPER_MODAL_OPENED: "SET_PROFILE_WRAPPER_MODAL_OPENED",
   SET_ALBUM_SETTING_WRAPPER_MODAL_IDX: "SET_ALBUM_SETTING_WRAPPER_MODAL_IDX",
+  SET_ADD_ALBUM_MODAL_OPENED: "SET_ADD_ALBUM_MODAL_OPENED",
 
   openModalAction: (payload: string) => ({ type: modalAction.OPEN_MODAL, payload }),
   closeModalAction: () => ({ type: modalAction.CLOSE_MODAL }),
@@ -22,6 +23,11 @@ const modalAction = {
 
   setAlbumSettingWrapperModalIdxAction: (payload: { albumSettingWrapperModalIdx: number }) => ({
     type: modalAction.SET_ALBUM_SETTING_WRAPPER_MODAL_IDX,
+    payload,
+  }),
+
+  setAddAlbumModalOpened: (payload: { isAddAlbumModalOpened: boolean }) => ({
+    type: modalAction.SET_ADD_ALBUM_MODAL_OPENED,
     payload,
   }),
 };
