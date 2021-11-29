@@ -6,7 +6,6 @@ import { CreateAlbumRequestDto } from "src/dto/album/createAlbumRequest.dto";
 import { UpdateAlbumInfoRequestDto } from "src/dto/album/updateAlbumInfoRequest.dto";
 import { CreateAlbumResponseDto } from "src/dto/album/createAlbumResponse.dto";
 import { Album } from "../album.entity";
-import { PostRepository } from "src/post/post.repository";
 import { Connection, QueryRunner } from "typeorm";
 import { Group } from "src/group/group.entity";
 import { Post } from "src/post/post.entity";
@@ -19,7 +18,6 @@ export class AlbumService {
     private albumRepository: AlbumRepository,
     @InjectRepository(GroupRepository)
     private groupRepository: GroupRepository,
-    @InjectRepository(PostRepository)
     private readonly connection: Connection,
   ) {}
 
