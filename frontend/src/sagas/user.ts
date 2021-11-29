@@ -1,8 +1,6 @@
-import { all, fork, put, call, takeEvery, select, delay } from "redux-saga/effects";
-import axios from "axios";
+import { all, fork, put, call, takeEvery, select } from "redux-saga/effects";
+import { customAxios } from "@src/lib/customAxios";
 import { UserAction, GroupAction, ToastAction } from "@src/action";
-
-const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 interface ResponseGenerator {
   config?: any;
@@ -23,11 +21,11 @@ interface IUser {
   updateUserProfile: string;
 }
 function getUserInfoApi() {
-  return axios.get(`${SERVER_URL}/api/user`, { withCredentials: true });
+  return customAxios.get(`/api/user`);
 }
 
 function getLogOutApi() {
-  return axios.post(`${SERVER_URL}/api/auth/logout`, {}, { withCredentials: true });
+  return customAxios.post(`/api/auth/logout`, {});
 }
 
 async function updateUserInfoApi(user: IUser) {
@@ -38,7 +36,7 @@ async function updateUserInfoApi(user: IUser) {
     formData.append("profileImage", user.updateUserProfile);
   }
 
-  const result = await axios.put(`${SERVER_URL}/api/user`, formData, {
+  const result = await customAxios.put(`/api/user`, formData, {
     withCredentials: true,
     headers: { "Content-Type": "multipart/form-data" },
   });
@@ -47,13 +45,13 @@ async function updateUserInfoApi(user: IUser) {
 }
 
 export async function getGroupListApi() {
-  const result = await axios.get(`${SERVER_URL}/api/user/groups`, { withCredentials: true });
+  const result = await customAxios.get(`/api/user/groups`);
   return result;
 }
 
 async function updateGroupOrderApi(payload: any) {
   const { groupOrder } = payload;
-  const result = axios.put(`${SERVER_URL}/api/user/grouporder`, { groupOrder }, { withCredentials: true });
+  const result = customAxios.put(`/api/user/grouporder`, { groupOrder });
   return result;
 }
 
