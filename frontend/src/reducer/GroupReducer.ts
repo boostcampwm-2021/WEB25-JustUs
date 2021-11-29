@@ -230,7 +230,7 @@ const groupReducer = (state = initState, action: any) => {
           posts: [],
           base: album.base,
         };
-        updateAlbum.posts = album.posts.filter((item) => item.postId != action.postId);
+        updateAlbum.posts = album.posts.filter((item) => item.postId !== action.postId);
         return updateAlbum;
       });
       const afterDeleteList = afterDeleteAlbumList.map((album: AlbumListItemType) => [...album.posts]).flat();

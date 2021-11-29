@@ -11,7 +11,6 @@ import { icon } from "@src/constants";
 const DeleteAlbumModal = () => {
   const dispatch = useDispatch();
   const { selectedAlbum } = useSelector((state: RootState) => state.modal);
-  const { selectedGroup, albumList }: any = useSelector((state: RootState) => state.groups);
 
   const closeModal = () => {
     dispatch(ModalAction.closeModalAction());

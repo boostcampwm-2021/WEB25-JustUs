@@ -11,7 +11,6 @@ import { icon } from "@src/constants";
 const PostDeleteModal = () => {
   const dispatch = useDispatch();
   const { selectedPost }: any = useSelector((state: RootState) => state.modal);
-  const { selectedGroup, albumList }: any = useSelector((state: RootState) => state.groups);
 
   const closeModal = () => {
     dispatch(ModalAction.closeModalAction());

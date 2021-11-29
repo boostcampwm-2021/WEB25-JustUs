@@ -110,7 +110,7 @@ const GroupSettingModal = () => {
                 width="100%"
                 height="100%"
               />
-              {nowImg && nowImg != defaultImageURL ? (
+              {nowImg && nowImg !== defaultImageURL ? (
                 <DeleteImgBtnWrapper onClick={onClickDeleteBtn}>
                   <img src={icon.delete} alt="delete button"></img>
                 </DeleteImgBtnWrapper>
@@ -118,7 +118,7 @@ const GroupSettingModal = () => {
             </ImageBackground>
             <UploadImgBtnWrapper onClick={onClickUploadBtn}>
               <input type="file" accept="image/*" hidden ref={uploadBtnRef} onChange={loadImage} />
-              <img src={icon.addPhoto} alt="add Photo" width={"20rem"}></img>
+              <img src={icon.addPhoto} alt="add Post" width={"20rem"}></img>
               사진 찾기
             </UploadImgBtnWrapper>
           </div>

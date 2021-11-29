@@ -142,7 +142,7 @@ function* getAlbumList(action: any) {
 function* deleteGroup(action: any) {
   try {
     const { selectedGroupIdx }: { selectedGroupIdx: number } = yield select((state) => state.groups);
-    const result: ResponseGenerator = yield call(deleteGroupApi, action.payload);
+    yield call(deleteGroupApi, action.payload);
     yield put({
       type: groupAction.SET_SELECTED_GROUP_IDX,
       payload: { selectedGroupIdx: selectedGroupIdx - 1 },

@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect } from "react";
+import { ReactNode, useEffect } from "react";
 import ReactDOM from "react-dom";
 import COLOR from "@styles/Color";
 import { useDispatch } from "react-redux";

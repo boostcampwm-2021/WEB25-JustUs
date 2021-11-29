@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import COLOR from "@styles/Color";
 import { flexRowCenterAlign } from "@src/styles/StyledComponents";
 import { useDispatch } from "react-redux";
 import { ModalAction } from "@src/action";

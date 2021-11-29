@@ -1,4 +1,4 @@
-import { useState, ChangeEvent, KeyboardEvent } from "react";
+import { useState, ChangeEvent } from "react";
 import COLOR from "@styles/Color";
 import styled from "styled-components";
 import SearchList from "@components/Header/Profile/Search/SearchList";

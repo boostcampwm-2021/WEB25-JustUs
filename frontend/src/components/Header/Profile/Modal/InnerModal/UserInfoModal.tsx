@@ -98,7 +98,7 @@ const UserInfoModal = () => {
             </ImageBackground>
             <UploadImgBtnWrapper onClick={onClickUploadBtn}>
               <input type="file" accept="image/*" hidden ref={uploadBtnRef} onChange={loadImage} />
-              <img src={icon.addPhoto} alt="add Photo" width={"20rem"}></img>
+              <img src={icon.addPhoto} alt="find Profile" width={"20rem"}></img>
               사진 찾기
             </UploadImgBtnWrapper>
           </div>

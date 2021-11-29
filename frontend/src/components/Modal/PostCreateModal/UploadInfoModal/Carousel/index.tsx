@@ -2,8 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import COLOR from "@styles/Color";
 import { flexRowCenterAlign, flexColumnCenterAlign, iconHover } from "@styles/StyledComponents";
-import { useSelector } from "react-redux";
-import { RootState } from "@src/reducer";
 import { useDispatch } from "react-redux";
 import { SpinnerAction } from "@src/action";
 import { icon } from "@src/constants";
@@ -20,7 +18,6 @@ interface CarouselProps {
 const Carousel = ({ files, carouselWidth }: CarouselProps) => {
   const carouselRef = useRef<HTMLDivElement>(null);
   const [imageIndex, setImageIndex] = useState(0);
-  const { isPostLoading } = useSelector((state: RootState) => state.modal);
   const dispatch = useDispatch();
   const showNextImage = () => {
     if (imageIndex === files.length - 1 || !carouselRef.current) return;

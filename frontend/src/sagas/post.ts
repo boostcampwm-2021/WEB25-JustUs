@@ -1,4 +1,4 @@
-import { all, fork, put, call, takeEvery, select } from "redux-saga/effects";
+import { all, fork, put, call, takeEvery } from "redux-saga/effects";
 import axios from "axios";
 import { GroupAction, SpinnerAction, ToastAction } from "@src/action";
 import { modal, toastMessage } from "@src/constants";
@@ -154,7 +154,7 @@ function* getPost({ postId }: { type: string; postId: number }) {
 
 function* deletePost({ postId }: { type: string; postId: number }) {
   try {
-    const result: ResponseGenerator = yield call(deletePostApi, postId);
+    yield call(deletePostApi, postId);
     yield put({ type: groupAction.DELETE_POST_SUCCEED, postId: postId });
     yield put({ type: modalAction.CLOSE_MODAL });
     yield put({
@@ -173,7 +173,7 @@ function* deletePost({ postId }: { type: string; postId: number }) {
 function* updatePost({ post }: { type: string; post: IUpdatePost }) {
   yield put({ type: SpinnerAction.SPINNER_OPEN });
   try {
-    const result: ResponseGenerator = yield call(updatePostApi, post);
+    yield call(updatePostApi, post);
     yield put({ type: groupAction.UPDATE_POST_SUCCEED, post });
     yield put({
       type: ToastAction.SET_SUCCEED_TOAST,

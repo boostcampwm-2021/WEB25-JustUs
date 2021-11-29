@@ -46,7 +46,7 @@ const UserInfoModal = () => {
                 <ThemeList key={id} onClick={() => radioHandler(id)}>
                   <img src={src} alt={themeColor} height="70%" />
                   <ThemeListInfo>
-                    <input type="radio" name="theme" value={themeColor} checked={selectedTheme == id ? true : false} />
+                    <input type="radio" name="theme" value={themeColor} checked={selectedTheme === id ? true : false} />
                     <label>{name}</label>
                   </ThemeListInfo>
                 </ThemeList>

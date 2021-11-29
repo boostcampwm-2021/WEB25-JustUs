@@ -12,10 +12,8 @@ import { icon } from "@src/constants";
 const UpdateAlbumModal = () => {
   const dispatch = useDispatch();
   const { selectedAlbum } = useSelector((state: RootState) => state.modal);
-  const [updateAlbumName, setUpdateAlbumName] = useState(true);
   const originAlbumName = selectedAlbum.albumName;
   const [newAlbumName, setNewAlbumName] = useState(originAlbumName);
-  const { selectedGroup }: any = useSelector((state: RootState) => state.groups);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const closeModal = () => {
@@ -24,7 +22,6 @@ const UpdateAlbumModal = () => {
 
   const onChangeName = (e: ChangeEvent<HTMLInputElement>) => {
     setNewAlbumName(e.target.value);
-    setUpdateAlbumName(false);
   };
 
   const onClickSave = () => {

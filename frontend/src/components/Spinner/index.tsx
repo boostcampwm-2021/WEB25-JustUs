@@ -1,6 +1,5 @@
 import styled, { keyframes } from "styled-components";
 import { flexRowCenterAlign } from "@src/styles/StyledComponents";
-import COLOR from "@styles/Color";
 import { icon } from "@src/constants";
 const Spinner = () => {
   return (

@@ -4,7 +4,6 @@ import { RootState } from "@src/reducer";
 import styled from "styled-components";
 import Group from "./Group";
 import AddGroupButton from "./AddGroupButton";
-import COLOR from "@styles/Color";
 import { UserAction } from "@src/action";
 import { GroupAction } from "@src/action";
 

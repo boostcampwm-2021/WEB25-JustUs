@@ -86,6 +86,7 @@ const UploadImageModal = ({ changeMode, files, addFile, removeFile }: UploadImag
                     ? fileObject.imageUrl
                     : URL.createObjectURL(fileObject.imageUrl)
                 }
+                alt={"uploaded img"}
               ></img>
             </ImagePreview>
           ),
