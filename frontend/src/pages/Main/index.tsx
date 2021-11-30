@@ -49,7 +49,7 @@ const Main = () => {
       dispatch(MapAction.closePostCreateWindowAction());
   };
 
-  const contextMentHandler = () => {
+  const contextMenuHandler = () => {
     if (isProfileWrapperModalOpened)
       dispatch(ModalAction.setProfileWrapperModalOpenedAction({ isProfileWrapperModalOpened: false }));
     if (albumSettingWrapperModalIdx !== -1)
@@ -59,10 +59,10 @@ const Main = () => {
 
   useEffect(() => {
     document.addEventListener("click", clickHandler);
-    document.addEventListener("contextmenu", contextMentHandler);
+    document.addEventListener("contextmenu", contextMenuHandler);
     return () => {
       document.removeEventListener("click", clickHandler);
-      document.removeEventListener("contextmenu", contextMentHandler);
+      document.removeEventListener("contextmenu", contextMenuHandler);
     };
   }, [isAddAlbumModalOpened, albumSettingWrapperModalIdx, isProfileWrapperModalOpened, isPostCreateWindowOpened]);
 
