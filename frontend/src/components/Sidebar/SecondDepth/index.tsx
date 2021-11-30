@@ -15,8 +15,8 @@ interface SecondDepthProps {
 
 const SecondDepth = ({ isToggle }: SecondDepthProps) => {
   const { selectedGroup } = useSelector((state: RootState) => state.groups);
-  const { isAddAlbumModalOpened } = useSelector((state: RootState) => state.modal);
-  const { clickedTarget } = useSelector((state: RootState) => state.groupModal);
+  const isAddAlbumModalOpened = useSelector((state: RootState) => state.modal.isAddAlbumModalOpened);
+  const clickedTarget = useSelector((state: RootState) => state.groupModal.clickedTarget);
   const dispatch = useDispatch();
 
   useEffect(() => {
