@@ -1,4 +1,4 @@
-import { all, fork, put, call, takeEvery, select } from "redux-saga/effects";
+import { all, fork, put, call, takeEvery } from "redux-saga/effects";
 import axios from "axios";
 import { GroupAction, ToastAction } from "@src/action";
 
