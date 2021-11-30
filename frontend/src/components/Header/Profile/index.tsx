@@ -22,7 +22,8 @@ const Profile = () => {
 
   useEffect(() => {
     const target = clickedTarget.target.closest("#profile");
-    if (!target) dispatch(ModalAction.setProfileWrapperModalOpenedAction({ isProfileWrapperModalOpened: false }));
+    if (isProfileWrapperModalOpened && !target)
+      dispatch(ModalAction.setProfileWrapperModalOpenedAction({ isProfileWrapperModalOpened: false }));
   }, [clickedTarget]);
 
   return (

@@ -22,7 +22,8 @@ const SecondDepth = ({ isToggle }: SecondDepthProps) => {
   useEffect(() => {
     const addAlbumBtn = clickedTarget.target.closest(".add-album-btn");
     const addAlbumModal = clickedTarget.target.closest(".add-album-modal");
-    if (!addAlbumBtn && !addAlbumModal) dispatch(ModalAction.setAddAlbumModalOpened({ isAddAlbumModalOpened: false }));
+    if (isAddAlbumModalOpened && !addAlbumBtn && !addAlbumModal)
+      dispatch(ModalAction.setAddAlbumModalOpened({ isAddAlbumModalOpened: false }));
   }, [clickedTarget]);
 
   if (!selectedGroup) return null;

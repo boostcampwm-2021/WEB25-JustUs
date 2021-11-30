@@ -12,7 +12,7 @@ const AlbumList = () => {
   const [postSelected, setPostSelected] = useState<number>(-1);
   const { albumList, selectedGroup }: any = useSelector((state: RootState) => state.groups);
   const clickedTarget = useSelector((state: RootState) => state.groupModal.clickedTarget);
-  const { selectedPost }: any = useSelector((state: RootState) => state.modal);
+  const { selectedPost, albumSettingWrapperModalIdx }: any = useSelector((state: RootState) => state.modal);
   const draggableRef = useRef<HTMLDivElement>(null);
 
   function onDragLeaveHandler(ev: React.DragEvent<HTMLDivElement>) {
@@ -111,11 +111,14 @@ const AlbumList = () => {
   useEffect(() => {
     const clickHandler = () => {
       if (!clickedTarget.target) return;
-      if (!clickedTarget.target.closest(".modifying-album-btn")) {
+      if (albumSettingWrapperModalIdx !== -1 && !clickedTarget.target.closest(".modifying-album-btn")) {
         dispatch(ModalAction.setAlbumSettingWrapperModalIdxAction({ albumSettingWrapperModalIdx: -1 }));
       }
 
-      if (clickedTarget.target.closest(".update-album-btn") || clickedTarget.target.closest(".delete-album-btn")) {
+      if (
+        albumSettingWrapperModalIdx !== -1 &&
+        (clickedTarget.target.closest(".update-album-btn") || clickedTarget.target.closest(".delete-album-btn"))
+      ) {
         dispatch(ModalAction.setAlbumSettingWrapperModalIdxAction({ albumSettingWrapperModalIdx: -1 }));
       }
     };
@@ -128,6 +131,7 @@ const AlbumList = () => {
   }, [selectedPost]);
 
   const scrollHandler = () => {
+    if (albumSettingWrapperModalIdx === -1) return;
     dispatch(ModalAction.setAlbumSettingWrapperModalIdxAction({ albumSettingWrapperModalIdx: -1 }));
   };
 

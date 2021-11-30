@@ -18,6 +18,9 @@ const Main = () => {
   const dispatch = useDispatch();
   const { groups, groupListLoaded }: any = useSelector((state: RootState) => state.groups);
   const { userInfoError, userLoggedOut, userInfoSucceed } = useSelector((state: RootState) => state.user);
+  const { isAddAlbumModalOpened, albumSettingWrapperModalIdx } = useSelector((state: RootState) => state.modal);
+  const { isPostCreateWindowOpened } = useSelector((state: RootState) => state.map);
+
   const history = useHistory();
   const themeNumber = Number(localStorage.getItem("themeNumber"));
 
@@ -30,15 +33,17 @@ const Main = () => {
       const isPostCreateClicked = (target as HTMLElement).closest("#createPostWindow");
 
       dispatch(GroupModalAction.setClickedTargetAction({ target, clientX, clientY }));
-      dispatch(MapAction.setPostCreateWindowOpenedAction({ isPostCreateWindowOpened: false }));
+      isPostCreateWindowOpened &&
+        dispatch(MapAction.setPostCreateWindowOpenedAction({ isPostCreateWindowOpened: false }));
       !isClusteringClicked && dispatch(MapAction.closeClusteringWindowAction());
       !isPostCreateClicked && dispatch(MapAction.closePostCreateWindowAction());
     });
 
     document.addEventListener("contextmenu", () => {
       dispatch(ModalAction.setProfileWrapperModalOpenedAction({ isProfileWrapperModalOpened: false }));
-      dispatch(ModalAction.setAlbumSettingWrapperModalIdxAction({ albumSettingWrapperModalIdx: -1 }));
-      dispatch(ModalAction.setAddAlbumModalOpened({ isAddAlbumModalOpened: false }));
+      if (albumSettingWrapperModalIdx !== -1)
+        dispatch(ModalAction.setAlbumSettingWrapperModalIdxAction({ albumSettingWrapperModalIdx: -1 }));
+      if (isAddAlbumModalOpened) dispatch(ModalAction.setAddAlbumModalOpened({ isAddAlbumModalOpened: false }));
     });
   }, []);
 
