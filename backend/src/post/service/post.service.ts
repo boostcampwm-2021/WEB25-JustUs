@@ -204,6 +204,6 @@ export class PostService {
     const { posts } = await this.hashTagRepository.getSearchPosts(hashtagId);
     if (!posts) throw new NotFoundException(`Not found hashtag with the id ${hashtagId}`);
 
-    return { posts };
+    return new GetSearchPostResponse(posts);
   }
 }
