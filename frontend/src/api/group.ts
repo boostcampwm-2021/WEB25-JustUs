@@ -4,20 +4,6 @@ import { customAxios } from "@src/lib/customAxios";
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 const groupApi = {
-  getGroupInfoApi: (params: any) => {
-    const URL = "/api/groups";
-    const option = {
-      method: "GET",
-      header: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        groupId: params.groupId,
-      }),
-    };
-    return fetch(URL, option);
-  },
-
   createGroup: async (payload: any) => {
     const formData = new FormData();
     if (payload.groupImage) {
