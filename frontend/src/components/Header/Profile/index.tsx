@@ -12,19 +12,12 @@ const Profile = () => {
   const { userProfile, userNickName }: { userProfile: string; userNickName: string } = useSelector(
     (state: RootState) => state.user,
   );
-  const { clickedTarget } = useSelector((state: RootState) => state.groupModal);
 
   const handleProfileBtnClick = () => {
     dispatch(
       ModalAction.setProfileWrapperModalOpenedAction({ isProfileWrapperModalOpened: !isProfileWrapperModalOpened }),
     );
   };
-
-  useEffect(() => {
-    const target = clickedTarget.target.closest("#profile");
-    if (isProfileWrapperModalOpened && !target)
-      dispatch(ModalAction.setProfileWrapperModalOpenedAction({ isProfileWrapperModalOpened: false }));
-  }, [clickedTarget]);
 
   return (
     <>

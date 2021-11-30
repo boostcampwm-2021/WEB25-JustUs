@@ -134,7 +134,7 @@ const setMap = (
     newPostCreateWindow.open(map, e.latlng);
 
     const modalOpen = (x: number, y: number) => {
-      dispatch(MapAction.setPostCreateWindowOpenedAction({ isPostCreateWindowOpened: false }));
+      newPostCreateWindow.close();
       dispatch(AddressAction.setAddressAction(""));
       dispatch(AddressAction.setPositionAction({ x, y }));
       dispatch(ModalAction.openModalAction(modal.UploadAddressModal));
@@ -155,15 +155,11 @@ const setMap = (
     dispatch(MapAction.setPostCreateWindowOpenedAction({ isPostCreateWindowOpened: true }));
   });
   naver.maps.Event.addListener(map, "zoom_changed", (e: Number) => {
-    dispatch(MapAction.setPostCreateWindowOpenedAction({ isPostCreateWindowOpened: false }));
     newClusteringWindow.close();
-    dispatch(MapAction.setClusteringWindowOpenedAction({ isClusteringWindowOpened: false }));
   });
   naver.maps.Event.addListener(map, "mousedown", (e: PointerEvent) => {
     newClusteringWindow.close();
     newPostCreateWindow.close();
-    dispatch(MapAction.setPostCreateWindowOpenedAction({ isPostCreateWindowOpened: false }));
-    dispatch(MapAction.setClusteringWindowOpenedAction({ isClusteringWindowOpened: false }));
   });
 };
 
@@ -182,6 +178,12 @@ const Map = () => {
   const { postsList }: IPostsList = useSelector((state: RootState) => state.groups);
   const { selectedPost }: any = useSelector((state: RootState) => state.modal);
   const { nowTheme }: any = useSelector((state: RootState) => state.theme);
+  const { isPostCreateWindowOpened, isClusteringWindowOpened } = useSelector((state: RootState) => state.map);
+
+  const closePostCreateWindow = () => {
+    if (!isPostCreateWindowOpened) return;
+    dispatch(MapAction.setPostCreateWindowOpenedAction({ isPostCreateWindowOpened: false }));
+  };
 
   useEffect(() => {
     const initMap = () => {
@@ -201,7 +203,7 @@ const Map = () => {
         if (clusteringWindow) clusteringWindow.close();
         if (postCreateWindow) postCreateWindow.close();
 
-        dispatch(MapAction.setPostCreateWindowOpenedAction({ isPostCreateWindowOpened: false }));
+        closePostCreateWindow();
         dispatch(ModalAction.selectPostRequestAction(clickedPostID));
       };
 
@@ -213,7 +215,7 @@ const Map = () => {
       });
 
       const handleClickClustering = (members: IClustredMember[], LatLng: naver.maps.LatLng) => {
-        dispatch(MapAction.setPostCreateWindowOpenedAction({ isPostCreateWindowOpened: false }));
+        closePostCreateWindow();
         const clusteredMarker = members.map((member) => {
           return { postId: member.postId, postTitle: member.title };
         });

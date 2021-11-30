@@ -11,7 +11,6 @@ const AlbumList = () => {
   const dispatch = useDispatch();
   const [postSelected, setPostSelected] = useState<number>(-1);
   const { albumList, selectedGroup }: any = useSelector((state: RootState) => state.groups);
-  const clickedTarget = useSelector((state: RootState) => state.groupModal.clickedTarget);
   const { selectedPost, albumSettingWrapperModalIdx }: any = useSelector((state: RootState) => state.modal);
   const draggableRef = useRef<HTMLDivElement>(null);
 
@@ -107,24 +106,6 @@ const AlbumList = () => {
     if (parent === nowParent) return;
     nowParent.classList.add("album-hover");
   }
-
-  useEffect(() => {
-    const clickHandler = () => {
-      if (!clickedTarget.target) return;
-      if (albumSettingWrapperModalIdx !== -1 && !clickedTarget.target.closest(".modifying-album-btn")) {
-        dispatch(ModalAction.setAlbumSettingWrapperModalIdxAction({ albumSettingWrapperModalIdx: -1 }));
-      }
-
-      if (
-        albumSettingWrapperModalIdx !== -1 &&
-        (clickedTarget.target.closest(".update-album-btn") || clickedTarget.target.closest(".delete-album-btn"))
-      ) {
-        dispatch(ModalAction.setAlbumSettingWrapperModalIdxAction({ albumSettingWrapperModalIdx: -1 }));
-      }
-    };
-
-    clickHandler();
-  }, [clickedTarget]);
 
   useEffect(() => {
     setPostSelected(selectedPost.postId);

@@ -1,4 +1,3 @@
-import GroupModalAction from "./GroupModalAction";
 import GroupAction from "./GroupAction";
 import ModalAction from "./ModalAction";
 import ThemeAction from "./ThemeAction";
@@ -8,14 +7,4 @@ import MapAction from "./MapAction";
 import ToastAction from "./ToastAction";
 import SpinnerAction from "./SpinnerAction";
 
-export {
-  GroupModalAction,
-  GroupAction,
-  ModalAction,
-  ThemeAction,
-  AddressAction,
-  UserAction,
-  MapAction,
-  ToastAction,
-  SpinnerAction,
-};
+export { GroupAction, ModalAction, ThemeAction, AddressAction, UserAction, MapAction, ToastAction, SpinnerAction };
