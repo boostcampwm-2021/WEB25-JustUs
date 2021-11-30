@@ -96,18 +96,18 @@ export class PostService {
     const userId = user.userId;
     const userNickname = user.userNickname;
 
-    return {
+    return new GetPostInfoResponseDto(
       userId,
-      userNickname,
       postId,
+      userNickname,
       postTitle,
       postContent,
+      images,
       postDate,
       postLatitude,
       postLongitude,
       postLocation,
-      images,
-    };
+    );
   }
 
   async updatePostInfo(

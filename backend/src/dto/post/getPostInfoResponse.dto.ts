@@ -1,55 +1,58 @@
-import { IsArray, IsDate, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
 import { ImageInfo } from "../image/imageInfo";
 import { ApiProperty } from "@nestjs/swagger";
 
 export class GetPostInfoResponseDto {
-  @IsNumber()
-  @IsNotEmpty()
   @ApiProperty()
   postId: number;
 
-  @IsNumber()
-  @IsNotEmpty()
   @ApiProperty()
   userId: number;
 
-  @IsString()
-  @IsNotEmpty()
   @ApiProperty()
   userNickname: string;
 
-  @IsString()
-  @IsNotEmpty()
   @ApiProperty()
   postTitle: string;
 
-  @IsString()
-  @IsOptional()
   @ApiProperty()
   postContent: string;
 
-  @IsArray()
-  @IsNotEmpty()
   @ApiProperty({ type: [ImageInfo] })
   images: ImageInfo[];
 
-  @IsDate()
-  @IsNotEmpty()
   @ApiProperty()
   postDate: Date;
 
-  @IsNumber()
-  @IsNotEmpty()
   @ApiProperty()
   postLatitude: number;
 
-  @IsNumber()
-  @IsNotEmpty()
   @ApiProperty()
   postLongitude: number;
 
-  @IsString()
-  @IsNotEmpty()
   @ApiProperty()
   postLocation: string;
+
+  constructor(
+    postId: number,
+    userId: number,
+    userNickname: string,
+    postTitle: string,
+    postContent: string,
+    images: ImageInfo[],
+    postDate: Date,
+    postLatitude: number,
+    postLongitude: number,
+    postLocation: string,
+  ) {
+    this.postId = postId;
+    this.userId = userId;
+    this.userNickname = userNickname;
+    this.postTitle = postTitle;
+    this.postContent = postContent;
+    this.images = images;
+    this.postDate = postDate;
+    this.postLatitude = postLatitude;
+    this.postLongitude = postLongitude;
+    this.postLocation = postLocation;
+  }
 }
