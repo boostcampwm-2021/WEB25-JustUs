@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Header from "@components/Sidebar/SecondDepth/AlbumList/Header";
 import Post from "@components/Sidebar/SecondDepth/AlbumList/Post";
+import styled from "styled-components";
 
 interface AlbumProps {
   albumIdx: number;
@@ -29,7 +30,14 @@ const Album = ({
 }: AlbumProps) => {
   const [postToggle, setPostToggle] = useState(true);
   return (
-    <div onDrop={DropHandler} onDragLeave={DragLeaveHandler} onDragOver={(e) => e.preventDefault()}>
+    <AlbumWrapper
+      className="albumItem"
+      onDrop={DropHandler}
+      onDragLeave={DragLeaveHandler}
+      onDragOver={(e) => e.preventDefault()}
+      data-albumidx={albumIdx}
+      data-album-id={album.albumId}
+    >
       <Header
         albumId={album.albumId}
         albumName={album.albumName}
@@ -52,8 +60,14 @@ const Album = ({
             album={album}
           />
         ))}
-    </div>
+    </AlbumWrapper>
   );
 };
 
+const AlbumWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 99%;
+  margin: 1rem 0;
+`;
 export default React.memo(Album);

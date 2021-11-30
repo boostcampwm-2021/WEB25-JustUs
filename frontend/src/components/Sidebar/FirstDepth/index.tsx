@@ -29,7 +29,7 @@ const FirstDepth = ({ isToggle, setIsToggle, addGroupBtnRef }: FirstDepthProps) 
 
   useEffect(() => {
     dispatch(GroupAction.setSelectedGroupIdxAction({ selectedGroupIdx: 0 }));
-    dispatch(GroupAction.getAlbumListAction(groups[0]));
+    groups.length !== 0 && dispatch(GroupAction.getAlbumListAction(groups[0]));
   }, []);
 
   useEffect(() => {
