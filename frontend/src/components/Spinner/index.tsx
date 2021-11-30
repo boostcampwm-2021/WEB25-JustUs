@@ -7,12 +7,13 @@ import { RootState } from "@src/reducer";
 
 const spinnerRootEl = document.getElementById("spinner");
 if (spinnerRootEl) {
-  spinnerRootEl.style.display = "none";
-  spinnerRootEl.style.justifyContent = "center";
+  spinnerRootEl.style.display = "flex";
+  spinnerRootEl.style.flexDirection = "row";
+  spinnerRootEl.style.justifyItems = "center";
   spinnerRootEl.style.alignItems = "center";
   spinnerRootEl.style.position = "absolute";
-  spinnerRootEl.style.top = "0";
-  spinnerRootEl.style.left = "0";
+  spinnerRootEl.style.top = "0px";
+  spinnerRootEl.style.left = "0px";
   spinnerRootEl.style.width = "100%";
   spinnerRootEl.style.height = "100%";
 }
@@ -28,7 +29,6 @@ const pop = keyframes`
 `;
 
 const BackGround = styled.div`
-  position: absolute;
   ${flexRowCenterAlign}
   width: 100%;
   height: 100%;
@@ -64,11 +64,12 @@ const Spinner = () => {
 
   if (!userInfoSucceed || spinnerActivate || !groupListLoaded) {
     spinnerRootEl.style.zIndex = "20";
-    spinnerRootEl.style.display = "block";
+    spinnerRootEl.style.display = "flex";
     return ReactDOM.createPortal(Animaion, spinnerRootEl);
   }
+  spinnerRootEl.style.zIndex = "1";
   spinnerRootEl.style.display = "none";
-  return null;
+  return <div />;
 };
 
 export default Spinner;
