@@ -1,11 +1,17 @@
-import styled, { keyframes, css } from "styled-components";
-import { iconHover, flexRowCenterAlign } from "@src/styles/StyledComponents";
+import styled, { css } from "styled-components";
+import {
+  smallModalContainer,
+  smallModalHeader,
+  smallModalTitle,
+  smallModalCloseButton,
+  smallModalContent,
+  flexRowCenterAlign,
+} from "@src/styles/StyledComponents";
 import COLOR from "@styles/Color";
 import { RootState } from "@src/reducer";
 import { useDispatch, useSelector } from "react-redux";
 import { GroupAction, ModalAction } from "@src/action";
 import { icon } from "@src/constants";
-import { modalTitleFont } from "@styles/StyledComponents";
 
 interface IProps {
   type: string;
@@ -66,61 +72,21 @@ const DeleteModal = (props: IProps) => {
     </>
   );
 };
-
-const modalSlideUp = keyframes`
-  0% {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  30% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-`;
-
 const ModalContainer = styled.div`
-  background-color: ${COLOR.WHITE};
-  display: grid;
-  min-height: 30rem;
-  min-width: 40rem;
-  border-radius: 1rem;
-  grid-template-rows: 20% 80%;
-  animation-name: ${modalSlideUp};
-  animation-duration: 1s;
-  box-sizing: border-box;
-  padding: 3em;
+  ${smallModalContainer}
 `;
 
 const Header = styled.div`
-  display: grid;
-  grid-template-columns: 10% 80% 10%;
-  grid-column-start: 1;
-  grid-column-end: 3;
-  grid-row-start: 1;
-  grid-row-end: 2;
+  ${smallModalHeader}
 `;
 const Title = styled.div`
-  grid-column-start: 2;
-  grid-column-end: 3;
-  ${modalTitleFont}
-  text-align: center;
-  margin: auto;
-  align-items: center;
+  ${smallModalTitle}
 `;
 const CloseButton = styled.button`
-  background-color: ${COLOR.WHITE};
-  border: none;
-  & > img {
-    ${iconHover}
-  }
+  ${smallModalCloseButton}
 `;
 const Content = styled.div`
-  grid-row-start: 2;
-  grid-column-start: 1;
-  grid-column-end: 3;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  ${smallModalContent}
 `;
 const DeleteTextWrapper = styled.div`
   ${flexRowCenterAlign}
