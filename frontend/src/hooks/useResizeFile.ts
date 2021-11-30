@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 interface FileObject {
   imageUrl: File | string;
@@ -27,7 +27,7 @@ export const useResizeFile = (initFiles: FileObject[] = []) => {
           canvas.width = img.width / ratio;
           canvas.height = img.height / ratio;
           ctx?.drawImage(img, 0, 0, canvas.width, canvas.height);
-          const dataURL = canvas.toDataURL("image/png");
+          const dataURL = canvas.toDataURL("image/jpeg");
           const byteString = atob(dataURL.split(",")[1]);
           const mimeString = dataURL.split(",")[0].split(":")[1].split(";")[0];
           const ab = new ArrayBuffer(byteString.length);
@@ -46,8 +46,6 @@ export const useResizeFile = (initFiles: FileObject[] = []) => {
   };
 
   const removeFile = (deleteItem: FileObject) => {
-    console.log(files);
-    console.log(deleteItem);
     setFiles(files.filter((file) => file.imageId !== deleteItem.imageId));
   };
 

@@ -5,6 +5,7 @@ import COLOR from "@styles/Color";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
 import { GroupAction } from "@src/action";
+import { icon } from "@src/constants";
 
 interface GroupProps {
   isToggle: boolean;
@@ -56,7 +57,7 @@ const ButtonWrapper = styled.div<{ selectedGroupID: number; groupId: number; gro
   margin: 1rem auto;
   border-radius: 1rem;
   border: ${(props) => (props.selectedGroupID === props.groupId ? `5px solid ${props.theme.SECONDARY};` : ``)};
-  background-image: url("${(props) => (props.groupImage ? props.groupImage : "/icons/podo-many.png")}");
+  background-image: url("${(props) => (props.groupImage ? props.groupImage : icon.podoMany)}");
   background-size: 100%;
   cursor: pointer;
   background-repeat: no-repeat;

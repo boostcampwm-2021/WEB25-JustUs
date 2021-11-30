@@ -1,5 +1,6 @@
 import { all, fork, put, call, takeEvery, select } from "redux-saga/effects";
-import { UserAction, GroupAction, ToastAction } from "@src/action";
+import { UserAction, GroupAction, ToastAction, SpinnerAction } from "@src/action";
+import { toastMessage } from "@src/constants";
 import { UserAPI } from "@src/api";
 import { refresh } from "./";
 
@@ -46,7 +47,7 @@ function* getUserInfo() {
     const result: ResponseGenerator = yield call(getUserInfoApi);
     yield put({ type: UserAction.USER_INFO_SUCCEED, data: result.data });
   } catch (err: any) {
-    const { status, statusText, data } = err.response;
+    const { status } = err.response;
     if (status === 401) {
       yield refresh({ type: UserAction.USER_INFO_REQUEST });
     } else {
@@ -60,7 +61,7 @@ function* getLogOut() {
     yield call(getLogOutApi);
     yield put({ type: UserAction.LOG_OUT_SUCCEED });
   } catch (err: any) {
-    const { status, statusText } = err.response;
+    const { status } = err.response;
     if (status === 401) {
       yield refresh({ type: UserAction.LOG_OUT_REQUEST });
     } else {
@@ -81,37 +82,37 @@ function* updateUserInfo() {
     });
     yield put({
       type: ToastAction.SET_SUCCEED_TOAST,
-      payload: { text: `회원 정보가 수정되었습니다.` },
+      payload: { text: toastMessage.succeedUpdateProfile },
     });
   } catch (err: any) {
-    const { status, statusText } = err.response;
+    const { status } = err.response;
     if (status === 401) {
       yield refresh({ type: UserAction.USER_INFO_UPDATE });
     } else {
       yield put({ type: UserAction.SET_UPDATE_FAIL });
       yield put({
         type: ToastAction.SET_ERROR_TOAST,
-        payload: { text: `회원 정보 수정에 실패했습니다.` },
+        payload: { text: toastMessage.failedUpdateProfile },
       });
     }
   }
 }
 
 function* getGroupList() {
-  yield put({ type: "SPINNER_OPEN" });
+  yield put({ type: SpinnerAction.SPINNER_OPEN });
   try {
     const result: ResponseGenerator = yield call(getGroupListApi);
     const { groups } = result.data;
     yield put({ type: GroupAction.GET_GROUP_LIST_SUCCEED, payload: groups });
   } catch (err: any) {
-    const { status, statusText } = err.response;
+    const { status } = err.response;
     if (status === 401) {
       yield refresh({ type: GroupAction.GET_GROUP_LIST_REQUEST });
     } else {
       yield put({ type: GroupAction.GET_GROUP_LIST_FAILED });
     }
   } finally {
-    yield put({ type: "SPINNER_CLOSE" });
+    yield put({ type: SpinnerAction.SPINNER_CLOSE });
   }
 }
 
@@ -121,7 +122,7 @@ function* updateGroupOrder(action: any) {
   try {
     yield call(updateGroupOrderApi, { groupOrder });
   } catch (err: any) {
-    const { status, statusText } = err.response;
+    const { status } = err.response;
     if (status === 401) {
       yield refresh({ type: UserAction.REQUEST_UPDATE_GROUP_ORDER, payload: action.payload });
     }

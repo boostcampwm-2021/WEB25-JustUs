@@ -1,3 +1,4 @@
+import { icon } from "@src/constants";
 import styled from "styled-components";
 
 const NotFound = () => {
@@ -19,7 +20,7 @@ const ImageWrapper = styled.div`
   justify-content: center;
   align-items: flex-end;
   background: center;
-  background-image: url("/icons/crying-podo.png");
+  background-image: url(${icon.cryingPodo});
   background-size: 40%;
   background-repeat: no-repeat;
   width: 100%;

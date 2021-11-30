@@ -7,6 +7,7 @@ import { ReactComponent as SettingsSVG } from "@styles/icons/settings.svg";
 import { ReactComponent as InfoSVG } from "@styles/icons/info.svg";
 import { GroupAction, ModalAction } from "@src/action";
 import { flexRowCenterAlign } from "@src/styles/StyledComponents";
+import { modal } from "@src/constants";
 
 const SettingGroup = () => {
   const dispatch = useDispatch();
@@ -17,7 +18,7 @@ const SettingGroup = () => {
     dispatch(GroupAction.getGroupMemberListAction({ groupId: selectedGroup.groupId }));
   };
   const onClickSettingGroup = async () => {
-    dispatch(ModalAction.openModalAction("GroupSettingModal"));
+    dispatch(ModalAction.openModalAction(modal.GroupSettingModal));
   };
 
   return (

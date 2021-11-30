@@ -1,10 +1,11 @@
-import { useState, ChangeEvent, KeyboardEvent } from "react";
+import { useState, ChangeEvent } from "react";
 import COLOR from "@styles/Color";
 import styled from "styled-components";
 import SearchList from "@components/Header/Profile/Search/SearchList";
 import Recommend from "@components/Header/Profile/Search/Recommend";
 import { useDispatch } from "react-redux";
 import { GroupAction } from "@src/action";
+import { icon } from "@src/constants";
 
 const Search = () => {
   const [searchKeyword, setSearchKeyword] = useState<string>("");
@@ -36,7 +37,7 @@ const Search = () => {
     <>
       {(isSearchListOpened || isRecommendOpened) && <BackGround onClick={onClickBackGround} />}
       <SearchContainer>
-        <img src="/icons/search.svg" height="90%" alt="search" />
+        <img src={icon.search} height="90%" alt="search" />
         <SearchInput
           type="text"
           placeholder="해시태그를 입력하세요."
@@ -85,6 +86,12 @@ const SearchInput = styled.input`
   height: 100%;
   width: 100%;
   border: none;
+  font-size: 1.5rem;
+  line-height: 100%;
+  &::placeholder {
+    font-size: 1.5rem;
+  }
+
   &:focus-visible {
     outline: none;
   }

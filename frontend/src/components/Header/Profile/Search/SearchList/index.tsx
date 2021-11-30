@@ -1,4 +1,4 @@
-import { MouseEvent, Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction } from "react";
 import COLOR from "@src/styles/Color";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";

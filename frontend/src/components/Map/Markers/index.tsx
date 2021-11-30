@@ -1,6 +1,8 @@
+import { icon } from "@src/constants";
+
 const Marker = (map: naver.maps.Map, pos: naver.maps.LatLng, name: string, postId: number) => {
   const markerIcon = `
-    <img src="/icons/podo.png" alt="marker">`;
+    <img src=${icon.podo} alt="marker">`;
 
   return {
     position: pos.destinationPoint(90, 15),

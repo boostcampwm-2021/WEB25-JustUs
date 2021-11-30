@@ -5,15 +5,16 @@ import { useDispatch } from "react-redux";
 import Modal from "@components/Modal";
 import React from "react";
 import { ModalAction } from "@src/action";
+import { modal } from "@src/constants";
 
 const AddGroupModal = () => {
   const dispatch = useDispatch();
   const onClickCreateGroupBtn = (e: React.MouseEvent<HTMLButtonElement>) => {
-    dispatch(ModalAction.openModalAction("CreateGroupModal"));
+    dispatch(ModalAction.openModalAction(modal.CreateGroupModal));
   };
 
   const onClickJoinGroupBtn = () => {
-    dispatch(ModalAction.openModalAction("JoinGroupModal"));
+    dispatch(ModalAction.openModalAction(modal.JoinGroupModal));
   };
 
   return (

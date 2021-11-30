@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
 import { flexRowCenterAlign } from "@src/styles/StyledComponents";
 import { ModalAction } from "@src/action";
+import React, { useState } from "react";
 
 interface HeaderProps {
   albumId: number;
@@ -21,13 +22,19 @@ const Header = ({ albumId, albumName, postToggle, setPostToggle, AlbumDragHandle
   const { nowTheme }: any = useSelector((state: RootState) => state.theme);
   const { albumSettingWrapperModalIdx } = useSelector((state: RootState) => state.modal);
   const dispatch = useDispatch();
+  const [pos, setPos] = useState([-1, -1]);
 
   const onClickArrowDown = () => {
     setPostToggle((prev) => !prev);
   };
 
-  const onClickMoreBtn = () => {
-    dispatch(ModalAction.setAlbumSettingWrapperModalIdxAction({ albumSettingWrapperModalIdx: albumId }));
+  const onClickMoreBtn = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (albumSettingWrapperModalIdx === albumId) {
+      dispatch(ModalAction.setAlbumSettingWrapperModalIdxAction({ albumSettingWrapperModalIdx: -1 }));
+    } else {
+      setPos([e.clientX, e.clientY]);
+      dispatch(ModalAction.setAlbumSettingWrapperModalIdxAction({ albumSettingWrapperModalIdx: albumId }));
+    }
   };
 
   return (
@@ -42,7 +49,9 @@ const Header = ({ albumId, albumName, postToggle, setPostToggle, AlbumDragHandle
       {albumName !== "기본 앨범" && (
         <MoreIcon className="modifying-album-btn" onClick={onClickMoreBtn}>
           <MoreVertSVG fill={nowTheme.MENUTEXT} />
-          {albumSettingWrapperModalIdx === albumId && <AlbumSettingModal albumId={albumId} albumName={albumName} />}
+          {albumSettingWrapperModalIdx === albumId && (
+            <AlbumSettingModal x={pos[0]} y={pos[1]} albumId={albumId} albumName={albumName} />
+          )}
         </MoreIcon>
       )}
     </HeaderWrapper>

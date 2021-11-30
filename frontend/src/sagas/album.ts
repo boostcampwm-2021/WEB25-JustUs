@@ -2,6 +2,7 @@ import { all, fork, put, call, takeLatest } from "redux-saga/effects";
 import { GroupAction, ToastAction } from "@src/action";
 import { AlbumAPI } from "@src/api";
 import { refresh } from "./index";
+import { toastMessage } from "@src/constants";
 
 interface ResponseGenerator {
   config?: any;
@@ -40,12 +41,18 @@ function* createAlbum({ payload }: any) {
     yield put({ type: GroupAction.NEW_ALBUM_SUCCEED, payload: { albumName, groupId, albumId: result.data.albumId } });
     yield put({
       type: ToastAction.SET_SUCCEED_TOAST,
-      payload: { text: `${albumName} 앨범이 생성되었습니다.` },
+      payload: { text: toastMessage.succeedMakeAlbum(albumName) },
     });
   } catch (err: any) {
-    const { status, statusText } = err.response;
+    const { status } = err.response;
     if (status === 401) {
       yield refresh({ type: GroupAction.NEW_ALBUM_REQUEST, payload });
+    } else {
+      yield put({ type: GroupAction.NEW_ALBUM_FAILED });
+      yield put({
+        type: ToastAction.SET_ERROR_TOAST,
+        payload: { text: toastMessage.failedMakeAlbum },
+      });
     }
   }
 }
@@ -57,17 +64,17 @@ function* updateAlbum({ payload }: any) {
     yield put({ type: GroupAction.UPDATE_ALBUM_SUCCEED, payload: { albumName, albumId } });
     yield put({
       type: ToastAction.SET_SUCCEED_TOAST,
-      payload: { text: `앨범 정보가 수정되었습니다.` },
+      payload: { text: toastMessage.succeedUpdateAlbum },
     });
   } catch (err: any) {
-    const { status, statusText } = err.response;
+    const { status } = err.response;
     if (status === 401) {
       yield refresh({ type: GroupAction.UPDATE_ALBUM_REQUEST, payload });
     } else {
       yield put({ type: GroupAction.UPDATE_ALBUM_FAILED });
       yield put({
         type: ToastAction.SET_ERROR_TOAST,
-        payload: { text: `앨범 수정에 실패했습니다.` },
+        payload: { text: toastMessage.failedUpdateAlbum },
       });
     }
   }
@@ -80,17 +87,17 @@ function* deleteAlbum({ payload }: any) {
     yield put({ type: GroupAction.DELETE_ALBUM_SUCCEED, payload: { albumId } });
     yield put({
       type: ToastAction.SET_SUCCEED_TOAST,
-      payload: { text: `앨범이 삭제되었습니다.` },
+      payload: { text: toastMessage.succeedRemoveAlbum },
     });
   } catch (err: any) {
-    const { status, statusText } = err.response;
+    const { status } = err.response;
     if (status === 401) {
       yield refresh({ type: GroupAction.DELETE_ALBUM_REQUEST, payload });
     } else {
       yield put({ type: GroupAction.DELETE_ALBUM_FAILED });
       yield put({
         type: ToastAction.SET_ERROR_TOAST,
-        payload: { text: `앨범 삭제에 실패했습니다.` },
+        payload: { text: toastMessage.failedRemoveAlbum },
       });
     }
   }
@@ -102,7 +109,7 @@ function* updateAlbumOrder({ payload }: any) {
     yield call(updateAlbumOrderApi, groupId, albumOrder);
     yield put({ type: GroupAction.UPDATE_ALBUM_ORDER_SUCCEED, payload: { groupId, albumOrder } });
   } catch (err: any) {
-    const { status, statusText } = err.response;
+    const { status } = err.response;
     if (status === 401) {
       yield refresh({ type: GroupAction.UPDATE_ALBUM_ORDER_REQUEST, payload });
     } else {

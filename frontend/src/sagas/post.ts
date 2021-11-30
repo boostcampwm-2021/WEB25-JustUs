@@ -1,5 +1,6 @@
 import { all, fork, put, call, takeEvery } from "redux-saga/effects";
-import { GroupAction, ModalAction, ToastAction } from "@src/action";
+import { GroupAction, SpinnerAction, ToastAction, ModalAction } from "@src/action";
+import { modal, toastMessage } from "@src/constants";
 import { PostAPI } from "@src/api";
 import { refresh } from "./";
 
@@ -61,94 +62,92 @@ async function getPostsByHashtagApi(hashtagId: number) {
 }
 
 function* uploadPost({ post }: { type: string; post: IPost }) {
-  yield put({ type: "SPINNER_OPEN" });
+  yield put({ type: SpinnerAction.SPINNER_OPEN });
   try {
     const result: ResponseGenerator = yield call(uploadPostApi, post);
-    yield put({ type: "UPLOAD_POST_SUCCEED", post: { ...post, postId: result.data } });
+    yield put({ type: GroupAction.UPLOAD_POST_SUCCEED, post: { ...post, postId: result.data } });
     yield put({
       type: ToastAction.SET_SUCCEED_TOAST,
-      payload: { text: `게시글이 생성되었습니다.` },
+      payload: { text: toastMessage.succeedMakePost },
     });
   } catch (err: any) {
-    console.log("err : ", err);
-    console.log("err.response : ", err.response);
     const { status, statusText } = err.response;
     if (status === 401) {
       yield refresh({ type: GroupAction.UPLOAD_POST_REQUEST, post });
     } else {
-      yield put({ type: "UPLOAD_POST_FAILED" });
+      yield put({ type: GroupAction.UPLOAD_POST_FAILED });
       yield put({
         type: ToastAction.SET_ERROR_TOAST,
-        payload: { text: `게시글 생성에 실패했습니다.` },
+        payload: { text: toastMessage.failedMakePost },
       });
     }
   } finally {
-    yield put({ type: "SPINNER_CLOSE" });
+    yield put({ type: SpinnerAction.SPINNER_CLOSE });
   }
 }
 
 function* getPost({ postId }: { type: string; postId: number }) {
-  yield put({ type: "SPINNER_OPEN" });
+  yield put({ type: SpinnerAction.SPINNER_OPEN });
   try {
     const result: ResponseGenerator = yield call(getPostApi, postId);
-    yield put({ type: "SELECT_POST_SUCCEED", post: result.data });
-    yield put({ type: "OPEN_MODAL", payload: "PostShowModal" });
+    yield put({ type: ModalAction.SELECT_POST_SUCCEED, post: result.data });
+    yield put(ModalAction.openModalAction(modal.PostShowModal));
   } catch (err: any) {
     const { status, statusText } = err.response;
     if (status === 401) {
       yield refresh({ type: ModalAction.SELECT_POST_REQUEST, postId });
     } else {
-      yield put({ type: "SELECT_POST_FAILED" });
-      yield put({ type: "SPINNER_CLOSE" });
+      yield put({ type: ModalAction.SELECT_POST_FAILED });
+      yield put({ type: SpinnerAction.SPINNER_CLOSE });
     }
   }
 }
 
 function* deletePost({ postId }: { type: string; postId: number }) {
   try {
-    const result: ResponseGenerator = yield call(deletePostApi, postId);
-    yield put({ type: "DELETE_POST_SUCCEED", postId: postId });
-    yield put({ type: "CLOSE_MODAL" });
+    yield call(deletePostApi, postId);
+    yield put({ type: GroupAction.DELETE_POST_SUCCEED, postId: postId });
+    yield put({ type: ModalAction.CLOSE_MODAL });
     yield put({
       type: ToastAction.SET_SUCCEED_TOAST,
-      payload: { text: `게시글이 삭제되었습니다.` },
+      payload: { text: toastMessage.succeedRemovePost },
     });
   } catch (err: any) {
     const { status, statusText } = err.response;
     if (status === 401) {
       yield refresh({ type: GroupAction.DELETE_POST_REQUEST, postId });
     } else {
-      yield put({ type: "SELECT_POST_FAILED" });
+      yield put({ type: ModalAction.SELECT_POST_FAILED });
       yield put({
         type: ToastAction.SET_ERROR_TOAST,
-        payload: { text: `게시글 삭제에 실패했습니다.` },
+        payload: { text: toastMessage.failedRemovePost },
       });
     }
   }
 }
 
 function* updatePost({ post }: { type: string; post: IUpdatePost }) {
-  yield put({ type: "SPINNER_OPEN" });
+  yield put({ type: SpinnerAction.SPINNER_OPEN });
   try {
-    const result: ResponseGenerator = yield call(updatePostApi, post);
-    yield put({ type: "UPDATE_POST_SUCCEED", post });
+    yield call(updatePostApi, post);
+    yield put({ type: GroupAction.UPDATE_POST_SUCCEED, post });
     yield put({
       type: ToastAction.SET_SUCCEED_TOAST,
-      payload: { text: `게시글이 수정되었습니다.` },
+      payload: { text: toastMessage.succeedUpdatePost },
     });
   } catch (err: any) {
     const { status, statusText } = err.response;
     if (status === 401) {
       yield refresh({ type: GroupAction.UPDATE_POST_REQUEST, post });
     } else {
-      yield put({ type: "UPDATE_POST_FAILED" });
+      yield put({ type: GroupAction.UPDATE_POST_FAILED });
       yield put({
         type: ToastAction.SET_ERROR_TOAST,
-        payload: { text: `게시글 수정에 실패했습니다.` },
+        payload: { text: toastMessage.failedUpdatePost },
       });
     }
   } finally {
-    yield put({ type: "SPINNER_CLOSE" });
+    yield put({ type: SpinnerAction.SPINNER_CLOSE });
   }
 }
 
@@ -168,19 +167,19 @@ function* getPostsByHashtag({ type, payload }: { type: string; payload: { hashta
 }
 
 function* watchUploadPost() {
-  yield takeEvery("UPLOAD_POST_REQUEST", uploadPost);
+  yield takeEvery(GroupAction.UPLOAD_POST_REQUEST, uploadPost);
 }
 function* watchDeletePost() {
-  yield takeEvery("DELETE_POST_REQUEST", deletePost);
+  yield takeEvery(GroupAction.DELETE_POST_REQUEST, deletePost);
 }
 function* watchSelectPost() {
-  yield takeEvery("SELECT_POST_REQUEST", getPost);
+  yield takeEvery(ModalAction.SELECT_POST_REQUEST, getPost);
 }
 function* watchUpdatePost() {
-  yield takeEvery("UPDATE_POST_REQUEST", updatePost);
+  yield takeEvery(GroupAction.UPDATE_POST_REQUEST, updatePost);
 }
 function* watchRequestPostsByHashtag() {
-  yield takeEvery("REQUEST_POSTS_BY_HASHTAG", getPostsByHashtag);
+  yield takeEvery(GroupAction.REQUEST_POSTS_BY_HASHTAG, getPostsByHashtag);
 }
 
 export default function* userSaga() {

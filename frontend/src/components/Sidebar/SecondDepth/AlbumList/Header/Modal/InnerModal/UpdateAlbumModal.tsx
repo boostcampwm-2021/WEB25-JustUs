@@ -7,14 +7,13 @@ import COLOR from "@styles/Color";
 import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
 import { GroupAction, ModalAction } from "@src/action";
+import { icon } from "@src/constants";
 
 const UpdateAlbumModal = () => {
   const dispatch = useDispatch();
   const { selectedAlbum } = useSelector((state: RootState) => state.modal);
-  const [updateAlbumName, setUpdateAlbumName] = useState(true);
   const originAlbumName = selectedAlbum.albumName;
   const [newAlbumName, setNewAlbumName] = useState(originAlbumName);
-  const { selectedGroup }: any = useSelector((state: RootState) => state.groups);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const closeModal = () => {
@@ -23,7 +22,6 @@ const UpdateAlbumModal = () => {
 
   const onChangeName = (e: ChangeEvent<HTMLInputElement>) => {
     setNewAlbumName(e.target.value);
-    setUpdateAlbumName(false);
   };
 
   const onClickSave = () => {
@@ -51,7 +49,7 @@ const UpdateAlbumModal = () => {
           <Title>앨범 이름 변경</Title>
           <CloseBtn>
             <button type="button" onClick={closeModal}>
-              <img src="/icons/clear.svg" alt="clear icon" />
+              <img src={icon.clear} alt="clear icon" />
             </button>
           </CloseBtn>
         </Header>

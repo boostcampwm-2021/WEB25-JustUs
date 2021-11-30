@@ -5,7 +5,7 @@ import { flexColumnCenterAlign, flexRowCenterAlign } from "@src/styles/StyledCom
 import { RootState } from "@src/reducer";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-
+import { image } from "@src/constants";
 const Login = () => {
   const SERVER_URL = process.env.REACT_APP_SERVER_URL;
   const LOGIN_URL = `${SERVER_URL}/api/auth/login`;
@@ -21,25 +21,25 @@ const Login = () => {
   if (userInfoLoading) return <></>;
   return (
     <>
-      <BackgroundImg imgUrl="/img/sand.jpg">
+      <BackgroundImg imgUrl={image.sand}>
         <BackgroundWrap>
           <Content>
             <LeftSide>
               <div>
                 <Logo>
-                  <img src="/img/podo.png" alt="justus logo" height="50px" />
+                  <img src={image.podo} alt="justus logo" height="50px" />
                   <LogoText>우리끼리</LogoText>
                 </Logo>
                 <LogoInfoText>흩어진 추억을 한 곳에 기록해보세요</LogoInfoText>
               </div>
               <a href={LOGIN_URL}>
-                <img src="/img/btnG_완성형.png" alt="naver social login" width="350px" />
+                <img src={image.naverLogin} alt="naver social login" width="350px" />
               </a>
             </LeftSide>
             <div id="right-side">
               <Polaroid id="polaroid">
-                <img src="/img/glass.jpg" width="300px" height="300px" alt="glass" />
-                <img src="/img/life_is_travel.png" height="40px" alt="life is travel" />
+                <img src={image.glass} width="300px" height="300px" alt="glass" />
+                <img src={image.lifeIsTravel} height="40px" alt="life is travel" />
               </Polaroid>
             </div>
           </Content>
@@ -48,7 +48,7 @@ const Login = () => {
               <p>Copyright ⓒ Team UNDEFINED. 모든 권리 보유.</p>
               <div>
                 <span>우리끼리</span>
-                <img src="/img/github_icon.png" height="18px" alt="github icon" />
+                <img src={image.githubIcon} height="18px" alt="github icon" />
                 <span className="names">공필상 | 김무성 | 김영한 | 조명희</span>
               </div>
             </FooterContent>

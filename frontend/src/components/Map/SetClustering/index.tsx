@@ -1,3 +1,4 @@
+import { icon } from "@src/constants";
 import COLOR from "@styles/Color";
 const Clustering = (map: naver.maps.Map, markers: naver.maps.Marker[], clickHandler: Function) => {
   const SIZE = 40;
@@ -7,12 +8,12 @@ const Clustering = (map: naver.maps.Map, markers: naver.maps.Marker[], clickHand
   const GRID_SIZE = 70;
 
   const podoThree = {
-    content: `<img src="/icons/podo-three.png" alt="three grape">`,
+    content: `<img src=${icon.podoThree} alt="three grape">`,
     size: new naver.maps.Size(SIZE, SIZE),
     origin: new naver.maps.Point(POINT, POINT),
   };
   const podoMany = {
-    content: `<img src="/icons/podo-many.png" alt="many grape">`,
+    content: `<img src=${icon.podoMany} alt="many grape">`,
     size: new naver.maps.Size(SIZE, SIZE),
     origin: new naver.maps.Point(POINT, POINT),
   };
