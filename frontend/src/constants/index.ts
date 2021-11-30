@@ -55,7 +55,7 @@ export const icon = {
   search: "/icons/search.svg",
   podo: "/icons/podo.png",
   podoThree: "/icons/podo-three.png",
-  x: "/icons/x.svg",
+  close: "/icons/x.svg",
   next: "/icons/next.svg",
   prev: "/icons/prev.svg",
   location: "/icons/location.svg",
