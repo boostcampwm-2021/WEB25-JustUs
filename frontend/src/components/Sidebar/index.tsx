@@ -19,9 +19,8 @@ const Sidebar = ({ isToggle, setIsToggle }: SidebarProps) => {
 };
 
 const SidebarWrapper = styled.nav`
-  display: inline-flex;
+  display: flex;
   font-size: 1.6rem;
-  width: 29rem;
 `;
 
 export default React.memo(Sidebar);

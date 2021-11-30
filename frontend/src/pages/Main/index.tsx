@@ -63,8 +63,16 @@ const Main = () => {
     <>
       {spinnerActivate ? <Spinner /> : null}
       <Header />
-      <Sidebar isToggle={isToggle} setIsToggle={setIsToggle} />
-      <Content>{groups.length > 0 ? <Map /> : <Empty />}</Content>
+      <Content>
+        {groups.length > 0 ? (
+          <>
+            <Sidebar isToggle={isToggle} setIsToggle={setIsToggle} />
+            <Map />
+          </>
+        ) : (
+          <Empty />
+        )}
+      </Content>
       <ModalManager setIsToggle={setIsToggle} />
       <ToastManager />
     </>
@@ -73,9 +81,5 @@ const Main = () => {
 
 const Content = styled.main`
   display: flex;
-  position: absolute;
-  width: calc(100% - 9rem);
-  top: 5vh;
-  left: 9rem;
 `;
 export default Main;
