@@ -1,7 +1,4 @@
-import axios from "axios";
 import { customAxios } from "@src/lib/customAxios";
-
-const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 interface IUser {
   userNickName: string;
