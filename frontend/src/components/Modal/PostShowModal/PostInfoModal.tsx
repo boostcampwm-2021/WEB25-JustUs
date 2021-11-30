@@ -56,7 +56,7 @@ const PostInfoModal = () => {
         event.nativeEvent.stopImmediatePropagation();
       }}
     >
-      <Modal className="modal">
+      <Modal className="modal nanum-dacaesarang">
         <ModalHeader className="modalHeader">
           <PostTitle>
             {selectedPost.postTitle.length > 20
@@ -122,7 +122,6 @@ const PostTitle = styled.div`
   ${flexRowCenterAlign}
   grid-column-start: 2;
   grid-column-end: 3;
-  font-family: "NanumDaCaeSaRang";
   font-size: 3rem;
   font-weight: bold;
 `;
@@ -146,7 +145,6 @@ const ModalContent = styled.div`
   ${modalTitleFont};
   font-weight: normal;
   padding: 2rem;
-  font-family: "NanumDaCaeSaRang";
   white-space: pre-wrap;
   height: 20rem;
   box-sizing: border-box;
@@ -161,7 +159,6 @@ const ModalContent = styled.div`
     background-color: ${(props) => props.theme.SECONDARY};
     padding: 0 1rem 0 0.5rem;
     font-size: 2.5rem;
-    font-family: "NanumDaCaeSaRang";
     &:hover {
       cursor: pointer;
       background-color: ${(props) => props.theme.PRIMARY};
@@ -178,12 +175,10 @@ const ModalFooter = styled.div`
   display: flex;
   justify-content: flex-end;
   vertical-align: bottom;
-  font-family: "NanumDaCaeSaRang";
   box-sizing: border-box;
 `;
 const FooterItem = styled.div`
   padding-right: 1rem;
-  font-family: "NanumDaCaeSaRang";
 `;
 
 export default PostInfoModal;

@@ -1,8 +1,6 @@
 import { all, fork, put, call, takeLatest } from "redux-saga/effects";
 import { GroupAction, ToastAction } from "@src/action";
-import axios from "axios";
-
-const SERVER_URL = process.env.REACT_APP_SERVER_URL;
+import { customAxios } from "@src/lib/customAxios";
 
 interface ResponseGenerator {
   config?: any;
@@ -15,23 +13,23 @@ interface ResponseGenerator {
 }
 
 function createAlbumApi(albumName: string, groupId: number) {
-  return axios.post(`${SERVER_URL}/api/albums`, { albumName, groupId }, { withCredentials: true });
+  return customAxios.post(`/api/albums`, { albumName, groupId });
 }
 
 function updateAlbumApi(albumName: string, albumId: number) {
-  return axios.put(`${SERVER_URL}/api/albums/${albumId}`, { albumName }, { withCredentials: true });
+  return customAxios.put(`/api/albums/${albumId}`, { albumName });
 }
 
 function deleteAlbumApi(albumId: number) {
-  return axios.delete(`${SERVER_URL}/api/albums/${albumId}`, { withCredentials: true });
+  return customAxios.delete(`/api/albums/${albumId}`);
 }
 
 function updateAlbumOrderApi(groupId: number, albumOrder: string) {
-  return axios.put(`${SERVER_URL}/api/groups/${groupId}/albumorder`, { albumOrder }, { withCredentials: true });
+  return customAxios.put(`/api/groups/${groupId}/albumorder`, { albumOrder });
 }
 
 function postShiftAlbumApi(postId: number, albumId: number) {
-  return axios.put(`${SERVER_URL}/api/posts/${postId}/shift`, { albumId }, { withCredentials: true });
+  return customAxios.put(`/api/posts/${postId}/shift`, { albumId });
 }
 
 function* createAlbum({ payload }: any) {
