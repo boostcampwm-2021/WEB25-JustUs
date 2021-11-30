@@ -1,4 +1,4 @@
-import { all, fork, put, call, takeEvery, select, delay } from "redux-saga/effects";
+import { all, fork, put, call, takeEvery, select } from "redux-saga/effects";
 import { UserAction, GroupAction, ToastAction } from "@src/action";
 import { UserAPI } from "@src/api";
 import { refresh } from "./";
@@ -46,12 +46,9 @@ function* getUserInfo() {
     const result: ResponseGenerator = yield call(getUserInfoApi);
     yield put({ type: UserAction.USER_INFO_SUCCEED, data: result.data });
   } catch (err: any) {
-    const { status, statusText } = err.response;
+    const { status, statusText, data } = err.response;
     if (status === 401) {
-      if (statusText === "Unauthorized") {
-        yield refresh();
-        yield put({ type: UserAction.USER_INFO_REQUEST });
-      }
+      yield refresh({ type: UserAction.USER_INFO_REQUEST });
     } else {
       yield put({ type: UserAction.USER_INFO_FAILED });
     }
@@ -65,10 +62,7 @@ function* getLogOut() {
   } catch (err: any) {
     const { status, statusText } = err.response;
     if (status === 401) {
-      if (statusText === "Unauthorized") {
-        yield refresh();
-        yield put({ type: UserAction.LOG_OUT_REQUEST });
-      }
+      yield refresh({ type: UserAction.LOG_OUT_REQUEST });
     } else {
       yield put({ type: UserAction.LOG_OUT_FAILED });
     }
@@ -92,10 +86,7 @@ function* updateUserInfo() {
   } catch (err: any) {
     const { status, statusText } = err.response;
     if (status === 401) {
-      if (statusText === "Unauthorized") {
-        yield refresh();
-        yield put({ type: UserAction.USER_INFO_UPDATE });
-      }
+      yield refresh({ type: UserAction.USER_INFO_UPDATE });
     } else {
       yield put({ type: UserAction.SET_UPDATE_FAIL });
       yield put({
@@ -115,10 +106,7 @@ function* getGroupList() {
   } catch (err: any) {
     const { status, statusText } = err.response;
     if (status === 401) {
-      if (statusText === "Unauthorized") {
-        yield refresh();
-        yield put({ type: GroupAction.GET_GROUP_LIST_REQUEST });
-      }
+      yield refresh({ type: GroupAction.GET_GROUP_LIST_REQUEST });
     } else {
       yield put({ type: GroupAction.GET_GROUP_LIST_FAILED });
     }
@@ -135,10 +123,7 @@ function* updateGroupOrder(action: any) {
   } catch (err: any) {
     const { status, statusText } = err.response;
     if (status === 401) {
-      if (statusText === "Unauthorized") {
-        yield refresh();
-        yield put({ type: UserAction.REQUEST_UPDATE_GROUP_ORDER, payload: action.payload });
-      }
+      yield refresh({ type: UserAction.REQUEST_UPDATE_GROUP_ORDER, payload: action.payload });
     }
   }
 }

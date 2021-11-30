@@ -65,10 +65,7 @@ function* getGroupInfo(action: any) {
   } catch (err: any) {
     const { status, statusText } = err.response;
     if (status === 401) {
-      if (statusText === "Unauthorized") {
-        yield refresh();
-        yield put({ type: GroupAction.REQUEST_GROUP_INFO, action });
-      }
+      yield refresh({ type: GroupAction.REQUEST_GROUP_INFO, payload: action.payload });
     } else {
       yield put({ type: "FAILURE_GROUP_INFO", data: err.response.data });
     }
@@ -88,10 +85,7 @@ function* createGroup({ payload }: any) {
   } catch (err: any) {
     const { status, statusText } = err.response;
     if (status === 401) {
-      if (statusText === "Unauthorized") {
-        yield refresh();
-        yield put({ type: GroupAction.CREATE_GROUP, payload });
-      }
+      yield refresh({ type: GroupAction.CREATE_GROUP, payload });
     } else {
       yield put({ type: ToastAction.SET_ERROR_TOAST, payload: { text: `그룹 생성에 실패했습니다.` } });
     }
@@ -110,10 +104,7 @@ function* getAlbumList(action: any) {
   } catch (err: any) {
     const { status, statusText } = err.response;
     if (status === 401) {
-      if (statusText === "Unauthorized") {
-        yield refresh();
-        yield put({ type: GroupAction.GET_ALBUM_LIST, action });
-      }
+      yield refresh({ type: GroupAction.GET_ALBUM_LIST, payload: action.payload });
     }
   } finally {
     yield put({ type: "SPINNER_CLOSE" });
@@ -136,10 +127,7 @@ function* deleteGroup(action: any) {
   } catch (err: any) {
     const { status, statusText } = err.response;
     if (status === 401) {
-      if (statusText === "Unauthorized") {
-        yield refresh();
-        yield put({ type: GroupAction.DELETE_GROUP, action });
-      }
+      yield refresh({ type: GroupAction.DELETE_GROUP, payload: action.payload });
     }
     yield put({
       type: ToastAction.SET_ERROR_TOAST,
@@ -157,10 +145,7 @@ function* getGroupMemberList(action: any) {
   } catch (err: any) {
     const { status, statusText } = err.response;
     if (status === 401) {
-      if (statusText === "Unauthorized") {
-        yield refresh();
-        yield put({ type: GroupAction.GET_GROUP_MEMBER_LIST, action });
-      }
+      yield refresh({ type: GroupAction.GET_GROUP_MEMBER_LIST, payload: action.payload });
     }
   }
 }
@@ -181,10 +166,7 @@ function* requestJoinGroup(action: any) {
   } catch (err: any) {
     const { status, statusText } = err.response;
     if (status === 401) {
-      if (statusText === "Unauthorized") {
-        yield refresh();
-        yield put({ type: GroupAction.REQUEST_JOIN_GROUP, action });
-      }
+      yield refresh({ type: GroupAction.REQUEST_JOIN_GROUP, payload: action.payload });
     } else {
       yield put({ type: ToastAction.SET_ERROR_TOAST, payload: { text: `그룹 참여에 실패했습니다.` } });
     }
@@ -209,10 +191,7 @@ function* requestUpdateGroup(action: any) {
   } catch (err: any) {
     const { status, statusText } = err.response;
     if (status === 401) {
-      if (statusText === "Unauthorized") {
-        yield refresh();
-        yield put({ type: GroupAction.REQUEST_UPDATE_GROUP, payload: action.payload });
-      }
+      yield refresh({ type: GroupAction.REQUEST_UPDATE_GROUP, payload: action.payload });
     } else {
       yield put({
         type: ToastAction.SET_ERROR_TOAST,
@@ -229,10 +208,7 @@ function* requestHashtags(action: any) {
   } catch (err: any) {
     const { status, statusText } = err.response;
     if (status === 401) {
-      if (statusText === "Unauthorized") {
-        yield refresh();
-        yield put({ type: GroupAction.REQUEST_HASHTAGS, payload: action.payload });
-      }
+      yield refresh({ type: GroupAction.REQUEST_HASHTAGS, payload: action.payload });
     } else {
       yield put({ type: GroupAction.SET_HASHTAGS, payload: { hashTags: [], hashTagsError: true } });
     }

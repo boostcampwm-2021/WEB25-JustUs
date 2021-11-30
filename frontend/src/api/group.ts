@@ -1,4 +1,5 @@
 import axios from "axios";
+import { customAxios } from "@src/lib/customAxios";
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
@@ -24,7 +25,7 @@ const groupApi = {
     }
     formData.append("groupName", payload.groupName);
 
-    const result = await axios.post(`${SERVER_URL}/api/groups`, formData, {
+    const result = await customAxios.post(`/api/groups`, formData, {
       withCredentials: true,
       headers: { "Content-Type": "multipart/form-data" },
     });
@@ -33,23 +34,23 @@ const groupApi = {
   },
 
   getAlbumList: async (payload: any) => {
-    const result = await axios.get(`${SERVER_URL}/api/groups/${payload.groupId}/albums`, { withCredentials: true });
+    const result = await customAxios.get(`/api/groups/${payload.groupId}/albums`);
     return result;
   },
 
   deleteGroup: async (payload: any) => {
-    const result = await axios.delete(`${SERVER_URL}/api/groups/${payload.groupId}`, { withCredentials: true });
+    const result = await customAxios.delete(`/api/groups/${payload.groupId}`);
     return result;
   },
 
   getGroupMemberList: async (payload: any) => {
-    const result = await axios.get(`${SERVER_URL}/api/groups/${payload.groupId}`, { withCredentials: true });
+    const result = await customAxios.get(`/api/groups/${payload.groupId}`);
     return result;
   },
 
   joinGroup: async (payload: any) => {
     const { code } = payload;
-    const result = await axios.post(`${SERVER_URL}/api/groups/join`, { code }, { withCredentials: true });
+    const result = await customAxios.post(`/api/groups/join`, { code });
     return result;
   },
 
@@ -59,7 +60,7 @@ const groupApi = {
     if (payload.groupImage) formData.append("groupImage", payload.groupImage);
     formData.append("clearImage", payload.clearImage);
 
-    const result = await axios.put(`${SERVER_URL}/api/groups/${payload.groupId}`, formData, {
+    const result = await customAxios.put(`/api/groups/${payload.groupId}`, formData, {
       withCredentials: true,
       headers: { "Content-Type": "multipart/form-data" },
     });
@@ -68,7 +69,7 @@ const groupApi = {
   },
 
   getHashtags: async (payload: any) => {
-    const result = await axios.get(`${SERVER_URL}/api/groups/${payload.groupId}/hashtags`, { withCredentials: true });
+    const result = await customAxios.get(`/api/groups/${payload.groupId}/hashtags`);
     return result;
   },
 };

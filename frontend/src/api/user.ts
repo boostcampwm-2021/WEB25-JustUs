@@ -1,4 +1,5 @@
 import axios from "axios";
+import { customAxios } from "@src/lib/customAxios";
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
@@ -14,11 +15,11 @@ interface IUser {
 
 const userApi = {
   getUserInfo: () => {
-    return axios.get(`${SERVER_URL}/api/user`, { withCredentials: true });
+    return customAxios.get(`/api/user`);
   },
 
   getLogOut: () => {
-    return axios.post(`${SERVER_URL}/api/auth/logout`, {}, { withCredentials: true });
+    return customAxios.post(`/api/auth/logout`, {});
   },
 
   updateUserInfo: async (user: IUser) => {
@@ -28,7 +29,7 @@ const userApi = {
     formData.append("clearImage", user.updateUserProfile === "deleted" ? "1" : "0");
     if (user.updateUserProfile) formData.append("profileImage", user.updateUserProfile);
 
-    const result = await axios.put(`${SERVER_URL}/api/user`, formData, {
+    const result = await customAxios.put(`/api/user`, formData, {
       withCredentials: true,
       headers: { "Content-Type": "multipart/form-data" },
     });
@@ -37,13 +38,13 @@ const userApi = {
   },
 
   getGroupList: async () => {
-    const result = await axios.get(`${SERVER_URL}/api/user/groups`, { withCredentials: true });
+    const result = await customAxios.get(`/api/user/groups`);
     return result;
   },
 
   updateGroupOrder: async (payload: any) => {
     const { groupOrder } = payload;
-    const result = axios.put(`${SERVER_URL}/api/user/grouporder`, { groupOrder }, { withCredentials: true });
+    const result = customAxios.put(`/api/user/grouporder`, { groupOrder });
     return result;
   },
 };

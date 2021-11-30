@@ -45,10 +45,7 @@ function* createAlbum({ payload }: any) {
   } catch (err: any) {
     const { status, statusText } = err.response;
     if (status === 401) {
-      if (statusText === "Unauthorized") {
-        yield refresh();
-        yield put({ type: GroupAction.NEW_ALBUM_REQUEST, payload });
-      }
+      yield refresh({ type: GroupAction.NEW_ALBUM_REQUEST, payload });
     }
   }
 }
@@ -65,10 +62,7 @@ function* updateAlbum({ payload }: any) {
   } catch (err: any) {
     const { status, statusText } = err.response;
     if (status === 401) {
-      if (statusText === "Unauthorized") {
-        yield refresh();
-        yield put({ type: GroupAction.UPDATE_ALBUM_REQUEST, payload });
-      }
+      yield refresh({ type: GroupAction.UPDATE_ALBUM_REQUEST, payload });
     } else {
       yield put({ type: GroupAction.UPDATE_ALBUM_FAILED });
       yield put({
@@ -91,10 +85,7 @@ function* deleteAlbum({ payload }: any) {
   } catch (err: any) {
     const { status, statusText } = err.response;
     if (status === 401) {
-      if (statusText === "Unauthorized") {
-        yield refresh();
-        yield put({ type: GroupAction.DELETE_ALBUM_REQUEST, payload });
-      }
+      yield refresh({ type: GroupAction.DELETE_ALBUM_REQUEST, payload });
     } else {
       yield put({ type: GroupAction.DELETE_ALBUM_FAILED });
       yield put({
@@ -113,10 +104,7 @@ function* updateAlbumOrder({ payload }: any) {
   } catch (err: any) {
     const { status, statusText } = err.response;
     if (status === 401) {
-      if (statusText === "Unauthorized") {
-        yield refresh();
-        yield put({ type: GroupAction.UPDATE_ALBUM_ORDER_REQUEST, payload });
-      }
+      yield refresh({ type: GroupAction.UPDATE_ALBUM_ORDER_REQUEST, payload });
     } else {
       yield put({ type: GroupAction.UPDATE_ALBUM_ORDER_FAILED });
     }
@@ -132,10 +120,7 @@ function* postShiftAlbum({ payload }: any) {
   } catch (err: any) {
     const { status, statusText } = err.response;
     if (status === 401) {
-      if (statusText === "Unauthorized") {
-        yield refresh();
-        yield put({ type: GroupAction.POST_SHIFT_ALBUM_REQUEST, payload });
-      }
+      yield refresh({ type: GroupAction.POST_SHIFT_ALBUM_REQUEST, payload });
     } else {
       yield put({ type: GroupAction.POST_SHIFT_ALBUM_FAILED });
     }
