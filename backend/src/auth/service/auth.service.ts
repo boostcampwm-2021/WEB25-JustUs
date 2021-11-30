@@ -20,7 +20,7 @@ export class AuthService {
 
       return await this.userService.findById(userId);
     } catch (e) {
-      throw new UnauthorizedException(`Expired AccessToken ${message}`);
+      throw new UnauthorizedException(`Expired ${message}`);
     }
   }
 

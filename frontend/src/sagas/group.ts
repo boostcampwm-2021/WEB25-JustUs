@@ -2,7 +2,8 @@ import { all, fork, put, call, takeLatest, select, delay } from "redux-saga/effe
 import { getGroupListApi } from "@src/sagas/user";
 import { GroupType } from "@src/reducer/GroupReducer";
 import { GroupAction, ToastAction } from "@src/action";
-import { customAxios } from "@src/lib/customAxios";
+import { GroupAPI } from "@src/api";
+import { refresh } from "./index";
 
 interface ResponseGenerator {
   config?: any;
@@ -24,76 +25,37 @@ interface IAlbum {
   albumName: string;
   posts: PostType[];
 }
+
 function getGroupInfoApi(params: any) {
-  const URL = "/api/groups";
-  const option = {
-    method: "GET",
-    header: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      groupId: params.groupId,
-    }),
-  };
-  return fetch(URL, option);
+  return GroupAPI.getGroupInfoApi(params);
 }
 
 async function createGroupApi(payload: any) {
-  const formData = new FormData();
-  if (payload.groupImage) {
-    formData.append("groupImage", payload.groupImage);
-  }
-  formData.append("groupName", payload.groupName);
-
-  const result = await customAxios.post(`/api/groups`, formData, {
-    withCredentials: true,
-    headers: { "Content-Type": "multipart/form-data" },
-  });
-
-  return result;
+  return GroupAPI.createGroup(payload);
 }
 
 async function getAlbumListApi(payload: any) {
-  const result = await customAxios.get(`/api/groups/${payload.groupId}/albums`);
-
-  return result;
+  return GroupAPI.getAlbumList(payload);
 }
 
 async function deleteGroupApi(payload: any) {
-  const result = await customAxios.delete(`/api/groups/${payload.groupId}`);
-  return result;
+  return GroupAPI.deleteGroup(payload);
 }
 
 async function getGroupMemberListApi(payload: any) {
-  const result = await customAxios.get(`/api/groups/${payload.groupId}`);
-  return result;
+  return GroupAPI.getGroupMemberList(payload);
 }
 
 async function requestJoinGroupApi(payload: any) {
-  const { code } = payload;
-
-  const result = await customAxios.post(`/api/groups/join`, { code });
-
-  return result;
+  return GroupAPI.joinGroup(payload);
 }
 
 async function requestUpdateGroupApi(payload: any) {
-  const formData = new FormData();
-  formData.append("groupName", payload.groupName);
-  if (payload.groupImage) formData.append("groupImage", payload.groupImage);
-  formData.append("clearImage", payload.clearImage);
-
-  const result = await customAxios.put(`/api/groups/${payload.groupId}`, formData, {
-    withCredentials: true,
-    headers: { "Content-Type": "multipart/form-data" },
-  });
-
-  return result;
+  return GroupAPI.updateGroup(payload);
 }
 
 async function requestHashtagsApi(payload: any) {
-  const result = await customAxios.get(`/api/groups/${payload.groupId}/hashtags`);
-  return result;
+  return GroupAPI.getHashtags(payload);
 }
 
 function* getGroupInfo(action: any) {
@@ -101,7 +63,12 @@ function* getGroupInfo(action: any) {
     const result: ResponseGenerator = yield call(getGroupInfoApi, action.payload);
     yield put({ type: "SUCCESS_GROUP_INFO", data: result.json() });
   } catch (err: any) {
-    yield put({ type: "FAILURE_GROUP_INFO", data: err.response.data });
+    const { status, statusText } = err.response;
+    if (status === 401) {
+      yield refresh({ type: GroupAction.REQUEST_GROUP_INFO, payload: action.payload });
+    } else {
+      yield put({ type: "FAILURE_GROUP_INFO", data: err.response.data });
+    }
   }
 }
 
@@ -116,7 +83,12 @@ function* createGroup({ payload }: any) {
     yield put({ type: ToastAction.SET_SUCCEED_TOAST, payload: { text: `${groupName} 그룹 생성에 성공했습니다.` } });
     yield put({ type: "SET_SELECTED_GROUP_IDX", payload: { selectedGroupIdx: groups.length } });
   } catch (err: any) {
-    yield put({ type: ToastAction.SET_ERROR_TOAST, payload: { text: `그룹 생성에 실패했습니다.` } });
+    const { status, statusText } = err.response;
+    if (status === 401) {
+      yield refresh({ type: GroupAction.CREATE_GROUP, payload });
+    } else {
+      yield put({ type: ToastAction.SET_ERROR_TOAST, payload: { text: `그룹 생성에 실패했습니다.` } });
+    }
   }
 }
 
@@ -130,6 +102,10 @@ function* getAlbumList(action: any) {
     const { albumList }: { albumList: IAlbum[] } = yield select((state) => state.groups);
     yield put({ type: "SET_SELECTED_GROUP", payload: { groupId, groupName, groupImage, albumList } });
   } catch (err: any) {
+    const { status, statusText } = err.response;
+    if (status === 401) {
+      yield refresh({ type: GroupAction.GET_ALBUM_LIST, payload: action.payload });
+    }
   } finally {
     yield put({ type: "SPINNER_CLOSE" });
   }
@@ -148,7 +124,11 @@ function* deleteGroup(action: any) {
       type: ToastAction.SET_SUCCEED_TOAST,
       payload: { text: `${action.payload.groupName} 그룹에서 탈퇴했습니다.` },
     });
-  } catch (err) {
+  } catch (err: any) {
+    const { status, statusText } = err.response;
+    if (status === 401) {
+      yield refresh({ type: GroupAction.DELETE_GROUP, payload: action.payload });
+    }
     yield put({
       type: ToastAction.SET_ERROR_TOAST,
       payload: { text: `그룹 탈퇴에 실패했습니다.` },
@@ -162,7 +142,12 @@ function* getGroupMemberList(action: any) {
 
     yield put({ type: "GET_GROUP_MEMBER_LIST_SUCCEED", payload: result.data });
     yield put({ type: "OPEN_MODAL", payload: "GroupInfoModal" });
-  } catch (err) {}
+  } catch (err: any) {
+    const { status, statusText } = err.response;
+    if (status === 401) {
+      yield refresh({ type: GroupAction.GET_GROUP_MEMBER_LIST, payload: action.payload });
+    }
+  }
 }
 
 function* requestJoinGroup(action: any) {
@@ -178,8 +163,13 @@ function* requestJoinGroup(action: any) {
     yield put({ type: GroupAction.GET_GROUP_LIST_SUCCEED, payload: groups });
     yield put({ type: ToastAction.SET_SUCCEED_TOAST, payload: { text: `그룹에 참여했습니다.` } });
     yield put({ type: "SET_SELECTED_GROUP_IDX", payload: { selectedGroupIdx: groups.length - 1 } });
-  } catch (err) {
-    yield put({ type: ToastAction.SET_ERROR_TOAST, payload: { text: `그룹 참여에 실패했습니다.` } });
+  } catch (err: any) {
+    const { status, statusText } = err.response;
+    if (status === 401) {
+      yield refresh({ type: GroupAction.REQUEST_JOIN_GROUP, payload: action.payload });
+    } else {
+      yield put({ type: ToastAction.SET_ERROR_TOAST, payload: { text: `그룹 참여에 실패했습니다.` } });
+    }
   }
 }
 
@@ -198,11 +188,16 @@ function* requestUpdateGroup(action: any) {
       type: ToastAction.SET_SUCCEED_TOAST,
       payload: { text: `그룹 정보가 수정되었습니다.` },
     });
-  } catch (err) {
-    yield put({
-      type: ToastAction.SET_ERROR_TOAST,
-      payload: { text: `그룹 정보 수정에 실패했습니다.` },
-    });
+  } catch (err: any) {
+    const { status, statusText } = err.response;
+    if (status === 401) {
+      yield refresh({ type: GroupAction.REQUEST_UPDATE_GROUP, payload: action.payload });
+    } else {
+      yield put({
+        type: ToastAction.SET_ERROR_TOAST,
+        payload: { text: `그룹 정보 수정에 실패했습니다.` },
+      });
+    }
   }
 }
 
@@ -210,8 +205,13 @@ function* requestHashtags(action: any) {
   try {
     const result: ResponseGenerator = yield call(requestHashtagsApi, action.payload);
     yield put({ type: GroupAction.SET_HASHTAGS, payload: { hashTags: result.data.hashtags, hashTagsError: false } });
-  } catch (err) {
-    yield put({ type: GroupAction.SET_HASHTAGS, payload: { hashTags: [], hashTagsError: true } });
+  } catch (err: any) {
+    const { status, statusText } = err.response;
+    if (status === 401) {
+      yield refresh({ type: GroupAction.REQUEST_HASHTAGS, payload: action.payload });
+    } else {
+      yield put({ type: GroupAction.SET_HASHTAGS, payload: { hashTags: [], hashTagsError: true } });
+    }
   }
 }
 

@@ -1,6 +1,7 @@
 import { all, fork, put, call, takeEvery, select } from "redux-saga/effects";
-import { customAxios } from "@src/lib/customAxios";
 import { UserAction, GroupAction, ToastAction } from "@src/action";
+import { UserAPI } from "@src/api";
+import { refresh } from "./";
 
 interface ResponseGenerator {
   config?: any;
@@ -21,38 +22,23 @@ interface IUser {
   updateUserProfile: string;
 }
 function getUserInfoApi() {
-  return customAxios.get(`/api/user`);
+  return UserAPI.getUserInfo();
 }
 
 function getLogOutApi() {
-  return customAxios.post(`/api/auth/logout`, {});
+  return UserAPI.getLogOut();
 }
 
 async function updateUserInfoApi(user: IUser) {
-  const formData = new FormData();
-
-  formData.append("userNickname", user.updateUserNickName);
-  if (user.updateUserProfile) {
-    formData.append("profileImage", user.updateUserProfile);
-  }
-
-  const result = await customAxios.put(`/api/user`, formData, {
-    withCredentials: true,
-    headers: { "Content-Type": "multipart/form-data" },
-  });
-
-  return result;
+  return UserAPI.updateUserInfo(user);
 }
 
 export async function getGroupListApi() {
-  const result = await customAxios.get(`/api/user/groups`);
-  return result;
+  return UserAPI.getGroupList();
 }
 
 async function updateGroupOrderApi(payload: any) {
-  const { groupOrder } = payload;
-  const result = customAxios.put(`/api/user/grouporder`, { groupOrder });
-  return result;
+  return UserAPI.updateGroupOrder(payload);
 }
 
 function* getUserInfo() {
@@ -60,7 +46,12 @@ function* getUserInfo() {
     const result: ResponseGenerator = yield call(getUserInfoApi);
     yield put({ type: UserAction.USER_INFO_SUCCEED, data: result.data });
   } catch (err: any) {
-    yield put({ type: UserAction.USER_INFO_FAILED });
+    const { status, statusText, data } = err.response;
+    if (status === 401) {
+      yield refresh({ type: UserAction.USER_INFO_REQUEST });
+    } else {
+      yield put({ type: UserAction.USER_INFO_FAILED });
+    }
   }
 }
 
@@ -69,7 +60,12 @@ function* getLogOut() {
     yield call(getLogOutApi);
     yield put({ type: UserAction.LOG_OUT_SUCCEED });
   } catch (err: any) {
-    yield put({ type: UserAction.LOG_OUT_FAILED });
+    const { status, statusText } = err.response;
+    if (status === 401) {
+      yield refresh({ type: UserAction.LOG_OUT_REQUEST });
+    } else {
+      yield put({ type: UserAction.LOG_OUT_FAILED });
+    }
   }
 }
 
@@ -88,11 +84,16 @@ function* updateUserInfo() {
       payload: { text: `회원 정보가 수정되었습니다.` },
     });
   } catch (err: any) {
-    yield put({ type: UserAction.SET_UPDATE_FAIL });
-    yield put({
-      type: ToastAction.SET_ERROR_TOAST,
-      payload: { text: `회원 정보 수정에 실패했습니다.` },
-    });
+    const { status, statusText } = err.response;
+    if (status === 401) {
+      yield refresh({ type: UserAction.USER_INFO_UPDATE });
+    } else {
+      yield put({ type: UserAction.SET_UPDATE_FAIL });
+      yield put({
+        type: ToastAction.SET_ERROR_TOAST,
+        payload: { text: `회원 정보 수정에 실패했습니다.` },
+      });
+    }
   }
 }
 
@@ -102,8 +103,13 @@ function* getGroupList() {
     const result: ResponseGenerator = yield call(getGroupListApi);
     const { groups } = result.data;
     yield put({ type: GroupAction.GET_GROUP_LIST_SUCCEED, payload: groups });
-  } catch {
-    yield put({ type: GroupAction.GET_GROUP_LIST_FAILED });
+  } catch (err: any) {
+    const { status, statusText } = err.response;
+    if (status === 401) {
+      yield refresh({ type: GroupAction.GET_GROUP_LIST_REQUEST });
+    } else {
+      yield put({ type: GroupAction.GET_GROUP_LIST_FAILED });
+    }
   } finally {
     yield put({ type: "SPINNER_CLOSE" });
   }
@@ -112,7 +118,14 @@ function* getGroupList() {
 function* updateGroupOrder(action: any) {
   const groupOrder = action.payload.groupOrder.join(",");
 
-  yield call(updateGroupOrderApi, { groupOrder });
+  try {
+    yield call(updateGroupOrderApi, { groupOrder });
+  } catch (err: any) {
+    const { status, statusText } = err.response;
+    if (status === 401) {
+      yield refresh({ type: UserAction.REQUEST_UPDATE_GROUP_ORDER, payload: action.payload });
+    }
+  }
 }
 
 function* watchUserInfo() {

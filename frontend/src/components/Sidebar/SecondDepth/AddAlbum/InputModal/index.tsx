@@ -5,17 +5,13 @@ import COLOR from "@styles/Color";
 import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
 import { useDispatch } from "react-redux";
-import { GroupAction } from "@src/action";
+import { GroupAction, ModalAction } from "@src/action";
 
-interface InputModalProps {
-  addAlbumModalRef: React.RefObject<HTMLDivElement>;
-  setIsAddAlbumModalOpened: Dispatch<SetStateAction<boolean>>;
-}
-
-const InputModal = ({ addAlbumModalRef, setIsAddAlbumModalOpened }: InputModalProps) => {
+const InputModal = () => {
   const [albumName, setAlbumName] = useState("");
   const [addAlbum, setAddAlbum] = useState(true);
   const { selectedGroup }: any = useSelector((state: RootState) => state.groups);
+  const { clickedTarget }: any = useSelector((state: RootState) => state.groupModal);
   const dispatch = useDispatch();
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -35,7 +31,7 @@ const InputModal = ({ addAlbumModalRef, setIsAddAlbumModalOpened }: InputModalPr
 
     dispatch(GroupAction.newAlbumRequestAction(albumName, selectedGroupId));
     setAddAlbum(true);
-    setIsAddAlbumModalOpened(false);
+    dispatch(ModalAction.setAddAlbumModalOpened({ isAddAlbumModalOpened: false }));
   };
 
   const onChangeName = (e: ChangeEvent<HTMLInputElement>) => {
@@ -48,7 +44,7 @@ const InputModal = ({ addAlbumModalRef, setIsAddAlbumModalOpened }: InputModalPr
   };
 
   return (
-    <AddAlbumModalWrapper ref={addAlbumModalRef} className="add-album-modal">
+    <AddAlbumModalWrapper className="add-album-modal">
       <AlbumCreateInputWrapper
         placeholder="새 앨범"
         onChange={onChangeName}

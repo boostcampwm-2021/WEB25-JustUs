@@ -1,21 +1,24 @@
+import { useEffect } from "react";
 import styled from "styled-components";
 import { flexRowCenterAlign } from "@src/styles/StyledComponents";
 import COLOR from "@styles/Color";
 import { ReactComponent as AddAlbumSVG } from "@styles/icons/add-album.svg";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
+import { ModalAction } from "@src/action";
 
-interface AddAlbumProps {
-  addAlbumBtnRef: React.RefObject<HTMLDivElement>;
-}
-
-const AddAlbum = ({ addAlbumBtnRef }: AddAlbumProps) => {
+const AddAlbum = () => {
   const { nowTheme }: any = useSelector((state: RootState) => state.theme);
-  const onClickAddAlbum = () => {};
+  const { isAddAlbumModalOpened }: any = useSelector((state: RootState) => state.modal);
+  const dispatch = useDispatch();
+
+  const onClickAddAlbum = () => {
+    dispatch(ModalAction.setAddAlbumModalOpened({ isAddAlbumModalOpened: !isAddAlbumModalOpened }));
+  };
 
   return (
     <AddAlbumWrapper>
-      <AddAblumBtnWrapper onClick={onClickAddAlbum} className="add-album-btn" ref={addAlbumBtnRef}>
+      <AddAblumBtnWrapper onClick={onClickAddAlbum} className="add-album-btn">
         <AddAlbumSVG fill={nowTheme.MENUTEXT} />
         <GuideWrapper>Add Album</GuideWrapper>
       </AddAblumBtnWrapper>
