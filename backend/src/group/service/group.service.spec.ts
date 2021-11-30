@@ -56,6 +56,7 @@ describe("GroupService", () => {
   let user: User;
   let testUser: User;
   let existsGroup: Group;
+  let updateGroup: Group;
   let existsAlbum1: Album;
   let existsAlbum2: Album;
   let existsPost1: Post;
@@ -123,7 +124,7 @@ describe("GroupService", () => {
 
   describe("updateAlbumOrder()", () => {
     it("앨범 순서 수정 성공", async () => {
-      groupRepository.update.mockResolvedValue(existsGroup);
+      groupRepository.update.mockResolvedValue(updateGroup);
       const result = await groupService.updateAlbumOrder(1, { albumOrder: "1,2" });
 
       expect(result).toBe("Album Order update success!!");
@@ -181,6 +182,10 @@ describe("GroupService", () => {
     existsGroup.groupCode = "existsCode";
     existsGroup.albumOrder = "2,1";
     existsGroup.users = [user, testUser];
+
+    updateGroup = new Group();
+    updateGroup.groupId = 1;
+    updateGroup.albumOrder = "1,2";
   };
   const initAlbumAndPost = () => {
     existsAlbum1 = new Album();
