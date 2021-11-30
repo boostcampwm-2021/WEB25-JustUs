@@ -17,7 +17,6 @@ const Main = () => {
   const [isToggle, setIsToggle] = useState<boolean>(true);
   const dispatch = useDispatch();
   const { groups, groupListLoaded }: any = useSelector((state: RootState) => state.groups);
-  const { spinnerActivate }: any = useSelector((state: RootState) => state.spinner);
   const { userInfoError, userLoggedOut, userInfoSucceed } = useSelector((state: RootState) => state.user);
   const history = useHistory();
   const themeNumber = Number(localStorage.getItem("themeNumber"));
@@ -59,9 +58,10 @@ const Main = () => {
   if (!userInfoSucceed || !groupListLoaded) {
     return <Spinner />;
   }
+
   return (
     <>
-      {spinnerActivate ? <Spinner /> : null}
+      <Spinner />
       <Header />
       <Sidebar isToggle={isToggle} setIsToggle={setIsToggle} />
       <Content>{groups.length > 0 ? <Map /> : <Empty />}</Content>
