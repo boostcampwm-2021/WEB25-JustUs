@@ -1,5 +1,5 @@
-import React, { Dispatch, SetStateAction } from "react";
-import { useSelector } from "react-redux";
+import React, { Dispatch, SetStateAction, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
 import styled, { keyframes } from "styled-components";
 import SettingGroup from "./SettingGroup";
@@ -7,32 +7,31 @@ import AlbumList from "./AlbumList";
 import AddAlbum from "./AddAlbum";
 import COLOR from "@styles/Color";
 import AddAlbumModal from "@components/Sidebar/SecondDepth/AddAlbum/InputModal";
+import { ModalAction } from "@src/action";
 
 interface SecondDepthProps {
-  addAlbumBtnRef: React.RefObject<HTMLDivElement>;
-  isAddAlbumModalOpened: boolean;
-  setIsAddAlbumModalOpened: Dispatch<SetStateAction<boolean>>;
-  addAlbumModalRef: React.RefObject<HTMLDivElement>;
   isToggle: boolean;
 }
 
-const SecondDepth = ({
-  isToggle,
-  addAlbumBtnRef,
-  isAddAlbumModalOpened,
-  setIsAddAlbumModalOpened,
-  addAlbumModalRef,
-}: SecondDepthProps) => {
+const SecondDepth = ({ isToggle }: SecondDepthProps) => {
   const { selectedGroup } = useSelector((state: RootState) => state.groups);
+  const { isAddAlbumModalOpened } = useSelector((state: RootState) => state.modal);
+  const { clickedTarget } = useSelector((state: RootState) => state.groupModal);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const addAlbumBtn = clickedTarget.target.closest(".add-album-btn");
+    const addAlbumModal = clickedTarget.target.closest(".add-album-modal");
+    if (!addAlbumBtn && !addAlbumModal) dispatch(ModalAction.setAddAlbumModalOpened({ isAddAlbumModalOpened: false }));
+  }, [clickedTarget]);
+
   if (!selectedGroup) return null;
   return (
     <SecondDepthWrapper isToggle={isToggle}>
       <SettingGroup />
       <AlbumList />
-      {isAddAlbumModalOpened && (
-        <AddAlbumModal addAlbumModalRef={addAlbumModalRef} setIsAddAlbumModalOpened={setIsAddAlbumModalOpened} />
-      )}
-      <AddAlbum addAlbumBtnRef={addAlbumBtnRef} />
+      {isAddAlbumModalOpened && <AddAlbumModal />}
+      <AddAlbum />
     </SecondDepthWrapper>
   );
 };

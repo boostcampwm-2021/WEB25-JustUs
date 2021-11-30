@@ -10,50 +10,20 @@ interface SidebarProps {
 }
 
 const Sidebar = ({ isToggle, setIsToggle }: SidebarProps) => {
-  const [isAddAlbumModalOpened, setIsAddAlbumModalOpened] = useState<boolean>(false);
   const addGroupBtnRef = useRef<HTMLDivElement>(null);
-  const addAlbumBtnRef = useRef<HTMLDivElement>(null);
-  const addAlbumModalRef = useRef<HTMLDivElement>(null);
-  const clickedTarget = useSelector((state: RootState) => state.groupModal.clickedTarget);
-
-  useEffect(() => {
-    const clickHandler = () => {
-      if (!clickedTarget.target) return;
-
-      const addAlbumButtonEl = clickedTarget.target.closest(".add-album-btn");
-      const addAlbumModalEl = clickedTarget.target.closest(".add-album-modal");
-
-      if (
-        addAlbumButtonEl !== addGroupBtnRef.current &&
-        addAlbumButtonEl !== addAlbumBtnRef.current &&
-        addAlbumModalEl !== addAlbumModalRef.current
-      ) {
-        setIsAddAlbumModalOpened(false);
-      }
-
-      if (addAlbumButtonEl) setIsAddAlbumModalOpened(true);
-    };
-
-    clickHandler();
-  }, [clickedTarget]);
 
   return (
     <SidebarWrapper>
       <FirstDepth isToggle={isToggle} setIsToggle={setIsToggle} addGroupBtnRef={addGroupBtnRef} />
-      <SecondDepth
-        isToggle={isToggle}
-        addAlbumBtnRef={addAlbumBtnRef}
-        isAddAlbumModalOpened={isAddAlbumModalOpened}
-        setIsAddAlbumModalOpened={setIsAddAlbumModalOpened}
-        addAlbumModalRef={addAlbumModalRef}
-      />
+      <SecondDepth isToggle={isToggle} />
     </SidebarWrapper>
   );
 };
 
-const SidebarWrapper = styled.div`
-  display: flex;
+const SidebarWrapper = styled.nav`
+  display: inline-flex;
   font-size: 1.6rem;
+  width: 29rem;
 `;
 
 export default Sidebar;

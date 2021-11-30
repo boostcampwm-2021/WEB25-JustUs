@@ -94,6 +94,11 @@ const UploadInfoModal = ({
   };
 
   const handelTitleInput = (event: React.FormEvent<HTMLInputElement>) => {
+    if ((event.target as HTMLTextAreaElement).value.length > 18) {
+      dispatch(ToastAction.setErrorToastAction({ text: "제목은 18글자 이하로 작성해주세요." }));
+
+      return;
+    }
     const { value } = event.target as HTMLTextAreaElement;
     setTitle(value);
   };

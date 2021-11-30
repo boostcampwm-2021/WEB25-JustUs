@@ -1,4 +1,4 @@
-import { ExecutionContext, Injectable, UnauthorizedException } from "@nestjs/common";
+import { ExecutionContext, HttpException, Injectable, UnauthorizedException } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
 import { AuthService } from "../service/auth.service";
 
@@ -13,6 +13,8 @@ export class JwtRefreshTokenAuthGuard extends AuthGuard("jwt") {
     const response = context.switchToHttp().getResponse();
 
     const { refreshToken } = request.cookies;
+
+    if (!refreshToken) throw new HttpException("No RefreshToken", 410);
 
     const validationRefreshToken = await this.authService.validateToken(refreshToken, "RefreshToken");
     if (validationRefreshToken.refreshToken !== refreshToken) {

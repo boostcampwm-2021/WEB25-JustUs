@@ -18,6 +18,7 @@ const UserInfoModal = () => {
   const [userImg, setUserImg] = useState<string>(userProfile);
   const [newName, setNewName] = useState<string>(userNickName);
   const inputRef = useRef<HTMLInputElement>(null);
+  const defaultImageURL = "https://kr.object.ncloudstorage.com/justus/base/user_base.png";
 
   const closeUserInfoModal = () => {
     dispatch(ModalAction.closeModalAction());
@@ -58,7 +59,13 @@ const UserInfoModal = () => {
       dispatch(ToastAction.setErrorToastAction({ text: "닉네임은 반드시 입력해야 합니다." }));
       return;
     }
-    dispatch(UserAction.userInfoUpdateAction({ updateUserNickName: newName, updateUserProfile: files[0]?.imageUrl }));
+
+    dispatch(
+      UserAction.userInfoUpdateAction({
+        updateUserNickName: newName,
+        updateUserProfile: userImg ? files[0]?.imageUrl : "deleted",
+      }),
+    );
     closeUserInfoModal();
   };
 
@@ -95,7 +102,7 @@ const UserInfoModal = () => {
                 width="100%"
                 height="100%"
               />
-              {userImg ? (
+              {userImg && userImg != defaultImageURL ? (
                 <DeleteImgBtnWrapper onClick={onClickDeleteBtn}>
                   <img src="/icons/delete.svg" alt="delete button"></img>
                 </DeleteImgBtnWrapper>
