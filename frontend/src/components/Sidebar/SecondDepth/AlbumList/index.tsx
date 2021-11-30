@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
@@ -12,27 +12,27 @@ const AlbumList = () => {
   const [postSelected, setPostSelected] = useState<number>(-1);
   const { albumList, selectedGroup }: any = useSelector((state: RootState) => state.groups);
   const clickedTarget = useSelector((state: RootState) => state.groupModal.clickedTarget);
-  const { selectedPost }: any = useSelector((state: RootState) => state.modal);
   const draggableRef = useRef<HTMLDivElement>(null);
 
-  function onDragLeaveHandler(ev: React.DragEvent<HTMLDivElement>) {
+  const onDragLeaveHandler = useCallback((ev: React.DragEvent<HTMLDivElement>) => {
     ev.preventDefault();
     const target = ev.target as HTMLElement;
     const parent = target.closest(".albumItem");
     if (!parent) return;
     parent?.classList.remove("album-hover");
     parent?.classList.remove("post-hover");
-  }
-  function onDropHandler(ev: React.DragEvent<HTMLDivElement>) {
-    ev.preventDefault();
-    const target = ev.target as HTMLElement;
-    const parent = target.closest(".albumItem");
-    if (!parent) return;
-    parent?.classList.remove("album-hover");
-    parent?.classList.remove("post-hover");
-  }
+  }, []);
 
-  function onAlbumDragEndHandler(ev: React.DragEvent<HTMLDivElement>) {
+  const onDropHandler = useCallback((ev: React.DragEvent<HTMLDivElement>) => {
+    ev.preventDefault();
+    const target = ev.target as HTMLElement;
+    const parent = target.closest(".albumItem");
+    if (!parent) return;
+    parent?.classList.remove("album-hover");
+    parent?.classList.remove("post-hover");
+  }, []);
+
+  const onAlbumDragEndHandler = useCallback((ev: React.DragEvent<HTMLDivElement>) => {
     ev.preventDefault();
     const target = ev.target as HTMLElement;
     const parent = target.closest(".albumItem");
@@ -62,9 +62,9 @@ const AlbumList = () => {
       })
       .join(",");
     dispatch(GroupAction.updateAlbumOrderAction(selectedGroup.groupId, albumOrder));
-  }
+  }, []);
 
-  function onPostDragEndHandler(ev: React.DragEvent<HTMLDivElement>) {
+  const onPostDragEndHandler = useCallback((ev: React.DragEvent<HTMLDivElement>) => {
     ev.preventDefault();
     const target = ev.target as HTMLElement;
     const parent = target.closest(".albumItem");
@@ -80,9 +80,9 @@ const AlbumList = () => {
     const postInfo = { postId, postTitle, albumId: postAlbumId };
     const albumId: number = Number(nowParent.dataset.albumId);
     dispatch(GroupAction.postShiftAlbumAction(postInfo, albumId));
-  }
+  }, []);
 
-  function onPostDragHandler(ev: React.DragEvent<HTMLDivElement>) {
+  const onPostDragHandler = useCallback((ev: React.DragEvent<HTMLDivElement>) => {
     ev.preventDefault();
     const target = ev.target as HTMLElement;
     const parent = target.closest(".albumItem");
@@ -93,9 +93,9 @@ const AlbumList = () => {
     if (!nowParent) return;
     if (parent === nowParent) return;
     nowParent.classList.add("post-hover");
-  }
+  }, []);
 
-  function onAlbumDragHandler(ev: React.DragEvent<HTMLDivElement>) {
+  const onAlbumDragHandler = useCallback((ev: React.DragEvent<HTMLDivElement>) => {
     ev.preventDefault();
     const target = ev.target as HTMLElement;
     const parent = target.closest(".albumItem");
@@ -106,7 +106,7 @@ const AlbumList = () => {
     if (!nowParent) return;
     if (parent === nowParent) return;
     nowParent.classList.add("album-hover");
-  }
+  }, []);
 
   useEffect(() => {
     const clickHandler = () => {
@@ -123,13 +123,9 @@ const AlbumList = () => {
     clickHandler();
   }, [clickedTarget]);
 
-  useEffect(() => {
-    setPostSelected(selectedPost.postId);
-  }, [selectedPost]);
-
-  const scrollHandler = () => {
+  const scrollHandler = useCallback(() => {
     dispatch(ModalAction.setAlbumSettingWrapperModalIdxAction({ albumSettingWrapperModalIdx: -1 }));
-  };
+  }, []);
 
   return (
     <DraggableWrapper ref={draggableRef} onScroll={scrollHandler}>
@@ -138,6 +134,7 @@ const AlbumList = () => {
           return (
             <AlbumWrapper key={album.albumId} className="albumItem" data-albumidx={idx} data-album-id={album.albumId}>
               <Album
+                key={album.albumId}
                 album={album}
                 postSelected={postSelected}
                 setPostSelected={setPostSelected}
@@ -184,4 +181,4 @@ const AlbumWrapper = styled.div`
   margin: 1rem 0;
 `;
 
-export default AlbumList;
+export default React.memo(AlbumList);

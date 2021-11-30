@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
 import styled, { keyframes } from "styled-components";
@@ -70,4 +70,4 @@ const SecondDepthWrapper = styled.div<{ isToggle: boolean }>`
   animation-duration: 1s;
 `;
 
-export default SecondDepth;
+export default React.memo(SecondDepth);

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import Header from "@components/Sidebar/SecondDepth/AlbumList/Header";
 import Post from "@components/Sidebar/SecondDepth/AlbumList/Post";
 
@@ -56,4 +56,4 @@ const Album = ({
   );
 };
 
-export default Album;
+export default React.memo(Album);

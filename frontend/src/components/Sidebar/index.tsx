@@ -1,6 +1,4 @@
-import { useEffect, useRef, useState, Dispatch, SetStateAction } from "react";
-import { useSelector } from "react-redux";
-import { RootState } from "@src/reducer";
+import React, { useRef, Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
 import FirstDepth from "./FirstDepth";
 import SecondDepth from "./SecondDepth";
@@ -26,4 +24,4 @@ const SidebarWrapper = styled.nav`
   width: 29rem;
 `;
 
-export default Sidebar;
+export default React.memo(Sidebar);
