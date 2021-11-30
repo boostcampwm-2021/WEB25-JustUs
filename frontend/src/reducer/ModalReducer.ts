@@ -82,6 +82,22 @@ const ModalReducer = (state = initState, action: any) => {
         selectedPost: action.post,
         isPostLoading: false,
       };
+    case ModalAction.SELECT_POST_INIT:
+      return {
+        ...state,
+        selectedPost: {
+          userId: -1,
+          userNickname: "",
+          postId: -1,
+          postTitle: "",
+          postContent: "",
+          postDate: "",
+          images: [],
+          postLatitude: -1,
+          postLongitude: -1,
+          postLocation: "",
+        },
+      };
     case ModalAction.SELECT_POST_FAILED:
       return { ...state, isPostLoading: false };
     case ModalAction.SET_CLUSTERED_MARKER:

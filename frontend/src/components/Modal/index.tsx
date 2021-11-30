@@ -3,6 +3,8 @@ import ReactDOM from "react-dom";
 import COLOR from "@styles/Color";
 import { useDispatch } from "react-redux";
 import { ModalAction } from "@src/action";
+import { useSelector } from "react-redux";
+import { RootState } from "@src/reducer";
 
 const modalRootEl = document.getElementById("modal");
 if (modalRootEl) {
@@ -24,8 +26,11 @@ interface ModalProps {
 
 const Modal = ({ children, open = true }: ModalProps) => {
   const dispatch = useDispatch();
-
+  const { selectedPost } = useSelector((state: RootState) => state.modal);
   const closeModal = () => {
+    if (selectedPost.postId !== -1) {
+      dispatch(ModalAction.initSelectPost());
+    }
     dispatch(ModalAction.closeModalAction());
   };
   useEffect(() => {
