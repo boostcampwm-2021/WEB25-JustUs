@@ -5,6 +5,7 @@ import Modal from "@components/Modal";
 import { useDispatch } from "react-redux";
 import COLOR from "@styles/Color";
 import { GroupAction, ModalAction } from "@src/action";
+import { icon } from "@src/constants";
 
 const JoinGroupModal = () => {
   const dispatch = useDispatch();
@@ -41,7 +42,7 @@ const JoinGroupModal = () => {
           </TitleWrapper>
           <CloseBtn>
             <button type="button" onClick={closeModal}>
-              <img src="/icons/clear.svg" alt="clear icon" />
+              <img src={icon.clear} alt="clear icon" />
             </button>
           </CloseBtn>
         </Header>

@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
 import Album from "./Album";
-import COLOR from "@styles/Color";
 import { useDispatch } from "react-redux";
 import { GroupAction } from "@src/action";
 import { ModalAction } from "@src/action";
@@ -12,7 +11,6 @@ const AlbumList = () => {
   const dispatch = useDispatch();
   const [postSelected, setPostSelected] = useState<number>(-1);
   const { albumList, selectedGroup }: any = useSelector((state: RootState) => state.groups);
-  const { albumSettingWrapperModalIdx } = useSelector((state: RootState) => state.modal);
   const clickedTarget = useSelector((state: RootState) => state.groupModal.clickedTarget);
   const { selectedPost }: any = useSelector((state: RootState) => state.modal);
   const draggableRef = useRef<HTMLDivElement>(null);
@@ -129,8 +127,12 @@ const AlbumList = () => {
     setPostSelected(selectedPost.postId);
   }, [selectedPost]);
 
+  const scrollHandler = () => {
+    dispatch(ModalAction.setAlbumSettingWrapperModalIdxAction({ albumSettingWrapperModalIdx: -1 }));
+  };
+
   return (
-    <DraggableWrapper ref={draggableRef}>
+    <DraggableWrapper ref={draggableRef} onScroll={scrollHandler}>
       {albumList &&
         albumList.map((album: any, idx: number) => {
           return (

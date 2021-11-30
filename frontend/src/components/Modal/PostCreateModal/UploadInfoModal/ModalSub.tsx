@@ -1,10 +1,11 @@
 import styled, { keyframes } from "styled-components";
 import COLOR from "@src/styles/Color";
 import React, { useState, useEffect, Dispatch, SetStateAction } from "react";
-import { flexRowCenterAlign, flexColumnCenterAlign, iconHover } from "@styles/StyledComponents";
+import { flexRowCenterAlign, iconHover } from "@styles/StyledComponents";
 import SearchResult from "@components/Modal/PostCreateModal/UploadInfoModal/SearchResult";
 import { useDispatch } from "react-redux";
 import { ToastAction } from "@src/action";
+import { icon, toastMessage } from "@src/constants";
 
 interface IData {
   [key: string]: string;
@@ -51,8 +52,6 @@ const ModalSub = ({
 }: ModalSubProps) => {
   const [input, setInput] = useState<string>("");
   const dispatch = useDispatch();
-  const SEARCH_ICON = "/icons/search.svg";
-  const SEARCH_PART_CLOSE_ICON = "/icons/arrow-left.svg";
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key !== "Enter") return;
@@ -76,7 +75,7 @@ const ModalSub = ({
     const ps = new window.kakao.maps.services.Places();
     const placesSearchCB = (data: IData[], status: number, pagination: IPagination) => {
       if (status === window.kakao.maps.services.Status.ZERO_RESULT) {
-        dispatch(ToastAction.setErrorToastAction({ text: "검색 결과가 존재하지 않습니다." }));
+        dispatch(ToastAction.setErrorToastAction({ text: toastMessage.noSearchList }));
         return;
       }
 
@@ -117,7 +116,7 @@ const ModalSub = ({
     <ModalSubWrapper isToggle={isSubOpened}>
       <ModalHeader className="header-sub">
         <SearchContainer>
-          <img src={SEARCH_ICON} height="90%" alt="search" />
+          <img src={icon.search} height="90%" alt="search" />
           <SearchInput
             type="text"
             placeholder="지역명을 입력하세요."
@@ -138,7 +137,7 @@ const ModalSub = ({
         />
       )}
       <CloseBtn onClick={onClickCloseBtn} isToggle={isSubOpened}>
-        <img src={SEARCH_PART_CLOSE_ICON} alt="search part close" />
+        <img src={icon.arrowLeft} alt="search part close" />
       </CloseBtn>
     </ModalSubWrapper>
   );

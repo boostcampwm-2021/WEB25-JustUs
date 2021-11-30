@@ -1,12 +1,12 @@
 import styled, { keyframes } from "styled-components";
 import { flexRowCenterAlign } from "@src/styles/StyledComponents";
-import COLOR from "@styles/Color";
+import { icon } from "@src/constants";
 const Spinner = () => {
   return (
     <BackGround>
-      <img width="40" src="/icons/podo.png" alt="clear icon" />
-      <img width="40" src="/icons/podo-three.png" alt="clear icon" />
-      <img width="40" src="/icons/podo-many.png" alt="clear icon" />
+      <img width="40" src={icon.podo} alt="clear icon" />
+      <img width="40" src={icon.podoThree} alt="clear icon" />
+      <img width="40" src={icon.podoMany} alt="clear icon" />
     </BackGround>
   );
 };

@@ -1,25 +1,26 @@
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { flexRowCenterAlign, iconHover } from "@src/styles/StyledComponents";
 import COLOR from "@src/styles/Color";
 import { useDispatch } from "react-redux";
 import { ModalAction } from "@src/action";
+import { icon, modal } from "@src/constants";
 const PostSettingModal = () => {
   const dispatch = useDispatch();
   const onClickUpdatePost = () => {
-    dispatch(ModalAction.openModalAction("PostUpdateModal"));
+    dispatch(ModalAction.openModalAction(modal.PostUpdateModal));
   };
 
   const onClickDeletePost = () => {
-    dispatch(ModalAction.openModalAction("PostDeleteModal"));
+    dispatch(ModalAction.openModalAction(modal.PostDeleteModal));
   };
 
   return (
     <ModalWrapper>
       <ModalItem delete={false} onClick={onClickUpdatePost} className="update-post-btn">
-        <img src="icons/update.svg" alt="update icon" />
+        <img src={icon.update} alt="update icon" />
       </ModalItem>
       <ModalItem delete={true} onClick={onClickDeletePost} className="delete-delete-btn">
-        <img src="icons/trash.svg" alt="trash icon" />
+        <img src={icon.trash} alt="trash icon" />
       </ModalItem>
     </ModalWrapper>
   );

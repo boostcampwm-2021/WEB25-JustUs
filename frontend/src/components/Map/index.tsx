@@ -11,6 +11,7 @@ import ReactDOM from "react-dom";
 import PostListModal from "@components/Modal/PostListModal";
 import { MapAction, ModalAction } from "@src/action";
 import { AddressAction } from "@src/action";
+import { modal } from "@src/constants";
 
 declare const MarkerClustering: any;
 declare global {
@@ -136,7 +137,7 @@ const setMap = (
       dispatch(MapAction.setPostCreateWindowOpenedAction({ isPostCreateWindowOpened: false }));
       dispatch(AddressAction.setAddressAction(""));
       dispatch(AddressAction.setPositionAction({ x, y }));
-      dispatch(ModalAction.openModalAction("UploadAddressModal"));
+      dispatch(ModalAction.openModalAction(modal.UploadAddressModal));
     };
 
     ReactDOM.render(
@@ -269,7 +270,7 @@ const Map = () => {
 
   const modalOpen = () => {
     dispatch(AddressAction.setAddressAction(""));
-    dispatch(ModalAction.openModalAction("PostCreateModal"));
+    dispatch(ModalAction.openModalAction(modal.PostCreateModal));
   };
 
   return (

@@ -9,7 +9,7 @@ const COLOR = {
   RED: "#D32F2F",
   WRAP: "#FFFFFF90",
   SHADOW_BLACK: "#00000040",
-  SPINNER_BACK: "#cacaca3f",
+  SPINNER_BACK: "#CACACA3F",
   BLUR: "#DFDFDF33",
   THEME1: {
     PRIMARY: "#52734D",
@@ -19,7 +19,7 @@ const COLOR = {
   THEME2: {
     PRIMARY: "#E4CE8E",
     SECONDARY: "#D77948",
-    MENUTEXT: "#4f4626",
+    MENUTEXT: "#4F4626",
   },
   THEME3: {
     PRIMARY: "#87AAAA",
@@ -27,7 +27,7 @@ const COLOR = {
     MENUTEXT: "#603A18",
   },
   MODAL_BACKGROUND: "#00000066",
-  SCROLL: "#ffffff70",
+  SCROLL: "#FFFFFF70",
   RADIO_CHECK: "#006FF9",
 };
 

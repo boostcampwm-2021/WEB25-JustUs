@@ -1,15 +1,9 @@
-import { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
 import COLOR from "@src/styles/Color";
 import { RootState } from "@src/reducer";
 import { useDispatch, useSelector } from "react-redux";
 import { UserAction } from "@src/action";
 import { ModalAction } from "@src/action";
-
-interface ProfileModalProps {
-  isModalOpened: boolean;
-  setIsModalOpened: Dispatch<SetStateAction<boolean>>;
-}
 
 interface ModalListItem {
   id: number;
@@ -33,7 +27,6 @@ const ProfileModal = () => {
     if (id === 2) {
       dispatch(UserAction.logoutRequestAction());
     } else {
-      const type = "OPEN_MODAL";
       dispatch(ModalAction.openModalAction(payload));
     }
   };

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import styled, { css, keyframes } from "styled-components";
+import styled, { css } from "styled-components";
 import COLOR from "@styles/Color";
 import { useDispatch, useSelector } from "react-redux";
 import Carousel from "@components/Modal/PostCreateModal/UploadInfoModal/Carousel";
@@ -15,6 +15,7 @@ import {
   scrollbar,
   iconHover,
 } from "@styles/StyledComponents";
+import { icon, toastMessage } from "@src/constants";
 
 interface FileObject {
   imageUrl: File | string;
@@ -170,11 +171,11 @@ const UploadInfoModal = ({
 
   const showToast = () => {
     if (!title.length) {
-      dispatch(ToastAction.setErrorToastAction({ text: "제목을 입력해 주세요." }));
+      dispatch(ToastAction.setErrorToastAction({ text: toastMessage.requiredTitle }));
     } else if (!date.length) {
-      dispatch(ToastAction.setErrorToastAction({ text: "날짜를 선택해 주세요." }));
+      dispatch(ToastAction.setErrorToastAction({ text: toastMessage.requiredDate }));
     } else if (selectedLocation.y === -1) {
-      dispatch(ToastAction.setErrorToastAction({ text: "장소를 입력해 주세요." }));
+      dispatch(ToastAction.setErrorToastAction({ text: toastMessage.requiredLocate }));
     }
   };
 
@@ -195,10 +196,10 @@ const UploadInfoModal = ({
         <ModalHeader className="modalHeader">
           <ModalTitle>{mode === "create" ? "새 게시물 만들기" : "게시물 수정"}</ModalTitle>
           <ModalHeaderLeftBtn onClick={changeMode}>
-            <img src="/icons/prev.svg" alt="prev modal"></img>
+            <img src={icon.prev} alt="prev modal"></img>
           </ModalHeaderLeftBtn>
           <ModalHeaderRigthBtn onClick={closeModal}>
-            <img src="/icons/x.svg" alt="close"></img>
+            <img src={icon.x} alt="close"></img>
           </ModalHeaderRigthBtn>
         </ModalHeader>
         <ModalContent className="modalContent">
@@ -237,7 +238,7 @@ const UploadInfoModal = ({
                   <InputPlaceName>{address}</InputPlaceName>
                 )}
                 <LocationButton>
-                  <img src="/icons/location.svg" alt="location" width="100%" />
+                  <img src={icon.location} alt="location" width="100%" />
                 </LocationButton>
               </InputPlace>
             </InputBottom>

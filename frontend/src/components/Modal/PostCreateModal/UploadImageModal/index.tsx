@@ -12,6 +12,7 @@ import {
 } from "@styles/StyledComponents";
 import COLOR from "@styles/Color";
 import { ModalAction } from "@src/action";
+import { icon } from "@src/constants";
 
 interface FileObject {
   imageUrl: File | string;
@@ -57,17 +58,17 @@ const UploadImageModal = ({ changeMode, files, addFile, removeFile }: UploadImag
         <ModalTitle className="modaltitle">사진 업로드</ModalTitle>
         {files.length === 0 ? (
           <ModalHeaderRigthBtn className="modalHeaderRightBtn" onClick={closeModal}>
-            <img src="/icons/x.svg" alt="close"></img>
+            <img src={icon.x} alt="close"></img>
           </ModalHeaderRigthBtn>
         ) : (
           <ModalHeaderRigthBtn className="modalHeaderRightBtn" onClick={nextModal}>
-            <img src="/icons/next.svg" alt="next"></img>
+            <img src={icon.next} alt="next"></img>
           </ModalHeaderRigthBtn>
         )}
       </ModalHeader>
       <ModalContent>
         <UploadButton onClick={clickInputTag}>
-          <img src="/icons/add-photo.svg" alt="add"></img>
+          <img src={icon.addPhoto} alt="add"></img>
           <ImageInput ref={inputImagaRef} accept="image/*" type="file" onChange={changeImage}></ImageInput>
           <p>
             {files.length}/{MAX_IMAGE}
@@ -77,7 +78,7 @@ const UploadImageModal = ({ changeMode, files, addFile, removeFile }: UploadImag
           (fileObject) => (
             <ImagePreview key={shortid.generate()}>
               <DeleteImageBtn onClick={() => removeFile(fileObject)}>
-                <img src="/icons/delete.svg" alt="delete" width="100%"></img>
+                <img src={icon.delete} alt="delete" width="100%"></img>
               </DeleteImageBtn>
               <img
                 src={
@@ -85,6 +86,7 @@ const UploadImageModal = ({ changeMode, files, addFile, removeFile }: UploadImag
                     ? fileObject.imageUrl
                     : URL.createObjectURL(fileObject.imageUrl)
                 }
+                alt={"uploaded img"}
               ></img>
             </ImagePreview>
           ),
