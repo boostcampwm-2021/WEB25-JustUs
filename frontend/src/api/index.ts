@@ -2,12 +2,11 @@ import AlbumAPI from "./album";
 import GroupAPI from "./group";
 import PostAPI from "./post";
 import UserAPI from "./user";
-import axios from "axios";
-
-const SERVER_URL = process.env.REACT_APP_SERVER_URL;
+import { customAxios } from "@src/lib/customAxios";
 
 export const RefreshAPI = async () => {
-  await axios.get(`${SERVER_URL}/api/auth/refresh-token`, { withCredentials: true });
+  const URL = `/api/auth/refresh-token`;
+  await customAxios.get(URL);
 };
 
 export { AlbumAPI, GroupAPI, PostAPI, UserAPI };
