@@ -147,6 +147,7 @@ const setMap = (
           clickInfo={e}
           rightPosition={{ x: e.pointerEvent.pageX, y: e.pointerEvent.pageY }}
           modalOpen={modalOpen}
+          dispatch={dispatch}
         />
       </React.StrictMode>,
       document.getElementById("createPostWindow"),
