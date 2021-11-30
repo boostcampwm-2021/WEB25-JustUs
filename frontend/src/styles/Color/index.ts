@@ -28,6 +28,7 @@ const COLOR = {
   },
   MODAL_BACKGROUND: "#00000066",
   SCROLL: "#FFFFFF70",
+  RADIO_CHECK: "#006FF9",
 };
 
 export default COLOR;

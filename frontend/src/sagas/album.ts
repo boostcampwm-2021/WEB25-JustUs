@@ -1,9 +1,8 @@
 import { all, fork, put, call, takeLatest } from "redux-saga/effects";
 import { GroupAction, ToastAction } from "@src/action";
-import axios from "axios";
+import { AlbumAPI } from "@src/api";
+import { refresh } from "./index";
 import { toastMessage } from "@src/constants";
-
-const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 interface ResponseGenerator {
   config?: any;
@@ -16,23 +15,23 @@ interface ResponseGenerator {
 }
 
 function createAlbumApi(albumName: string, groupId: number) {
-  return axios.post(`${SERVER_URL}/api/albums`, { albumName, groupId }, { withCredentials: true });
+  return AlbumAPI.createAlbum(albumName, groupId);
 }
 
 function updateAlbumApi(albumName: string, albumId: number) {
-  return axios.put(`${SERVER_URL}/api/albums/${albumId}`, { albumName }, { withCredentials: true });
+  return AlbumAPI.updateAlbum(albumName, albumId);
 }
 
 function deleteAlbumApi(albumId: number) {
-  return axios.delete(`${SERVER_URL}/api/albums/${albumId}`, { withCredentials: true });
+  return AlbumAPI.deleteAlbum(albumId);
 }
 
 function updateAlbumOrderApi(groupId: number, albumOrder: string) {
-  return axios.put(`${SERVER_URL}/api/groups/${groupId}/albumorder`, { albumOrder }, { withCredentials: true });
+  return AlbumAPI.updateAlbumOrder(groupId, albumOrder);
 }
 
 function postShiftAlbumApi(postId: number, albumId: number) {
-  return axios.put(`${SERVER_URL}/api/posts/${postId}/shift`, { albumId }, { withCredentials: true });
+  return AlbumAPI.postShiftAlbum(postId, albumId);
 }
 
 function* createAlbum({ payload }: any) {
@@ -45,11 +44,16 @@ function* createAlbum({ payload }: any) {
       payload: { text: toastMessage.succeedMakeAlbum(albumName) },
     });
   } catch (err: any) {
-    yield put({ type: GroupAction.NEW_ALBUM_FAILED });
-    yield put({
-      type: ToastAction.SET_ERROR_TOAST,
-      payload: { text: toastMessage.failedMakeAlbum },
-    });
+    const { status } = err.response;
+    if (status === 401) {
+      yield refresh({ type: GroupAction.NEW_ALBUM_REQUEST, payload });
+    } else {
+      yield put({ type: GroupAction.NEW_ALBUM_FAILED });
+      yield put({
+        type: ToastAction.SET_ERROR_TOAST,
+        payload: { text: toastMessage.failedMakeAlbum },
+      });
+    }
   }
 }
 
@@ -63,11 +67,16 @@ function* updateAlbum({ payload }: any) {
       payload: { text: toastMessage.succeedUpdateAlbum },
     });
   } catch (err: any) {
-    yield put({ type: GroupAction.UPDATE_ALBUM_FAILED });
-    yield put({
-      type: ToastAction.SET_ERROR_TOAST,
-      payload: { text: toastMessage.failedUpdateAlbum },
-    });
+    const { status } = err.response;
+    if (status === 401) {
+      yield refresh({ type: GroupAction.UPDATE_ALBUM_REQUEST, payload });
+    } else {
+      yield put({ type: GroupAction.UPDATE_ALBUM_FAILED });
+      yield put({
+        type: ToastAction.SET_ERROR_TOAST,
+        payload: { text: toastMessage.failedUpdateAlbum },
+      });
+    }
   }
 }
 
@@ -81,11 +90,16 @@ function* deleteAlbum({ payload }: any) {
       payload: { text: toastMessage.succeedRemoveAlbum },
     });
   } catch (err: any) {
-    yield put({ type: GroupAction.DELETE_ALBUM_FAILED });
-    yield put({
-      type: ToastAction.SET_ERROR_TOAST,
-      payload: { text: toastMessage.failedRemoveAlbum },
-    });
+    const { status } = err.response;
+    if (status === 401) {
+      yield refresh({ type: GroupAction.DELETE_ALBUM_REQUEST, payload });
+    } else {
+      yield put({ type: GroupAction.DELETE_ALBUM_FAILED });
+      yield put({
+        type: ToastAction.SET_ERROR_TOAST,
+        payload: { text: toastMessage.failedRemoveAlbum },
+      });
+    }
   }
 }
 
@@ -95,7 +109,12 @@ function* updateAlbumOrder({ payload }: any) {
     yield call(updateAlbumOrderApi, groupId, albumOrder);
     yield put({ type: GroupAction.UPDATE_ALBUM_ORDER_SUCCEED, payload: { groupId, albumOrder } });
   } catch (err: any) {
-    yield put({ type: GroupAction.UPDATE_ALBUM_ORDER_FAILED });
+    const { status } = err.response;
+    if (status === 401) {
+      yield refresh({ type: GroupAction.UPDATE_ALBUM_ORDER_REQUEST, payload });
+    } else {
+      yield put({ type: GroupAction.UPDATE_ALBUM_ORDER_FAILED });
+    }
   }
 }
 
@@ -106,7 +125,12 @@ function* postShiftAlbum({ payload }: any) {
     yield call(postShiftAlbumApi, postId, albumId);
     yield put({ type: GroupAction.POST_SHIFT_ALBUM_SUCCEED, payload: { postInfo, albumId } });
   } catch (err: any) {
-    yield put({ type: GroupAction.POST_SHIFT_ALBUM_FAILED });
+    const { status, statusText } = err.response;
+    if (status === 401) {
+      yield refresh({ type: GroupAction.POST_SHIFT_ALBUM_REQUEST, payload });
+    } else {
+      yield put({ type: GroupAction.POST_SHIFT_ALBUM_FAILED });
+    }
   }
 }
 

@@ -49,12 +49,14 @@ export class UserService {
     if (!user) throw new NotFoundException(`Not found user with the id ${userId}`);
 
     const checkClearImage =
-      clearImage === 1 ? { profileImage: process.env.JUSTUS_USER_BASE_IMG, userNickname } : { userNickname };
+      clearImage === 1
+        ? { profileImage: process.env.JUSTUS_USER_BASE_IMG, userNickname }
+        : { profileImage: user.profileImage, userNickname };
     const updateObject = profileImage === undefined ? checkClearImage : { profileImage, userNickname };
 
     await this.userRepository.update(userId, updateObject);
 
-    return { profileImage };
+    return { profileImage: updateObject.profileImage };
   }
 
   async updateToken(userId: number, refreshToken: string): Promise<UpdateResult> {
@@ -79,5 +81,9 @@ export class UserService {
     const reArrangedGroups = reArrange(groupOrder, groupsObject);
 
     return { groups: reArrangedGroups };
+  }
+
+  async findById(userId: number): Promise<User> {
+    return await this.userRepository.findOne(userId);
   }
 }

@@ -1,9 +1,8 @@
 import { all, fork, put, call, takeEvery, select } from "redux-saga/effects";
-import axios from "axios";
 import { UserAction, GroupAction, ToastAction, SpinnerAction } from "@src/action";
 import { toastMessage } from "@src/constants";
-
-const SERVER_URL = process.env.REACT_APP_SERVER_URL;
+import { UserAPI } from "@src/api";
+import { refresh } from "./";
 
 interface ResponseGenerator {
   config?: any;
@@ -24,38 +23,23 @@ interface IUser {
   updateUserProfile: string;
 }
 function getUserInfoApi() {
-  return axios.get(`${SERVER_URL}/api/user`, { withCredentials: true });
+  return UserAPI.getUserInfo();
 }
 
 function getLogOutApi() {
-  return axios.post(`${SERVER_URL}/api/auth/logout`, {}, { withCredentials: true });
+  return UserAPI.getLogOut();
 }
 
 async function updateUserInfoApi(user: IUser) {
-  const formData = new FormData();
-
-  formData.append("userNickname", user.updateUserNickName);
-  if (user.updateUserProfile) {
-    formData.append("profileImage", user.updateUserProfile);
-  }
-
-  const result = await axios.put(`${SERVER_URL}/api/user`, formData, {
-    withCredentials: true,
-    headers: { "Content-Type": "multipart/form-data" },
-  });
-
-  return result;
+  return UserAPI.updateUserInfo(user);
 }
 
 export async function getGroupListApi() {
-  const result = await axios.get(`${SERVER_URL}/api/user/groups`, { withCredentials: true });
-  return result;
+  return UserAPI.getGroupList();
 }
 
 async function updateGroupOrderApi(payload: any) {
-  const { groupOrder } = payload;
-  const result = axios.put(`${SERVER_URL}/api/user/grouporder`, { groupOrder }, { withCredentials: true });
-  return result;
+  return UserAPI.updateGroupOrder(payload);
 }
 
 function* getUserInfo() {
@@ -63,7 +47,12 @@ function* getUserInfo() {
     const result: ResponseGenerator = yield call(getUserInfoApi);
     yield put({ type: UserAction.USER_INFO_SUCCEED, data: result.data });
   } catch (err: any) {
-    yield put({ type: UserAction.USER_INFO_FAILED });
+    const { status } = err.response;
+    if (status === 401) {
+      yield refresh({ type: UserAction.USER_INFO_REQUEST });
+    } else {
+      yield put({ type: UserAction.USER_INFO_FAILED });
+    }
   }
 }
 
@@ -72,7 +61,12 @@ function* getLogOut() {
     yield call(getLogOutApi);
     yield put({ type: UserAction.LOG_OUT_SUCCEED });
   } catch (err: any) {
-    yield put({ type: UserAction.LOG_OUT_FAILED });
+    const { status } = err.response;
+    if (status === 401) {
+      yield refresh({ type: UserAction.LOG_OUT_REQUEST });
+    } else {
+      yield put({ type: UserAction.LOG_OUT_FAILED });
+    }
   }
 }
 
@@ -91,11 +85,16 @@ function* updateUserInfo() {
       payload: { text: toastMessage.succeedUpdateProfile },
     });
   } catch (err: any) {
-    yield put({ type: UserAction.SET_UPDATE_FAIL });
-    yield put({
-      type: ToastAction.SET_ERROR_TOAST,
-      payload: { text: toastMessage.failedUpdateProfile },
-    });
+    const { status } = err.response;
+    if (status === 401) {
+      yield refresh({ type: UserAction.USER_INFO_UPDATE });
+    } else {
+      yield put({ type: UserAction.SET_UPDATE_FAIL });
+      yield put({
+        type: ToastAction.SET_ERROR_TOAST,
+        payload: { text: toastMessage.failedUpdateProfile },
+      });
+    }
   }
 }
 
@@ -105,8 +104,13 @@ function* getGroupList() {
     const result: ResponseGenerator = yield call(getGroupListApi);
     const { groups } = result.data;
     yield put({ type: GroupAction.GET_GROUP_LIST_SUCCEED, payload: groups });
-  } catch {
-    yield put({ type: GroupAction.GET_GROUP_LIST_FAILED });
+  } catch (err: any) {
+    const { status } = err.response;
+    if (status === 401) {
+      yield refresh({ type: GroupAction.GET_GROUP_LIST_REQUEST });
+    } else {
+      yield put({ type: GroupAction.GET_GROUP_LIST_FAILED });
+    }
   } finally {
     yield put({ type: SpinnerAction.SPINNER_CLOSE });
   }
@@ -115,7 +119,14 @@ function* getGroupList() {
 function* updateGroupOrder(action: any) {
   const groupOrder = action.payload.groupOrder.join(",");
 
-  yield call(updateGroupOrderApi, { groupOrder });
+  try {
+    yield call(updateGroupOrderApi, { groupOrder });
+  } catch (err: any) {
+    const { status } = err.response;
+    if (status === 401) {
+      yield refresh({ type: UserAction.REQUEST_UPDATE_GROUP_ORDER, payload: action.payload });
+    }
+  }
 }
 
 function* watchUserInfo() {

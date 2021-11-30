@@ -27,6 +27,7 @@ const initState: {
   isPostLoading: boolean;
   isProfileWrapperModalOpened: boolean;
   albumSettingWrapperModalIdx: number;
+  isAddAlbumModalOpened: boolean;
 } = {
   nowModal: "",
   nowAddress: "",
@@ -50,6 +51,7 @@ const initState: {
   isPostLoading: false,
   isProfileWrapperModalOpened: false,
   albumSettingWrapperModalIdx: -1,
+  isAddAlbumModalOpened: false,
 };
 
 const ModalReducer = (state = initState, action: any) => {
@@ -97,6 +99,12 @@ const ModalReducer = (state = initState, action: any) => {
       return {
         ...state,
         albumSettingWrapperModalIdx: action.payload.albumSettingWrapperModalIdx,
+      };
+    }
+    case ModalAction.SET_ADD_ALBUM_MODAL_OPENED: {
+      return {
+        ...state,
+        isAddAlbumModalOpened: action.payload.isAddAlbumModalOpened,
       };
     }
     default:

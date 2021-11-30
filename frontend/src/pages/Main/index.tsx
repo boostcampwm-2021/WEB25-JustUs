@@ -39,6 +39,7 @@ const Main = () => {
     document.addEventListener("contextmenu", () => {
       dispatch(ModalAction.setProfileWrapperModalOpenedAction({ isProfileWrapperModalOpened: false }));
       dispatch(ModalAction.setAlbumSettingWrapperModalIdxAction({ albumSettingWrapperModalIdx: -1 }));
+      dispatch(ModalAction.setAddAlbumModalOpened({ isAddAlbumModalOpened: false }));
     });
   }, []);
 
@@ -62,17 +63,19 @@ const Main = () => {
     <>
       {spinnerActivate ? <Spinner /> : null}
       <Header />
-      <Content>
-        <Sidebar isToggle={isToggle} setIsToggle={setIsToggle} />
-        {groups.length > 0 ? <Map /> : <Empty />}
-      </Content>
+      <Sidebar isToggle={isToggle} setIsToggle={setIsToggle} />
+      <Content>{groups.length > 0 ? <Map /> : <Empty />}</Content>
       <ModalManager setIsToggle={setIsToggle} />
       <ToastManager />
     </>
   );
 };
 
-const Content = styled.div`
+const Content = styled.main`
   display: flex;
+  position: absolute;
+  width: calc(100% - 9rem);
+  top: 5vh;
+  left: 9rem;
 `;
 export default Main;

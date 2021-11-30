@@ -1,12 +1,10 @@
 import { all, fork, put, call, takeLatest, select, delay } from "redux-saga/effects";
-import axios from "axios";
 import { getGroupListApi } from "@src/sagas/user";
 import { GroupType } from "@src/reducer/GroupReducer";
-import { SpinnerAction, ToastAction } from "@src/action";
+import { SpinnerAction, ToastAction, GroupAction, ModalAction } from "@src/action";
 import { modal, toastMessage } from "@src/constants";
-import groupAction from "@src/action/GroupAction";
-import modalAction from "@src/action/ModalAction";
-const SERVER_URL = process.env.REACT_APP_SERVER_URL;
+import { GroupAPI } from "@src/api";
+import { refresh } from "./index";
 
 interface ResponseGenerator {
   config?: any;
@@ -28,84 +26,50 @@ interface IAlbum {
   albumName: string;
   posts: PostType[];
 }
+
 function getGroupInfoApi(params: any) {
-  const URL = "/api/groups";
-  const option = {
-    method: "GET",
-    header: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      groupId: params.groupId,
-    }),
-  };
-  return fetch(URL, option);
+  return GroupAPI.getGroupInfoApi(params);
 }
 
 async function createGroupApi(payload: any) {
-  const formData = new FormData();
-  if (payload.groupImage) {
-    formData.append("groupImage", payload.groupImage);
-  }
-  formData.append("groupName", payload.groupName);
-
-  const result = await axios.post(`${SERVER_URL}/api/groups`, formData, {
-    withCredentials: true,
-    headers: { "Content-Type": "multipart/form-data" },
-  });
-
-  return result;
+  return GroupAPI.createGroup(payload);
 }
 
 async function getAlbumListApi(payload: any) {
-  const result = await axios.get(`${SERVER_URL}/api/groups/${payload.groupId}/albums`, { withCredentials: true });
-
-  return result;
+  return GroupAPI.getAlbumList(payload);
 }
 
 async function deleteGroupApi(payload: any) {
-  const result = await axios.delete(`${SERVER_URL}/api/groups/${payload.groupId}`, { withCredentials: true });
-  return result;
+  return GroupAPI.deleteGroup(payload);
 }
 
 async function getGroupMemberListApi(payload: any) {
-  const result = await axios.get(`${SERVER_URL}/api/groups/${payload.groupId}`, { withCredentials: true });
-  return result;
+  return GroupAPI.getGroupMemberList(payload);
 }
 
 async function requestJoinGroupApi(payload: any) {
-  const { code } = payload;
-
-  const result = await axios.post(`${SERVER_URL}/api/groups/join`, { code }, { withCredentials: true });
-
-  return result;
+  return GroupAPI.joinGroup(payload);
 }
 
 async function requestUpdateGroupApi(payload: any) {
-  const formData = new FormData();
-  formData.append("groupName", payload.groupName);
-  if (payload.groupImage) formData.append("groupImage", payload.groupImage);
-  formData.append("clearImage", payload.clearImage);
-
-  const result = await axios.put(`${SERVER_URL}/api/groups/${payload.groupId}`, formData, {
-    withCredentials: true,
-    headers: { "Content-Type": "multipart/form-data" },
-  });
-
-  return result;
+  return GroupAPI.updateGroup(payload);
 }
 
 async function requestHashtagsApi(payload: any) {
-  const result = await axios.get(`${SERVER_URL}/api/groups/${payload.groupId}/hashtags`, { withCredentials: true });
-  return result;
+  return GroupAPI.getHashtags(payload);
 }
 
 function* getGroupInfo(action: any) {
   try {
     const result: ResponseGenerator = yield call(getGroupInfoApi, action.payload);
-    yield put({ type: groupAction.SUCCESS_GROUP_INFO, data: result.json() });
+    yield put({ type: GroupAction.SUCCESS_GROUP_INFO, data: result.json() });
   } catch (err: any) {
-    yield put({ type: groupAction.FAILURE_GROUP_INFO, data: err.response.data });
+    const { status } = err.response;
+    if (status === 401) {
+      yield refresh({ type: GroupAction.REQUEST_GROUP_INFO, payload: action.payload });
+    } else {
+      yield put({ type: GroupAction.FAILURE_GROUP_INFO, data: err.response.data });
+    }
   }
 }
 
@@ -116,11 +80,16 @@ function* createGroup({ payload }: any) {
     const { groupId, groupImage } = result.data;
     const { groupName } = payload;
 
-    yield put({ type: groupAction.ADD_GROUP, payload: { groupId, groupName, groupImage, addGroupSucceed: true } });
+    yield put({ type: GroupAction.ADD_GROUP, payload: { groupId, groupName, groupImage, addGroupSucceed: true } });
     yield put({ type: ToastAction.SET_SUCCEED_TOAST, payload: { text: toastMessage.succeedMakeGroup(groupName) } });
-    yield put({ type: groupAction.SET_SELECTED_GROUP_IDX, payload: { selectedGroupIdx: groups.length } });
+    yield put({ type: GroupAction.SET_SELECTED_GROUP_IDX, payload: { selectedGroupIdx: groups.length } });
   } catch (err: any) {
-    yield put({ type: ToastAction.SET_ERROR_TOAST, payload: { text: toastMessage.failedMakeGroup } });
+    const { status } = err.response;
+    if (status === 401) {
+      yield refresh({ type: GroupAction.CREATE_GROUP, payload });
+    } else {
+      yield put({ type: ToastAction.SET_ERROR_TOAST, payload: { text: toastMessage.failedMakeGroup } });
+    }
   }
 }
 
@@ -130,10 +99,14 @@ function* getAlbumList(action: any) {
     const result: ResponseGenerator = yield call(getAlbumListApi, action.payload);
     const { albums } = result.data;
     const { groupId, groupName, groupImage } = action.payload;
-    yield put({ type: groupAction.SET_ALBUM_LIST, payload: albums });
+    yield put({ type: GroupAction.SET_ALBUM_LIST, payload: albums });
     const { albumList }: { albumList: IAlbum[] } = yield select((state) => state.groups);
-    yield put({ type: groupAction.SET_SELECTED_GROUP, payload: { groupId, groupName, groupImage, albumList } });
+    yield put({ type: GroupAction.SET_SELECTED_GROUP, payload: { groupId, groupName, groupImage, albumList } });
   } catch (err: any) {
+    const { status, statusText } = err.response;
+    if (status === 401) {
+      yield refresh({ type: GroupAction.GET_ALBUM_LIST, payload: action.payload });
+    }
   } finally {
     yield put({ type: SpinnerAction.SPINNER_CLOSE });
   }
@@ -144,15 +117,19 @@ function* deleteGroup(action: any) {
     const { selectedGroupIdx }: { selectedGroupIdx: number } = yield select((state) => state.groups);
     yield call(deleteGroupApi, action.payload);
     yield put({
-      type: groupAction.SET_SELECTED_GROUP_IDX,
+      type: GroupAction.SET_SELECTED_GROUP_IDX,
       payload: { selectedGroupIdx: selectedGroupIdx - 1 },
     });
-    yield put({ type: groupAction.DELETE_GROUP, payload: action.payload });
+    yield put({ type: GroupAction.DELETE_GROUP, payload: action.payload });
     yield put({
       type: ToastAction.SET_SUCCEED_TOAST,
       payload: { text: toastMessage.succeedQuitGroup(action.payload.groupName) },
     });
-  } catch (err) {
+  } catch (err: any) {
+    const { status, statusText } = err.response;
+    if (status === 401) {
+      yield refresh({ type: GroupAction.DELETE_GROUP, payload: action.payload });
+    }
     yield put({
       type: ToastAction.SET_ERROR_TOAST,
       payload: { text: toastMessage.failedQuitGroup },
@@ -164,26 +141,36 @@ function* getGroupMemberList(action: any) {
   try {
     const result: ResponseGenerator = yield call(getGroupMemberListApi, action.payload);
 
-    yield put({ type: groupAction.GET_GROUP_MEMBER_LIST_SUCCEED, payload: result.data });
-    yield put(modalAction.openModalAction(modal.GroupInfoModal));
-  } catch (err) {}
+    yield put({ type: GroupAction.GET_GROUP_MEMBER_LIST_SUCCEED, payload: result.data });
+    yield put(ModalAction.openModalAction(modal.GroupInfoModal));
+  } catch (err: any) {
+    const { status } = err.response;
+    if (status === 401) {
+      yield refresh({ type: GroupAction.GET_GROUP_MEMBER_LIST, payload: action.payload });
+    }
+  }
 }
 
 function* requestJoinGroup(action: any) {
   try {
     yield call(requestJoinGroupApi, action.payload);
-    yield put({ type: modalAction.CLOSE_MODAL });
+    yield put({ type: ModalAction.CLOSE_MODAL });
     yield delay(300);
 
     const result: ResponseGenerator = yield call(getGroupListApi);
     const { groups } = result.data;
 
-    yield put({ type: groupAction.SET_JOIN_GROUP_SUCCEED, payload: { joinGroupSucceed: true } });
-    yield put({ type: groupAction.GET_GROUP_LIST_SUCCEED, payload: groups });
+    yield put({ type: GroupAction.SET_JOIN_GROUP_SUCCEED, payload: { joinGroupSucceed: true } });
+    yield put({ type: GroupAction.GET_GROUP_LIST_SUCCEED, payload: groups });
     yield put({ type: ToastAction.SET_SUCCEED_TOAST, payload: { text: toastMessage.succeedJoinGroup } });
-    yield put({ type: groupAction.SET_SELECTED_GROUP_IDX, payload: { selectedGroupIdx: groups.length - 1 } });
-  } catch (err) {
-    yield put({ type: ToastAction.SET_ERROR_TOAST, payload: { text: toastMessage.failedJoinGroup } });
+    yield put({ type: GroupAction.SET_SELECTED_GROUP_IDX, payload: { selectedGroupIdx: groups.length - 1 } });
+  } catch (err: any) {
+    const { status, statusText } = err.response;
+    if (status === 401) {
+      yield refresh({ type: GroupAction.REQUEST_JOIN_GROUP, payload: action.payload });
+    } else {
+      yield put({ type: ToastAction.SET_ERROR_TOAST, payload: { text: toastMessage.failedJoinGroup } });
+    }
   }
 }
 
@@ -196,59 +183,69 @@ function* requestUpdateGroup(action: any) {
     const result2: ResponseGenerator = yield call(getGroupListApi);
     const { groups } = result2.data;
 
-    yield put({ type: groupAction.GET_GROUP_LIST_SUCCEED, payload: groups });
-    yield put({ type: groupAction.SET_SELECTED_GROUP, payload: { groupId, groupName, groupImage, albumList } });
+    yield put({ type: GroupAction.GET_GROUP_LIST_SUCCEED, payload: groups });
+    yield put({ type: GroupAction.SET_SELECTED_GROUP, payload: { groupId, groupName, groupImage, albumList } });
     yield put({
       type: ToastAction.SET_SUCCEED_TOAST,
       payload: { text: toastMessage.succeedUpdateGroup },
     });
-  } catch (err) {
-    yield put({
-      type: ToastAction.SET_ERROR_TOAST,
-      payload: { text: toastMessage.failedUpdateGroup },
-    });
+  } catch (err: any) {
+    const { status, statusText } = err.response;
+    if (status === 401) {
+      yield refresh({ type: GroupAction.REQUEST_UPDATE_GROUP, payload: action.payload });
+    } else {
+      yield put({
+        type: ToastAction.SET_ERROR_TOAST,
+        payload: { text: toastMessage.failedUpdateGroup },
+      });
+    }
   }
 }
 
 function* requestHashtags(action: any) {
   try {
     const result: ResponseGenerator = yield call(requestHashtagsApi, action.payload);
-    yield put({ type: groupAction.SET_HASHTAGS, payload: { hashTags: result.data.hashtags, hashTagsError: false } });
-  } catch (err) {
-    yield put({ type: groupAction.SET_HASHTAGS, payload: { hashTags: [], hashTagsError: true } });
+    yield put({ type: GroupAction.SET_HASHTAGS, payload: { hashTags: result.data.hashtags, hashTagsError: false } });
+  } catch (err: any) {
+    const { status } = err.response;
+    if (status === 401) {
+      yield refresh({ type: GroupAction.REQUEST_HASHTAGS, payload: action.payload });
+    } else {
+      yield put({ type: GroupAction.SET_HASHTAGS, payload: { hashTags: [], hashTagsError: true } });
+    }
   }
 }
 
 function* watchGroupInfo() {
-  yield takeLatest(groupAction.REQUEST_GROUP_INFO, getGroupInfo);
+  yield takeLatest(GroupAction.REQUEST_GROUP_INFO, getGroupInfo);
 }
 
 function* watchCreateGroup() {
-  yield takeLatest(groupAction.CREATE_GROUP, createGroup);
+  yield takeLatest(GroupAction.CREATE_GROUP, createGroup);
 }
 
 function* watchGetAlbumList() {
-  yield takeLatest(groupAction.GET_ALBUM_LIST, getAlbumList);
+  yield takeLatest(GroupAction.GET_ALBUM_LIST, getAlbumList);
 }
 
 function* watchDeleteGroup() {
-  yield takeLatest(groupAction.REQUEST_DELETE, deleteGroup);
+  yield takeLatest(GroupAction.REQUEST_DELETE, deleteGroup);
 }
 
 function* watchGetGroupMemberList() {
-  yield takeLatest(groupAction.GET_GROUP_MEMBER_LIST, getGroupMemberList);
+  yield takeLatest(GroupAction.GET_GROUP_MEMBER_LIST, getGroupMemberList);
 }
 
 function* watchRequestJoinGroup() {
-  yield takeLatest(groupAction.REQUEST_JOIN_GROUP, requestJoinGroup);
+  yield takeLatest(GroupAction.REQUEST_JOIN_GROUP, requestJoinGroup);
 }
 
 function* watchRequestUpdateGroup() {
-  yield takeLatest(groupAction.REQUEST_UPDATE_GROUP, requestUpdateGroup);
+  yield takeLatest(GroupAction.REQUEST_UPDATE_GROUP, requestUpdateGroup);
 }
 
 function* watchRequestHashtags() {
-  yield takeLatest(groupAction.REQUEST_HASHTAGS, requestHashtags);
+  yield takeLatest(GroupAction.REQUEST_HASHTAGS, requestHashtags);
 }
 
 export default function* groupSaga() {

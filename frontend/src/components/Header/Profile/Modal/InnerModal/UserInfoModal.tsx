@@ -19,6 +19,7 @@ const UserInfoModal = () => {
   const [userImg, setUserImg] = useState<string>(userProfile);
   const [newName, setNewName] = useState<string>(userNickName);
   const inputRef = useRef<HTMLInputElement>(null);
+  const defaultImageURL = "https://kr.object.ncloudstorage.com/justus/base/user_base.png";
 
   const closeUserInfoModal = () => {
     dispatch(ModalAction.closeModalAction());
@@ -59,7 +60,13 @@ const UserInfoModal = () => {
       dispatch(ToastAction.setErrorToastAction({ text: toastMessage.requiredUserName }));
       return;
     }
-    dispatch(UserAction.userInfoUpdateAction({ updateUserNickName: newName, updateUserProfile: files[0]?.imageUrl }));
+
+    dispatch(
+      UserAction.userInfoUpdateAction({
+        updateUserNickName: newName,
+        updateUserProfile: userImg ? files[0]?.imageUrl : "deleted",
+      }),
+    );
     closeUserInfoModal();
   };
 
@@ -90,7 +97,7 @@ const UserInfoModal = () => {
           <div>
             <ImageBackground>
               <img src={userImg ? userImg : icon.person} alt="person icon" ref={imageRef} width="100%" height="100%" />
-              {userImg ? (
+              {userImg && userImg != defaultImageURL ? (
                 <DeleteImgBtnWrapper onClick={onClickDeleteBtn}>
                   <img src={icon.delete} alt="delete button"></img>
                 </DeleteImgBtnWrapper>
