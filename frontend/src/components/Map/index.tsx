@@ -129,7 +129,7 @@ const setMap = (
 
   naver.maps.Event.addListener(map, "rightclick", (e: PointerEvent) => {
     newPostCreateWindow.setContent(
-      ['<div id="createPostWindow" style="border: none; width: 10rem; height: 4rem;">'].join(""),
+      ['<div id="createPostWindow" style="border: none; width: 11rem; height: 4rem;">'].join(""),
     );
     newPostCreateWindow.open(map, e.latlng);
 
