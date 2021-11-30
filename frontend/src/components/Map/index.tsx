@@ -272,6 +272,8 @@ const Map = () => {
 
   const modalOpen = () => {
     dispatch(AddressAction.setAddressAction(""));
+    if (clusteringWindow) clusteringWindow.close();
+    if (postCreateWindow) postCreateWindow.close();
     dispatch(ModalAction.openModalAction(modal.PostCreateModal));
   };
 
