@@ -10,6 +10,10 @@ const modalAction = {
   SET_ALBUM_SETTING_WRAPPER_MODAL_IDX: "SET_ALBUM_SETTING_WRAPPER_MODAL_IDX",
   SELECT_POST_SUCCEED: "SELECT_POST_SUCCEED",
   SET_ADD_ALBUM_MODAL_OPENED: "SET_ADD_ALBUM_MODAL_OPENED",
+  OPEN_SEARCHLIST: "OPEN_SEARCHLIST",
+  OPEN_RECOMMENDLIST: "OPEN_RECOMMENDLIST",
+  CLOSE_SEARCHLIST: "CLOSE_SEARCHLIST",
+  CLOSE_RECOMMENDLIST: "CLOSE_RECOMMENDLIST",
 
   openModalAction: (payload: string) => ({ type: modalAction.OPEN_MODAL, payload }),
   closeModalAction: () => ({ type: modalAction.CLOSE_MODAL }),
@@ -36,6 +40,11 @@ const modalAction = {
   initSelectPost: () => ({
     type: modalAction.SELECT_POST_INIT,
   }),
+
+  openSearchList: () => ({ type: modalAction.OPEN_SEARCHLIST }),
+  openRecommendList: () => ({ type: modalAction.OPEN_RECOMMENDLIST }),
+  closeSearchList: () => ({ type: modalAction.CLOSE_SEARCHLIST }),
+  closeRecommendList: () => ({ type: modalAction.CLOSE_RECOMMENDLIST }),
 };
 
 export default modalAction;

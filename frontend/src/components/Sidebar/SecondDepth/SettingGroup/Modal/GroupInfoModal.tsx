@@ -51,7 +51,7 @@ const GroupInfoModal = ({ setIsToggle }: SettingGroupModalProps) => {
         }}
       >
         <Header>
-          <TitleWrapper>그룹 정보</TitleWrapper>
+          <TitleWrapper title={selectedGroup.groupName}>{selectedGroup.groupName}</TitleWrapper>
           <CloseBtn>
             <button type="button" onClick={closeModal}>
               <img src={icon.clear} alt="clear icon" />
@@ -138,12 +138,14 @@ const Header = styled.div`
   height: 3rem;
 `;
 const TitleWrapper = styled.div`
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   text-align: center;
   font-size: 2rem;
   font-weight: bold;
   grid-column-start: 2;
   grid-column-end: 3;
-  ${flexRowCenterAlign}
 `;
 const CloseBtn = styled.div`
   width: 100%;

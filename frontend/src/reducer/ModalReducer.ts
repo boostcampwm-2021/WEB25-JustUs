@@ -28,6 +28,8 @@ const initState: {
   isProfileWrapperModalOpened: boolean;
   albumSettingWrapperModalIdx: number;
   isAddAlbumModalOpened: boolean;
+  isSearchListOpened: boolean;
+  isRecommendOpened: boolean;
 } = {
   nowModal: "",
   nowAddress: "",
@@ -52,6 +54,8 @@ const initState: {
   isProfileWrapperModalOpened: false,
   albumSettingWrapperModalIdx: -1,
   isAddAlbumModalOpened: false,
+  isSearchListOpened: false,
+  isRecommendOpened: false,
 };
 
 const ModalReducer = (state = initState, action: any) => {
@@ -121,6 +125,30 @@ const ModalReducer = (state = initState, action: any) => {
       return {
         ...state,
         isAddAlbumModalOpened: action.payload.isAddAlbumModalOpened,
+      };
+    }
+    case ModalAction.OPEN_SEARCHLIST: {
+      return {
+        ...state,
+        isSearchListOpened: true,
+      };
+    }
+    case ModalAction.OPEN_RECOMMENDLIST: {
+      return {
+        ...state,
+        isRecommendOpened: true,
+      };
+    }
+    case ModalAction.CLOSE_SEARCHLIST: {
+      return {
+        ...state,
+        isSearchListOpened: false,
+      };
+    }
+    case ModalAction.CLOSE_RECOMMENDLIST: {
+      return {
+        ...state,
+        isRecommendOpened: false,
       };
     }
     default:
