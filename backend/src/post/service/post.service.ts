@@ -96,18 +96,18 @@ export class PostService {
     const userId = user.userId;
     const userNickname = user.userNickname;
 
-    return {
+    return new GetPostInfoResponseDto(
       userId,
-      userNickname,
       postId,
+      userNickname,
       postTitle,
       postContent,
+      images,
       postDate,
       postLatitude,
       postLongitude,
       postLocation,
-      images,
-    };
+    );
   }
 
   async updatePostInfo(
@@ -204,6 +204,6 @@ export class PostService {
     const { posts } = await this.hashTagRepository.getSearchPosts(hashtagId);
     if (!posts) throw new NotFoundException(`Not found hashtag with the id ${hashtagId}`);
 
-    return { posts };
+    return new GetSearchPostResponse(posts);
   }
 }
