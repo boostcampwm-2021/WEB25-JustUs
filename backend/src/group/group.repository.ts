@@ -6,7 +6,7 @@ export class GroupRepository extends Repository<Group> {
   async getGroupQuery(groupId: number): Promise<Group> {
     return await this.createQueryBuilder("group")
       .leftJoin("group.users", "user")
-      .select(["group.groupCode", "user.profileImage", "user.userNickname", "user.userEmail"])
+      .select(["group.groupCode", "user.profileImage", "user.userNickname", "user.userId"])
       .where("group.groupId = :id", { id: groupId })
       .getOne();
   }

@@ -1,6 +1,6 @@
 import { IsArray, IsNotEmpty, IsString } from "class-validator";
-import { UserInfo } from "../user/userInfo.dto";
 import { ApiProperty } from "@nestjs/swagger";
+import { UserInfoResponseDto } from "../user/userInfoResponse.dto";
 
 export class GetGroupInfoResponseDto {
   @IsString()
@@ -10,6 +10,6 @@ export class GetGroupInfoResponseDto {
 
   @IsArray()
   @IsNotEmpty()
-  @ApiProperty({ type: [UserInfo] })
-  users: UserInfo[];
+  @ApiProperty({ type: [UserInfoResponseDto] })
+  users: UserInfoResponseDto[];
 }
