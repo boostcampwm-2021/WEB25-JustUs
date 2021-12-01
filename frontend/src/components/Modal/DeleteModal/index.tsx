@@ -42,10 +42,13 @@ const DeleteModal = (props: IProps) => {
   const onClickDeleteButton = () => {
     switch (type) {
       case "post":
-        return dispatch(GroupAction.deletePostRequestAction(selectedPost.postId));
+        dispatch(GroupAction.deletePostRequestAction(selectedPost.postId));
+        break;
       case "album":
-        return dispatch(GroupAction.deleteAlbumRequestAction(albumId));
+        dispatch(GroupAction.deleteAlbumRequestAction(albumId));
+        break;
     }
+    closeModal();
   };
 
   return (
