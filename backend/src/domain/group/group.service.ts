@@ -155,7 +155,7 @@ export class GroupService {
 
     await this.groupRepository.update(groupId, updateObject);
 
-    return { groupImage };
+    return { groupImage: updateObject.groupImage };
   }
 
   async leaveGroup(userId: number, groupId: number): Promise<string> {
