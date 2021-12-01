@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
 import COLOR from "@styles/Color";
 import { useDispatch } from "react-redux";
@@ -72,4 +72,4 @@ const PostTitle = styled.div`
   white-space: nowrap;
 `;
 
-export default Post;
+export default React.memo(Post);
