@@ -1,9 +1,22 @@
 import React, { useRef, useState, useEffect } from "react";
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 import Modal from "@components/Modal";
 import { useDispatch } from "react-redux";
-import COLOR from "@styles/Color";
-import { flexRowCenterAlign } from "@src/styles/StyledComponents";
+import {
+  flexRowCenterAlign,
+  mideumModalContainer,
+  mideumModalHeader,
+  mideumModalTitle,
+  mideumModalCloseButton,
+  mideumModalContent,
+  mideumImageBackground,
+  mideumImageSize,
+  mideumDeleteButton,
+  mideumInputWrapper,
+  mideumGridRow,
+  mideumBottomLeftButton,
+  mideumBottomRightButton,
+} from "@src/styles/StyledComponents";
 import { UserAction, ToastAction, ModalAction } from "@src/action";
 import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
@@ -86,18 +99,24 @@ const UserInfoModal = () => {
         }}
       >
         <Header>
-          <TitleWrapper>회원 정보</TitleWrapper>
-          <CloseBtn>
-            <button type="button" onClick={closeUserInfoModal}>
-              <img src={icon.clear} alt="clear icon" />
-            </button>
-          </CloseBtn>
+          <Title>회원 정보</Title>
+          <CloseButton type="button" onClick={closeUserInfoModal}>
+            <img src={icon.clear} alt="clear icon" />
+          </CloseButton>
         </Header>
         <Content>
           <GridLeft>
             <ImageBackground>
-              <img src={userImg ? userImg : icon.person} alt="person icon" ref={imageRef} width="100%" height="100%" />
-              {userImg && userImg != defaultImageURL ? (
+              <Image>
+                <img
+                  src={userImg ? userImg : icon.person}
+                  alt="person icon"
+                  ref={imageRef}
+                  width="100%"
+                  height="100%"
+                />
+              </Image>
+              {userImg && userImg !== defaultImageURL ? (
                 <DeleteImgBtnWrapper onClick={onClickDeleteBtn}>
                   <img src={icon.delete} alt="delete button"></img>
                 </DeleteImgBtnWrapper>
@@ -124,151 +143,47 @@ const UserInfoModal = () => {
     </Modal>
   );
 };
-const GridRight = styled.div`
-  ${flexRowCenterAlign}
-  height:100%;
-  flex-direction: column;
-  justify-content: flex-end;
-  padding-right: 2rem;
-  grid-column-start: 2;
-  grid-column-end: 3;
+
+const ModalContainer = styled.div`
+  ${mideumModalContainer}
+`;
+const Header = styled.div`
+  ${mideumModalHeader}
+`;
+const Title = styled.div`
+  ${mideumModalTitle}
+`;
+const CloseButton = styled.button`
+  ${mideumModalCloseButton}
+`;
+const Content = styled.div`
+  ${mideumModalContent}
 `;
 const GridLeft = styled.div`
-  grid-column-start: 1;
-  grid-column-end: 2;
+  ${mideumGridRow}
 `;
-const modalSlideUp = keyframes`
-  0% {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  30% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-`;
-const ModalContainer = styled.div`
-  background-color: ${COLOR.WHITE};
-  min-height: 38rem;
-  min-width: 50rem;
-  border-radius: 2rem;
-  display: flex;
-  flex-direction: column;
-  animation-name: ${modalSlideUp};
-  animation-duration: 1s;
-`;
-
-const Header = styled.div`
-  display: grid;
-  grid-template-columns: 10% 80% 10%;
-  padding: 2rem;
-`;
-
-const Content = styled.div`
-  display: grid;
-  grid-template-columns: 50% 50%;
-  align-items: center;
-  justify-items: center;
-`;
-
-const TitleWrapper = styled.div`
-  text-align: center;
-  font-size: 2.5rem;
-  grid-column-start: 2;
-  grid-column-end: 3;
-  ${flexRowCenterAlign}
-`;
-const CloseBtn = styled.div`
-  width: 100%;
-  ${flexRowCenterAlign};
-  grid-column-start: 3;
-  grid-column-end: 4;
-
-  & > button {
-    background-color: ${COLOR.WHITE};
-    border: none;
-    height: 3rem;
-    width: 3rem;
-    border-radius: 50%;
-    ${flexRowCenterAlign}
-    cursor: pointer;
-    &:hover {
-      background-color: ${COLOR.GRAY};
-    }
-  }
-`;
-
 const ImageBackground = styled.div`
-  ${flexRowCenterAlign}
-  margin-top: 4rem;
-  width: 15rem;
-  height: 15rem;
-  background-color: ${COLOR.WHITE};
-  border-radius: 1vw;
-  border: 6px solid ${(props) => props.theme.SECONDARY};
-  & img {
-    border-radius: 0.6vw;
+  ${mideumImageBackground}
+`;
+const Image = styled.div`
+  & > img {
+    ${mideumImageSize}
   }
-  position: relative;
 `;
-
-const UploadImgBtnWrapper = styled.div`
-  ${flexRowCenterAlign}
-  cursor: pointer;
-  margin-top: 1rem;
-  border-radius: 10px;
-  border: 2px solid ${COLOR.SHADOW_BLACK};
-  font-weight: bold;
-  font-size: 1.5rem;
-  color: ${COLOR.SHADOW_BLACK};
-  line-height: 16px;
-  width: 15rem;
-  height: 3rem;
-`;
-
 const DeleteImgBtnWrapper = styled.div`
-  position: absolute;
-  bottom: 13rem;
-  left: 13rem;
-  cursor: pointer;
-  margin-top: 4rem;
-  color: ${COLOR.RED};
-  font-weight: bold;
-  font-size: 1.6rem;
+  ${mideumDeleteButton}
 `;
-
+const UploadImgBtnWrapper = styled.div`
+  ${mideumBottomLeftButton}
+`;
+const GridRight = styled.div`
+  ${mideumGridRow}
+`;
 const UserNameInputWrapper = styled.input`
-  margin-top: 4rem;
-  border: none;
-  width: 100%;
-  font-size: 1.6rem;
-  border-bottom: 1px solid ${(props) => props.theme.PRIMARY};
-
-  &::-webkit-input-placeholder {
-    text-align: center;
-    font-weight: 800;
-    font-size: 1.6rem;
-  }
-  &:focus-visible {
-    outline: none;
-  }
+  ${mideumInputWrapper}
 `;
-
 const SaveBtnWrapper = styled.div`
-  ${flexRowCenterAlign}
-  cursor: pointer;
-  color: ${COLOR.WHITE};
-  background-color: ${(props) => props.theme.SECONDARY};
-  margin-top: 4rem;
-  border-radius: 10px;
-  font-weight: bold;
-  font-size: 1.5rem;
-  line-height: 16px;
-  width: 15rem;
-  height: 3rem;
-  &:hover {
-    background-color: ${(props) => props.theme.PRIMARY};
-  }
+  ${mideumBottomRightButton}
 `;
 
 export default UserInfoModal;

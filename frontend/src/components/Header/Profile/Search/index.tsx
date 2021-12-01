@@ -54,14 +54,14 @@ const SearchContainer = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  height: 3vh;
-  width: 25vw;
+  height: 2rem;
+  width: 30rem;
   background-color: ${COLOR.WHITE};
-  border-radius: 5px;
-  padding: 0.5vh 0;
+  border-radius: 0.5rem;
+  padding: 0.5rem 0;
   z-index: 6;
   & > img {
-    padding: 0 0.5vw;
+    padding: 0 0.5rem;
   }
 `;
 
@@ -72,14 +72,17 @@ const SearchInput = styled.input`
   font-size: 1.5rem;
   line-height: 100%;
   &::placeholder {
-    font-size: 1.5rem;
+    height: 100%;
+    line-height: 100%;
   }
 
   &:focus-visible {
     outline: none;
   }
   &::-webkit-input-placeholder {
-    font-size: 1.6rem;
+    height: 100%;
+    line-height: 110%;
+    font-size: 90%;
   }
 `;
 

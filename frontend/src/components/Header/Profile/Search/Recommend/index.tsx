@@ -5,7 +5,7 @@ import { GroupType, IHashtag } from "@src/reducer/GroupReducer";
 import { GroupAction } from "@src/action";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
-import { flexRowCenterAlign } from "@src/styles/StyledComponents";
+import { flexRowCenterAlign, scrollbar, shadow } from "@src/styles/StyledComponents";
 
 interface RecommendProps {
   inputKeyword: string;
@@ -70,31 +70,24 @@ const Recommend = ({ inputKeyword, setSearchKeyword, doSearch }: RecommendProps)
 const SearchListContainer = styled.div`
   position: absolute;
   background-color: ${COLOR.WHITE};
-  border-radius: 5px;
-  top: 5.5vh;
+  border-radius: 0.5rem;
+  top: 4rem;
   z-index: 6;
-  width: 25vw;
+  width: 30rem;
   box-sizing: border-box;
-  overflow-y: scroll;
-  max-height: 20vh;
-  &::-webkit-scrollbar {
-    width: 0.6vw;
-  }
-  &::-webkit-scrollbar-thumb {
-    background-color: ${COLOR.LIGHTGRAY2};
-    border-radius: 5px;
-  }
+  max-height: 15rem;
+  ${scrollbar}
+  ${shadow}
   & ul {
-    margin: 0.5vw;
+    margin: 0.5rem 0;
     & li {
       float: left;
-      margin: 8px;
-
+      margin: 0.5rem;
       background-color: ${(props) => props.theme.SECONDARY};
-      border-radius: 20px;
-      padding: 0.4vw;
+      border-radius: 2rem;
+      padding: 0.8rem;
       color: ${COLOR.WHITE};
-      font-size: 1.4rem;
+      font-size: 1.3rem;
       &:hover {
         background-color: ${(props) => props.theme.PRIMARY};
         cursor: pointer;

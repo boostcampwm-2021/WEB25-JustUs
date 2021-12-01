@@ -1,10 +1,11 @@
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import {
   smallModalContainer,
   smallModalHeader,
   smallModalTitle,
   smallModalCloseButton,
   smallModalContent,
+  smallButton,
   flexRowCenterAlign,
 } from "@src/styles/StyledComponents";
 import COLOR from "@styles/Color";
@@ -42,10 +43,13 @@ const DeleteModal = (props: IProps) => {
   const onClickDeleteButton = () => {
     switch (type) {
       case "post":
-        return dispatch(GroupAction.deletePostRequestAction(selectedPost.postId));
+        dispatch(GroupAction.deletePostRequestAction(selectedPost.postId));
+        break;
       case "album":
-        return dispatch(GroupAction.deleteAlbumRequestAction(albumId));
+        dispatch(GroupAction.deleteAlbumRequestAction(albumId));
+        break;
     }
+    closeModal();
   };
 
   return (
@@ -75,7 +79,6 @@ const DeleteModal = (props: IProps) => {
 const ModalContainer = styled.div`
   ${smallModalContainer}
 `;
-
 const Header = styled.div`
   ${smallModalHeader}
 `;
@@ -98,25 +101,13 @@ const ButtonWrapper = styled.div`
   width: 100%;
   justify-content: space-around;
 `;
-const button = css`
-  border: none;
-  border-radius: 1rem;
-  font-size: 2rem;
-  padding: 1rem 2rem;
-  opacity: 0.8;
-  &:hover {
-    cursor: pointer;
-    font-weight: bold;
-    opacity: 1;
-  }
-`;
 const CancelButton = styled.button`
-  ${button}
+  ${smallButton}
   color: ${COLOR.WHITE};
   background-color: ${COLOR.BLUE};
 `;
 const DeleteButton = styled.button`
-  ${button}
+  ${smallButton}
   color: ${COLOR.WHITE};
   background-color: ${COLOR.RED};
 `;

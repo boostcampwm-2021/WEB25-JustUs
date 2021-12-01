@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
 import { PostType } from "@src/reducer/GroupReducer";
 import { ModalAction } from "@src/action";
+import { scrollbar, shadow } from "@src/styles/StyledComponents";
 
 interface SearchListContent {
   postId: number;
@@ -39,27 +40,21 @@ const SearchList = () => {
 const SearchListContainer = styled.div`
   position: absolute;
   background-color: ${COLOR.WHITE};
-  border-radius: 5px;
-  top: 5.5vh;
+  border-radius: 0.5rem;
+  top: 4rem;
   z-index: 6;
-  width: 25vw;
+  width: 30rem;
   box-sizing: border-box;
-  overflow-y: scroll;
-  &::-webkit-scrollbar {
-    width: 0.6vw;
-  }
-  &::-webkit-scrollbar-thumb {
-    background-color: ${COLOR.LIGHTGRAY2};
-    border-radius: 5px;
-  }
+  max-height: 15rem;
+  ${scrollbar}
+  ${shadow}
   & ul {
-    max-height: 20vh;
-    margin: 1.5vw 0 1.5vw 1.5vw;
+    max-height: 15rem;
+    margin: 1rem;
     & li {
-      padding: 1vh 0 1vh 1vh;
-      margin: 0 1.5vw 0 0;
-      border-bottom: 1px solid ${COLOR.GRAY};
-      font-size: 1.6rem;
+      padding: 0.5rem;
+      border-bottom: 0.1rem solid ${COLOR.GRAY};
+      font-size: 1.4rem;
       &:hover {
         font-weight: bold;
         cursor: pointer;
@@ -68,7 +63,6 @@ const SearchListContainer = styled.div`
         padding-top: 0;
       }
       &:nth-last-child(1) {
-        padding-bottom: 1.2vh;
       }
     }
   }

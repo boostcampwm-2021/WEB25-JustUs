@@ -4,10 +4,11 @@ import shortid from "shortid";
 import styled, { css } from "styled-components";
 import {
   flexRowCenterAlign,
+  largeModalTitle,
   modalTitleFont,
   modalSlideUpAnimation,
-  modalHeaderButtonIcon,
-  modalContainerSize,
+  largeModalHeaderButtonIcon,
+  largeModalContainerSize,
   iconHover,
 } from "@styles/StyledComponents";
 import COLOR from "@styles/Color";
@@ -103,7 +104,7 @@ const ModalContainer = styled.div`
   display: grid;
   grid-template-rows: 10% 90%;
   background-color: ${COLOR.WHITE};
-  ${modalContainerSize};
+  ${largeModalContainerSize};
   box-shadow: 0 2px 3px 0 ${COLOR.SHADOW_BLACK};
   ${modalSlideUpAnimation}
 `;
@@ -114,12 +115,7 @@ const ModalHeader = styled.div`
   box-sizing: border-box;
 `;
 const ModalTitle = styled.div`
-  ${flexRowCenterAlign}
-  ${modalTitleFont}
-  grid-column-start: 2;
-  grid-column-end: 3;
-  grid-row-start: 1;
-  grid-row-end: 2;
+  ${largeModalTitle}
 `;
 const ModalHeaderRigthBtn = styled.button`
   grid-column-start: 3;
@@ -129,7 +125,7 @@ const ModalHeaderRigthBtn = styled.button`
   border: none;
   background: none;
   & > img {
-    ${modalHeaderButtonIcon};
+    ${largeModalHeaderButtonIcon};
     ${iconHover};
   }
 `;
@@ -206,7 +202,7 @@ const DeleteImageBtn = styled.button`
   border: none;
   background: none;
   cursor: pointer;
-  ${modalHeaderButtonIcon}
+  ${largeModalHeaderButtonIcon}
   right: -1rem;
   top: -1rem;
   &:hover {
