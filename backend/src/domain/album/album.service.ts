@@ -2,9 +2,9 @@ import { Injectable, NotFoundException, BadRequestException } from "@nestjs/comm
 import { InjectRepository } from "@nestjs/typeorm";
 import { AlbumRepository } from "./album.repository";
 import { GroupRepository } from "src/domain/group/group.repository";
-import { CreateAlbumRequestDto } from "src/dto/album/createAlbumRequest.dto";
-import { UpdateAlbumInfoRequestDto } from "src/dto/album/updateAlbumInfoRequest.dto";
-import { CreateAlbumResponseDto } from "src/dto/album/createAlbumResponse.dto";
+import { CreateAlbumRequestDto } from "src/domain/album/dto/createAlbumRequest.dto";
+import { UpdateAlbumInfoRequestDto } from "src/domain/album/dto/updateAlbumInfoRequest.dto";
+import { CreateAlbumResponseDto } from "src/domain/album/dto/createAlbumResponse.dto";
 import { Album } from "./album.entity";
 import { Connection, QueryRunner } from "typeorm";
 import { Group } from "src/domain/group/group.entity";

@@ -2,11 +2,11 @@ import { Req, Get, Put, Body, UseInterceptors, UploadedFile } from "@nestjs/comm
 import { CustomRequest } from "src/custom/myRequest/customRequest";
 import { CustomFile } from "src/custom/myFile/customFile";
 import { UserService } from "./user.service";
-import { UserInfoResponseDto } from "src/dto/user/userInfoResponse.dto";
-import { UpdateUserInfoRequestDto } from "src/dto/user/updateUserInfoRequest.dto";
-import { UpdateGroupOrderRequestDto } from "src/dto/user/updateGroupOrderRequest.dto";
-import { GetGroupsResponseDto } from "src/dto/user/getGroupsResponse.dto";
-import { UpdateUserInfoResponseDto } from "src/dto/user/updateUserInfoResponse.dto";
+import { UserInfoResponseDto } from "src/domain/user/dto/userInfoResponse.dto";
+import { UpdateUserInfoRequestDto } from "src/domain/user/dto/updateUserInfoRequest.dto";
+import { UpdateGroupOrderRequestDto } from "src/domain/user/dto/updateGroupOrderRequest.dto";
+import { GetGroupsResponseDto } from "src/domain/user/dto/getGroupsResponse.dto";
+import { UpdateUserInfoResponseDto } from "src/domain/user/dto/updateUserInfoResponse.dto";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { multerOption } from "src/configs";
 import { SwaggerUpdateUserInfo, SwaggerGetUserInfo, SwaggerUpdateGroupOrder, SwaggerGetGroups } from "./swagger";

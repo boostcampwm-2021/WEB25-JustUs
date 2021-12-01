@@ -1,4 +1,4 @@
-import { ImageInfo } from "../image/imageInfo";
+import { ImageInfo } from "../../image/dto/imageInfo";
 import { ApiProperty } from "@nestjs/swagger";
 
 export class GetPostInfoResponseDto {

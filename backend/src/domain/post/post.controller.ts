@@ -1,11 +1,11 @@
 import { Body, Req, Delete, Get, Param, Post, Put, UseInterceptors, UploadedFiles, Query } from "@nestjs/common";
 import { CustomRequest } from "src/custom//myRequest/customRequest";
 import { PostService } from "./post.service";
-import { CreatePostRequestDto } from "src/dto/post/createPostRequest.dto";
-import { GetPostInfoResponseDto } from "src/dto/post/getPostInfoResponse.dto";
-import { UpdatePostInfoRequestDto } from "src/dto/post/updatePostInfoRequest.dto";
-import { ShiftPostRequestDto } from "src/dto/post/shiftPostRequest.dto";
-import { GetSearchPostResponse } from "src/dto/post/getSearchPostResponse.dto";
+import { CreatePostRequestDto } from "src/domain/post/dto/createPostRequest.dto";
+import { GetPostInfoResponseDto } from "src/domain/post/dto/getPostInfoResponse.dto";
+import { UpdatePostInfoRequestDto } from "src/domain/post/dto/updatePostInfoRequest.dto";
+import { ShiftPostRequestDto } from "src/domain/post/dto/shiftPostRequest.dto";
+import { GetSearchPostResponse } from "src/domain/post/dto/getSearchPostResponse.dto";
 import { FilesInterceptor } from "@nestjs/platform-express";
 import { multerOption } from "src/configs";
 import {

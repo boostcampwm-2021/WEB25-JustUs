@@ -1,7 +1,7 @@
 import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { PassportStrategy } from "@nestjs/passport";
 import { Strategy } from "passport-naver-v2";
-import { UserInfo } from "src/dto/user/userInfo.dto";
+import { UserInfo } from "src/domain/user/dto/userInfo.dto";
 import { UserService } from "src/domain/user/user.service";
 import { AuthService } from "../auth.service";
 

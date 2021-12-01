@@ -1,6 +1,6 @@
 import { applyDecorators } from "@nestjs/common";
 import { ApiResponse, ApiParam } from "@nestjs/swagger";
-import { GetHashTagsResponseDto } from "src/dto/group/getHashTagsResponse.dto";
+import { GetHashTagsResponseDto } from "src/domain/group/dto/getHashTagsResponse.dto";
 
 export function SwaggerGetHashTags() {
   return applyDecorators(

@@ -1,6 +1,6 @@
 import { applyDecorators } from "@nestjs/common";
 import { ApiQuery, ApiResponse } from "@nestjs/swagger";
-import { GetSearchPostResponse } from "src/dto/post/getSearchPostResponse.dto";
+import { GetSearchPostResponse } from "src/domain/post/dto/getSearchPostResponse.dto";
 
 export function SwaggerGetSearchPost() {
   return applyDecorators(

@@ -1,6 +1,6 @@
 import { IsArray, IsNotEmpty, IsString } from "class-validator";
 import { ApiProperty } from "@nestjs/swagger";
-import { UserInfoResponseDto } from "../user/userInfoResponse.dto";
+import { UserInfoResponseDto } from "../../user/dto/userInfoResponse.dto";
 
 export class GetGroupInfoResponseDto {
   @IsString()

@@ -1,7 +1,7 @@
 import { applyDecorators } from "@nestjs/common";
 import { ApiBody, ApiConsumes, ApiResponse } from "@nestjs/swagger";
-import { UpdateUserInfoRequestDto } from "src/dto/user/updateUserInfoRequest.dto";
-import { UpdateUserInfoResponseDto } from "src/dto/user/updateUserInfoResponse.dto";
+import { UpdateUserInfoRequestDto } from "src/domain/user/dto/updateUserInfoRequest.dto";
+import { UpdateUserInfoResponseDto } from "src/domain/user/dto/updateUserInfoResponse.dto";
 
 export function SwaggerUpdateUserInfo() {
   return applyDecorators(

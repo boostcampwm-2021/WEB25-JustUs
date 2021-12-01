@@ -1,8 +1,8 @@
 import { Body, Delete, Param, Post, Put } from "@nestjs/common";
 import { AlbumService } from "./album.service";
-import { CreateAlbumRequestDto } from "src/dto/album/createAlbumRequest.dto";
-import { UpdateAlbumInfoRequestDto } from "src/dto/album/updateAlbumInfoRequest.dto";
-import { CreateAlbumResponseDto } from "src/dto/album/createAlbumResponse.dto";
+import { CreateAlbumRequestDto } from "src/domain/album/dto/createAlbumRequest.dto";
+import { UpdateAlbumInfoRequestDto } from "src/domain/album/dto/updateAlbumInfoRequest.dto";
+import { CreateAlbumResponseDto } from "src/domain/album/dto/createAlbumResponse.dto";
 import { SwaggerCreateAlbum, SwaggerUpdateAlbumInfo, SwaggerDeleteAlbum } from "./swagger";
 import { CustomController } from "src/custom/decorator/controller.decorator";
 

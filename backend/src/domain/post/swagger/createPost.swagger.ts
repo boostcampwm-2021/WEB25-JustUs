@@ -1,6 +1,6 @@
 import { applyDecorators } from "@nestjs/common";
 import { ApiBody, ApiConsumes, ApiResponse } from "@nestjs/swagger";
-import { CreatePostRequestDto } from "src/dto/post/createPostRequest.dto";
+import { CreatePostRequestDto } from "src/domain/post/dto/createPostRequest.dto";
 
 export function SwaggerCreatePost() {
   return applyDecorators(

@@ -1,7 +1,7 @@
 import { applyDecorators } from "@nestjs/common";
 import { ApiBody, ApiConsumes, ApiParam, ApiResponse } from "@nestjs/swagger";
-import { UpdateGroupInfoRequestDto } from "src/dto/group/updateGroupInfoRequest.dto";
-import { UpdateGroupInfoResponseDto } from "src/dto/group/updateGroupInfoResponse.dto";
+import { UpdateGroupInfoRequestDto } from "src/domain/group/dto/updateGroupInfoRequest.dto";
+import { UpdateGroupInfoResponseDto } from "src/domain/group/dto/updateGroupInfoResponse.dto";
 
 export function SwaggerUpdateGroupInfo() {
   return applyDecorators(

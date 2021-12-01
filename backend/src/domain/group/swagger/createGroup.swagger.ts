@@ -1,7 +1,7 @@
 import { applyDecorators } from "@nestjs/common";
 import { ApiBody, ApiConsumes, ApiResponse } from "@nestjs/swagger";
-import { CreateGroupRequestDto } from "src/dto/group/createGroupRequest.dto";
-import { CreateGroupResponseDto } from "src/dto/group/createGroupResponse.dto";
+import { CreateGroupRequestDto } from "src/domain/group/dto/createGroupRequest.dto";
+import { CreateGroupResponseDto } from "src/domain/group/dto/createGroupResponse.dto";
 
 export function SwaggerCreateGroup() {
   return applyDecorators(

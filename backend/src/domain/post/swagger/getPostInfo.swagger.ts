@@ -1,6 +1,6 @@
 import { applyDecorators } from "@nestjs/common";
 import { ApiParam, ApiResponse } from "@nestjs/swagger";
-import { GetPostInfoResponseDto } from "src/dto/post/getPostInfoResponse.dto";
+import { GetPostInfoResponseDto } from "src/domain/post/dto/getPostInfoResponse.dto";
 
 export function SwaggerGetPostInfo() {
   return applyDecorators(

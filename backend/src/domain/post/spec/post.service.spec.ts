@@ -9,7 +9,7 @@ import { PostService } from "../post.service";
 import { Post } from "../post.entity";
 import { User } from "src/domain/user/user.entity";
 import { Image } from "src/domain/image/image.entity";
-import { GetPostInfoResponseDto } from "src/dto/post/getPostInfoResponse.dto";
+import { GetPostInfoResponseDto } from "src/domain/post/dto/getPostInfoResponse.dto";
 import { AlbumService } from "src/domain/album/album.service";
 import { ImageService } from "src/domain/image/image.service";
 import { HashTagService } from "src/domain/hashtag/hashtag.service";
@@ -17,7 +17,7 @@ import { GroupRepository } from "src/domain/group/group.repository";
 import { ImageRepository } from "src/domain/image/image.repository";
 import { Album } from "src/domain/album/album.entity";
 import { HashTag } from "src/domain/hashtag/hashtag.entity";
-import { GetSearchPostResponse } from "src/dto/post/getSearchPostResponse.dto";
+import { GetSearchPostResponse } from "src/domain/post/dto/getSearchPostResponse.dto";
 
 const mockPostRepository = () => ({
   getPostQuery: jest.fn(),

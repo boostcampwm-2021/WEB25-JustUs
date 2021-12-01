@@ -2,15 +2,15 @@ import { Body, Req, Get, Param, Post, Put, Delete, UseInterceptors, UploadedFile
 import { CustomRequest } from "src/custom/myRequest/customRequest";
 import { CustomFile } from "src/custom/myFile/customFile";
 import { GroupService } from "./group.service";
-import { CreateGroupRequestDto } from "src/dto/group/createGroupRequest.dto";
-import { AttendGroupRequestDto } from "src/dto/group/attendGroupRequest.dto";
-import { GetGroupInfoResponseDto } from "src/dto/group/getGroupInfoResponse.dto";
-import { UpdateGroupInfoRequestDto } from "src/dto/group/updateGroupInfoRequest.dto";
-import { GetAlbumsResponseDto } from "src/dto/group/getAlbumsResponse.dto";
-import { UpdateAlbumOrderRequestDto } from "src/dto/group/updateAlbumOrderRequest.dto";
-import { CreateGroupResponseDto } from "src/dto/group/createGroupResponse.dto";
-import { UpdateGroupInfoResponseDto } from "src/dto/group/updateGroupInfoResponse.dto";
-import { GetHashTagsResponseDto } from "src/dto/group/getHashTagsResponse.dto";
+import { CreateGroupRequestDto } from "src/domain/group/dto/createGroupRequest.dto";
+import { AttendGroupRequestDto } from "src/domain/group/dto/attendGroupRequest.dto";
+import { GetGroupInfoResponseDto } from "src/domain/group/dto/getGroupInfoResponse.dto";
+import { UpdateGroupInfoRequestDto } from "src/domain/group/dto/updateGroupInfoRequest.dto";
+import { GetAlbumsResponseDto } from "src/domain/group/dto/getAlbumsResponse.dto";
+import { UpdateAlbumOrderRequestDto } from "src/domain/group/dto/updateAlbumOrderRequest.dto";
+import { CreateGroupResponseDto } from "src/domain/group/dto/createGroupResponse.dto";
+import { UpdateGroupInfoResponseDto } from "src/domain/group/dto/updateGroupInfoResponse.dto";
+import { GetHashTagsResponseDto } from "src/domain/group/dto/getHashTagsResponse.dto";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { multerOption } from "src/configs";
 import {

@@ -4,7 +4,7 @@ import { Connection } from "typeorm";
 import { GroupRepository } from "../group.repository";
 import { GroupService } from "../group.service";
 import { Group } from "../group.entity";
-import { AttendGroupRequestDto } from "src/dto/group/attendGroupRequest.dto";
+import { AttendGroupRequestDto } from "src/domain/group/dto/attendGroupRequest.dto";
 import { UserRepository } from "src/domain/user/user.repository";
 import { User } from "src/domain/user/user.entity";
 import { Album } from "src/domain/album/album.entity";

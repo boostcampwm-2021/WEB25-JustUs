@@ -1,6 +1,6 @@
 import { applyDecorators } from "@nestjs/common";
 import { ApiParam, ApiResponse } from "@nestjs/swagger";
-import { GetAlbumsResponseDto } from "src/dto/group/getAlbumsResponse.dto";
+import { GetAlbumsResponseDto } from "src/domain/group/dto/getAlbumsResponse.dto";
 
 export function SwaggerGetAlbums() {
   return applyDecorators(
