@@ -109,7 +109,6 @@ const setMap = (
   setNaverMap(map);
   const newClusteringWindow = new naver.maps.InfoWindow({
     content: "",
-    maxWidth: 200,
     borderColor: COLOR.GRAY,
     borderWidth: 2,
     disableAnchor: true,
@@ -225,6 +224,10 @@ const Map = () => {
         clusteringWindow.setContent(['<div id="clustredMarkerList" style="width:20rem;height:10rem;">'].join(""));
         if (!naverMap) return;
         clusteringWindow.open(naverMap, LatLng);
+        const clustredMarkerList = document.getElementById("clustredMarkerList") as HTMLElement;
+        const parent = clustredMarkerList.parentNode as HTMLElement;
+        parent.style.width = "20rem";
+
         dispatch(MapAction.setClusteringWindowOpenedAction({ isClusteringWindowOpened: true }));
 
         ReactDOM.render(
