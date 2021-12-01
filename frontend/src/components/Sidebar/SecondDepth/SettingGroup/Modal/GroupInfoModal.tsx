@@ -60,7 +60,7 @@ const GroupInfoModal = ({ setIsToggle }: SettingGroupModalProps) => {
         }}
       >
         <Header>
-          <Title>그룹 정보</Title>
+          <Title title={selectedGroup.groupName}>{selectedGroup.groupName}</Title>
           <CloseButton type="button" onClick={closeModal}>
             <img src={icon.clear} alt="clear icon" />
           </CloseButton>
@@ -132,6 +132,10 @@ const Header = styled.div`
 `;
 const Title = styled.div`
   ${mideumModalTitle}
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 `;
 const CloseButton = styled.button`
   ${mideumModalCloseButton}

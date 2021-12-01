@@ -32,37 +32,41 @@ const AlbumList = () => {
     parent?.classList.remove("post-hover");
   }, []);
 
-  const onAlbumDragEndHandler = useCallback((ev: React.DragEvent<HTMLDivElement>) => {
-    ev.preventDefault();
-    const target = ev.target as HTMLElement;
-    const parent = target.closest(".albumItem");
-    if (!parent) return;
-    parent?.classList.remove("album-hover");
-    parent?.classList.remove("post-hover");
-    const list = parent?.parentNode;
-    if (!list) return;
-    const x = ev.clientX;
-    const y = ev.clientY;
-    let swapItem: Element | null = document.elementFromPoint(x, y) === null ? parent : document.elementFromPoint(x, y);
-    if (!swapItem) return;
-    swapItem = swapItem.closest(".albumItem");
-    if (swapItem !== parent && list === swapItem?.parentNode) {
-      const referenceNode = swapItem !== parent.nextSibling ? swapItem : swapItem.nextSibling;
-      list.insertBefore(parent, referenceNode);
-    }
+  const onAlbumDragEndHandler = useCallback(
+    (ev: React.DragEvent<HTMLDivElement>) => {
+      ev.preventDefault();
+      const target = ev.target as HTMLElement;
+      const parent = target.closest(".albumItem");
+      if (!parent) return;
+      parent?.classList.remove("album-hover");
+      parent?.classList.remove("post-hover");
+      const list = parent?.parentNode;
+      if (!list) return;
+      const x = ev.clientX;
+      const y = ev.clientY;
+      let swapItem: Element | null =
+        document.elementFromPoint(x, y) === null ? parent : document.elementFromPoint(x, y);
+      if (!swapItem) return;
+      swapItem = swapItem.closest(".albumItem");
+      if (swapItem !== parent && list === swapItem?.parentNode) {
+        const referenceNode = swapItem !== parent.nextSibling ? swapItem : swapItem.nextSibling;
+        list.insertBefore(parent, referenceNode);
+      }
 
-    const draggableWrapper = draggableRef.current;
-    if (!draggableWrapper) return;
-    const children = draggableWrapper.children;
+      const draggableWrapper = draggableRef.current;
+      if (!draggableWrapper) return;
+      const children = draggableWrapper.children;
 
-    const albumOrder: string = Array.from(children)
-      .map((child) => {
-        const albumId = child.getAttribute("data-album-id");
-        return Number(albumId);
-      })
-      .join(",");
-    dispatch(GroupAction.updateAlbumOrderAction(selectedGroup.groupId, albumOrder));
-  }, []);
+      const albumOrder: string = Array.from(children)
+        .map((child) => {
+          const albumId = child.getAttribute("data-album-id");
+          return Number(albumId);
+        })
+        .join(",");
+      dispatch(GroupAction.updateAlbumOrderAction(selectedGroup.groupId, albumOrder));
+    },
+    [selectedGroup],
+  );
 
   const onPostDragEndHandler = useCallback((ev: React.DragEvent<HTMLDivElement>) => {
     ev.preventDefault();
@@ -122,19 +126,21 @@ const AlbumList = () => {
       {albumList &&
         albumList.map((album: any, idx: number) => {
           return (
-            <Album
-              key={album.albumId}
-              album={album}
-              postSelected={postSelected}
-              setPostSelected={setPostSelected}
-              AlbumDragEndHandler={onAlbumDragEndHandler}
-              DropHandler={onDropHandler}
-              PostDragHandler={onPostDragHandler}
-              AlbumDragHandler={onAlbumDragHandler}
-              DragLeaveHandler={onDragLeaveHandler}
-              PostDragEndHandler={onPostDragEndHandler}
-              albumIdx={idx}
-            ></Album>
+            <AlbumWrapper key={album.albumId} className="albumItem" data-albumidx={idx} data-album-id={album.albumId}>
+              <Album
+                key={album.albumId}
+                album={album}
+                postSelected={postSelected}
+                setPostSelected={setPostSelected}
+                AlbumDragEndHandler={onAlbumDragEndHandler}
+                DropHandler={onDropHandler}
+                PostDragHandler={onPostDragHandler}
+                AlbumDragHandler={onAlbumDragHandler}
+                DragLeaveHandler={onDragLeaveHandler}
+                PostDragEndHandler={onPostDragEndHandler}
+                albumIdx={idx}
+              ></Album>
+            </AlbumWrapper>
           );
         })}
     </DraggableWrapper>
@@ -161,6 +167,12 @@ const DraggableWrapper = styled.div`
       border-radius: 1rem;
     }
   }
+`;
+const AlbumWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 99%;
+  margin: 1rem 0;
 `;
 
 export default React.memo(AlbumList);

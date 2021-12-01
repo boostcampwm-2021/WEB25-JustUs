@@ -5,6 +5,11 @@ export interface GroupType {
   groupName: string;
   groupImg: string;
 }
+export interface UserType {
+  userId: string;
+  userProfile: string;
+  userNickName: string;
+}
 export interface PostType {
   postId: number;
   postTitle: string;
@@ -105,7 +110,7 @@ const groupReducer = (state = initState, action: any) => {
     case GroupAction.ADD_GROUP:
       return {
         ...state,
-        groups: [...state.groups, action.payload],
+        groups: [...state.groups, action.payload.group],
         addGroupSucceed: action.payload.addGroupSucceed,
       };
     case GroupAction.SET_SELECTED_GROUP:

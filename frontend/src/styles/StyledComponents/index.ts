@@ -174,6 +174,8 @@ export const mideumGridRow = css`
 export const mideumModalContainer = css`
   background-color: ${COLOR.WHITE};
   display: grid;
+  max-height: 40rem;
+  max-width: 50rem;
   min-height: 40rem;
   min-width: 50rem;
   border-radius: 1rem;
@@ -181,7 +183,7 @@ export const mideumModalContainer = css`
   animation-name: ${modalSlideUp};
   animation-duration: 1s;
   box-sizing: border-box;
-  padding: 3rem;
+  padding: 1rem 3rem 1rem 3rem;
 `;
 export const mideumModalHeader = css`
   display: grid;

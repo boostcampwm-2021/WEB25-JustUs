@@ -1,6 +1,6 @@
 import { all, fork, put, call, takeLatest, select, delay } from "redux-saga/effects";
 import { getGroupListApi } from "@src/sagas/user";
-import { GroupType } from "@src/reducer/GroupReducer";
+import { GroupType, UserType } from "@src/reducer/GroupReducer";
 import { SpinnerAction, ToastAction, GroupAction, ModalAction } from "@src/action";
 import { modal, toastMessage } from "@src/constants";
 import { GroupAPI } from "@src/api";
@@ -59,10 +59,26 @@ function* createGroup({ payload }: any) {
   try {
     const result: ResponseGenerator = yield call(createGroupApi, payload);
     const { groups }: { groups: GroupType[] } = yield select((state) => state.groups);
+    const { userId, userNickName, userProfile }: UserType = yield select((state) => state.user);
     const { groupId, groupImage } = result.data;
     const { groupName } = payload;
 
-    yield put({ type: GroupAction.ADD_GROUP, payload: { groupId, groupName, groupImage, addGroupSucceed: true } });
+    yield put({
+      type: GroupAction.ADD_GROUP,
+      payload: {
+        group: {
+          groupId,
+          groupName,
+          groupImage,
+          groupMember: {
+            userId: userId,
+            profileImage: userProfile,
+            userNickname: userNickName,
+          },
+        },
+        addGroupSucceed: true,
+      },
+    });
     yield put({ type: ToastAction.SET_SUCCEED_TOAST, payload: { text: toastMessage.succeedMakeGroup(groupName) } });
     yield put({ type: GroupAction.SET_SELECTED_GROUP_IDX, payload: { selectedGroupIdx: groups.length } });
   } catch (err: any) {

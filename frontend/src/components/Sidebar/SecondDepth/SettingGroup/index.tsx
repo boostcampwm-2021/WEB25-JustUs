@@ -24,7 +24,9 @@ const SettingGroup = () => {
 
   return (
     <SettingGroupWrapper>
-      <GroupName>{selectedGroup.groupName}</GroupName>
+      <GroupName>
+        <span title={selectedGroup.groupName}>{selectedGroup.groupName}</span>
+      </GroupName>
 
       <InfoIconWrapper onClick={onClickShowGroupInfo}>
         <InfoSVG fill={nowTheme.MENUTEXT} />
@@ -50,12 +52,14 @@ const GroupName = styled.div`
   grid-column-start: 1;
   grid-column-end: 2;
   cursor: default;
-  padding-left: 2rem;
+  padding-left: 1rem;
   overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  display: flex;
-  align-items: center;
+  ${flexRowCenterAlign}
+  & span {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
 `;
 const InfoIconWrapper = styled.div`
   cursor: pointer;
