@@ -1,4 +1,4 @@
-import { customAxios } from "@src/lib/customAxios";
+import { customAxios, multiFormDataHeader } from "@src/lib/customAxios";
 
 interface IUser {
   userNickName: string;
@@ -12,36 +12,37 @@ interface IUser {
 
 const userApi = {
   getUserInfo: () => {
-    return customAxios.get(`/api/user`);
+    const URL = `/api/user`;
+    return customAxios.get(URL);
   },
 
   getLogOut: () => {
-    return customAxios.post(`/api/auth/logout`, {});
+    const URL = `/api/auth/logout`;
+    return customAxios.post(URL, {});
   },
 
   updateUserInfo: async (user: IUser) => {
+    const URL = `/api/user`;
     const formData = new FormData();
-
-    formData.append("userNickname", user.updateUserNickName);
-    formData.append("clearImage", user.updateUserProfile === "deleted" ? "1" : "0");
-    if (user.updateUserProfile) formData.append("profileImage", user.updateUserProfile);
-
-    const result = await customAxios.put(`/api/user`, formData, {
-      withCredentials: true,
-      headers: { "Content-Type": "multipart/form-data" },
-    });
-
+    const { updateUserNickName, updateUserProfile } = user;
+    formData.append("userNickname", updateUserNickName);
+    formData.append("clearImage", updateUserProfile === "deleted" ? "1" : "0");
+    if (updateUserProfile) formData.append("profileImage", updateUserProfile);
+    const result = await customAxios.put(URL, formData, multiFormDataHeader);
     return result;
   },
 
   getGroupList: async () => {
-    const result = await customAxios.get(`/api/user/groups`);
+    const URL = `/api/user/groups`;
+    const result = await customAxios.get(URL);
     return result;
   },
 
   updateGroupOrder: async (payload: any) => {
     const { groupOrder } = payload;
-    const result = customAxios.put(`/api/user/grouporder`, { groupOrder });
+    const URL = `/api/user/grouporder`;
+    const params = { groupOrder };
+    const result = customAxios.put(URL, params);
     return result;
   },
 };

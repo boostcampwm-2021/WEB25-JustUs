@@ -1,6 +1,12 @@
 import React, { useEffect, useState, useRef } from "react";
-import styled, { keyframes } from "styled-components";
-import { flexRowCenterAlign } from "@src/styles/StyledComponents";
+import styled, { css } from "styled-components";
+import {
+  flexRowCenterAlign,
+  smallModalContainer,
+  smallModalHeader,
+  smallModalTitle,
+  smallModalCloseButton,
+} from "@src/styles/StyledComponents";
 import Modal from "@components/Modal";
 import { useDispatch, useSelector } from "react-redux";
 import COLOR from "@styles/Color";
@@ -91,17 +97,13 @@ const GroupSettingModal = () => {
         }}
       >
         <Header>
-          <TitleWrapper>
-            <div>그룹 수정</div>
-          </TitleWrapper>
-          <CloseBtn>
-            <button type="button" onClick={closeModal}>
-              <img src={icon.clear} alt="clear icon" />
-            </button>
-          </CloseBtn>
+          <Title>그룹 수정</Title>
+          <CloseButton type="button" onClick={closeModal}>
+            <img src={icon.clear} alt="clear icon" />
+          </CloseButton>
         </Header>
         <Content>
-          <div>
+          <GridLeft>
             <ImageBackground>
               <img
                 src={nowImg ? nowImg : icon.podoManyHigh}
@@ -121,7 +123,7 @@ const GroupSettingModal = () => {
               <img src={icon.addPhoto} alt="add Post" width={"20rem"}></img>
               사진 찾기
             </UploadImgBtnWrapper>
-          </div>
+          </GridLeft>
           <GridRight>
             <GroupNameInputWrapper
               value={newName}
@@ -136,91 +138,55 @@ const GroupSettingModal = () => {
     </Modal>
   );
 };
+const gridRow = css`
+  display: grid;
+  grid-template-rows: 80% 20%;
+`;
+const GridLeft = styled.div`
+  ${gridRow}
+`;
 const GridRight = styled.div`
-  ${flexRowCenterAlign}
-  height:100%;
-  flex-direction: column;
-  justify-content: flex-end;
-  padding-right: 2rem;
+  ${gridRow}
 `;
 
-const modalSlideUp = keyframes`
-  0% {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  30% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-`;
 const ModalContainer = styled.div`
-  background-color: ${COLOR.WHITE};
-  min-height: 38rem;
-  min-width: 50rem;
-  border-radius: 2rem;
-  display: flex;
-  flex-direction: column;
-  animation-name: ${modalSlideUp};
-  animation-duration: 1s;
+  ${smallModalContainer}
 `;
 
 const Header = styled.div`
-  display: grid;
-  grid-template-columns: 10% 80% 10%;
-  padding: 2rem;
+  ${smallModalHeader}
 `;
-const TitleWrapper = styled.div`
-  text-align: center;
-  font-size: 2.5rem;
-  grid-column-start: 2;
-  grid-column-end: 3;
-  ${flexRowCenterAlign}
+const Title = styled.div`
+  ${smallModalTitle}
 `;
-const CloseBtn = styled.div`
-  grid-column-start: 3;
-  grid-column-end: 4;
-  width: 100%;
-  ${flexRowCenterAlign};
-
-  & > button {
-    background-color: ${COLOR.WHITE};
-    border: none;
-    height: 3rem;
-    width: 3rem;
-    border-radius: 50%;
-    ${flexRowCenterAlign}
-    cursor: pointer;
-    &:hover {
-      background-color: ${COLOR.GRAY};
-    }
-  }
+const CloseButton = styled.button`
+  ${smallModalCloseButton}
 `;
 const Content = styled.div`
   display: grid;
   grid-template-columns: 50% 50%;
-  align-items: center;
-  justify-items: center;
+  box-sizing: border-box;
 `;
 const ImageBackground = styled.div`
-  ${flexRowCenterAlign}
-  margin-top: 4rem;
-  width: 15rem;
-  height: 15rem;
+  margin: auto;
+  width: 12rem;
+  height: 12rem;
   background-color: ${COLOR.WHITE};
-  border-radius: 1vw;
-  border: 6px solid ${(props) => props.theme.SECONDARY};
+  border-radius: 1rem;
+  border: 0.5rem solid ${(props) => props.theme.SECONDARY};
   & img {
-    border-radius: 0.6vw;
+    border-radius: 0.3rem;
+    width: 100%;
+    height: 100%;
   }
   position: relative;
 `;
 
 const UploadImgBtnWrapper = styled.div`
+  margin: auto;
   ${flexRowCenterAlign}
   cursor: pointer;
-  margin-top: 1rem;
-  border-radius: 10px;
+  border-radius: 1rem;
   border: 2px solid ${COLOR.SHADOW_BLACK};
   font-weight: bold;
   font-size: 1.5rem;
@@ -230,21 +196,25 @@ const UploadImgBtnWrapper = styled.div`
   height: 3rem;
 `;
 const DeleteImgBtnWrapper = styled.div`
+  width: 2rem;
   position: absolute;
-  bottom: 13rem;
-  left: 13rem;
-  cursor: pointer;
-  margin-top: 4rem;
+  top: 0;
+  right: 0;
+  opacity: 0.8;
+  &:hover {
+    cursor: pointer;
+    opacity: 1;
+  }
   color: ${COLOR.RED};
   font-weight: bold;
-  font-size: 1.6rem;
 `;
 const GroupNameInputWrapper = styled.input`
-  margin-top: 4rem;
   border: none;
-  width: 23rem;
+  width: 90%;
+  height: 2rem;
+  margin: auto;
   font-size: 1.6rem;
-  border-bottom: 1px solid ${(props) => props.theme.PRIMARY};
+  border-bottom: 0.2rem solid ${(props) => props.theme.PRIMARY};
   &::-webkit-input-placeholder {
     text-align: center;
     font-weight: 800;
@@ -257,14 +227,13 @@ const GroupNameInputWrapper = styled.input`
 
 const CreateBtnWrapper = styled.div`
   ${flexRowCenterAlign}
+  margin: auto;
   cursor: pointer;
   color: ${COLOR.WHITE};
   background-color: ${(props) => props.theme.SECONDARY};
-  margin-top: 4rem;
-  border-radius: 10px;
+  border-radius: 1rem;
   font-weight: bold;
   font-size: 1.5rem;
-  line-height: 16px;
   width: 15rem;
   height: 3rem;
   &:hover {

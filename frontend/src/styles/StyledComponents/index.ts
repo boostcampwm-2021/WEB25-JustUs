@@ -55,7 +55,7 @@ export const modalTitleFont = css`
   font-size: 2.5rem;
   font-weight: bold;
 `;
-const modalSlideUp = keyframes`
+export const modalSlideUp = keyframes`
   0% {
     opacity: 0;
     transform: translateY(20px);
@@ -93,4 +93,47 @@ export const scrollbarPrimary = css`
     background-color: ${(props) => props.theme.PRIMARY};
     border-radius: 1rem;
   }
+`;
+export const smallModalContainer = css`
+  background-color: ${COLOR.WHITE};
+  display: grid;
+  min-height: 30rem;
+  min-width: 40rem;
+  border-radius: 1rem;
+  grid-template-rows: 20% 80%;
+  animation-name: ${modalSlideUp};
+  animation-duration: 1s;
+  box-sizing: border-box;
+  padding: 3rem;
+`;
+export const smallModalHeader = css`
+  display: grid;
+  grid-template-columns: 10% 80% 10%;
+  grid-column-start: 1;
+  grid-column-end: 3;
+  grid-row-start: 1;
+  grid-row-end: 2;
+`;
+export const smallModalTitle = css`
+  grid-column-start: 2;
+  grid-column-end: 3;
+  ${modalTitleFont}
+  text-align: center;
+  margin: auto;
+  align-items: center;
+`;
+export const smallModalCloseButton = css`
+  background-color: ${COLOR.WHITE};
+  border: none;
+  & > img {
+    ${iconHover}
+  }
+`;
+export const smallModalContent = css`
+  grid-row-start: 2;
+  grid-column-start: 1;
+  grid-column-end: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;

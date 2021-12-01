@@ -125,7 +125,7 @@ function* postShiftAlbum({ payload }: any) {
     yield call(postShiftAlbumApi, postId, albumId);
     yield put({ type: GroupAction.POST_SHIFT_ALBUM_SUCCEED, payload: { postInfo, albumId } });
   } catch (err: any) {
-    const { status, statusText } = err.response;
+    const { status } = err.response;
     if (status === 401) {
       yield refresh({ type: GroupAction.POST_SHIFT_ALBUM_REQUEST, payload });
     } else {

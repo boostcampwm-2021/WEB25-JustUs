@@ -27,10 +27,6 @@ interface IAlbum {
   posts: PostType[];
 }
 
-function getGroupInfoApi(params: any) {
-  return GroupAPI.getGroupInfoApi(params);
-}
-
 async function createGroupApi(payload: any) {
   return GroupAPI.createGroup(payload);
 }
@@ -57,20 +53,6 @@ async function requestUpdateGroupApi(payload: any) {
 
 async function requestHashtagsApi(payload: any) {
   return GroupAPI.getHashtags(payload);
-}
-
-function* getGroupInfo(action: any) {
-  try {
-    const result: ResponseGenerator = yield call(getGroupInfoApi, action.payload);
-    yield put({ type: GroupAction.SUCCESS_GROUP_INFO, data: result.json() });
-  } catch (err: any) {
-    const { status } = err.response;
-    if (status === 401) {
-      yield refresh({ type: GroupAction.REQUEST_GROUP_INFO, payload: action.payload });
-    } else {
-      yield put({ type: GroupAction.FAILURE_GROUP_INFO, data: err.response.data });
-    }
-  }
 }
 
 function* createGroup({ payload }: any) {
@@ -103,7 +85,7 @@ function* getAlbumList(action: any) {
     const { albumList }: { albumList: IAlbum[] } = yield select((state) => state.groups);
     yield put({ type: GroupAction.SET_SELECTED_GROUP, payload: { groupId, groupName, groupImage, albumList } });
   } catch (err: any) {
-    const { status, statusText } = err.response;
+    const { status } = err.response;
     if (status === 401) {
       yield refresh({ type: GroupAction.GET_ALBUM_LIST, payload: action.payload });
     }
@@ -126,7 +108,7 @@ function* deleteGroup(action: any) {
       payload: { text: toastMessage.succeedQuitGroup(action.payload.groupName) },
     });
   } catch (err: any) {
-    const { status, statusText } = err.response;
+    const { status } = err.response;
     if (status === 401) {
       yield refresh({ type: GroupAction.DELETE_GROUP, payload: action.payload });
     }
@@ -165,7 +147,7 @@ function* requestJoinGroup(action: any) {
     yield put({ type: ToastAction.SET_SUCCEED_TOAST, payload: { text: toastMessage.succeedJoinGroup } });
     yield put({ type: GroupAction.SET_SELECTED_GROUP_IDX, payload: { selectedGroupIdx: groups.length - 1 } });
   } catch (err: any) {
-    const { status, statusText } = err.response;
+    const { status } = err.response;
     if (status === 401) {
       yield refresh({ type: GroupAction.REQUEST_JOIN_GROUP, payload: action.payload });
     } else {
@@ -190,7 +172,7 @@ function* requestUpdateGroup(action: any) {
       payload: { text: toastMessage.succeedUpdateGroup },
     });
   } catch (err: any) {
-    const { status, statusText } = err.response;
+    const { status } = err.response;
     if (status === 401) {
       yield refresh({ type: GroupAction.REQUEST_UPDATE_GROUP, payload: action.payload });
     } else {
@@ -214,10 +196,6 @@ function* requestHashtags(action: any) {
       yield put({ type: GroupAction.SET_HASHTAGS, payload: { hashTags: [], hashTagsError: true } });
     }
   }
-}
-
-function* watchGroupInfo() {
-  yield takeLatest(GroupAction.REQUEST_GROUP_INFO, getGroupInfo);
 }
 
 function* watchCreateGroup() {
@@ -250,7 +228,6 @@ function* watchRequestHashtags() {
 
 export default function* groupSaga() {
   yield all([
-    fork(watchGroupInfo),
     fork(watchCreateGroup),
     fork(watchGetAlbumList),
     fork(watchDeleteGroup),

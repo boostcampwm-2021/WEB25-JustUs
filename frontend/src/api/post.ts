@@ -1,6 +1,4 @@
-import axios from "axios";
-
-const SERVER_URL = process.env.REACT_APP_SERVER_URL;
+import { customAxios, multiFormDataHeader } from "@src/lib/customAxios";
 
 interface FileObject {
   imageUrl: File;
@@ -31,6 +29,7 @@ interface IUpdatePost {
 
 const groupApi = {
   uploadPost: (newPost: IPost) => {
+    const URL = `/api/posts`;
     const { postTitle, postContent, postDate, postLocation, postLatitude, postLongitude, groupId, postImage } = newPost;
     const formData = new FormData();
     formData.append("postTitle", postTitle);
@@ -42,29 +41,17 @@ const groupApi = {
     formData.append("groupId", groupId);
     postImage.forEach((image) => formData.append("postImages", image.imageUrl));
 
-    return axios({
-      method: "post",
-      url: `${SERVER_URL}/api/posts`,
-      data: formData,
-      headers: { "Content-Type": "multipart/form-data" },
-      withCredentials: true,
-    });
+    return customAxios.post(URL, formData, multiFormDataHeader);
   },
 
   getPost: (postId: number) => {
-    return axios({
-      method: "get",
-      url: `${SERVER_URL}/api/posts/${postId}`,
-      withCredentials: true,
-    });
+    const URL = `/api/posts/${postId}`;
+    return customAxios.get(URL);
   },
 
   deletePost: (postId: number) => {
-    return axios({
-      method: "delete",
-      url: `${SERVER_URL}/api/posts/${postId}`,
-      withCredentials: true,
-    });
+    const URL = `/api/posts/${postId}`;
+    return customAxios.delete(URL);
   },
 
   updatePost: (newPost: IUpdatePost) => {
@@ -80,7 +67,7 @@ const groupApi = {
       deleteImagesId,
       groupId,
     } = newPost;
-
+    const URL = `/api/posts/${postId}`;
     const formData = new FormData();
     formData.append("postTitle", postTitle);
     formData.append("postContent", postContent);
@@ -92,17 +79,12 @@ const groupApi = {
     addImages.forEach((image) => formData.append("addImages", image.imageUrl));
     deleteImagesId.forEach((id) => formData.append("deleteImagesId", id));
 
-    return axios({
-      method: "put",
-      url: `${SERVER_URL}/api/posts/${postId}`,
-      data: formData,
-      headers: { "Content-Type": "multipart/form-data" },
-      withCredentials: true,
-    });
+    return customAxios.put(URL, formData, multiFormDataHeader);
   },
 
   getPostsByHashtag: async (hashtagId: number) => {
-    const result = await axios.get(`${SERVER_URL}/api/posts/search?hashtagId=${hashtagId}`, { withCredentials: true });
+    const URL = `/api/posts/search?hashtagId=${hashtagId}`;
+    const result = await customAxios.get(URL);
     return result;
   },
 };

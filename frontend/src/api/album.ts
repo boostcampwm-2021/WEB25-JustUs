@@ -1,32 +1,33 @@
-import axios from "axios";
 import { customAxios } from "@src/lib/customAxios";
-
-const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 const albumApi = {
   createAlbum: (albumName: string, groupId: number) => {
-    // return axios.post(`${SERVER_URL}/api/albums`, { albumName, groupId }, { withCredentials: true });
-    return customAxios.post(`/api/albums`, { albumName, groupId });
+    const URL = `/api/albums`;
+    const params = { albumName, groupId };
+    return customAxios.post(URL, params);
   },
 
   updateAlbum: (albumName: string, albumId: number) => {
-    // return axios.put(`${SERVER_URL}/api/albums/${albumId}`, { albumName }, { withCredentials: true });
-    return customAxios.put(`/api/albums/${albumId}`, { albumName });
+    const URL = `/api/albums/${albumId}`;
+    const params = { albumName };
+    return customAxios.put(URL, params);
   },
 
   deleteAlbum: (albumId: number) => {
-    // return axios.delete(`${SERVER_URL}/api/albums/${albumId}`, { withCredentials: true });
-    return customAxios.delete(`/api/albums/${albumId}`);
+    const URL = `/api/albums/${albumId}`;
+    return customAxios.delete(URL);
   },
 
   updateAlbumOrder: (groupId: number, albumOrder: string) => {
-    // return axios.put(`${SERVER_URL}/api/groups/${groupId}/albumorder`, { albumOrder }, { withCredentials: true });
-    return customAxios.put(`/api/groups/${groupId}/albumorder`, { albumOrder });
+    const URL = `/api/groups/${groupId}/albumorder`;
+    const params = { albumOrder };
+    return customAxios.put(URL, params);
   },
 
   postShiftAlbum: (postId: number, albumId: number) => {
-    // return axios.put(`${SERVER_URL}/api/posts/${postId}/shift`, { albumId }, { withCredentials: true });
-    return customAxios.put(`/api/posts/${postId}/shift`, { albumId });
+    const URL = `/api/posts/${postId}/shift`;
+    const params = { albumId };
+    return customAxios.put(URL, params);
   },
 };
 

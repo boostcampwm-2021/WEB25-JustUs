@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 import { flexRowCenterAlign } from "@src/styles/StyledComponents";
 import COLOR from "@styles/Color";
@@ -9,7 +9,7 @@ import { ModalAction } from "@src/action";
 
 const AddAlbum = () => {
   const { nowTheme }: any = useSelector((state: RootState) => state.theme);
-  const { isAddAlbumModalOpened }: any = useSelector((state: RootState) => state.modal);
+  const isAddAlbumModalOpened = useSelector((state: RootState) => state.modal.isAddAlbumModalOpened);
   const dispatch = useDispatch();
 
   const onClickAddAlbum = () => {
@@ -48,4 +48,4 @@ const GuideWrapper = styled.div`
   margin-left: 10px;
 `;
 
-export default AddAlbum;
+export default React.memo(AddAlbum);
