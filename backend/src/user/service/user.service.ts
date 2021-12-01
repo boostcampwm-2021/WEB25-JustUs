@@ -24,7 +24,7 @@ export class UserService {
     const userEmail = registerUserDto.userEmail;
 
     let user = await this.userRepository.findOne({ userEmail });
-    if (!user) user = await this.userRepository.saveUser(registerUserDto);
+    if (!user) user = await this.userRepository.save(registerUserDto);
 
     return user;
   }
