@@ -9,7 +9,11 @@ import { useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
 
 const highlights = (text: string) => {
-  const splited = text.split(/[\u0020]/);
+  const splited = text
+    .split(/[\u0020]/)
+    .map((el) => el.split(/(\s)/))
+    .flat();
+
   const makeSpan = (word: string, idx: number) => {
     if (idx === 0) return word;
     return `${word} `;
@@ -30,6 +34,8 @@ const highlights = (text: string) => {
             <mark>#{tagWord}</mark>
           );
         })
+      : hashTagWord[0] === "\n"
+      ? "\n"
       : `${hashTagWord[0]} `;
   };
 
