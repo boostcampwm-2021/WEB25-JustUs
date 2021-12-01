@@ -30,14 +30,7 @@ const Album = ({
 }: AlbumProps) => {
   const [postToggle, setPostToggle] = useState(true);
   return (
-    <AlbumWrapper
-      className="albumItem"
-      onDrop={DropHandler}
-      onDragLeave={DragLeaveHandler}
-      onDragOver={(e) => e.preventDefault()}
-      data-albumidx={albumIdx}
-      data-album-id={album.albumId}
-    >
+    <div onDrop={DropHandler} onDragLeave={DragLeaveHandler} onDragOver={(e) => e.preventDefault()}>
       <Header
         albumId={album.albumId}
         albumName={album.albumName}
@@ -60,14 +53,8 @@ const Album = ({
             album={album}
           />
         ))}
-    </AlbumWrapper>
+    </div>
   );
 };
 
-const AlbumWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 99%;
-  margin: 1rem 0;
-`;
 export default React.memo(Album);
