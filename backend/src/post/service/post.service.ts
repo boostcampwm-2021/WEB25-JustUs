@@ -97,8 +97,8 @@ export class PostService {
     const userNickname = user.userNickname;
 
     return new GetPostInfoResponseDto(
-      userId,
       postId,
+      userId,
       userNickname,
       postTitle,
       postContent,
