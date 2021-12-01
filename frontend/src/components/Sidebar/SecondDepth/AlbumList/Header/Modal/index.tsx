@@ -16,11 +16,13 @@ const AlbumSettingModal = ({ albumId, albumName, x, y }: AlbumSettingModalProps)
   const dispatch = useDispatch();
 
   const onClickUpdateAlbum = () => {
+    dispatch(ModalAction.setAlbumSettingWrapperModalIdxAction({ albumSettingWrapperModalIdx: -1 }));
     dispatch(ModalAction.setSelectedAlbumAction({ albumId, albumName }));
     dispatch(ModalAction.openModalAction(modal.UpdateAlbumModal));
   };
 
   const onClickDeleteAlbum = () => {
+    dispatch(ModalAction.setAlbumSettingWrapperModalIdxAction({ albumSettingWrapperModalIdx: -1 }));
     dispatch(ModalAction.setSelectedAlbumAction({ albumId, albumName }));
     dispatch(ModalAction.openModalAction(modal.DeleteAlbumModal));
   };

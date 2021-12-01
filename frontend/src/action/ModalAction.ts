@@ -3,6 +3,7 @@ const modalAction = {
   CLOSE_MODAL: "CLOSE_MODAL",
   SET_SELECTED_ALBUM: "SET_SELECTED_ALBUM",
   SELECT_POST_REQUEST: "SELECT_POST_REQUEST",
+  SELECT_POST_INIT: "SELECT_POST_INIT",
   SELECT_POST_FAILED: "SELECT_POST_FAILED",
   SET_CLUSTERED_MARKER: "SET_CLUSTERED_MARKER",
   SET_PROFILE_WRAPPER_MODAL_OPENED: "SET_PROFILE_WRAPPER_MODAL_OPENED",
@@ -30,6 +31,10 @@ const modalAction = {
   setAddAlbumModalOpened: (payload: { isAddAlbumModalOpened: boolean }) => ({
     type: modalAction.SET_ADD_ALBUM_MODAL_OPENED,
     payload,
+  }),
+
+  initSelectPost: () => ({
+    type: modalAction.SELECT_POST_INIT,
   }),
 };
 

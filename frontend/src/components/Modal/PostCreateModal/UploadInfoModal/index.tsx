@@ -199,7 +199,7 @@ const UploadInfoModal = ({
             <img src={icon.prev} alt="prev modal"></img>
           </ModalHeaderLeftBtn>
           <ModalHeaderRigthBtn onClick={closeModal}>
-            <img src={icon.x} alt="close"></img>
+            <img src={icon.close} alt="close"></img>
           </ModalHeaderRigthBtn>
         </ModalHeader>
         <ModalContent className="modalContent">

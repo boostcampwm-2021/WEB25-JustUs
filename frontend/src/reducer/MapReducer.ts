@@ -30,8 +30,10 @@ const mapReducer = (state = initState, action: any) => {
       };
     }
     case MapAction.CLOSE_CLUSTERING_WINDOW: {
-      state.clusteringWindow && state.clusteringWindow.close();
-      return state;
+      return {
+        ...state,
+        isClusteringWindowOpened: false,
+      };
     }
     case MapAction.SET_POST_CREATE_WINDOW: {
       return {
@@ -46,8 +48,10 @@ const mapReducer = (state = initState, action: any) => {
       };
     }
     case MapAction.CLOSE_POST_CREATE_WINDOW: {
-      state.postCreateWindow && state.postCreateWindow.close();
-      return state;
+      return {
+        ...state,
+        isPostCreateWindowOpened: false,
+      };
     }
 
     default:

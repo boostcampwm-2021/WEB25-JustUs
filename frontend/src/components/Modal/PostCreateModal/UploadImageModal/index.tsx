@@ -58,7 +58,7 @@ const UploadImageModal = ({ changeMode, files, addFile, removeFile }: UploadImag
         <ModalTitle className="modaltitle">사진 업로드</ModalTitle>
         {files.length === 0 ? (
           <ModalHeaderRigthBtn className="modalHeaderRightBtn" onClick={closeModal}>
-            <img src={icon.x} alt="close"></img>
+            <img src={icon.close} alt="close"></img>
           </ModalHeaderRigthBtn>
         ) : (
           <ModalHeaderRigthBtn className="modalHeaderRightBtn" onClick={nextModal}>
@@ -86,7 +86,7 @@ const UploadImageModal = ({ changeMode, files, addFile, removeFile }: UploadImag
                     ? fileObject.imageUrl
                     : URL.createObjectURL(fileObject.imageUrl)
                 }
-                alt={"uploaded img"}
+                alt="uploaded"
               ></img>
             </ImagePreview>
           ),

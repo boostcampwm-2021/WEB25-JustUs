@@ -11,7 +11,6 @@ const InputModal = () => {
   const [albumName, setAlbumName] = useState("");
   const [addAlbum, setAddAlbum] = useState(true);
   const { selectedGroup }: any = useSelector((state: RootState) => state.groups);
-  const { clickedTarget }: any = useSelector((state: RootState) => state.groupModal);
   const dispatch = useDispatch();
   const inputRef = useRef<HTMLInputElement>(null);
 
