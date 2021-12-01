@@ -22,6 +22,10 @@ const UploadAddressModal = () => {
     dispatch(ModalAction.openModalAction(modal.PostCreateModal));
   };
 
+  const onKeyDown = (e: React.KeyboardEvent) => {
+    if (e.code === "Enter") nextModal();
+  };
+
   return (
     <Modal>
       <ModalContainer
@@ -38,7 +42,7 @@ const UploadAddressModal = () => {
           </CloseBtn>
         </Header>
         <Content>
-          <AddressNameInput ref={addressInputRef} />
+          <AddressNameInput ref={addressInputRef} onKeyDown={onKeyDown} />
           <InsertAddressName onClick={nextModal}>입력하기</InsertAddressName>
         </Content>
       </ModalContainer>

@@ -94,7 +94,7 @@ const UserInfoModal = () => {
           </CloseBtn>
         </Header>
         <Content>
-          <div>
+          <GridLeft>
             <ImageBackground>
               <img src={userImg ? userImg : icon.person} alt="person icon" ref={imageRef} width="100%" height="100%" />
               {userImg && userImg != defaultImageURL ? (
@@ -108,7 +108,7 @@ const UserInfoModal = () => {
               <img src={icon.addPhoto} alt="find Profile" width={"20rem"}></img>
               사진 찾기
             </UploadImgBtnWrapper>
-          </div>
+          </GridLeft>
           <GridRight>
             <UserNameInputWrapper
               value={newName}
@@ -130,8 +130,13 @@ const GridRight = styled.div`
   flex-direction: column;
   justify-content: flex-end;
   padding-right: 2rem;
+  grid-column-start: 2;
+  grid-column-end: 3;
 `;
-
+const GridLeft = styled.div`
+  grid-column-start: 1;
+  grid-column-end: 2;
+`;
 const modalSlideUp = keyframes`
   0% {
     opacity: 0;
@@ -235,7 +240,7 @@ const DeleteImgBtnWrapper = styled.div`
 const UserNameInputWrapper = styled.input`
   margin-top: 4rem;
   border: none;
-  width: 200px;
+  width: 100%;
   font-size: 1.6rem;
   border-bottom: 1px solid ${(props) => props.theme.PRIMARY};
 

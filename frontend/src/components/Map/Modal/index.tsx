@@ -1,11 +1,17 @@
 import COLOR from "@styles/Color";
 import styled from "styled-components";
 import { flexRowCenterAlign } from "@src/styles/StyledComponents";
+import { MapAction } from "@src/action";
 
 const MapLayerPostModal = (e: any) => {
   return (
     <MapLayerModalContainer x={e.rightPosition.x} y={e.rightPosition.y}>
-      <MapLayerModal onClick={() => e.modalOpen(e.latLng.x, e.latLng.y)}>
+      <MapLayerModal
+        onClick={() => {
+          e.modalOpen(e.latLng.x, e.latLng.y);
+          e.dispatch(MapAction.closePostCreateWindowAction());
+        }}
+      >
         <Content>
           <div>포스트 추가</div>
         </Content>
