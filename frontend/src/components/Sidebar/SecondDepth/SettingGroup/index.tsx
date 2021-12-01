@@ -54,8 +54,11 @@ const GroupName = styled.div`
   cursor: default;
   padding-left: 1rem;
   overflow: hidden;
-  ${flexRowCenterAlign}
+  display: flex;
+  align-items: center;
   & span {
+    display: block;
+    height: 50%;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
