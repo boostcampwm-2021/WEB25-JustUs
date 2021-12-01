@@ -71,21 +71,21 @@ const SearchListContainer = styled.div`
   position: absolute;
   background-color: ${COLOR.WHITE};
   border-radius: 0.5rem;
-  top: 4rem;
+  top: 5.5vh;
   z-index: 6;
-  width: 30rem;
+  width: 25vw;
   box-sizing: border-box;
   max-height: 15rem;
   ${scrollbar}
   ${shadow}
   & ul {
-    margin: 0.5rem 0;
+    margin: 0.5vw;
     & li {
       float: left;
       margin: 0.5rem;
       background-color: ${(props) => props.theme.SECONDARY};
       border-radius: 2rem;
-      padding: 0.8rem;
+      padding: 0.4vw;
       color: ${COLOR.WHITE};
       font-size: 1.3rem;
       &:hover {

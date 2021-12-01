@@ -41,16 +41,16 @@ const SearchListContainer = styled.div`
   position: absolute;
   background-color: ${COLOR.WHITE};
   border-radius: 0.5rem;
-  top: 4rem;
+  top: 5.5vh;
   z-index: 6;
-  width: 30rem;
+  width: 25vw;
   box-sizing: border-box;
   max-height: 15rem;
   ${scrollbar}
   ${shadow}
   & ul {
-    max-height: 15rem;
-    margin: 1rem;
+    max-height: 20vh;
+    margin: 1.5vw 0 1.5vw 1.5vw;
     & li {
       padding: 0.5rem;
       border-bottom: 0.1rem solid ${COLOR.GRAY};
@@ -63,6 +63,7 @@ const SearchListContainer = styled.div`
         padding-top: 0;
       }
       &:nth-last-child(1) {
+        padding-bottom: 1.2vh;
       }
     }
   }
