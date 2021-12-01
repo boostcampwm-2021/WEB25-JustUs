@@ -122,19 +122,21 @@ const AlbumList = () => {
       {albumList &&
         albumList.map((album: any, idx: number) => {
           return (
-            <Album
-              key={album.albumId}
-              album={album}
-              postSelected={postSelected}
-              setPostSelected={setPostSelected}
-              AlbumDragEndHandler={onAlbumDragEndHandler}
-              DropHandler={onDropHandler}
-              PostDragHandler={onPostDragHandler}
-              AlbumDragHandler={onAlbumDragHandler}
-              DragLeaveHandler={onDragLeaveHandler}
-              PostDragEndHandler={onPostDragEndHandler}
-              albumIdx={idx}
-            ></Album>
+            <AlbumWrapper key={album.albumId} className="albumItem" data-albumidx={idx} data-album-id={album.albumId}>
+              <Album
+                key={album.albumId}
+                album={album}
+                postSelected={postSelected}
+                setPostSelected={setPostSelected}
+                AlbumDragEndHandler={onAlbumDragEndHandler}
+                DropHandler={onDropHandler}
+                PostDragHandler={onPostDragHandler}
+                AlbumDragHandler={onAlbumDragHandler}
+                DragLeaveHandler={onDragLeaveHandler}
+                PostDragEndHandler={onPostDragEndHandler}
+                albumIdx={idx}
+              ></Album>
+            </AlbumWrapper>
           );
         })}
     </DraggableWrapper>
@@ -161,6 +163,12 @@ const DraggableWrapper = styled.div`
       border-radius: 1rem;
     }
   }
+`;
+const AlbumWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 99%;
+  margin: 1rem 0;
 `;
 
 export default React.memo(AlbumList);
