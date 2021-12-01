@@ -70,7 +70,7 @@ function* getLogOut() {
   }
 }
 
-function* updateUserInfo() {
+function* updateUserInfo({ payload }: any) {
   const user: IUser = yield select((state) => state.user);
 
   try {
@@ -87,7 +87,7 @@ function* updateUserInfo() {
   } catch (err: any) {
     const { status } = err.response;
     if (status === 401) {
-      yield refresh({ type: UserAction.USER_INFO_UPDATE });
+      yield refresh({ type: UserAction.USER_INFO_UPDATE, payload });
     } else {
       yield put({ type: UserAction.SET_UPDATE_FAIL });
       yield put({
