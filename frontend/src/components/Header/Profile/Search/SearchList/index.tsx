@@ -1,4 +1,3 @@
-import { Dispatch, SetStateAction } from "react";
 import COLOR from "@src/styles/Color";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,18 +10,13 @@ interface SearchListContent {
   postTitle: string;
 }
 
-interface SearchListProps {
-  setSearchKeyword: Dispatch<SetStateAction<string>>;
-  setIsSearchListOpened: Dispatch<SetStateAction<Boolean>>;
-}
-
-const SearchList = ({ setSearchKeyword, setIsSearchListOpened }: SearchListProps) => {
+const SearchList = () => {
   const { searchList }: { searchList: PostType[] } = useSelector((state: RootState) => state.groups);
   const dispatch = useDispatch();
 
   const onClickPost = (postId: number) => {
     dispatch(ModalAction.selectPostRequestAction(postId));
-    setIsSearchListOpened(false);
+    dispatch(ModalAction.closeSearchList());
   };
 
   return (
