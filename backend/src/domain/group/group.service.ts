@@ -148,7 +148,9 @@ export class GroupService {
     if (!group) throw new NotFoundException(`Not found group with the id ${groupId}`);
 
     const checkClearImage =
-      clearImage === 1 ? { groupImage: process.env.JUSTUS_GROUP_BASE_IMG, groupName } : { groupName };
+      clearImage === 1
+        ? { groupImage: process.env.JUSTUS_GROUP_BASE_IMG, groupName }
+        : { groupImage: group.groupImage, groupName };
     const updateObject = groupImage === undefined ? checkClearImage : { groupImage, groupName };
 
     await this.groupRepository.update(groupId, updateObject);
