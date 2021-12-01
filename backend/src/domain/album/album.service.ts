@@ -9,7 +9,7 @@ import { Album } from "./album.entity";
 import { Connection, QueryRunner } from "typeorm";
 import { Group } from "src/domain/group/group.entity";
 import { Post } from "src/domain/post/post.entity";
-import { deleteOrder } from "src/common/changeObject";
+import { deleteOrder } from "src/util/changeObject";
 
 @Injectable()
 export class AlbumService {

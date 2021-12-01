@@ -10,8 +10,8 @@ import { UpdateGroupOrderRequestDto } from "src/domain/user/dto/updateGroupOrder
 import { GetGroupsResponseDto } from "src/domain/user/dto/getGroupsResponse.dto";
 import { UpdateUserInfoResponseDto } from "src/domain/user/dto/updateUserInfoResponse.dto";
 import { UpdateResult } from "typeorm";
-import { getImageUrl } from "src/common/imageUrl";
-import { ArrayToObject, reArrange } from "src/common/changeObject";
+import { getImageUrl } from "src/util/imageUrl";
+import { ArrayToObject, reArrange } from "src/util/changeObject";
 
 @Injectable()
 export class UserService {

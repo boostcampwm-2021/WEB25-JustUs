@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from "@nestjs/common";
 import { ImageService } from "src/domain/image/image.service";
-import { getImagesUrl } from "src/common/imageUrl";
+import { getImagesUrl } from "src/util/imageUrl";
 import { InjectRepository } from "@nestjs/typeorm";
 import { PostRepository } from "./post.repository";
 import { UserRepository } from "src/domain/user/user.repository";

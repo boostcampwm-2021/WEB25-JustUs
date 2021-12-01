@@ -12,11 +12,11 @@ import { UpdateAlbumOrderRequestDto } from "src/domain/group/dto/updateAlbumOrde
 import { CreateGroupResponseDto } from "src/domain/group/dto/createGroupResponse.dto";
 import { UpdateGroupInfoResponseDto } from "src/domain/group/dto/updateGroupInfoResponse.dto";
 import { GetHashTagsResponseDto } from "src/domain/group/dto/getHashTagsResponse.dto";
-import { getImageUrl } from "src/common/imageUrl";
+import { getImageUrl } from "src/util/imageUrl";
 import { User } from "src/domain/user/user.entity";
 import { Connection, QueryRunner } from "typeorm";
 import { Album } from "src/domain/album/album.entity";
-import { ArrayToObject, reArrange, deleteOrder } from "src/common/changeObject";
+import { ArrayToObject, reArrange, deleteOrder } from "src/util/changeObject";
 
 @Injectable()
 export class GroupService {
