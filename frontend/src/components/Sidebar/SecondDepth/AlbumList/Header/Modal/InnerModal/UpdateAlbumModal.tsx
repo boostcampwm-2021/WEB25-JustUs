@@ -6,7 +6,6 @@ import {
   smallModalTitle,
   smallModalCloseButton,
   smallModalContent,
-  flexRowCenterAlign,
   smallButton,
 } from "@styles/StyledComponents";
 import Modal from "@components/Modal";
