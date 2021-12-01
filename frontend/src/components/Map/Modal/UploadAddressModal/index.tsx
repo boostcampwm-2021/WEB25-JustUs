@@ -1,6 +1,14 @@
 import { useRef } from "react";
-import styled, { keyframes } from "styled-components";
-import { flexRowCenterAlign } from "@styles/StyledComponents";
+import styled from "styled-components";
+import {
+  smallModalContainer,
+  smallModalHeader,
+  smallModalTitle,
+  smallModalCloseButton,
+  smallModalContent,
+  smallButton,
+  smallModalInputWrapper,
+} from "@styles/StyledComponents";
 import Modal from "@components/Modal";
 import { useDispatch } from "react-redux";
 import COLOR from "@styles/Color";
@@ -34,12 +42,10 @@ const UploadAddressModal = () => {
         }}
       >
         <Header>
-          <Title>추가할 장소명을 입력하세요.</Title>
-          <CloseBtn>
-            <button type="button" onClick={closeModal}>
-              <img src={icon.clear} alt="clear icon" />
-            </button>
-          </CloseBtn>
+          <Title>추가 장소명</Title>
+          <CloseButton type="button" onClick={closeModal}>
+            <img src={icon.clear} alt="clear icon" />
+          </CloseButton>
         </Header>
         <Content>
           <AddressNameInput ref={addressInputRef} onKeyDown={onKeyDown} />
@@ -49,97 +55,28 @@ const UploadAddressModal = () => {
     </Modal>
   );
 };
-const modalSlideUp = keyframes`
-  0% {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  30% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-`;
-
 const ModalContainer = styled.div`
-  background-color: ${COLOR.WHITE};
-  min-height: 35rem;
-  min-width: 30vw;
-  border-radius: 2rem;
-  display: flex;
-  flex-direction: column;
-  animation-name: ${modalSlideUp};
-  animation-duration: 1s;
+  ${smallModalContainer}
 `;
-
 const Header = styled.div`
-  display: grid;
-  grid-template-columns: 10% 80% 10%;
-  padding: 2rem;
+  ${smallModalHeader}
 `;
-
 const Title = styled.div`
-  grid-column-start: 2;
-  grid-column-end: 3;
-  font-size: 2.5rem;
-  ${flexRowCenterAlign};
+  ${smallModalTitle}
 `;
-
-const CloseBtn = styled.div`
-  width: 100%;
-  flex-direction: row;
-  justify-content: center;
-  grid-column-start: 3;
-  grid-column-end: 4;
-
-  & > button {
-    background-color: ${COLOR.WHITE};
-    border: none;
-    height: 3rem;
-    width: 3rem;
-    border-radius: 50%;
-    ${flexRowCenterAlign}
-    cursor: pointer;
-    &:hover {
-      background-color: ${COLOR.GRAY};
-    }
-  }
+const CloseButton = styled.button`
+  ${smallModalCloseButton}
 `;
-
 const Content = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  ${smallModalContent}
 `;
-
 const AddressNameInput = styled.input`
-  width: 30rem;
-  height: 10rem;
-  font-size: 3rem;
-  border: none;
-  background: ${COLOR.GRAY};
-  border-radius: 10px;
-  text-align: center;
-  margin-top: 5rem;
-
-  &::-webkit-input-placeholder {
-    text-align: center;
-    font-weight: 800;
-    font-size: 3rem;
-  }
+  ${smallModalInputWrapper}
 `;
-
-const InsertAddressName = styled.div`
-  ${flexRowCenterAlign}
-  width: 160px;
-  height: 39px;
-  border-radius: 10px;
+const InsertAddressName = styled.button`
+  ${smallButton}
   color: ${COLOR.WHITE};
   background-color: ${(props) => props.theme.PRIMARY};
-  font-size: 2rem;
-  margin-top: 5rem;
-  &:hover {
-    cursor: pointer;
-  }
 `;
 
 export default UploadAddressModal;

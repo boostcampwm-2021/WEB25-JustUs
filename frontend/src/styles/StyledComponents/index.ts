@@ -168,6 +168,24 @@ export const smallButton = css`
     opacity: 1;
   }
 `;
+export const smallModalInputWrapper = css`
+  margin: auto;
+  width: 80%;
+  height: 5rem;
+  border: none;
+  background: ${COLOR.GRAY};
+  border-radius: 1rem;
+  font-size: 3rem;
+  text-align: center;
+  &:focus-visible {
+    outline: none;
+  }
+  &::-webkit-input-placeholder {
+    text-align: center;
+    font-weight: bold;
+    font-size: 3rem;
+  }
+`;
 export const mideumGridRow = css`
   display: grid;
   grid-template-rows: 80% 20%;
