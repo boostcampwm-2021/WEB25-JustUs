@@ -45,13 +45,10 @@ const mockConnection = () => ({
 });
 
 type MockGroupRepository = Partial<Record<keyof GroupRepository, jest.Mock>>;
-type MockUserRepository = Partial<Record<keyof UserRepository, jest.Mock>>;
 
 describe("GroupService", () => {
   let groupService: GroupService;
   let groupRepository: MockGroupRepository;
-  let userRepository: MockUserRepository;
-  let connection: Connection;
 
   let user: User;
   let testUser: User;
@@ -66,7 +63,6 @@ describe("GroupService", () => {
   let existsHashTag1: HashTag;
   let existsHashTag2: HashTag;
   let attendGroupReqiestDto: AttendGroupRequestDto;
-  const userId = 1;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -80,8 +76,6 @@ describe("GroupService", () => {
 
     groupService = module.get<GroupService>(GroupService);
     groupRepository = module.get<MockGroupRepository>(getRepositoryToken(GroupRepository));
-    userRepository = module.get<MockUserRepository>(getRepositoryToken(UserRepository));
-    connection = module.get<Connection>(Connection);
 
     initData();
   });
@@ -137,8 +131,6 @@ describe("GroupService", () => {
       const hashtags = makeResultHashTag();
       const result = await groupService.getHashTags(1);
 
-      console.log(hashtags);
-      console.log(result);
       expect(result).toStrictEqual(hashtags);
     });
   });
