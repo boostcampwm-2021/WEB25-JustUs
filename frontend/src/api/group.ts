@@ -1,75 +1,54 @@
-import axios from "axios";
-import { customAxios } from "@src/lib/customAxios";
-
-const SERVER_URL = process.env.REACT_APP_SERVER_URL;
+import { customAxios, multiFormDataHeader } from "@src/lib/customAxios";
 
 const groupApi = {
-  getGroupInfoApi: (params: any) => {
-    const URL = "/api/groups";
-    const option = {
-      method: "GET",
-      header: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        groupId: params.groupId,
-      }),
-    };
-    return fetch(URL, option);
-  },
-
   createGroup: async (payload: any) => {
+    const URL = `/api/groups`;
     const formData = new FormData();
-    if (payload.groupImage) {
-      formData.append("groupImage", payload.groupImage);
-    }
+    formData.append("groupImage", payload?.groupImage);
     formData.append("groupName", payload.groupName);
-
-    const result = await customAxios.post(`/api/groups`, formData, {
-      withCredentials: true,
-      headers: { "Content-Type": "multipart/form-data" },
-    });
-
+    const result = await customAxios.post(URL, formData, multiFormDataHeader);
     return result;
   },
 
   getAlbumList: async (payload: any) => {
-    const result = await customAxios.get(`/api/groups/${payload.groupId}/albums`);
+    const URL = `/api/groups/${payload.groupId}/albums`;
+    const result = await customAxios.get(URL);
     return result;
   },
 
   deleteGroup: async (payload: any) => {
-    const result = await customAxios.delete(`/api/groups/${payload.groupId}`);
+    const URL = `/api/groups/${payload.groupId}`;
+    const result = await customAxios.delete(URL);
     return result;
   },
 
   getGroupMemberList: async (payload: any) => {
-    const result = await customAxios.get(`/api/groups/${payload.groupId}`);
+    const URL = `/api/groups/${payload.groupId}`;
+    const result = await customAxios.get(URL);
     return result;
   },
 
   joinGroup: async (payload: any) => {
     const { code } = payload;
-    const result = await customAxios.post(`/api/groups/join`, { code });
+    const URL = `/api/groups/join`;
+    const params = { code };
+    const result = await customAxios.post(URL, params);
     return result;
   },
 
   updateGroup: async (payload: any) => {
+    const URL = `/api/groups/${payload.groupId}`;
     const formData = new FormData();
     formData.append("groupName", payload.groupName);
-    if (payload.groupImage) formData.append("groupImage", payload.groupImage);
+    formData.append("groupImage", payload?.groupImage);
     formData.append("clearImage", payload.clearImage);
-
-    const result = await customAxios.put(`/api/groups/${payload.groupId}`, formData, {
-      withCredentials: true,
-      headers: { "Content-Type": "multipart/form-data" },
-    });
-
+    const result = await customAxios.put(URL, formData, multiFormDataHeader);
     return result;
   },
 
   getHashtags: async (payload: any) => {
-    const result = await customAxios.get(`/api/groups/${payload.groupId}/hashtags`);
+    const URL = `/api/groups/${payload.groupId}/hashtags`;
+    const result = await customAxios.get(URL);
     return result;
   },
 };
