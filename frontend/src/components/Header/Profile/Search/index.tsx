@@ -54,14 +54,14 @@ const SearchContainer = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  height: 2rem;
-  width: 30rem;
+  height: 3vh;
+  width: 25vw;
   background-color: ${COLOR.WHITE};
   border-radius: 0.5rem;
-  padding: 0.5rem 0;
+  padding: 0.5vh 0;
   z-index: 6;
   & > img {
-    padding: 0 0.5rem;
+    padding: 0 0.5vw;
   }
 `;
 
