@@ -79,6 +79,7 @@ const AlbumName = styled.div`
   text-overflow: ellipsis;
   white-space: nowrap;
   width: 12rem;
+  padding: 0.5rem 0;
 `;
 const MoreIcon = styled.div`
   cursor: pointer;
