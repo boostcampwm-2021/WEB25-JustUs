@@ -1,6 +1,14 @@
 import { useEffect, useRef } from "react";
-import styled, { keyframes } from "styled-components";
-import { flexColumnCenterAlign, flexRowCenterAlign } from "@styles/StyledComponents";
+import styled from "styled-components";
+import {
+  smallModalContainer,
+  smallModalHeader,
+  smallModalTitle,
+  smallModalCloseButton,
+  smallModalContent,
+  smallButton,
+  smallModalInputWrapper,
+} from "@styles/StyledComponents";
 import Modal from "@components/Modal";
 import { useDispatch } from "react-redux";
 import COLOR from "@styles/Color";
@@ -37,14 +45,10 @@ const JoinGroupModal = () => {
         }}
       >
         <Header>
-          <TitleWrapper>
-            <div>초대 코드를 입력해 주세요.</div>
-          </TitleWrapper>
-          <CloseBtn>
-            <button type="button" onClick={closeModal}>
-              <img src={icon.clear} alt="clear icon" />
-            </button>
-          </CloseBtn>
+          <Title>초대 코드 입력</Title>
+          <CloseButton type="button" onClick={closeModal}>
+            <img src={icon.clear} alt="clear icon" />
+          </CloseButton>
         </Header>
         <Content>
           <InviteCodeInputWrapper ref={inputRef} spellCheck={false} onKeyDown={onKeyDown} />
@@ -54,95 +58,33 @@ const JoinGroupModal = () => {
     </Modal>
   );
 };
-const modalSlideUp = keyframes`
-  0% {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  30% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-`;
 
 const ModalContainer = styled.div`
-  background-color: ${COLOR.WHITE};
-  min-height: 35rem;
-  min-width: 30vw;
-  border-radius: 2rem;
-  display: flex;
-  flex-direction: column;
-  animation-name: ${modalSlideUp};
-  animation-duration: 1s;
+  ${smallModalContainer}
 `;
-
 const Header = styled.div`
-  display: grid;
-  grid-template-columns: 10% 80% 10%;
-  padding: 2rem;
+  ${smallModalHeader}
 `;
-
-const TitleWrapper = styled.div`
-  grid-column-start: 2;
-  grid-column-end: 3;
-  font-size: 2.5rem;
-  ${flexColumnCenterAlign};
+const Title = styled.div`
+  ${smallModalTitle}
 `;
-
-const CloseBtn = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  grid-column-start: 3;
-  grid-column-end: 4;
-  & > button {
-    background-color: ${COLOR.WHITE};
-    border: none;
-    height: 3rem;
-    width: 3rem;
-    border-radius: 50%;
-    ${flexRowCenterAlign}
-    cursor: pointer;
-    &:hover {
-      background-color: ${COLOR.GRAY};
-    }
-  }
+const CloseButton = styled.button`
+  ${smallModalCloseButton}
 `;
-
 const Content = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  margin-top: 2rem;
+  ${smallModalContent}
 `;
 
 const InviteCodeInputWrapper = styled.input`
-  margin-top: 5rem;
-  width: 30rem;
-  height: 10rem;
-  font-size: 3rem;
-  border: none;
-  background: ${COLOR.GRAY};
-  border-radius: 10px;
-  text-align: center;
-
-  &::-webkit-input-placeholder {
-    text-align: center;
-    font-weight: 800;
-    font-size: 3px;
-  }
+  ${smallModalInputWrapper}
 `;
 
 const JoinBtnWrapper = styled.div`
-  ${flexRowCenterAlign}
-  width: 7vw;
-  height: 5vh;
-  border-radius: 10px;
-  color: ${COLOR.WHITE};
+  ${smallButton}
   background-color: ${(props) => props.theme.PRIMARY};
-  margin-top: 5rem;
-  font-size: 2rem;
-  cursor: pointer;
+  margin: auto;
+  color: ${COLOR.WHITE};
 `;
 
 export default JoinGroupModal;
