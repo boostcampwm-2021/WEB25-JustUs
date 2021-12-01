@@ -1,5 +1,4 @@
 import { combineReducers } from "redux";
-import GroupModalReducer from "./GroupModalReducer";
 import GroupReducer from "./GroupReducer";
 import ModalReducer from "./ModalReducer";
 import AddressReducer from "./AddressReducer";
@@ -10,7 +9,6 @@ import ToastReducer from "./ToastReducer";
 import SpinnerReducer from "./SpinnerReducer";
 
 const rootReducer = combineReducers({
-  groupModal: GroupModalReducer,
   groups: GroupReducer,
   modal: ModalReducer,
   theme: ThemeReducer,
