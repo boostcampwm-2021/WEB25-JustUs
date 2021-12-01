@@ -39,6 +39,7 @@ export const largeModalContainerSize = css`
   ${largeModalContainerHeight}
   ${largeModalContainerWidth}
   border-radius: 1rem;
+  padding: 0 0 2rem 0;
 `;
 export const largeModalTitle = css`
   ${flexRowCenterAlign}
