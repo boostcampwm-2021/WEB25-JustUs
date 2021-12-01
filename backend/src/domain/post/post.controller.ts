@@ -1,6 +1,6 @@
 import { Body, Req, Delete, Get, Param, Post, Put, UseInterceptors, UploadedFiles, Query } from "@nestjs/common";
 import { CustomRequest } from "src/custom//myRequest/customRequest";
-import { PostService } from "../service/post.service";
+import { PostService } from "./post.service";
 import { CreatePostRequestDto } from "src/dto/post/createPostRequest.dto";
 import { GetPostInfoResponseDto } from "src/dto/post/getPostInfoResponse.dto";
 import { UpdatePostInfoRequestDto } from "src/dto/post/updatePostInfoRequest.dto";
@@ -15,7 +15,7 @@ import {
   SwaggerUpdatePost,
   SwaggerDeletePost,
   SwaggerShiftPost,
-} from "../swagger";
+} from "./swagger";
 import { CustomController } from "src/custom/decorator/controller.decorator";
 
 @CustomController("posts", "게시글 API")

@@ -2,9 +2,9 @@ import { Injectable } from "@nestjs/common";
 
 import { CustomFile } from "src/custom/myFile/customFile";
 import { InjectRepository } from "@nestjs/typeorm";
-import { ImageRepository } from "../image.repository";
+import { ImageRepository } from "./image.repository";
 import { Post } from "src/domain/post/post.entity";
-import { Image } from "../image.entity";
+import { Image } from "./image.entity";
 import { QueryRunner } from "typeorm";
 
 @Injectable()

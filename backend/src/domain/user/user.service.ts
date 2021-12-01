@@ -1,8 +1,8 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { UserInfo } from "src/dto/user/userInfo.dto";
-import { User } from "../user.entity";
-import { UserRepository } from "../user.repository";
+import { User } from "./user.entity";
+import { UserRepository } from "./user.repository";
 import { CustomFile } from "src/custom/myFile/customFile";
 import { UserInfoResponseDto } from "src/dto/user/userInfoResponse.dto";
 import { UpdateUserInfoRequestDto } from "src/dto/user/updateUserInfoRequest.dto";

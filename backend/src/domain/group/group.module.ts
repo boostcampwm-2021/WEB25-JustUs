@@ -2,9 +2,9 @@ import { Module } from "@nestjs/common";
 import { JwtModule } from "@nestjs/jwt";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { AuthModule } from "src/domain/auth/auth.module";
-import { GroupController } from "./controller/group.controller";
+import { GroupController } from "./group.controller";
 import { GroupRepository } from "./group.repository";
-import { GroupService } from "./service/group.service";
+import { GroupService } from "./group.service";
 
 @Module({
   imports: [

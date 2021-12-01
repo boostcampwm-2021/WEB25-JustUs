@@ -1,8 +1,8 @@
 import { Module } from "@nestjs/common";
 import { JwtModule } from "@nestjs/jwt";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { PostController } from "./controller/post.controller";
-import { PostService } from "./service/post.service";
+import { PostController } from "./post.controller";
+import { PostService } from "./post.service";
 import { PostRepository } from "./post.repository";
 import { UserRepository } from "src/domain/user/user.repository";
 import { AlbumRepository } from "src/domain/album/album.repository";

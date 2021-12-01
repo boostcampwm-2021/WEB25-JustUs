@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException, UnauthorizedException, BadRequestException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { GroupRepository } from "../group.repository";
-import { Group } from "../group.entity";
+import { GroupRepository } from "./group.repository";
+import { Group } from "./group.entity";
 import { CustomFile } from "src/custom/myFile/customFile";
 import { CreateGroupRequestDto } from "src/dto/group/createGroupRequest.dto";
 import { AttendGroupRequestDto } from "src/dto/group/attendGroupRequest.dto";

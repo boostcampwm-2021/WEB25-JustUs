@@ -1,11 +1,11 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { getRepositoryToken } from "@nestjs/typeorm";
-import { Group } from "src/group/group.entity";
-import { GroupRepository } from "src/group/group.repository";
+import { Group } from "src/domain/group/group.entity";
+import { GroupRepository } from "src/domain/group/group.repository";
 import { Connection } from "typeorm";
 import { Album } from "../album.entity";
 import { AlbumRepository } from "../album.repository";
-import { AlbumService } from "./album.service";
+import { AlbumService } from "../album.service";
 
 const mockAlbumRepository = () => ({
   findOne: jest.fn(),

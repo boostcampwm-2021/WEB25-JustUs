@@ -3,7 +3,7 @@ import { JwtModule } from "@nestjs/jwt";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { GroupRepository } from "src/domain/group/group.repository";
 import { HashTagRepository } from "./hashtag.repository";
-import { HashTagService } from "./service/hashtag.service";
+import { HashTagService } from "./hashtag.service";
 
 @Module({
   imports: [

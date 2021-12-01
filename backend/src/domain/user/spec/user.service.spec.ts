@@ -1,10 +1,10 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { getRepositoryToken } from "@nestjs/typeorm";
 import { UserInfoResponseDto } from "src/dto/user/userInfoResponse.dto";
-import { Group } from "src/group/group.entity";
+import { Group } from "src/domain/group/group.entity";
 import { User } from "../user.entity";
 import { UserRepository } from "../user.repository";
-import { UserService } from "./user.service";
+import { UserService } from "../user.service";
 
 const mockUserRepository = () => ({
   save: jest.fn(),

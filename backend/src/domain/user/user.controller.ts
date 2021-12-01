@@ -1,7 +1,7 @@
 import { Req, Get, Put, Body, UseInterceptors, UploadedFile } from "@nestjs/common";
 import { CustomRequest } from "src/custom/myRequest/customRequest";
 import { CustomFile } from "src/custom/myFile/customFile";
-import { UserService } from "../service/user.service";
+import { UserService } from "./user.service";
 import { UserInfoResponseDto } from "src/dto/user/userInfoResponse.dto";
 import { UpdateUserInfoRequestDto } from "src/dto/user/updateUserInfoRequest.dto";
 import { UpdateGroupOrderRequestDto } from "src/dto/user/updateGroupOrderRequest.dto";
@@ -9,7 +9,7 @@ import { GetGroupsResponseDto } from "src/dto/user/getGroupsResponse.dto";
 import { UpdateUserInfoResponseDto } from "src/dto/user/updateUserInfoResponse.dto";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { multerOption } from "src/configs";
-import { SwaggerUpdateUserInfo, SwaggerGetUserInfo, SwaggerUpdateGroupOrder, SwaggerGetGroups } from "../swagger";
+import { SwaggerUpdateUserInfo, SwaggerGetUserInfo, SwaggerUpdateGroupOrder, SwaggerGetGroups } from "./swagger";
 import { CustomController } from "src/custom/decorator/controller.decorator";
 import { UpdateResult } from "typeorm";
 

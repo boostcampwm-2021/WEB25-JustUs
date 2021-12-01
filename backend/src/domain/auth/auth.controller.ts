@@ -1,13 +1,13 @@
 import { Controller, Get, Post, Req, Res, UseFilters, UseGuards } from "@nestjs/common";
 import { ApiTags, ApiBearerAuth } from "@nestjs/swagger";
 import { Response } from "express";
-import { NaverOauthGuard } from "../guard/naver-auth.guard";
-import { JwtAuthGuard } from "../guard/jwt-auth-guard";
+import { NaverOauthGuard } from "./guard/naver-auth.guard";
+import { JwtAuthGuard } from "./guard/jwt-auth-guard";
 import { CustomRequest } from "src/custom/myRequest/customRequest";
-import { UserService } from "src/domain/user/service/user.service";
-import { AuthService } from "../service/auth.service";
+import { UserService } from "src/domain/user/user.service";
+import { AuthService } from "./auth.service";
 import { NaverFilter } from "src/filter/naver.filter";
-import { JwtRefreshTokenAuthGuard } from "../guard/jwt-refreshToken-auth-guard";
+import { JwtRefreshTokenAuthGuard } from "./guard/jwt-refreshToken-auth-guard";
 
 @ApiTags("auth API")
 @ApiBearerAuth()

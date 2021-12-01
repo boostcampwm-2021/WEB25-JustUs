@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { HashTagRepository } from "../hashtag.repository";
-import { HashTag } from "../hashtag.entity";
+import { HashTagRepository } from "./hashtag.repository";
+import { HashTag } from "./hashtag.entity";
 import { GroupRepository } from "src/domain/group/group.repository";
 import { QueryRunner } from "typeorm";
 

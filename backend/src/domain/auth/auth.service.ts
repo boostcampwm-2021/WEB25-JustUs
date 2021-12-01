@@ -1,8 +1,8 @@
 import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { UserInfo } from "src/dto/user/userInfo.dto";
 import { JwtService } from "@nestjs/jwt";
-import { UserService } from "src/domain/user/service/user.service";
-import { User } from "../../user/user.entity";
+import { UserService } from "src/domain/user/user.service";
+import { User } from "../user/user.entity";
 
 @Injectable()
 export class AuthService {

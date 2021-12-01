@@ -1,7 +1,7 @@
 import { Body, Req, Get, Param, Post, Put, Delete, UseInterceptors, UploadedFile } from "@nestjs/common";
 import { CustomRequest } from "src/custom/myRequest/customRequest";
 import { CustomFile } from "src/custom/myFile/customFile";
-import { GroupService } from "../service/group.service";
+import { GroupService } from "./group.service";
 import { CreateGroupRequestDto } from "src/dto/group/createGroupRequest.dto";
 import { AttendGroupRequestDto } from "src/dto/group/attendGroupRequest.dto";
 import { GetGroupInfoResponseDto } from "src/dto/group/getGroupInfoResponse.dto";
@@ -22,7 +22,7 @@ import {
   SwaggerLeaveGroup,
   SwaggerUpdateAlbumOrder,
   SwaggerGetHashTags,
-} from "../swagger";
+} from "./swagger";
 import { CustomController } from "src/custom/decorator/controller.decorator";
 
 @CustomController("groups", "그룹 API")
