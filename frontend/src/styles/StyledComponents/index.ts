@@ -6,30 +6,15 @@ export const flexRowCenterAlign = css`
   align-items: center;
   justify-content: center;
 `;
-
 export const flexColumnCenterAlign = css`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 `;
-export const modalContainerWidth = css`
-  min-width: 720px;
-`;
-export const modalContainerHeight = css`
-  height: 60%;
-  min-height: 460px;
-`;
-export const modalContainerSize = css`
-  ${modalContainerHeight}
-  ${modalContainerWidth}
-  border-radius: 1rem;
-`;
-export const shadow = css`
-  box-shadow: 0 0 3px 0 ${COLOR.SHADOW_BLACK};
-`;
-export const postCardShadow = css`
-  box-shadow: 5px 2px 3px 3px ${COLOR.SHADOW_BLACK};
+export const modalTitleFont = css`
+  font-size: 2.5rem;
+  font-weight: bold;
 `;
 export const iconHover = css`
   &:hover {
@@ -38,22 +23,61 @@ export const iconHover = css`
     border-radius: 50%;
   }
 `;
+export const largeModalHeaderButtonIcon = css`
+  width: 2.4rem;
+  height: 2.4rem;
+  cursor: pointer;
+`;
+export const largeModalContainerWidth = css`
+  min-width: 720px;
+`;
+export const largeModalContainerHeight = css`
+  height: 60%;
+  min-height: 460px;
+`;
+export const largeModalContainerSize = css`
+  ${largeModalContainerHeight}
+  ${largeModalContainerWidth}
+  border-radius: 1rem;
+  padding: 0 0 2rem 0;
+`;
+export const largeModalTitle = css`
+  ${flexRowCenterAlign}
+  ${modalTitleFont}
+  grid-column-start: 2;
+  grid-column-end: 3;
+  grid-row-start: 1;
+  grid-row-end: 2;
+`;
+export const largeModalHeaderRightBtn = css`
+  grid-column-start: 3;
+  grid-column-end: 4;
+  grid-row-start: 1;
+  grid-row-end: 2;
+  border: none;
+  background: none;
+  & > img {
+    ${largeModalHeaderButtonIcon};
+    ${iconHover};
+  }
+`;
+export const shadow = css`
+  box-shadow: 0 0 3px 0 ${COLOR.SHADOW_BLACK};
+`;
+export const postCardShadow = css`
+  box-shadow: 5px 2px 3px 3px ${COLOR.SHADOW_BLACK};
+`;
 export const modalIconSize = css``;
 export const modalWidth = css`
   min-width: 720px;
   z-index: 6;
 `;
 export const modalHeaderWithTwoIcon = css``;
-
 export const modalHeaderWithOneIcon = css`
   display: grid;
   grid-template-columns: 10% 80% 10%;
   box-sizing: border-box;
   position: relative;
-`;
-export const modalTitleFont = css`
-  font-size: 2.5rem;
-  font-weight: bold;
 `;
 export const modalSlideUp = keyframes`
   0% {
@@ -68,11 +92,6 @@ export const modalSlideUp = keyframes`
 export const modalSlideUpAnimation = css`
   animation-name: ${modalSlideUp};
   animation-duration: 1s;
-`;
-export const modalHeaderButtonIcon = css`
-  width: 2.4rem;
-  height: 2.4rem;
-  cursor: pointer;
 `;
 export const scrollbar = css`
   overflow-y: scroll;
@@ -99,6 +118,8 @@ export const smallModalContainer = css`
   display: grid;
   min-height: 30rem;
   min-width: 40rem;
+  height: 30rem;
+  width: 40rem;
   border-radius: 1rem;
   grid-template-rows: 20% 80%;
   animation-name: ${modalSlideUp};
@@ -133,7 +154,139 @@ export const smallModalContent = css`
   grid-row-start: 2;
   grid-column-start: 1;
   grid-column-end: 3;
-  display: flex;
-  flex-direction: column;
+  ${flexColumnCenterAlign}
+`;
+export const smallButton = css`
+  border: none;
+  border-radius: 1rem;
+  font-size: 2rem;
+  padding: 1rem 2rem;
+  opacity: 0.8;
+  &:hover {
+    cursor: pointer;
+    font-weight: bold;
+    opacity: 1;
+  }
+`;
+export const mideumGridRow = css`
+  display: grid;
+  grid-template-rows: 80% 20%;
+`;
+export const mideumModalContainer = css`
+  background-color: ${COLOR.WHITE};
+  display: grid;
+  max-height: 40rem;
+  max-width: 50rem;
+  min-height: 40rem;
+  min-width: 50rem;
+  border-radius: 1rem;
+  grid-template-rows: 15% 85%;
+  animation-name: ${modalSlideUp};
+  animation-duration: 1s;
+  box-sizing: border-box;
+  padding: 1rem 3rem 1rem 3rem;
+`;
+export const mideumModalHeader = css`
+  display: grid;
+  grid-template-columns: 10% 80% 10%;
+  grid-column-start: 1;
+  grid-column-end: 3;
+  grid-row-start: 1;
+  grid-row-end: 2;
+`;
+export const mideumModalTitle = css`
+  grid-column-start: 2;
+  grid-column-end: 3;
+  ${modalTitleFont}
+  text-align: center;
+  margin: auto;
   align-items: center;
+`;
+export const mideumModalCloseButton = css`
+  background-color: ${COLOR.WHITE};
+  border: none;
+  & > img {
+    ${iconHover}
+  }
+`;
+export const mideumModalContent = css`
+  display: grid;
+  grid-template-columns: 50% 50%;
+  grid-column-start: 1;
+  grid-column-end: 3;
+  box-sizing: border-box;
+`;
+export const mideumImageSize = css`
+  max-width: 13rem;
+  max-height: 13rem;
+`;
+export const mideumImageBackground = css`
+  margin: auto;
+  width: 13rem;
+  height: 13rem;
+  ${flexRowCenterAlign}
+  background-color: ${COLOR.WHITE};
+  border-radius: 1rem;
+  border: 0.5rem solid ${(props) => props.theme.SECONDARY};
+  position: relative;
+`;
+export const mideumDeleteButton = css`
+  width: 2rem;
+  position: absolute;
+  top: 0;
+  right: 0;
+  opacity: 0.8;
+  &:hover {
+    cursor: pointer;
+    opacity: 1;
+  }
+  & img {
+    width: 100%;
+    height: 100%;
+  }
+  color: ${COLOR.RED};
+`;
+export const mideumInputWrapper = css`
+  border: none;
+  width: 90%;
+  height: 2rem;
+  margin: auto;
+  font-size: 1.6rem;
+  border-bottom: 0.2rem solid ${(props) => props.theme.PRIMARY};
+  &::-webkit-input-placeholder {
+    text-align: center;
+    font-size: 1.6rem;
+  }
+  &:focus {
+    outline: none;
+  }
+`;
+export const mideumBottomButton = css`
+  border-radius: 1rem;
+  margin: auto;
+  width: 15rem;
+  height: 3rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+  line-height: 1.5rem;
+  ${flexRowCenterAlign};
+  &:hover {
+    cursor: pointer;
+    background-color: ${(props) => props.theme.PRIMARY};
+  }
+`;
+export const mideumBottomLeftButton = css`
+  border: 0.2rem solid ${COLOR.SHADOW_BLACK};
+  color: ${COLOR.SHADOW_BLACK};
+  &:hover {
+    background-color: ${(props) => props.theme.PRIMARY};
+    border: none;
+    color: ${COLOR.WHITE};
+  }
+  ${mideumBottomButton}
+`;
+export const mideumBottomRightButton = css`
+  color: ${COLOR.WHITE};
+  background-color: ${(props) => props.theme.SECONDARY};
+  ${mideumBottomButton}
 `;

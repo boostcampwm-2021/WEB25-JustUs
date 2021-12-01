@@ -11,7 +11,7 @@ import {
   flexColumnCenterAlign,
   modalTitleFont,
   modalSlideUpAnimation,
-  modalHeaderButtonIcon,
+  largeModalHeaderButtonIcon,
   scrollbar,
   iconHover,
 } from "@styles/StyledComponents";
@@ -287,7 +287,7 @@ const headerBtn = css`
   border: none;
   background: none;
   & > img {
-    ${modalHeaderButtonIcon}
+    ${largeModalHeaderButtonIcon}
   }
 `;
 const ModalContainer = styled.div<{ isSubOpened: boolean }>`

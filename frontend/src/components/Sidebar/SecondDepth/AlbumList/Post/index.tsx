@@ -46,7 +46,7 @@ const Post = ({
       onDragOver={(e) => e.preventDefault()}
       data-album-id={album.albumId}
     >
-      <PostTitle className="postTitle">{postTitle}</PostTitle>
+      <PostTitle title={postTitle}>{postTitle}</PostTitle>
     </PostWrapper>
   );
 };
@@ -70,6 +70,9 @@ const PostTitle = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  &:hover {
+    font-weight: bold;
+  }
 `;
 
 export default React.memo(Post);

@@ -1,6 +1,15 @@
 import React, { useState, Dispatch, SetStateAction } from "react";
-import styled, { keyframes } from "styled-components";
-import { flexColumnCenterAlign, flexRowCenterAlign } from "@src/styles/StyledComponents";
+import styled, { css } from "styled-components";
+import {
+  flexColumnCenterAlign,
+  flexRowCenterAlign,
+  mideumModalContainer,
+  mideumModalHeader,
+  mideumModalTitle,
+  mideumModalCloseButton,
+  mideumModalContent,
+  scrollbar,
+} from "@src/styles/StyledComponents";
 import Modal from "@components/Modal";
 import { useDispatch, useSelector } from "react-redux";
 import COLOR from "@styles/Color";
@@ -51,16 +60,14 @@ const GroupInfoModal = ({ setIsToggle }: SettingGroupModalProps) => {
         }}
       >
         <Header>
-          <TitleWrapper title={selectedGroup.groupName}>{selectedGroup.groupName}</TitleWrapper>
-          <CloseBtn>
-            <button type="button" onClick={closeModal}>
-              <img src={icon.clear} alt="clear icon" />
-            </button>
-          </CloseBtn>
+          <Title title={selectedGroup.groupName}>{selectedGroup.groupName}</Title>
+          <CloseButton type="button" onClick={closeModal}>
+            <img src={icon.clear} alt="clear icon" />
+          </CloseButton>
         </Header>
         <Content>
-          <GridItem>
-            <GroupMemberListGuide>그룹원</GroupMemberListGuide>
+          <GridLeft>
+            <GridTitle>그룹원</GridTitle>
             <GroupMemberListWrapper>
               <GroupMemberList>
                 {selectedGroup.users.map((groupMember: any) => (
@@ -73,155 +80,94 @@ const GroupInfoModal = ({ setIsToggle }: SettingGroupModalProps) => {
                 ))}
               </GroupMemberList>
             </GroupMemberListWrapper>
-          </GridItem>
-          <GridItem>
-            <JoinCodeGuide>초대 코드</JoinCodeGuide>
-            <JoinCode onClick={clickGroupCode}>
-              <FcInspectionWrapper>
-                <FcInspection />
-              </FcInspectionWrapper>
-              {selectedGroup.groupCode}
-            </JoinCode>
-            <DropGuideWrapper>그룹 탈퇴</DropGuideWrapper>
-            <GroupDropWrapper>
-              {!clickedDropBtn && <DropGroupButtonWrapper onClick={onClickDropBtn}>탈퇴</DropGroupButtonWrapper>}
-              {clickedDropBtn && (
-                <>
-                  <Notice>그룹을 탈퇴하시겠습니까?</Notice>
-                  <YesNoButtonWrapper>
-                    <YesNoButton onClick={onClickConfirmBtn}>네</YesNoButton>
-                    <YesNoButton onClick={onClickCancelBtn}>아니오</YesNoButton>
-                  </YesNoButtonWrapper>
-                </>
-              )}
-            </GroupDropWrapper>
-          </GridItem>
+          </GridLeft>
+          <GridRight>
+            <InviteCode>
+              <GridTitle>초대 코드</GridTitle>
+              <JoinCode onClick={clickGroupCode}>
+                <FcInspectionWrapper>
+                  <FcInspection />
+                </FcInspectionWrapper>
+                {selectedGroup.groupCode}
+              </JoinCode>
+              <p>위 초대 코드를 클릭하시면 코드가 복사됩니다:)</p>
+            </InviteCode>
+            <ResignGroup>
+              <GridTitle>그룹 탈퇴</GridTitle>
+              <GroupDropWrapper>
+                {!clickedDropBtn && <DropGroupButtonWrapper onClick={onClickDropBtn}>탈퇴</DropGroupButtonWrapper>}
+                {clickedDropBtn && (
+                  <>
+                    <Notice>그룹을 탈퇴하시겠습니까?</Notice>
+                    <YesNoButtonWrapper>
+                      <YesNoButton onClick={onClickConfirmBtn}>네</YesNoButton>
+                      <YesNoButton onClick={onClickCancelBtn}>아니오</YesNoButton>
+                    </YesNoButtonWrapper>
+                  </>
+                )}
+              </GroupDropWrapper>
+            </ResignGroup>
+          </GridRight>
         </Content>
       </ModalContainer>
     </Modal>
   );
 };
-
-const GridItem = styled.div`
-  display: flex;
-  position: relative;
-  flex-direction: column;
-  height: 29rem;
-  width: 90%;
+const borderBottom = css`
+  border-bottom: 0.2rem solid ${COLOR.GRAY};
 `;
-
-const modalSlideUp = keyframes`
-  0% {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  30% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-`;
-const ModalContainer = styled.div`
-  background-color: ${COLOR.WHITE};
-  position: absolute;
-  height: 38rem;
-  width: 50rem;
-  border-radius: 2rem;
-  display: flex;
-  flex-direction: column;
-  animation-name: ${modalSlideUp};
-  animation-duration: 1s;
-  padding: 2rem;
-`;
-const Header = styled.div`
-  display: grid;
-  grid-template-columns: 10% 80% 10%;
-  height: 3rem;
-`;
-const TitleWrapper = styled.div`
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  text-align: center;
-  font-size: 2rem;
-  font-weight: bold;
-  grid-column-start: 2;
-  grid-column-end: 3;
-`;
-const CloseBtn = styled.div`
-  width: 100%;
-  ${flexRowCenterAlign}
-  grid-column-start: 3;
-  grid-column-end: 4;
-
-  & > button {
-    background-color: ${COLOR.WHITE};
-    border: none;
-    height: 3rem;
-    width: 3rem;
-    border-radius: 50%;
-    ${flexRowCenterAlign}
-    cursor: pointer;
-    &:hover {
-      background-color: ${COLOR.GRAY};
+const contentMarginTop = css`
+  & > * {
+    margin-top: 1rem;
+    &:first-child {
+      margin: 0;
     }
   }
 `;
+const ModalContainer = styled.div`
+  ${mideumModalContainer}
+`;
+const Header = styled.div`
+  ${mideumModalHeader}
+`;
+const Title = styled.div`
+  ${mideumModalTitle}
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+`;
+const CloseButton = styled.button`
+  ${mideumModalCloseButton}
+`;
 const Content = styled.div`
-  display: grid;
-  grid-template-columns: 50% 50%;
-  align-items: center;
-  justify-items: center;
-  font-size: 1.5rem;
-  height: 35rem;
-`;
-const JoinCodeGuide = styled.div`
-  font-weight: bold;
-  border-bottom: 1px solid ${COLOR.GRAY};
-  padding-bottom: 1rem;
-`;
-
-const JoinCode = styled.div`
-  color: ${(props) => props.theme.SECONDARY};
-  margin-top: 1rem;
-  padding-bottom: 1rem;
-  font-size: 2.5rem;
-  font-weight: bold;
-  cursor: pointer;
-  box-sizing: border-box;
-  height: 3.5rem;
-  display: flex;
-  align-items: center;
-  &:hover {
-    color: ${(props) => props.theme.PRIMARY};
+  ${mideumModalContent}
+  & > * {
+    padding-left: 1rem;
+    &:first-child {
+      padding: 0;
+    }
   }
 `;
-const FcInspectionWrapper = styled.div`
-  ${flexRowCenterAlign}
+const GridLeft = styled.div`
+  display: flex;
+  flex-direction: column;
+  ${contentMarginTop}
+`;
+const GridTitle = styled.div`
+  font-size: 1.7rem;
+  height: 1.5rem;
+  font-weight: bold;
+  padding-bottom: 1rem;
+  ${borderBottom}
 `;
 const GroupMemberListWrapper = styled.div`
+  height: 25rem;
   width: 100%;
-  display: flex;
-  margin-top: 1rem;
-  border-bottom: 1px solid ${COLOR.GRAY};
-  overflow-y: scroll;
   overflow-x: hidden;
   box-sizing: border-box;
-  &::-webkit-scrollbar {
-    width: 1rem;
-  }
-  &::-webkit-scrollbar-thumb {
-    background-color: ${(props) => props.theme.SECONDARY};
-    border-radius: 1rem;
-  }
-  &::-webkit-scrollbar-track {
-    background-color: transparent;
-  }
-`;
-const GroupMemberListGuide = styled.div`
-  width: 100%;
-  padding-bottom: 1rem;
-  font-weight: 600;
-  border-bottom: 1px solid ${COLOR.GRAY};
+  ${scrollbar}
+  ${borderBottom}
 `;
 const GroupMemberList = styled.div`
   display: flex;
@@ -247,52 +193,87 @@ const GroupImg = styled.div`
 const MemberNickname = styled.div`
   ${flexRowCenterAlign};
   margin-left: 2rem;
+  font-size: 1.5rem;
 `;
+const GridRight = styled.div`
+  width: 100%;
+  display: grid;
+  grid-template-rows: 50% 50%;
+`;
+const InviteCode = styled.div`
+  ${contentMarginTop}
+  & > p {
+    font-size: 1rem;
+  }
+`;
+const JoinCode = styled.div`
+  color: ${(props) => props.theme.PRIMARY};
+  font-size: 2.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  box-sizing: border-box;
+  height: 3.5rem;
+  display: flex;
+  align-items: center;
+  &:hover {
+    color: ${(props) => props.theme.SECONDARY};
+  }
+`;
+
 const GroupDropWrapper = styled.div`
   ${flexColumnCenterAlign};
-  width: 100%;
-  margin-top: 3rem;
+  position: relative;
 `;
-const DropGuideWrapper = styled.div`
+const FcInspectionWrapper = styled.div`
+  ${flexRowCenterAlign}
+`;
+const ResignGroup = styled.div`
   width: 100%;
-  font-weight: bold;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid ${COLOR.GRAY};
-  margin-top: 3rem;
+  display: grid;
+  grid-template-rows: 20% 60% 20%;
 `;
 const DropGroupButtonWrapper = styled.div`
   ${flexRowCenterAlign}
   width: 10rem;
   height: 4rem;
-  border-radius: 10px;
-  border: 2px solid ${COLOR.RED};
-  cursor: pointer;
+  border-radius: 1rem;
+  font-size: 1.5rem;
+  border: 0.2rem solid ${COLOR.RED};
   color: ${COLOR.RED};
   font-weight: bold;
+  &:hover {
+    cursor: pointer;
+  }
+`;
+const Notice = styled.div`
+  font-size: 1.2rem;
+`;
+const YesNoButtonWrapper = styled.div`
+  ${flexRowCenterAlign}
+  & button:nth-child(1) {
+    background-color: ${COLOR.RED};
+    border: 0.1rem solid ${COLOR.RED};
+  }
+  & button:nth-child(2) {
+    background-color: ${COLOR.GRAY};
+    border: 0.1rem solid ${COLOR.GRAY};
+  }
+  & > * {
+    opacity: 0.8;
+    &:hover {
+      opacity: 1;
+    }
+  }
 `;
 const YesNoButton = styled.button`
   ${flexRowCenterAlign}
-  width: 10rem;
+  width: 8rem;
   height: 4rem;
   border-radius: 10px;
   cursor: pointer;
   font-size: 2rem;
   margin: 1rem;
   color: ${COLOR.WHITE};
-`;
-const YesNoButtonWrapper = styled.div`
-  ${flexRowCenterAlign}
-  & button:nth-child(1) {
-    background-color: ${COLOR.RED};
-    border: 1px solid ${COLOR.RED};
-  }
-  & button:nth-child(2) {
-    background-color: ${COLOR.GRAY};
-    border: 1px solid ${COLOR.GRAY};
-  }
-`;
-const Notice = styled.div`
-  padding-bottom: 2rem;
 `;
 
 export default GroupInfoModal;
