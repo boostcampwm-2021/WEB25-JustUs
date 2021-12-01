@@ -62,6 +62,8 @@ const GroupName = styled.div`
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
   }
 `;
 const InfoIconWrapper = styled.div`
