@@ -25,7 +25,7 @@ const SettingGroup = () => {
   return (
     <SettingGroupWrapper>
       <GroupName>
-        <span title={selectedGroup.groupName}>{selectedGroup.groupName}</span>
+        <div title={selectedGroup.groupName}>{selectedGroup.groupName}</div>
       </GroupName>
 
       <InfoIconWrapper onClick={onClickShowGroupInfo}>
@@ -56,12 +56,12 @@ const GroupName = styled.div`
   overflow: hidden;
   display: flex;
   align-items: center;
-  & span {
+  & div {
+    width: 13rem;
     display: block;
-    height: 50%;
     overflow: hidden;
-    white-space: nowrap;
     text-overflow: ellipsis;
+    white-space: nowrap;
   }
 `;
 const InfoIconWrapper = styled.div`
