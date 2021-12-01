@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 import {
   mideumModalContainer,
   mideumModalHeader,
@@ -16,7 +16,6 @@ import {
 } from "@src/styles/StyledComponents";
 import Modal from "@components/Modal";
 import { useDispatch } from "react-redux";
-import COLOR from "@styles/Color";
 import { GroupAction, ToastAction, ModalAction } from "@src/action";
 import { useResizeFile } from "@src/hooks/useResizeFile";
 import { icon, toastMessage } from "@src/constants";
@@ -103,13 +102,15 @@ const CreateGroupModal = () => {
         <Content>
           <GridLeft>
             <ImageBackground>
-              <img
-                src={groupImg ? groupImg : icon.podoManyHigh}
-                alt="default icon"
-                ref={imageRef}
-                width="100%"
-                height="100%"
-              />
+              <Image>
+                <img
+                  src={groupImg ? groupImg : icon.podoManyHigh}
+                  alt="default icon"
+                  ref={imageRef}
+                  width="100%"
+                  height="100%"
+                />
+              </Image>
               {groupImg ? (
                 <DeleteImgBtnWrapper onClick={onClickDeleteBtn}>
                   <img src={icon.delete} alt="delete button"></img>
@@ -152,6 +153,11 @@ const GridLeft = styled.div`
 `;
 const ImageBackground = styled.div`
   ${mideumImageBackground}
+`;
+const Image = styled.div`
+  & > img {
+    ${mideumImageSize}
+  }
 `;
 const UploadImgBtnWrapper = styled.div`
   ${mideumBottomLeftButton}

@@ -3,7 +3,6 @@ import styled from "styled-components";
 import Modal from "@components/Modal";
 import { useDispatch } from "react-redux";
 import {
-  flexRowCenterAlign,
   mideumModalContainer,
   mideumModalHeader,
   mideumModalTitle,
