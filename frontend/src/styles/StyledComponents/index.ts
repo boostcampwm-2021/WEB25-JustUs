@@ -12,23 +12,9 @@ export const flexColumnCenterAlign = css`
   justify-content: center;
   align-items: center;
 `;
-export const modalContainerWidth = css`
-  min-width: 720px;
-`;
-export const modalContainerHeight = css`
-  height: 60%;
-  min-height: 460px;
-`;
-export const modalContainerSize = css`
-  ${modalContainerHeight}
-  ${modalContainerWidth}
-  border-radius: 1rem;
-`;
-export const shadow = css`
-  box-shadow: 0 0 3px 0 ${COLOR.SHADOW_BLACK};
-`;
-export const postCardShadow = css`
-  box-shadow: 5px 2px 3px 3px ${COLOR.SHADOW_BLACK};
+export const modalTitleFont = css`
+  font-size: 2.5rem;
+  font-weight: bold;
 `;
 export const iconHover = css`
   &:hover {
@@ -36,6 +22,49 @@ export const iconHover = css`
     background-color: ${COLOR.GRAY};
     border-radius: 50%;
   }
+`;
+export const largeModalHeaderButtonIcon = css`
+  width: 2.4rem;
+  height: 2.4rem;
+  cursor: pointer;
+`;
+export const largeModalContainerWidth = css`
+  min-width: 720px;
+`;
+export const largeModalContainerHeight = css`
+  height: 60%;
+  min-height: 460px;
+`;
+export const largeModalContainerSize = css`
+  ${largeModalContainerHeight}
+  ${largeModalContainerWidth}
+  border-radius: 1rem;
+`;
+export const largeModalTitle = css`
+  ${flexRowCenterAlign}
+  ${modalTitleFont}
+  grid-column-start: 2;
+  grid-column-end: 3;
+  grid-row-start: 1;
+  grid-row-end: 2;
+`;
+export const largeModalHeaderRightBtn = css`
+  grid-column-start: 3;
+  grid-column-end: 4;
+  grid-row-start: 1;
+  grid-row-end: 2;
+  border: none;
+  background: none;
+  & > img {
+    ${largeModalHeaderButtonIcon};
+    ${iconHover};
+  }
+`;
+export const shadow = css`
+  box-shadow: 0 0 3px 0 ${COLOR.SHADOW_BLACK};
+`;
+export const postCardShadow = css`
+  box-shadow: 5px 2px 3px 3px ${COLOR.SHADOW_BLACK};
 `;
 export const modalIconSize = css``;
 export const modalWidth = css`
@@ -48,10 +77,6 @@ export const modalHeaderWithOneIcon = css`
   grid-template-columns: 10% 80% 10%;
   box-sizing: border-box;
   position: relative;
-`;
-export const modalTitleFont = css`
-  font-size: 2.5rem;
-  font-weight: bold;
 `;
 export const modalSlideUp = keyframes`
   0% {
@@ -66,11 +91,6 @@ export const modalSlideUp = keyframes`
 export const modalSlideUpAnimation = css`
   animation-name: ${modalSlideUp};
   animation-duration: 1s;
-`;
-export const modalHeaderButtonIcon = css`
-  width: 2.4rem;
-  height: 2.4rem;
-  cursor: pointer;
 `;
 export const scrollbar = css`
   overflow-y: scroll;
