@@ -32,37 +32,41 @@ const AlbumList = () => {
     parent?.classList.remove("post-hover");
   }, []);
 
-  const onAlbumDragEndHandler = useCallback((ev: React.DragEvent<HTMLDivElement>) => {
-    ev.preventDefault();
-    const target = ev.target as HTMLElement;
-    const parent = target.closest(".albumItem");
-    if (!parent) return;
-    parent?.classList.remove("album-hover");
-    parent?.classList.remove("post-hover");
-    const list = parent?.parentNode;
-    if (!list) return;
-    const x = ev.clientX;
-    const y = ev.clientY;
-    let swapItem: Element | null = document.elementFromPoint(x, y) === null ? parent : document.elementFromPoint(x, y);
-    if (!swapItem) return;
-    swapItem = swapItem.closest(".albumItem");
-    if (swapItem !== parent && list === swapItem?.parentNode) {
-      const referenceNode = swapItem !== parent.nextSibling ? swapItem : swapItem.nextSibling;
-      list.insertBefore(parent, referenceNode);
-    }
+  const onAlbumDragEndHandler = useCallback(
+    (ev: React.DragEvent<HTMLDivElement>) => {
+      ev.preventDefault();
+      const target = ev.target as HTMLElement;
+      const parent = target.closest(".albumItem");
+      if (!parent) return;
+      parent?.classList.remove("album-hover");
+      parent?.classList.remove("post-hover");
+      const list = parent?.parentNode;
+      if (!list) return;
+      const x = ev.clientX;
+      const y = ev.clientY;
+      let swapItem: Element | null =
+        document.elementFromPoint(x, y) === null ? parent : document.elementFromPoint(x, y);
+      if (!swapItem) return;
+      swapItem = swapItem.closest(".albumItem");
+      if (swapItem !== parent && list === swapItem?.parentNode) {
+        const referenceNode = swapItem !== parent.nextSibling ? swapItem : swapItem.nextSibling;
+        list.insertBefore(parent, referenceNode);
+      }
 
-    const draggableWrapper = draggableRef.current;
-    if (!draggableWrapper) return;
-    const children = draggableWrapper.children;
+      const draggableWrapper = draggableRef.current;
+      if (!draggableWrapper) return;
+      const children = draggableWrapper.children;
 
-    const albumOrder: string = Array.from(children)
-      .map((child) => {
-        const albumId = child.getAttribute("data-album-id");
-        return Number(albumId);
-      })
-      .join(",");
-    dispatch(GroupAction.updateAlbumOrderAction(selectedGroup.groupId, albumOrder));
-  }, []);
+      const albumOrder: string = Array.from(children)
+        .map((child) => {
+          const albumId = child.getAttribute("data-album-id");
+          return Number(albumId);
+        })
+        .join(",");
+      dispatch(GroupAction.updateAlbumOrderAction(selectedGroup.groupId, albumOrder));
+    },
+    [selectedGroup],
+  );
 
   const onPostDragEndHandler = useCallback((ev: React.DragEvent<HTMLDivElement>) => {
     ev.preventDefault();
