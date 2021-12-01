@@ -34,7 +34,7 @@ export class UserService {
     if (!user) throw new NotFoundException(`Not found user with the id ${userId}`);
 
     const { profileImage, userNickname } = user;
-    return { profileImage, userNickname, userId };
+    return new UserInfoResponseDto(userNickname, profileImage, userId);
   }
 
   async updateUserInfo(
@@ -63,11 +63,13 @@ export class UserService {
     return await this.userRepository.update(userId, { refreshToken });
   }
 
-  async updateGroupOrder(userId: number, updateGroupOrderRequestDto: UpdateGroupOrderRequestDto): Promise<string> {
+  async updateGroupOrder(
+    userId: number,
+    updateGroupOrderRequestDto: UpdateGroupOrderRequestDto,
+  ): Promise<UpdateResult> {
     const { groupOrder } = updateGroupOrderRequestDto;
-    await this.userRepository.update(userId, { groupOrder });
 
-    return "GroupOrder update success!!";
+    return await this.userRepository.update(userId, { groupOrder });
   }
 
   async getGroups(userId: number): Promise<GetGroupsResponseDto> {
