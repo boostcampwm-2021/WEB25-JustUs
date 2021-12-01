@@ -1,6 +1,14 @@
 import { useState, ChangeEvent, useEffect, useRef } from "react";
-import styled, { keyframes } from "styled-components";
-import { flexRowCenterAlign } from "@styles/StyledComponents";
+import styled from "styled-components";
+import {
+  smallModalContainer,
+  smallModalHeader,
+  smallModalTitle,
+  smallModalCloseButton,
+  smallModalContent,
+  flexRowCenterAlign,
+  smallButton,
+} from "@styles/StyledComponents";
 import Modal from "@components/Modal";
 import { useDispatch } from "react-redux";
 import COLOR from "@styles/Color";
@@ -47,11 +55,9 @@ const UpdateAlbumModal = () => {
       >
         <Header>
           <Title>앨범 이름 변경</Title>
-          <CloseBtn>
-            <button type="button" onClick={closeModal}>
-              <img src={icon.clear} alt="clear icon" />
-            </button>
-          </CloseBtn>
+          <CloseButton type="button" onClick={closeModal}>
+            <img src={icon.clear} alt="clear icon" />
+          </CloseButton>
         </Header>
         <Content>
           <AlbumNameInputWrapper onChange={onChangeName} value={newAlbumName} spellCheck={false} ref={inputRef} />
@@ -62,74 +68,29 @@ const UpdateAlbumModal = () => {
   );
 };
 
-const modalSlideUp = keyframes`
-  0% {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  30% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-`;
 const ModalContainer = styled.div`
-  background-color: ${COLOR.WHITE};
-  min-height: 35vh;
-  min-width: 30vw;
-  border-radius: 2rem;
-  display: flex;
-  flex-direction: column;
-  animation-name: ${modalSlideUp};
-  animation-duration: 1s;
+  ${smallModalContainer}
 `;
-
 const Header = styled.div`
-  display: grid;
-  grid-template-columns: 10% 80% 10%;
-  padding: 2rem;
+  ${smallModalHeader}
 `;
-
 const Title = styled.div`
-  font-size: 2.5rem;
-  grid-column-start: 2;
-  grid-column-end: 3;
-  ${flexRowCenterAlign}
+  ${smallModalTitle}
 `;
-
-const CloseBtn = styled.div`
-  width: 100%;
-  grid-column-start: 3;
-  grid-column-end: 4;
-  ${flexRowCenterAlign}
-
-  & > button {
-    background-color: ${COLOR.WHITE};
-    border: none;
-    height: 3rem;
-    width: 3rem;
-    border-radius: 50%;
-    ${flexRowCenterAlign}
-    cursor: pointer;
-    &:hover {
-      background-color: ${COLOR.GRAY};
-    }
-  }
+const CloseButton = styled.button`
+  ${smallModalCloseButton}
 `;
-
 const Content = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  margin-top: 2rem;
+  ${smallModalContent}
 `;
-
 const AlbumNameInputWrapper = styled.input`
-  margin-top: 5rem;
+  margin: auto;
   width: 80%;
-  height: 8vh;
-  font-size: 15px;
+  height: 5rem;
   border: none;
   background: ${COLOR.GRAY};
-  border-radius: 10px;
+  border-radius: 1rem;
   font-size: 3rem;
   text-align: center;
   &:focus-visible {
@@ -137,24 +98,15 @@ const AlbumNameInputWrapper = styled.input`
   }
   &::-webkit-input-placeholder {
     text-align: center;
-    font-weight: 800;
+    font-weight: bold;
     font-size: 3rem;
   }
 `;
-
-const SaveBtnWrapper = styled.div`
-  ${flexRowCenterAlign}
-  width: 10rem;
-  height: 4rem;
-  border-radius: 10px;
-  color: ${COLOR.WHITE};
+const SaveBtnWrapper = styled.button`
+  ${smallButton}
   background-color: ${(props) => props.theme.PRIMARY};
-  margin-top: 5rem;
-  font-size: 1.6rem;
-  &:hover {
-    cursor: pointer;
-    font-weight: bold;
-  }
+  margin: auto;
+  color: ${COLOR.WHITE};
 `;
 
 export default UpdateAlbumModal;

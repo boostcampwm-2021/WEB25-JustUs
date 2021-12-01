@@ -153,9 +153,19 @@ export const smallModalContent = css`
   grid-row-start: 2;
   grid-column-start: 1;
   grid-column-end: 3;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  ${flexColumnCenterAlign}
+`;
+export const smallButton = css`
+  border: none;
+  border-radius: 1rem;
+  font-size: 2rem;
+  padding: 1rem 2rem;
+  opacity: 0.8;
+  &:hover {
+    cursor: pointer;
+    font-weight: bold;
+    opacity: 1;
+  }
 `;
 export const mideumGridRow = css`
   display: grid;
