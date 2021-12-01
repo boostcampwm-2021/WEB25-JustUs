@@ -1,3 +1,4 @@
+import React from "react";
 import styled from "styled-components";
 import COLOR from "@styles/Color";
 import { useDispatch } from "react-redux";
@@ -70,4 +71,4 @@ const SettingIconWrapper = styled.div`
   ${flexRowCenterAlign};
 `;
 
-export default SettingGroup;
+export default React.memo(SettingGroup);

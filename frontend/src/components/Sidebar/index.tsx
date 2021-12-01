@@ -1,6 +1,4 @@
-import { useEffect, useRef, useState, Dispatch, SetStateAction } from "react";
-import { useSelector } from "react-redux";
-import { RootState } from "@src/reducer";
+import React, { useRef, Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
 import FirstDepth from "./FirstDepth";
 import SecondDepth from "./SecondDepth";
@@ -21,9 +19,8 @@ const Sidebar = ({ isToggle, setIsToggle }: SidebarProps) => {
 };
 
 const SidebarWrapper = styled.nav`
-  display: inline-flex;
+  display: flex;
   font-size: 1.6rem;
-  width: 29rem;
 `;
 
-export default Sidebar;
+export default React.memo(Sidebar);

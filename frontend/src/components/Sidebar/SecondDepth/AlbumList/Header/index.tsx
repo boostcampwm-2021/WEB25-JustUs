@@ -20,7 +20,7 @@ interface HeaderProps {
 
 const Header = ({ albumId, albumName, postToggle, setPostToggle, AlbumDragHandler, DragEndHandler }: HeaderProps) => {
   const { nowTheme }: any = useSelector((state: RootState) => state.theme);
-  const { albumSettingWrapperModalIdx } = useSelector((state: RootState) => state.modal);
+  const albumSettingWrapperModalIdx = useSelector((state: RootState) => state.modal.albumSettingWrapperModalIdx);
   const dispatch = useDispatch();
   const [pos, setPos] = useState([-1, -1]);
 

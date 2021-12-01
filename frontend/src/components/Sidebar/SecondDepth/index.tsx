@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@src/reducer";
 import styled, { keyframes } from "styled-components";
@@ -15,8 +15,8 @@ interface SecondDepthProps {
 
 const SecondDepth = ({ isToggle }: SecondDepthProps) => {
   const { selectedGroup } = useSelector((state: RootState) => state.groups);
-  const { isAddAlbumModalOpened } = useSelector((state: RootState) => state.modal);
-  const { clickedTarget } = useSelector((state: RootState) => state.groupModal);
+  const isAddAlbumModalOpened = useSelector((state: RootState) => state.modal.isAddAlbumModalOpened);
+  const clickedTarget = useSelector((state: RootState) => state.groupModal.clickedTarget);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -70,4 +70,4 @@ const SecondDepthWrapper = styled.div<{ isToggle: boolean }>`
   animation-duration: 1s;
 `;
 
-export default SecondDepth;
+export default React.memo(SecondDepth);
