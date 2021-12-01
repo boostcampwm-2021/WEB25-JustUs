@@ -7,6 +7,7 @@ import {
   smallModalCloseButton,
   smallModalContent,
   smallButton,
+  smallModalInputWrapper,
 } from "@styles/StyledComponents";
 import Modal from "@components/Modal";
 import { useDispatch } from "react-redux";
@@ -84,22 +85,7 @@ const Content = styled.div`
   ${smallModalContent}
 `;
 const AlbumNameInputWrapper = styled.input`
-  margin: auto;
-  width: 80%;
-  height: 5rem;
-  border: none;
-  background: ${COLOR.GRAY};
-  border-radius: 1rem;
-  font-size: 3rem;
-  text-align: center;
-  &:focus-visible {
-    outline: none;
-  }
-  &::-webkit-input-placeholder {
-    text-align: center;
-    font-weight: bold;
-    font-size: 3rem;
-  }
+  ${smallModalInputWrapper}
 `;
 const SaveBtnWrapper = styled.button`
   ${smallButton}
