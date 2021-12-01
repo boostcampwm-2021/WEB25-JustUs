@@ -4,13 +4,14 @@ import styled from "styled-components";
 import SearchList from "@components/Header/Profile/Search/SearchList";
 import Recommend from "@components/Header/Profile/Search/Recommend";
 import { useDispatch } from "react-redux";
-import { GroupAction } from "@src/action";
+import { GroupAction, ModalAction } from "@src/action";
+import { useSelector } from "react-redux";
+import { RootState } from "@src/reducer";
 import { icon } from "@src/constants";
 
 const Search = () => {
+  const { isSearchListOpened, isRecommendOpened } = useSelector((state: RootState) => state.modal);
   const [searchKeyword, setSearchKeyword] = useState<string>("");
-  const [isSearchListOpened, setIsSearchListOpened] = useState<Boolean>(false);
-  const [isRecommendOpened, setIsRecommendOpened] = useState<Boolean>(false);
   const dispatch = useDispatch();
 
   const handleSearchInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -18,25 +19,19 @@ const Search = () => {
   };
 
   const doSearch = (hashtagId: number) => {
-    setIsSearchListOpened(true);
-    setIsRecommendOpened(false);
+    dispatch(ModalAction.openSearchList());
+    dispatch(ModalAction.closeRecommendList());
     dispatch(GroupAction.requestPostsByHashtag({ hashtagId }));
   };
 
   const onFocusInput = () => {
-    setIsRecommendOpened(true);
-    setIsSearchListOpened(false);
-  };
-
-  const onClickBackGround = () => {
-    setIsSearchListOpened(false);
-    setIsRecommendOpened(false);
+    dispatch(ModalAction.openRecommendList());
+    dispatch(ModalAction.closeSearchList());
   };
 
   return (
     <>
-      {(isSearchListOpened || isRecommendOpened) && <BackGround onClick={onClickBackGround} />}
-      <SearchContainer>
+      <SearchContainer className="search-container">
         <img src={icon.search} height="90%" alt="search" />
         <SearchInput
           type="text"
@@ -46,9 +41,7 @@ const Search = () => {
           onFocus={onFocusInput}
           spellCheck={false}
         />
-        {isSearchListOpened && (
-          <SearchList setSearchKeyword={setSearchKeyword} setIsSearchListOpened={setIsSearchListOpened} />
-        )}
+        {isSearchListOpened && <SearchList />}
         {isRecommendOpened && (
           <Recommend setSearchKeyword={setSearchKeyword} inputKeyword={searchKeyword} doSearch={doSearch} />
         )}
@@ -56,16 +49,6 @@ const Search = () => {
     </>
   );
 };
-
-const BackGround = styled.div`
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  width: 100%;
-  height: 100%;
-  background-color: transparent;
-  z-index: 6;
-`;
 
 const SearchContainer = styled.div`
   display: flex;

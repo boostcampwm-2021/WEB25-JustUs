@@ -18,7 +18,9 @@ const Main = () => {
   const dispatch = useDispatch();
   const { groups, groupListLoaded }: any = useSelector((state: RootState) => state.groups);
   const { userInfoError, userLoggedOut, userInfoSucceed } = useSelector((state: RootState) => state.user);
-  const { isAddAlbumModalOpened, albumSettingWrapperModalIdx } = useSelector((state: RootState) => state.modal);
+  const { isAddAlbumModalOpened, albumSettingWrapperModalIdx, isRecommendOpened, isSearchListOpened } = useSelector(
+    (state: RootState) => state.modal,
+  );
   const { isPostCreateWindowOpened, isClusteringWindowOpened } = useSelector((state: RootState) => state.map);
 
   const { isProfileWrapperModalOpened } = useSelector((state: RootState) => state.modal);
@@ -47,6 +49,13 @@ const Main = () => {
 
     if (isPostCreateWindowOpened && !nowTarget.closest("#createPostWindow"))
       dispatch(MapAction.closePostCreateWindowAction());
+
+    if (isSearchListOpened && !nowTarget.closest(".search-container")) {
+      dispatch(ModalAction.closeSearchList());
+    }
+    if (isRecommendOpened && !nowTarget.closest(".search-container")) {
+      dispatch(ModalAction.closeRecommendList());
+    }
   };
 
   const contextMenuHandler = () => {
@@ -64,7 +73,14 @@ const Main = () => {
       document.removeEventListener("click", clickHandler);
       document.removeEventListener("contextmenu", contextMenuHandler);
     };
-  }, [isAddAlbumModalOpened, albumSettingWrapperModalIdx, isProfileWrapperModalOpened, isPostCreateWindowOpened]);
+  }, [
+    isAddAlbumModalOpened,
+    albumSettingWrapperModalIdx,
+    isProfileWrapperModalOpened,
+    isPostCreateWindowOpened,
+    isRecommendOpened,
+    isSearchListOpened,
+  ]);
 
   useEffect(() => {
     if (userInfoSucceed) {
