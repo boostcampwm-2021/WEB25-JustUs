@@ -2,7 +2,6 @@ import React, { useRef, useState, useEffect } from "react";
 import styled from "styled-components";
 import Modal from "@components/Modal";
 import { useDispatch } from "react-redux";
-import COLOR from "@styles/Color";
 import {
   flexRowCenterAlign,
   mideumModalContainer,
@@ -13,7 +12,6 @@ import {
   mideumImageBackground,
   mideumImageSize,
   mideumDeleteButton,
-  mideumBottomButton,
   mideumInputWrapper,
   mideumGridRow,
   mideumBottomLeftButton,
