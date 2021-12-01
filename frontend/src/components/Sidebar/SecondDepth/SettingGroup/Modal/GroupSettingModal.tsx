@@ -1,15 +1,21 @@
 import React, { useEffect, useState, useRef } from "react";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import {
-  flexRowCenterAlign,
-  smallModalContainer,
-  smallModalHeader,
-  smallModalTitle,
-  smallModalCloseButton,
+  mideumModalContainer,
+  mideumModalHeader,
+  mideumModalTitle,
+  mideumModalCloseButton,
+  mideumModalContent,
+  mideumImageBackground,
+  mideumImageSize,
+  mideumDeleteButton,
+  mideumInputWrapper,
+  mideumGridRow,
+  mideumBottomLeftButton,
+  mideumBottomRightButton,
 } from "@src/styles/StyledComponents";
 import Modal from "@components/Modal";
 import { useDispatch, useSelector } from "react-redux";
-import COLOR from "@styles/Color";
 import { RootState } from "@src/reducer";
 import { GroupAction, ToastAction, ModalAction } from "@src/action";
 import { useResizeFile } from "@src/hooks/useResizeFile";
@@ -105,13 +111,9 @@ const GroupSettingModal = () => {
         <Content>
           <GridLeft>
             <ImageBackground>
-              <img
-                src={nowImg ? nowImg : icon.podoManyHigh}
-                alt="default icon"
-                ref={imageRef}
-                width="100%"
-                height="100%"
-              />
+              <Image>
+                <img src={nowImg ? nowImg : icon.podoManyHigh} alt="default icon" ref={imageRef} />
+              </Image>
               {nowImg && nowImg !== defaultImageURL ? (
                 <DeleteImgBtnWrapper onClick={onClickDeleteBtn}>
                   <img src={icon.delete} alt="delete button"></img>
@@ -138,107 +140,47 @@ const GroupSettingModal = () => {
     </Modal>
   );
 };
-const gridRow = css`
-  display: grid;
-  grid-template-rows: 80% 20%;
-`;
-const GridLeft = styled.div`
-  ${gridRow}
-`;
-const GridRight = styled.div`
-  ${gridRow}
-`;
 
 const ModalContainer = styled.div`
-  ${smallModalContainer}
+  ${mideumModalContainer}
 `;
-
 const Header = styled.div`
-  ${smallModalHeader}
+  ${mideumModalHeader}
 `;
 const Title = styled.div`
-  ${smallModalTitle}
+  ${mideumModalTitle}
 `;
 const CloseButton = styled.button`
-  ${smallModalCloseButton}
+  ${mideumModalCloseButton}
 `;
 const Content = styled.div`
-  display: grid;
-  grid-template-columns: 50% 50%;
-  box-sizing: border-box;
+  ${mideumModalContent}
+`;
+const GridLeft = styled.div`
+  ${mideumGridRow}
 `;
 const ImageBackground = styled.div`
-  margin: auto;
-  width: 12rem;
-  height: 12rem;
-  background-color: ${COLOR.WHITE};
-  border-radius: 1rem;
-  border: 0.5rem solid ${(props) => props.theme.SECONDARY};
-  & img {
-    border-radius: 0.3rem;
-    width: 100%;
-    height: 100%;
-  }
-  position: relative;
+  ${mideumImageBackground}
 `;
-
-const UploadImgBtnWrapper = styled.div`
-  margin: auto;
-  ${flexRowCenterAlign}
-  cursor: pointer;
-  border-radius: 1rem;
-  border: 2px solid ${COLOR.SHADOW_BLACK};
-  font-weight: bold;
-  font-size: 1.5rem;
-  color: ${COLOR.SHADOW_BLACK};
-  line-height: 16px;
-  width: 15rem;
-  height: 3rem;
+const Image = styled.div`
+  & > img {
+    ${mideumImageSize}
+  }
 `;
 const DeleteImgBtnWrapper = styled.div`
-  width: 2rem;
-  position: absolute;
-  top: 0;
-  right: 0;
-  opacity: 0.8;
-  &:hover {
-    cursor: pointer;
-    opacity: 1;
-  }
-  color: ${COLOR.RED};
-  font-weight: bold;
+  ${mideumDeleteButton}
+`;
+const UploadImgBtnWrapper = styled.div`
+  ${mideumBottomLeftButton}
+`;
+const GridRight = styled.div`
+  ${mideumGridRow}
 `;
 const GroupNameInputWrapper = styled.input`
-  border: none;
-  width: 90%;
-  height: 2rem;
-  margin: auto;
-  font-size: 1.6rem;
-  border-bottom: 0.2rem solid ${(props) => props.theme.PRIMARY};
-  &::-webkit-input-placeholder {
-    text-align: center;
-    font-weight: 800;
-    font-size: 1.6rem;
-  }
-  &:focus {
-    outline: none;
-  }
+  ${mideumInputWrapper}
 `;
-
 const CreateBtnWrapper = styled.div`
-  ${flexRowCenterAlign}
-  margin: auto;
-  cursor: pointer;
-  color: ${COLOR.WHITE};
-  background-color: ${(props) => props.theme.SECONDARY};
-  border-radius: 1rem;
-  font-weight: bold;
-  font-size: 1.5rem;
-  width: 15rem;
-  height: 3rem;
-  &:hover {
-    background-color: ${(props) => props.theme.PRIMARY};
-  }
+  ${mideumBottomRightButton}
 `;
 
 export default GroupSettingModal;

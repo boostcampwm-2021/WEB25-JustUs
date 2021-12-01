@@ -6,7 +6,6 @@ export const flexRowCenterAlign = css`
   align-items: center;
   justify-content: center;
 `;
-
 export const flexColumnCenterAlign = css`
   display: flex;
   flex-direction: column;
@@ -44,7 +43,6 @@ export const modalWidth = css`
   z-index: 6;
 `;
 export const modalHeaderWithTwoIcon = css``;
-
 export const modalHeaderWithOneIcon = css`
   display: grid;
   grid-template-columns: 10% 80% 10%;
@@ -136,4 +134,124 @@ export const smallModalContent = css`
   display: flex;
   flex-direction: column;
   align-items: center;
+`;
+export const mideumGridRow = css`
+  display: grid;
+  grid-template-rows: 80% 20%;
+`;
+export const mideumModalContainer = css`
+  background-color: ${COLOR.WHITE};
+  display: grid;
+  min-height: 40rem;
+  min-width: 50rem;
+  border-radius: 1rem;
+  grid-template-rows: 20% 80%;
+  animation-name: ${modalSlideUp};
+  animation-duration: 1s;
+  box-sizing: border-box;
+  padding: 3rem;
+`;
+export const mideumModalHeader = css`
+  display: grid;
+  grid-template-columns: 10% 80% 10%;
+  grid-column-start: 1;
+  grid-column-end: 3;
+  grid-row-start: 1;
+  grid-row-end: 2;
+`;
+export const mideumModalTitle = css`
+  grid-column-start: 2;
+  grid-column-end: 3;
+  ${modalTitleFont}
+  text-align: center;
+  margin: auto;
+  align-items: center;
+`;
+export const mideumModalCloseButton = css`
+  background-color: ${COLOR.WHITE};
+  border: none;
+  & > img {
+    ${iconHover}
+  }
+`;
+export const mideumModalContent = css`
+  display: grid;
+  grid-template-columns: 50% 50%;
+  grid-column-start: 1;
+  grid-column-end: 3;
+  box-sizing: border-box;
+`;
+export const mideumImageSize = css`
+  max-width: 13rem;
+  max-height: 13rem;
+`;
+export const mideumImageBackground = css`
+  margin: auto;
+  width: 13rem;
+  height: 13rem;
+  ${flexRowCenterAlign}
+  background-color: ${COLOR.WHITE};
+  border-radius: 1rem;
+  border: 0.5rem solid ${(props) => props.theme.SECONDARY};
+  position: relative;
+`;
+export const mideumDeleteButton = css`
+  width: 2rem;
+  position: absolute;
+  top: 0;
+  right: 0;
+  opacity: 0.8;
+  &:hover {
+    cursor: pointer;
+    opacity: 1;
+  }
+  & img {
+    width: 100%;
+    height: 100%;
+  }
+  color: ${COLOR.RED};
+`;
+export const mideumInputWrapper = css`
+  border: none;
+  width: 90%;
+  height: 2rem;
+  margin: auto;
+  font-size: 1.6rem;
+  border-bottom: 0.2rem solid ${(props) => props.theme.PRIMARY};
+  &::-webkit-input-placeholder {
+    text-align: center;
+    font-size: 1.6rem;
+  }
+  &:focus {
+    outline: none;
+  }
+`;
+export const mideumBottomButton = css`
+  border-radius: 1rem;
+  margin: auto;
+  width: 15rem;
+  height: 3rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+  line-height: 1.5rem;
+  ${flexRowCenterAlign};
+  &:hover {
+    cursor: pointer;
+    background-color: ${(props) => props.theme.PRIMARY};
+  }
+`;
+export const mideumBottomLeftButton = css`
+  border: 0.2rem solid ${COLOR.SHADOW_BLACK};
+  color: ${COLOR.SHADOW_BLACK};
+  &:hover {
+    background-color: ${(props) => props.theme.PRIMARY};
+    border: none;
+    color: ${COLOR.WHITE};
+  }
+  ${mideumBottomButton}
+`;
+export const mideumBottomRightButton = css`
+  color: ${COLOR.WHITE};
+  background-color: ${(props) => props.theme.SECONDARY};
+  ${mideumBottomButton}
 `;

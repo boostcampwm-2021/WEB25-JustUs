@@ -75,7 +75,6 @@ const DeleteModal = (props: IProps) => {
 const ModalContainer = styled.div`
   ${smallModalContainer}
 `;
-
 const Header = styled.div`
   ${smallModalHeader}
 `;
