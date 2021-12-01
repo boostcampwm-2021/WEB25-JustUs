@@ -97,6 +97,8 @@ export const smallModalContainer = css`
   display: grid;
   min-height: 30rem;
   min-width: 40rem;
+  height: 30rem;
+  width: 40rem;
   border-radius: 1rem;
   grid-template-rows: 20% 80%;
   animation-name: ${modalSlideUp};
@@ -145,7 +147,7 @@ export const mideumModalContainer = css`
   min-height: 40rem;
   min-width: 50rem;
   border-radius: 1rem;
-  grid-template-rows: 20% 80%;
+  grid-template-rows: 15% 85%;
   animation-name: ${modalSlideUp};
   animation-duration: 1s;
   box-sizing: border-box;
