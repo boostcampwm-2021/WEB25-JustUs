@@ -1,8 +1,13 @@
-## 🧑‍🤝‍🧑 우리끼리(JustUs)
+## 🧑‍🤝‍🧑 [우리끼리(JustUs)](https://justus.kr)
 
 <p align="center">
     <img src="http://dl.dropbox.com/s/clmoka3ds4qx32e/banner.png">
 </p>
+
+<p align="center">
+    <a href="https://youtu.be/JIWFL2zzMWc">데모 영상</a>
+</p>
+
 
 ![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
 
