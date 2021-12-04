@@ -15,7 +15,7 @@ import { HashTagService } from "src/domain/hashtag/hashtag.service";
 import { HashTag } from "src/domain/hashtag/hashtag.entity";
 import { Post } from "src/domain/post/post.entity";
 import { HashTagRepository } from "src/domain/hashtag/hashtag.repository";
-import { Connection } from "typeorm";
+import { Connection, UpdateResult } from "typeorm";
 
 @Injectable()
 export class PostService {
@@ -56,18 +56,20 @@ export class PostService {
 
     const hashtags = await this.getHashTag(postContent, groupId);
 
-    const post = await this.postRepository.save({
-      postTitle: postTitle,
-      postContent: postContent,
-      postDate: postDate,
-      postLocation: postLocation,
-      postLatitude: Number(postLatitude),
-      postLongitude: Number(postLongitude),
-      user: user,
-      album: album,
-      images: images,
-      hashtags: hashtags,
-    });
+    const post = await this.postRepository.save(
+      Post.toEntity(
+        postTitle,
+        postContent,
+        postDate,
+        postLocation,
+        postLatitude,
+        postLongitude,
+        user,
+        album,
+        images,
+        hashtags,
+      ),
+    );
 
     return post.postId;
   }
@@ -92,22 +94,7 @@ export class PostService {
     const post = await this.postRepository.getPostQuery(postId);
     if (!post) throw new NotFoundException(`Not found post with the id ${postId}`);
 
-    const { user, postTitle, postContent, postDate, postLatitude, postLongitude, images, postLocation } = post;
-    const userId = user.userId;
-    const userNickname = user.userNickname;
-
-    return new GetPostInfoResponseDto(
-      postId,
-      userId,
-      userNickname,
-      postTitle,
-      postContent,
-      images,
-      postDate,
-      postLatitude,
-      postLongitude,
-      postLocation,
-    );
+    return GetPostInfoResponseDto.returnDto(post);
   }
 
   async updatePostInfo(
@@ -115,7 +102,7 @@ export class PostService {
     postId: number,
     files: Express.Multer.File[],
     updatePostInfoRequestDto: UpdatePostInfoRequestDto,
-  ): Promise<string> {
+  ): Promise<UpdateResult> {
     const addImages = getImagesUrl(files);
 
     const { postTitle, postContent, deleteImagesId, postDate, postLocation, postLatitude, postLongitude, groupId } =
@@ -133,7 +120,7 @@ export class PostService {
       post.hashtags = hashtags;
       await queryRunner.manager.getRepository(Post).save(post);
 
-      await queryRunner.manager.getRepository(Post).update(postId, {
+      const result = await queryRunner.manager.getRepository(Post).update(postId, {
         postTitle,
         postContent,
         postDate,
@@ -146,7 +133,7 @@ export class PostService {
 
       await queryRunner.commitTransaction();
 
-      return "PostInfo update success!!";
+      return result;
     } catch (error) {
       await queryRunner.rollbackTransaction();
       throw new BadRequestException(error);
@@ -155,7 +142,7 @@ export class PostService {
     }
   }
 
-  async deletePost(userId: number, postId: number): Promise<string> {
+  async deletePost(userId: number, postId: number): Promise<boolean> {
     const relations = ["user", "images"];
     const post = await this.validateUserAuthor(userId, postId, relations);
 
@@ -171,7 +158,7 @@ export class PostService {
 
       await queryRunner.commitTransaction();
 
-      return "Post delete success!!";
+      return true;
     } catch (error) {
       await queryRunner.rollbackTransaction();
       throw new BadRequestException(error);
@@ -190,20 +177,18 @@ export class PostService {
     return post;
   }
 
-  async shiftPost(postId: number, shiftPostRequestDto: ShiftPostRequestDto): Promise<string> {
+  async shiftPost(postId: number, shiftPostRequestDto: ShiftPostRequestDto): Promise<UpdateResult> {
     const { albumId } = shiftPostRequestDto;
     const album = await this.albumRepository.findOne(albumId);
     if (!album) throw new NotFoundException(`Not found album with the id ${albumId}`);
 
-    await this.postRepository.update(postId, { album });
-
-    return "Post Shift success!!";
+    return await this.postRepository.update(postId, { album });
   }
 
   async getSearchPost(hashtagId: number): Promise<GetSearchPostResponse> {
     const { posts } = await this.hashTagRepository.getSearchPosts(hashtagId);
     if (!posts) throw new NotFoundException(`Not found hashtag with the id ${hashtagId}`);
 
-    return new GetSearchPostResponse(posts);
+    return GetSearchPostResponse.returnDto(posts);
   }
 }

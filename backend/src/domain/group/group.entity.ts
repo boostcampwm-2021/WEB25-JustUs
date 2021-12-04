@@ -9,7 +9,7 @@ export class Group extends TimeStampEntity {
   @PrimaryGeneratedColumn()
   groupId: number;
 
-  @Column({ nullable: true, type: "text" })
+  @Column({ type: "text" })
   groupImage: string;
 
   @Column()

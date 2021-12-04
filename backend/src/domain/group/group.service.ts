@@ -44,7 +44,7 @@ export class GroupService {
         .save(Group.toEntity(groupImage, groupName, groupCode));
       const { groupId } = group;
 
-      const album = await queryRunner.manager.getRepository(Album).save(Album.toEntity("기본 앨범", false, group));
+      const album = await queryRunner.manager.getRepository(Album).save(Album.toEntity("기본 앨범", true, group));
       const { albumId } = album;
 
       queryRunner.manager.getRepository(Group).update(groupId, { albumOrder: String(albumId) });
