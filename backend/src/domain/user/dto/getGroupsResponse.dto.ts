@@ -1,17 +1,30 @@
 import { ApiProperty } from "@nestjs/swagger";
+import { Exclude } from "class-transformer";
 
 class groupList {
+  @Exclude()
   @ApiProperty()
-  groupId: number;
+  private readonly groupId: number;
 
+  @Exclude()
   @ApiProperty()
-  groupName: string;
+  private readonly groupName: string;
 
+  @Exclude()
   @ApiProperty()
-  groupImage: string;
+  private readonly groupImage: string;
 }
 
 export class GetGroupsResponseDto {
+  @Exclude()
   @ApiProperty({ type: [groupList] })
-  groups: groupList[];
+  private readonly groups: groupList[];
+
+  constructor(array: any[]) {
+    this.groups = array;
+  }
+
+  static returnDto(array: any[]) {
+    return new GetGroupsResponseDto(array);
+  }
 }

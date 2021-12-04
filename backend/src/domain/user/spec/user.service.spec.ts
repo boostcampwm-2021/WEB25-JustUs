@@ -5,6 +5,7 @@ import { Group } from "src/domain/group/group.entity";
 import { User } from "../user.entity";
 import { UserRepository } from "../user.repository";
 import { UserService } from "../user.service";
+import { GetGroupsResponseDto } from "../dto/getGroupsResponse.dto";
 
 const mockUserRepository = () => ({
   save: jest.fn(),
@@ -88,13 +89,13 @@ describe("UserService", () => {
   });
 
   const makeUserInfo = () => {
-    return new UserInfoResponseDto(existsUser.userNickname, existsUser.profileImage, existsUser.userId);
+    return UserInfoResponseDto.returnDto(existsUser);
   };
 
   const makeUserGroups = () => {
     const gruops = [existsGroup2, existsGroup1];
 
-    return { groups: gruops };
+    return GetGroupsResponseDto.returnDto(gruops);
   };
 
   const initdata = () => {

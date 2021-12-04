@@ -1,18 +1,27 @@
 import { ApiProperty } from "@nestjs/swagger";
+import { Exclude } from "class-transformer";
+import { User } from "../user.entity";
 
 export class UserInfoResponseDto {
+  @Exclude()
   @ApiProperty()
   userNickname: string;
 
+  @Exclude()
   @ApiProperty()
   profileImage: string;
 
+  @Exclude()
   @ApiProperty()
   userId: number;
 
-  constructor(userNickname: string, profileImage: string, userId: number) {
-    this.userNickname = userNickname;
-    this.profileImage = profileImage;
-    this.userId = userId;
+  constructor(user: User) {
+    this.userNickname = user.userNickname;
+    this.profileImage = user.profileImage;
+    this.userId = user.userId;
+  }
+
+  static returnDto(user: User) {
+    return new UserInfoResponseDto(user);
   }
 }
