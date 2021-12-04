@@ -30,11 +30,7 @@ export class AlbumService {
     queryRunner.startTransaction();
 
     try {
-      const album = await queryRunner.manager.getRepository(Album).save({
-        albumName: albumName,
-        base: false,
-        group: group,
-      });
+      const album = await queryRunner.manager.getRepository(Album).save(Album.toEntity(albumName, false, group));
       const { albumId } = album;
 
       const { albumOrder } = group;
@@ -43,7 +39,7 @@ export class AlbumService {
 
       await queryRunner.commitTransaction();
 
-      return { albumId };
+      return CreateAlbumResponseDto.returnDto(album);
     } catch (error) {
       await queryRunner.rollbackTransaction();
       throw new BadRequestException(error);
