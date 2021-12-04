@@ -5,10 +5,10 @@ import { Album } from "../album.entity";
 export class CreateAlbumResponseDto {
   @Exclude()
   @ApiProperty()
-  private readonly _albumId: number;
+  private readonly albumId: number;
 
   constructor(album: Album) {
-    this._albumId = album.albumId;
+    this.albumId = album.albumId;
   }
 
   static returnDto(album: Album) {

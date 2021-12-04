@@ -12,22 +12,22 @@ export class AlbumController {
 
   @Post()
   @SwaggerCreateAlbum()
-  CreateAlbum(@Body() createAlbumRequestDto: CreateAlbumRequestDto): Promise<CreateAlbumResponseDto> {
-    return this.albumService.createAlbum(createAlbumRequestDto);
+  async CreateAlbum(@Body() createAlbumRequestDto: CreateAlbumRequestDto): Promise<CreateAlbumResponseDto> {
+    return await this.albumService.createAlbum(createAlbumRequestDto);
   }
 
   @Put("/:albumId")
   @SwaggerUpdateAlbumInfo()
-  UpdateAlbumInfo(
+  async UpdateAlbumInfo(
     @Param("albumId") albumId: number,
     @Body() updateAlbumInfoRequestDto: UpdateAlbumInfoRequestDto,
   ): Promise<string> {
-    return this.albumService.updateAlbumInfo(albumId, updateAlbumInfoRequestDto);
+    return await this.albumService.updateAlbumInfo(albumId, updateAlbumInfoRequestDto);
   }
 
   @Delete("/:albumId")
   @SwaggerDeleteAlbum()
-  DeleteAlbum(@Param("albumId") albumId: number): Promise<string> {
-    return this.albumService.deleteAlbum(albumId);
+  async DeleteAlbum(@Param("albumId") albumId: number): Promise<string> {
+    return await this.albumService.deleteAlbum(albumId);
   }
 }

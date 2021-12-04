@@ -14,7 +14,7 @@ import { UpdateGroupInfoResponseDto } from "src/domain/group/dto/updateGroupInfo
 import { GetHashTagsResponseDto } from "src/domain/group/dto/getHashTagsResponse.dto";
 import { getImageUrl } from "src/util/imageUrl";
 import { User } from "src/domain/user/user.entity";
-import { Connection, QueryRunner } from "typeorm";
+import { Connection, QueryRunner, UpdateResult } from "typeorm";
 import { Album } from "src/domain/album/album.entity";
 import { ArrayToObject, reArrange, deleteOrder } from "src/util/changeObject";
 
@@ -47,7 +47,7 @@ export class GroupService {
       const album = await queryRunner.manager.getRepository(Album).save(Album.toEntity("기본 앨범", false, group));
       const { albumId } = album;
 
-      await queryRunner.manager.getRepository(Group).update(groupId, { albumOrder: String(albumId) });
+      queryRunner.manager.getRepository(Group).update(groupId, { albumOrder: String(albumId) });
 
       await this.applyUserEntity(userId, groupId, group, false, queryRunner);
 
@@ -125,8 +125,7 @@ export class GroupService {
     const group = await this.groupRepository.getGroupQuery(groupId);
     if (!group) throw new NotFoundException(`Not found group with the id ${groupId}`);
 
-    const { groupCode, users } = group;
-    return { groupCode, users };
+    return GetGroupInfoResponseDto.returnDto(group);
   }
 
   async updateGroupInfo(
@@ -151,7 +150,7 @@ export class GroupService {
     return UpdateGroupInfoResponseDto.returnDto(updateObject.groupImage);
   }
 
-  async leaveGroup(userId: number, groupId: number): Promise<string> {
+  async leaveGroup(userId: number, groupId: number): Promise<boolean> {
     const queryRunner = this.connection.createQueryRunner();
     queryRunner.startTransaction();
 
@@ -173,7 +172,7 @@ export class GroupService {
 
       await queryRunner.commitTransaction();
 
-      return "Group leave success!!";
+      return true;
     } catch (error) {
       await queryRunner.rollbackTransaction();
       throw new BadRequestException(error);
@@ -192,14 +191,15 @@ export class GroupService {
 
     const reArrangedAlbums = reArrange(albumOrder, albumsObject);
 
-    return { albums: reArrangedAlbums };
+    return GetAlbumsResponseDto.returnDto(reArrangedAlbums);
   }
 
-  async updateAlbumOrder(groupId: number, updateAlbumOrderRequestDto: UpdateAlbumOrderRequestDto): Promise<string> {
+  async updateAlbumOrder(
+    groupId: number,
+    updateAlbumOrderRequestDto: UpdateAlbumOrderRequestDto,
+  ): Promise<UpdateResult> {
     const { albumOrder } = updateAlbumOrderRequestDto;
-    await this.groupRepository.update(groupId, { albumOrder });
-
-    return "Album Order update success!!";
+    return this.groupRepository.update(groupId, { albumOrder });
   }
 
   async getHashTags(groupId: number): Promise<GetHashTagsResponseDto> {
