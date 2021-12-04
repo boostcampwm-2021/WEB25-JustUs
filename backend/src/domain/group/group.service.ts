@@ -145,7 +145,7 @@ export class GroupService {
         : { groupImage: group.groupImage, groupName };
     const updateObject = groupImage === undefined ? checkClearImage : { groupImage, groupName };
 
-    await this.groupRepository.update(groupId, updateObject);
+    this.groupRepository.update(groupId, updateObject);
 
     return UpdateGroupInfoResponseDto.returnDto(updateObject.groupImage);
   }
@@ -168,7 +168,7 @@ export class GroupService {
       const { groupOrder } = user;
       const reArrangedOrder = deleteOrder(groupOrder, groupId);
 
-      await queryRunner.manager.getRepository(User).update(userId, { groupOrder: reArrangedOrder });
+      queryRunner.manager.getRepository(User).update(userId, { groupOrder: reArrangedOrder });
 
       await queryRunner.commitTransaction();
 
