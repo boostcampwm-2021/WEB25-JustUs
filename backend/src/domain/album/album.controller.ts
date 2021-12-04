@@ -5,6 +5,7 @@ import { UpdateAlbumInfoRequestDto } from "src/domain/album/dto/updateAlbumInfoR
 import { CreateAlbumResponseDto } from "src/domain/album/dto/createAlbumResponse.dto";
 import { SwaggerCreateAlbum, SwaggerUpdateAlbumInfo, SwaggerDeleteAlbum } from "./swagger";
 import { CustomController } from "src/custom/decorator/controller.decorator";
+import { UpdateResult } from "typeorm";
 
 @CustomController("albums", "앨범 API")
 export class AlbumController {
@@ -21,13 +22,13 @@ export class AlbumController {
   async UpdateAlbumInfo(
     @Param("albumId") albumId: number,
     @Body() updateAlbumInfoRequestDto: UpdateAlbumInfoRequestDto,
-  ): Promise<string> {
+  ): Promise<UpdateResult> {
     return await this.albumService.updateAlbumInfo(albumId, updateAlbumInfoRequestDto);
   }
 
   @Delete("/:albumId")
   @SwaggerDeleteAlbum()
-  async DeleteAlbum(@Param("albumId") albumId: number): Promise<string> {
+  async DeleteAlbum(@Param("albumId") albumId: number): Promise<boolean> {
     return await this.albumService.deleteAlbum(albumId);
   }
 }

@@ -6,7 +6,7 @@ import { CreateAlbumRequestDto } from "src/domain/album/dto/createAlbumRequest.d
 import { UpdateAlbumInfoRequestDto } from "src/domain/album/dto/updateAlbumInfoRequest.dto";
 import { CreateAlbumResponseDto } from "src/domain/album/dto/createAlbumResponse.dto";
 import { Album } from "./album.entity";
-import { Connection, QueryRunner } from "typeorm";
+import { Connection, QueryRunner, UpdateResult } from "typeorm";
 import { Group } from "src/domain/group/group.entity";
 import { Post } from "src/domain/post/post.entity";
 import { deleteOrder } from "src/util/changeObject";
@@ -35,7 +35,7 @@ export class AlbumService {
 
       const { albumOrder } = group;
       const newAlbumOrder = `${albumId},${albumOrder}`;
-      await queryRunner.manager.getRepository(Group).update(groupId, { albumOrder: newAlbumOrder });
+      queryRunner.manager.getRepository(Group).update(groupId, { albumOrder: newAlbumOrder });
 
       await queryRunner.commitTransaction();
 
@@ -48,17 +48,15 @@ export class AlbumService {
     }
   }
 
-  async updateAlbumInfo(albumId: number, updateAlbumInfoRequestDto: UpdateAlbumInfoRequestDto): Promise<string> {
+  async updateAlbumInfo(albumId: number, updateAlbumInfoRequestDto: UpdateAlbumInfoRequestDto): Promise<UpdateResult> {
     const { albumName } = updateAlbumInfoRequestDto;
     const album = await this.albumRepository.findOne({ albumId });
     if (!album) throw new NotFoundException(`Not found album with the id ${albumId}`);
 
-    await this.albumRepository.update(albumId, { albumName });
-
-    return "AlbumInfo update success!!";
+    return await this.albumRepository.update(albumId, { albumName });
   }
 
-  async deleteAlbum(albumId: number): Promise<string> {
+  async deleteAlbum(albumId: number): Promise<boolean> {
     const album = await this.albumRepository.findOne(albumId, { relations: ["group"] });
     if (!album) throw new NotFoundException(`Not found album with the id ${albumId}`);
 
@@ -78,11 +76,11 @@ export class AlbumService {
       const { albumOrder } = group;
       const reArrangedOrder = deleteOrder(albumOrder, albumId);
 
-      await queryRunner.manager.getRepository(Group).update(groupId, { albumOrder: reArrangedOrder });
+      queryRunner.manager.getRepository(Group).update(groupId, { albumOrder: reArrangedOrder });
 
       await queryRunner.commitTransaction();
 
-      return "Album delete success!!";
+      return true;
     } catch (error) {
       await queryRunner.rollbackTransaction();
       throw new BadRequestException(error);
@@ -102,9 +100,9 @@ export class AlbumService {
   async movePosts(albumId: number, baseAlbum: Album, queryRunner: QueryRunner): Promise<void> {
     const { posts } = await this.getMovePosts(albumId, queryRunner);
 
-    posts.forEach(async post => {
+    posts.forEach(post => {
       const postId = post.postId;
-      await queryRunner.manager.getRepository(Post).update(postId, { album: baseAlbum });
+      queryRunner.manager.getRepository(Post).update(postId, { album: baseAlbum });
     });
   }
 
