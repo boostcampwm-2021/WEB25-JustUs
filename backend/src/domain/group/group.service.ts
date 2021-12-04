@@ -35,16 +35,13 @@ export class GroupService {
     const { groupName } = createGroupRequestDto;
     const groupCode = await this.createInvitaionCode();
 
-    const saveObject =
-      groupImage === undefined
-        ? { groupImage: process.env.JUSTUS_GROUP_BASE_IMG, groupName, groupCode }
-        : { groupImage, groupName, groupCode };
-
     const queryRunner = this.connection.createQueryRunner();
     queryRunner.startTransaction();
 
     try {
-      const group = await queryRunner.manager.getRepository(Group).save(saveObject);
+      const group = await queryRunner.manager
+        .getRepository(Group)
+        .save(Group.toEntity(groupImage, groupName, groupCode));
       const { groupId } = group;
 
       const album = await queryRunner.manager.getRepository(Album).save(Album.toEntity("기본 앨범", false, group));
@@ -56,7 +53,7 @@ export class GroupService {
 
       await queryRunner.commitTransaction();
 
-      return { groupId, groupImage };
+      return CreateGroupResponseDto.returnDto(group);
     } catch (error) {
       await queryRunner.rollbackTransaction();
       throw new BadRequestException(error);
@@ -151,7 +148,7 @@ export class GroupService {
 
     await this.groupRepository.update(groupId, updateObject);
 
-    return { groupImage: updateObject.groupImage };
+    return UpdateGroupInfoResponseDto.returnDto(updateObject.groupImage);
   }
 
   async leaveGroup(userId: number, groupId: number): Promise<string> {
