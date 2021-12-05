@@ -6,7 +6,13 @@ import { customAxios } from "@src/lib/customAxios";
 
 export const RefreshAPI = async () => {
   const URL = `/api/auth/refresh-token`;
-  await customAxios.get(URL);
+  const refreshToken = localStorage.getItem("refreshToken");
+  if (!refreshToken) throw new Error();
+  await customAxios.get(URL, {
+    headers: {
+      refreshToken: refreshToken as string,
+    },
+  });
 };
 
 export { AlbumAPI, GroupAPI, PostAPI, UserAPI };
