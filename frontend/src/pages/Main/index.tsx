@@ -12,6 +12,7 @@ import { RootState } from "@src/reducer";
 import { useHistory } from "react-router-dom";
 import ToastManager from "@src/components/ToastMessage/ToastManager";
 import Spinner from "@components/Spinner";
+import { getCookie, deleteCookie } from "@src/lib/cookie";
 
 const Main = () => {
   const [isToggle, setIsToggle] = useState<boolean>(true);
@@ -84,6 +85,13 @@ const Main = () => {
 
   useEffect(() => {
     if (userInfoSucceed) {
+      const refreshToken = getCookie("refreshToken");
+
+      if (refreshToken) {
+        localStorage.setItem("refreshToken", refreshToken);
+        deleteCookie("refreshToken");
+      }
+
       dispatch(GroupAction.getGroupListAction());
       dispatch(UserAction.setUpdatedInitAction());
     }

@@ -12,7 +12,7 @@ export class JwtRefreshTokenAuthGuard extends AuthGuard("jwt") {
     const request = context.switchToHttp().getRequest();
     const response = context.switchToHttp().getResponse();
 
-    const { refreshToken } = request.cookies;
+    const refreshToken = request.headers.refreshtoken;
 
     if (!refreshToken) throw new HttpException("No RefreshToken", 410);
 
