@@ -5,7 +5,6 @@ import { NaverOauthGuard } from "./guard/naver-auth.guard";
 import { JwtAuthGuard } from "./guard/jwt-auth-guard";
 import { CustomRequest } from "src/custom/myRequest/customRequest";
 import { UserService } from "src/domain/user/user.service";
-import { AuthService } from "./auth.service";
 import { NaverFilter } from "src/filter/naver.filter";
 import { JwtRefreshTokenAuthGuard } from "./guard/jwt-refreshToken-auth-guard";
 
@@ -13,7 +12,7 @@ import { JwtRefreshTokenAuthGuard } from "./guard/jwt-refreshToken-auth-guard";
 @ApiBearerAuth()
 @Controller("/auth")
 export class AuthController {
-  constructor(private readonly userService: UserService, private readonly authService: AuthService) {}
+  constructor(private readonly userService: UserService) {}
 
   @Get("/login")
   @UseGuards(NaverOauthGuard)
