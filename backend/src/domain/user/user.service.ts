@@ -33,8 +33,7 @@ export class UserService {
     const user = await this.userRepository.findOne({ userId });
     if (!user) throw new NotFoundException(`Not found user with the id ${userId}`);
 
-    const { profileImage, userNickname } = user;
-    return new UserInfoResponseDto(userNickname, profileImage, userId);
+    return UserInfoResponseDto.returnDto(user);
   }
 
   async updateUserInfo(
@@ -54,9 +53,9 @@ export class UserService {
         : { profileImage: user.profileImage, userNickname };
     const updateObject = profileImage === undefined ? checkClearImage : { profileImage, userNickname };
 
-    await this.userRepository.update(userId, updateObject);
+    this.userRepository.update(userId, updateObject);
 
-    return { profileImage: updateObject.profileImage };
+    return UpdateUserInfoResponseDto.returnDto(updateObject.profileImage);
   }
 
   async updateToken(userId: number, refreshToken: string): Promise<UpdateResult> {
@@ -82,7 +81,7 @@ export class UserService {
 
     const reArrangedGroups = reArrange(groupOrder, groupsObject);
 
-    return { groups: reArrangedGroups };
+    return GetGroupsResponseDto.returnDto(reArrangedGroups);
   }
 
   async findById(userId: number): Promise<User> {

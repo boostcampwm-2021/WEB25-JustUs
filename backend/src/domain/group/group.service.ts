@@ -14,7 +14,7 @@ import { UpdateGroupInfoResponseDto } from "src/domain/group/dto/updateGroupInfo
 import { GetHashTagsResponseDto } from "src/domain/group/dto/getHashTagsResponse.dto";
 import { getImageUrl } from "src/util/imageUrl";
 import { User } from "src/domain/user/user.entity";
-import { Connection, QueryRunner } from "typeorm";
+import { Connection, QueryRunner, UpdateResult } from "typeorm";
 import { Album } from "src/domain/album/album.entity";
 import { ArrayToObject, reArrange, deleteOrder } from "src/util/changeObject";
 
@@ -35,32 +35,25 @@ export class GroupService {
     const { groupName } = createGroupRequestDto;
     const groupCode = await this.createInvitaionCode();
 
-    const saveObject =
-      groupImage === undefined
-        ? { groupImage: process.env.JUSTUS_GROUP_BASE_IMG, groupName, groupCode }
-        : { groupImage, groupName, groupCode };
-
     const queryRunner = this.connection.createQueryRunner();
     queryRunner.startTransaction();
 
     try {
-      const group = await queryRunner.manager.getRepository(Group).save(saveObject);
+      const group = await queryRunner.manager
+        .getRepository(Group)
+        .save(Group.toEntity(groupImage, groupName, groupCode));
       const { groupId } = group;
 
-      const album = await queryRunner.manager.getRepository(Album).save({
-        albumName: "기본 앨범",
-        base: true,
-        group: group,
-      });
+      const album = await queryRunner.manager.getRepository(Album).save(Album.toEntity("기본 앨범", true, group));
       const { albumId } = album;
 
-      await queryRunner.manager.getRepository(Group).update(groupId, { albumOrder: String(albumId) });
+      queryRunner.manager.getRepository(Group).update(groupId, { albumOrder: String(albumId) });
 
       await this.applyUserEntity(userId, groupId, group, false, queryRunner);
 
       await queryRunner.commitTransaction();
 
-      return { groupId, groupImage };
+      return CreateGroupResponseDto.returnDto(group);
     } catch (error) {
       await queryRunner.rollbackTransaction();
       throw new BadRequestException(error);
@@ -132,8 +125,7 @@ export class GroupService {
     const group = await this.groupRepository.getGroupQuery(groupId);
     if (!group) throw new NotFoundException(`Not found group with the id ${groupId}`);
 
-    const { groupCode, users } = group;
-    return { groupCode, users };
+    return GetGroupInfoResponseDto.returnDto(group);
   }
 
   async updateGroupInfo(
@@ -153,12 +145,12 @@ export class GroupService {
         : { groupImage: group.groupImage, groupName };
     const updateObject = groupImage === undefined ? checkClearImage : { groupImage, groupName };
 
-    await this.groupRepository.update(groupId, updateObject);
+    this.groupRepository.update(groupId, updateObject);
 
-    return { groupImage: updateObject.groupImage };
+    return UpdateGroupInfoResponseDto.returnDto(updateObject.groupImage);
   }
 
-  async leaveGroup(userId: number, groupId: number): Promise<string> {
+  async leaveGroup(userId: number, groupId: number): Promise<boolean> {
     const queryRunner = this.connection.createQueryRunner();
     queryRunner.startTransaction();
 
@@ -176,11 +168,11 @@ export class GroupService {
       const { groupOrder } = user;
       const reArrangedOrder = deleteOrder(groupOrder, groupId);
 
-      await queryRunner.manager.getRepository(User).update(userId, { groupOrder: reArrangedOrder });
+      queryRunner.manager.getRepository(User).update(userId, { groupOrder: reArrangedOrder });
 
       await queryRunner.commitTransaction();
 
-      return "Group leave success!!";
+      return true;
     } catch (error) {
       await queryRunner.rollbackTransaction();
       throw new BadRequestException(error);
@@ -199,14 +191,15 @@ export class GroupService {
 
     const reArrangedAlbums = reArrange(albumOrder, albumsObject);
 
-    return { albums: reArrangedAlbums };
+    return GetAlbumsResponseDto.returnDto(reArrangedAlbums);
   }
 
-  async updateAlbumOrder(groupId: number, updateAlbumOrderRequestDto: UpdateAlbumOrderRequestDto): Promise<string> {
+  async updateAlbumOrder(
+    groupId: number,
+    updateAlbumOrderRequestDto: UpdateAlbumOrderRequestDto,
+  ): Promise<UpdateResult> {
     const { albumOrder } = updateAlbumOrderRequestDto;
-    await this.groupRepository.update(groupId, { albumOrder });
-
-    return "Album Order update success!!";
+    return this.groupRepository.update(groupId, { albumOrder });
   }
 
   async getHashTags(groupId: number): Promise<GetHashTagsResponseDto> {

@@ -1,34 +1,52 @@
 import { ApiProperty } from "@nestjs/swagger";
+import { Exclude } from "class-transformer";
 
 class postList {
+  @Exclude()
   @ApiProperty()
-  postId: number;
+  private readonly postId: number;
 
+  @Exclude()
   @ApiProperty()
-  postTitle: string;
+  private readonly postTitle: string;
 
+  @Exclude()
   @ApiProperty()
-  postLatitude: number;
+  private readonly postLatitude: number;
 
+  @Exclude()
   @ApiProperty()
-  postLongitude: number;
+  private readonly postLongitude: number;
 }
 
 class albumList {
+  @Exclude()
   @ApiProperty()
-  albumId: number;
+  private readonly albumId: number;
 
+  @Exclude()
   @ApiProperty()
-  albumName: string;
+  private readonly albumName: string;
 
+  @Exclude()
   @ApiProperty()
-  base: boolean;
+  private readonly base: boolean;
 
+  @Exclude()
   @ApiProperty({ type: [postList] })
-  posts: postList[];
+  private readonly posts: postList[];
 }
 
 export class GetAlbumsResponseDto {
+  @Exclude()
   @ApiProperty({ type: [albumList] })
-  albums: albumList[];
+  private readonly albums: albumList[];
+
+  constructor(array: any[]) {
+    this.albums = array;
+  }
+
+  static returnDto(array: any[]) {
+    return new GetAlbumsResponseDto(array);
+  }
 }
