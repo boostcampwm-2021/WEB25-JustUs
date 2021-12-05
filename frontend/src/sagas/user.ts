@@ -60,6 +60,7 @@ function* getLogOut() {
   try {
     yield call(getLogOutApi);
     yield put({ type: UserAction.LOG_OUT_SUCCEED });
+    localStorage.removeItem("refreshToken");
   } catch (err: any) {
     const { status } = err.response;
     if (status === 401) {
