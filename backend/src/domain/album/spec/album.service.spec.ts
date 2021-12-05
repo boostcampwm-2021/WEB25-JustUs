@@ -57,7 +57,7 @@ describe("AlbumService", () => {
 
       const result = await albumService.updateAlbumInfo(1, { albumName: "updateName" });
 
-      expect(result).toBe("AlbumInfo update success!!");
+      expect(result).toStrictEqual(updateAlbum);
     });
   });
 

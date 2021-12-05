@@ -9,7 +9,7 @@ export class Group extends TimeStampEntity {
   @PrimaryGeneratedColumn()
   groupId: number;
 
-  @Column({ nullable: true, type: "text" })
+  @Column({ type: "text" })
   groupImage: string;
 
   @Column()
@@ -30,4 +30,17 @@ export class Group extends TimeStampEntity {
 
   @OneToMany(() => HashTag, hashtag => hashtag.group, { cascade: true })
   hashtags: HashTag[];
+
+  static validateImage(groupImage: string) {
+    return groupImage === undefined ? process.env.JUSTUS_GROUP_BASE_IMG : groupImage;
+  }
+
+  static toEntity(groupImage: string, groupName: string, groupCode: string) {
+    const group = new Group();
+    group.groupImage = this.validateImage(groupImage);
+    group.groupName = groupName;
+    group.groupCode = groupCode;
+
+    return group;
+  }
 }

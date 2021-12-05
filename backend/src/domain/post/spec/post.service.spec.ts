@@ -96,32 +96,21 @@ describe("PostService", () => {
       postRepository.update.mockResolvedValue(updatePost);
       const result = await postService.shiftPost(1, { albumId: 2 });
 
-      expect(result).toBe("Post Shift success!!");
+      expect(result).toStrictEqual(updatePost);
     });
   });
 
   describe("getSearchPost()", () => {
     it("해시태그를 이용해 게시글 검색 성공", async () => {
       hashTagRepository.getSearchPosts.mockResolvedValue(existsHashTag);
-      const { posts } = await postService.getSearchPost(1);
+      const posts = await postService.getSearchPost(1);
 
-      expect(posts).toStrictEqual(existsHashTag.posts);
+      expect(posts).toStrictEqual(new GetSearchPostResponse(existsHashTag.posts));
     });
   });
 
   const makeResultPost = () => {
-    return new GetPostInfoResponseDto(
-      user.userId,
-      existsPost.postId,
-      user.userNickname,
-      existsPost.postTitle,
-      existsPost.postContent,
-      existsPost.images,
-      existsPost.postDate,
-      existsPost.postLatitude,
-      existsPost.postLongitude,
-      existsPost.postLocation,
-    );
+    return new GetPostInfoResponseDto(existsPost);
   };
 
   const initData = () => {

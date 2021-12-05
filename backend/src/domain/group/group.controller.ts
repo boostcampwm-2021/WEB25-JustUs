@@ -24,6 +24,7 @@ import {
   SwaggerGetHashTags,
 } from "./swagger";
 import { CustomController } from "src/custom/decorator/controller.decorator";
+import { UpdateResult } from "typeorm";
 
 @CustomController("groups", "그룹 API")
 export class GroupController {
@@ -32,64 +33,67 @@ export class GroupController {
   @Post()
   @UseInterceptors(FileInterceptor("groupImage", multerOption))
   @SwaggerCreateGroup()
-  CreateGroup(
+  async CreateGroup(
     @Req() { user }: CustomRequest,
     @Body() createGroupRequestDto: CreateGroupRequestDto,
     @UploadedFile() file: CustomFile,
   ): Promise<CreateGroupResponseDto> {
     const { userId } = user;
-    return this.groupService.createGroup(userId, file, createGroupRequestDto);
+    return await this.groupService.createGroup(userId, file, createGroupRequestDto);
   }
 
   @Post("/join")
   @SwaggerAttendGroup()
-  AttendGroup(@Req() { user }: CustomRequest, @Body() attendGroupRequestDto: AttendGroupRequestDto): Promise<number> {
+  async AttendGroup(
+    @Req() { user }: CustomRequest,
+    @Body() attendGroupRequestDto: AttendGroupRequestDto,
+  ): Promise<number> {
     const { userId } = user;
-    return this.groupService.attendGroup(userId, attendGroupRequestDto);
+    return await this.groupService.attendGroup(userId, attendGroupRequestDto);
   }
 
   @Get("/:groupId")
   @SwaggerGetGroupInfo()
-  GetGroupInfo(@Param("groupId") groupId: number): Promise<GetGroupInfoResponseDto> {
-    return this.groupService.getGroupInfo(groupId);
+  async GetGroupInfo(@Param("groupId") groupId: number): Promise<GetGroupInfoResponseDto> {
+    return await this.groupService.getGroupInfo(groupId);
   }
 
   @Get("/:groupId/albums")
   @SwaggerGetAlbums()
-  GetAlbums(@Param("groupId") groupId: number): Promise<GetAlbumsResponseDto> {
-    return this.groupService.getAlbums(groupId);
+  async GetAlbums(@Param("groupId") groupId: number): Promise<GetAlbumsResponseDto> {
+    return await this.groupService.getAlbums(groupId);
   }
 
   @Put("/:groupId")
   @UseInterceptors(FileInterceptor("groupImage", multerOption))
   @SwaggerUpdateGroupInfo()
-  UpdateGroupInfo(
+  async UpdateGroupInfo(
     @Param("groupId") groupId: number,
     @Body() updateGroupInfoRequestDto: UpdateGroupInfoRequestDto,
     @UploadedFile() file: CustomFile,
   ): Promise<UpdateGroupInfoResponseDto> {
-    return this.groupService.updateGroupInfo(groupId, file, updateGroupInfoRequestDto);
+    return await this.groupService.updateGroupInfo(groupId, file, updateGroupInfoRequestDto);
   }
 
   @Delete("/:groupId")
   @SwaggerLeaveGroup()
-  LeaveGroup(@Req() { user }: CustomRequest, @Param("groupId") groupId: number): Promise<string> {
+  async LeaveGroup(@Req() { user }: CustomRequest, @Param("groupId") groupId: number): Promise<boolean> {
     const { userId } = user;
-    return this.groupService.leaveGroup(userId, groupId);
+    return await this.groupService.leaveGroup(userId, groupId);
   }
 
   @Put("/:groupId/albumorder")
   @SwaggerUpdateAlbumOrder()
-  UpdateAlbumOrder(
+  async UpdateAlbumOrder(
     @Param("groupId") groupId: number,
     @Body() updateAlbumOrderRequestDto: UpdateAlbumOrderRequestDto,
-  ): Promise<string> {
-    return this.groupService.updateAlbumOrder(groupId, updateAlbumOrderRequestDto);
+  ): Promise<UpdateResult> {
+    return await this.groupService.updateAlbumOrder(groupId, updateAlbumOrderRequestDto);
   }
 
   @Get("/:groupId/hashtags")
   @SwaggerGetHashTags()
-  GetHashTags(@Param("groupId") groupId: number): Promise<GetHashTagsResponseDto> {
-    return this.groupService.getHashTags(groupId);
+  async GetHashTags(@Param("groupId") groupId: number): Promise<GetHashTagsResponseDto> {
+    return await this.groupService.getHashTags(groupId);
   }
 }

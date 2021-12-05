@@ -56,16 +56,6 @@ export class HashTagService {
         const { hashtagId } = hashtag;
 
         await queryRunner.manager.getCustomRepository(HashTagRepository).deleteHashTagsQuery(postId, hashtagId);
-
-        /* 해시태그에 연관된 게시글이 없을 때 해시태그를 지워주는 코드인데 오류 때문에 안된다. 10시간동안 붙잡고 있었지만 오류 해결을 못해서 남겨둡니다.*/
-        // const lastposts = await queryRunner.manager
-        //   .getCustomRepository(HashTagRepository)
-        //   .findOne(hashtagId, { relations: ["posts"] });
-        // const { posts } = lastposts;
-
-        // if (!posts.length) {
-        //   await queryRunner.manager.getRepository(HashTag).softDelete(hashtag);
-        // }
       }),
     );
   }

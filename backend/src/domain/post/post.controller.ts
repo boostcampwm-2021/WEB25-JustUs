@@ -17,6 +17,7 @@ import {
   SwaggerShiftPost,
 } from "./swagger";
 import { CustomController } from "src/custom/decorator/controller.decorator";
+import { UpdateResult } from "typeorm";
 
 @CustomController("posts", "게시글 API")
 export class PostController {
@@ -25,52 +26,55 @@ export class PostController {
   @Post()
   @UseInterceptors(FilesInterceptor("postImages", 5, multerOption))
   @SwaggerCreatePost()
-  CreatePost(
+  async CreatePost(
     @Req() { user }: CustomRequest,
     @Body() createPostRequestDto: CreatePostRequestDto,
     @UploadedFiles() files: Express.Multer.File[],
   ): Promise<number> {
     const { userId } = user;
 
-    return this.postService.createPost(userId, files, createPostRequestDto);
+    return await this.postService.createPost(userId, files, createPostRequestDto);
   }
 
   @Get("/search")
   @SwaggerGetSearchPost()
-  GetSearchPost(@Query("hashtagId") hashtagId: number): Promise<GetSearchPostResponse> {
-    return this.postService.getSearchPost(hashtagId);
+  async GetSearchPost(@Query("hashtagId") hashtagId: number): Promise<GetSearchPostResponse> {
+    return await this.postService.getSearchPost(hashtagId);
   }
 
   @Get("/:postId")
   @SwaggerGetPostInfo()
-  GetPostInfo(@Param("postId") postId: number): Promise<GetPostInfoResponseDto> {
-    return this.postService.getPostInfo(postId);
+  async GetPostInfo(@Param("postId") postId: number): Promise<GetPostInfoResponseDto> {
+    return await this.postService.getPostInfo(postId);
   }
 
   @Put("/:postId")
   @UseInterceptors(FilesInterceptor("addImages", 5, multerOption))
   @SwaggerUpdatePost()
-  UpdatePost(
+  async UpdatePost(
     @Req() { user }: CustomRequest,
     @Param("postId") postId: number,
     @Body() updatePostInfoRequestDto: UpdatePostInfoRequestDto,
     @UploadedFiles() files: Express.Multer.File[],
-  ): Promise<string> {
+  ): Promise<UpdateResult> {
     const { userId } = user;
 
-    return this.postService.updatePostInfo(userId, postId, files, updatePostInfoRequestDto);
+    return await this.postService.updatePostInfo(userId, postId, files, updatePostInfoRequestDto);
   }
 
   @Delete("/:postId")
   @SwaggerDeletePost()
-  DeletePost(@Req() { user }: CustomRequest, @Param("postId") postId: number): Promise<string> {
+  async DeletePost(@Req() { user }: CustomRequest, @Param("postId") postId: number): Promise<boolean> {
     const { userId } = user;
-    return this.postService.deletePost(userId, postId);
+    return await this.postService.deletePost(userId, postId);
   }
 
   @Put("/:postId/shift")
   @SwaggerShiftPost()
-  ShiftPost(@Param("postId") postId: number, @Body() shiftPostRequestDto: ShiftPostRequestDto): Promise<string> {
-    return this.postService.shiftPost(postId, shiftPostRequestDto);
+  async ShiftPost(
+    @Param("postId") postId: number,
+    @Body() shiftPostRequestDto: ShiftPostRequestDto,
+  ): Promise<UpdateResult> {
+    return await this.postService.shiftPost(postId, shiftPostRequestDto);
   }
 }

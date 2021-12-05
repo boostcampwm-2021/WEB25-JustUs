@@ -1,58 +1,63 @@
 import { ImageInfo } from "../../image/dto/imageInfo";
 import { ApiProperty } from "@nestjs/swagger";
+import { Exclude } from "class-transformer";
+import { Post } from "../post.entity";
 
 export class GetPostInfoResponseDto {
+  @Exclude()
   @ApiProperty()
-  postId: number;
+  private readonly postId: number;
 
+  @Exclude()
   @ApiProperty()
-  userId: number;
+  private readonly userId: number;
 
+  @Exclude()
   @ApiProperty()
-  userNickname: string;
+  private readonly userNickname: string;
 
+  @Exclude()
   @ApiProperty()
-  postTitle: string;
+  private readonly postTitle: string;
 
+  @Exclude()
   @ApiProperty()
-  postContent: string;
+  private readonly postContent: string;
 
+  @Exclude()
   @ApiProperty({ type: [ImageInfo] })
-  images: ImageInfo[];
+  private readonly images: ImageInfo[];
 
+  @Exclude()
   @ApiProperty()
-  postDate: Date;
+  private readonly postDate: Date;
 
+  @Exclude()
   @ApiProperty()
-  postLatitude: number;
+  private readonly postLatitude: number;
 
+  @Exclude()
   @ApiProperty()
-  postLongitude: number;
+  private readonly postLongitude: number;
 
+  @Exclude()
   @ApiProperty()
-  postLocation: string;
+  private readonly postLocation: string;
 
-  constructor(
-    postId: number,
-    userId: number,
-    userNickname: string,
-    postTitle: string,
-    postContent: string,
-    images: ImageInfo[],
-    postDate: Date,
-    postLatitude: number,
-    postLongitude: number,
-    postLocation: string,
-  ) {
-    this.postId = postId;
-    this.userId = userId;
-    this.userNickname = userNickname;
-    this.postTitle = postTitle;
-    this.postContent = postContent;
-    this.images = images;
-    this.postDate = postDate;
-    this.postLatitude = postLatitude;
-    this.postLongitude = postLongitude;
-    this.postLocation = postLocation;
+  constructor(post: Post) {
+    this.postId = post.postId;
+    this.userId = post.user.userId;
+    this.userNickname = post.user.userNickname;
+    this.postTitle = post.postTitle;
+    this.postContent = post.postContent;
+    this.images = post.images;
+    this.postDate = post.postDate;
+    this.postLatitude = post.postLatitude;
+    this.postLongitude = post.postLongitude;
+    this.postLocation = post.postLocation;
+  }
+
+  static returnDto(post: Post) {
+    return new GetPostInfoResponseDto(post);
   }
 }

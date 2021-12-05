@@ -10,6 +10,8 @@ import { User } from "src/domain/user/user.entity";
 import { Album } from "src/domain/album/album.entity";
 import { Post } from "src/domain/post/post.entity";
 import { HashTag } from "src/domain/hashtag/hashtag.entity";
+import { GetAlbumsResponseDto } from "../dto/getAlbumsResponse.dto";
+import { GetGroupInfoResponseDto } from "../dto/getGroupInfoResponse.dto";
 
 const mockUserRepository = () => ({
   findOne: jest.fn(),
@@ -80,26 +82,10 @@ describe("GroupService", () => {
     initData();
   });
 
-  /* 트랜잭션 처리 주석
-  describe("attendGroup()", () => {
-    it("존재하는 코드로 참가", async () => {
-      userRepository.findOne.mockResolvedValue(user);
-      groupRepository.findOne.mockResolvedValue(existsGroup);
-
-      const queryRunner = connection.createQueryRunner();
-      jest.spyOn(queryRunner.manager.getRepository(User), "findOne").mockResolvedValue(user);
-
-      const group = await groupService.attendGroup(userId, attendGroupReqiestDto);
-
-      expect(group).toBe(existsGroup.groupId);
-    });
-  });
-  */
-
   describe("getGroupInfo()", () => {
     it("그룹 정보 조회 성공", async () => {
       groupRepository.getGroupQuery.mockResolvedValue(existsGroup);
-      const group = { groupCode: "existsCode", users: [user, testUser] };
+      const group = GetGroupInfoResponseDto.returnDto(existsGroup);
       const result = await groupService.getGroupInfo(1);
 
       expect(result).toStrictEqual(group);
@@ -121,7 +107,7 @@ describe("GroupService", () => {
       groupRepository.update.mockResolvedValue(updateGroup);
       const result = await groupService.updateAlbumOrder(1, { albumOrder: "1,2" });
 
-      expect(result).toBe("Album Order update success!!");
+      expect(result).toStrictEqual(updateGroup);
     });
   });
 
@@ -138,7 +124,7 @@ describe("GroupService", () => {
   const makeResultAlbum = () => {
     const albums = [existsAlbum2, existsAlbum1];
 
-    return { albums: albums };
+    return GetAlbumsResponseDto.returnDto(albums);
   };
 
   const makeResultHashTag = () => {

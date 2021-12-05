@@ -19,38 +19,38 @@ export class UserController {
 
   @Get()
   @SwaggerGetUserInfo()
-  GetUserInfo(@Req() { user }: CustomRequest): Promise<UserInfoResponseDto> {
+  async GetUserInfo(@Req() { user }: CustomRequest): Promise<UserInfoResponseDto> {
     const { userId } = user;
-    return this.userService.getUserInfo(userId);
+    return await this.userService.getUserInfo(userId);
   }
 
   @Put()
   @UseInterceptors(FileInterceptor("profileImage", multerOption))
   @SwaggerUpdateUserInfo()
-  UpdateUserInfo(
+  async UpdateUserInfo(
     @Req() { user }: CustomRequest,
     @Body() updateUserInfoRequestDto: UpdateUserInfoRequestDto,
     @UploadedFile() file: CustomFile,
   ): Promise<UpdateUserInfoResponseDto> {
     const { userId } = user;
 
-    return this.userService.updateUserInfo(userId, file, updateUserInfoRequestDto);
+    return await this.userService.updateUserInfo(userId, file, updateUserInfoRequestDto);
   }
 
   @Put("/grouporder")
   @SwaggerUpdateGroupOrder()
-  UpdateGroupOrder(
+  async UpdateGroupOrder(
     @Req() { user }: CustomRequest,
     @Body() updateGroupOrderRequestDto: UpdateGroupOrderRequestDto,
   ): Promise<UpdateResult> {
     const { userId } = user;
-    return this.userService.updateGroupOrder(userId, updateGroupOrderRequestDto);
+    return await this.userService.updateGroupOrder(userId, updateGroupOrderRequestDto);
   }
 
   @Get("groups")
   @SwaggerGetGroups()
-  GetGroups(@Req() { user }: CustomRequest): Promise<GetGroupsResponseDto> {
+  async GetGroups(@Req() { user }: CustomRequest): Promise<GetGroupsResponseDto> {
     const { userId } = user;
-    return this.userService.getGroups(userId);
+    return await this.userService.getGroups(userId);
   }
 }

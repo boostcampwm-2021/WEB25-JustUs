@@ -20,4 +20,13 @@ export class Album extends TimeStampEntity {
 
   @OneToMany(() => Post, post => post.album)
   posts: Post[];
+
+  static toEntity(albumName: string, base: boolean, group: Group) {
+    const album = new Album();
+    album.albumName = albumName;
+    album.base = base;
+    album.group = group;
+
+    return album;
+  }
 }

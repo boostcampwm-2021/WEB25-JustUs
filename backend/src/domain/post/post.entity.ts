@@ -51,4 +51,31 @@ export class Post extends TimeStampEntity {
   @ManyToMany(() => HashTag, { cascade: ["insert", "update"] })
   @JoinTable({ name: "posts_hashtags" })
   hashtags: HashTag[];
+
+  static toEntity(
+    postTitle: string,
+    postContent: string,
+    postDate: Date,
+    postLocation: string,
+    postLatitude: number,
+    postLongitude: number,
+    user: User,
+    album: Album,
+    images: Image[],
+    hashtags: HashTag[],
+  ) {
+    const post = new Post();
+    post.postTitle = postTitle;
+    post.postContent = postContent;
+    post.postDate = postDate;
+    post.postLocation = postLocation;
+    post.postLatitude = postLatitude;
+    post.postLongitude = postLongitude;
+    post.user = user;
+    post.album = album;
+    post.images = images;
+    post.hashtags = hashtags;
+
+    return post;
+  }
 }

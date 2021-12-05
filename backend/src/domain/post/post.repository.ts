@@ -8,6 +8,7 @@ export class PostRepository extends Repository<Post> {
       .innerJoin("post.images", "image")
       .innerJoin("post.user", "user")
       .select([
+        "post.postId",
         "post.postTitle",
         "post.postContent",
         "post.postDate",

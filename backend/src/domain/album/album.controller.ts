@@ -5,6 +5,7 @@ import { UpdateAlbumInfoRequestDto } from "src/domain/album/dto/updateAlbumInfoR
 import { CreateAlbumResponseDto } from "src/domain/album/dto/createAlbumResponse.dto";
 import { SwaggerCreateAlbum, SwaggerUpdateAlbumInfo, SwaggerDeleteAlbum } from "./swagger";
 import { CustomController } from "src/custom/decorator/controller.decorator";
+import { UpdateResult } from "typeorm";
 
 @CustomController("albums", "앨범 API")
 export class AlbumController {
@@ -12,22 +13,22 @@ export class AlbumController {
 
   @Post()
   @SwaggerCreateAlbum()
-  CreateAlbum(@Body() createAlbumRequestDto: CreateAlbumRequestDto): Promise<CreateAlbumResponseDto> {
-    return this.albumService.createAlbum(createAlbumRequestDto);
+  async CreateAlbum(@Body() createAlbumRequestDto: CreateAlbumRequestDto): Promise<CreateAlbumResponseDto> {
+    return await this.albumService.createAlbum(createAlbumRequestDto);
   }
 
   @Put("/:albumId")
   @SwaggerUpdateAlbumInfo()
-  UpdateAlbumInfo(
+  async UpdateAlbumInfo(
     @Param("albumId") albumId: number,
     @Body() updateAlbumInfoRequestDto: UpdateAlbumInfoRequestDto,
-  ): Promise<string> {
-    return this.albumService.updateAlbumInfo(albumId, updateAlbumInfoRequestDto);
+  ): Promise<UpdateResult> {
+    return await this.albumService.updateAlbumInfo(albumId, updateAlbumInfoRequestDto);
   }
 
   @Delete("/:albumId")
   @SwaggerDeleteAlbum()
-  DeleteAlbum(@Param("albumId") albumId: number): Promise<string> {
-    return this.albumService.deleteAlbum(albumId);
+  async DeleteAlbum(@Param("albumId") albumId: number): Promise<boolean> {
+    return await this.albumService.deleteAlbum(albumId);
   }
 }
