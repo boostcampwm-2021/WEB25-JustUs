@@ -393,6 +393,7 @@ const ContentWrap = styled.div`
   position: relative;
   width: 100%;
   height: 100%;
+  font-weight: lighter;
 `;
 const BackDrop = styled.div`
   ${contentOverflow}
